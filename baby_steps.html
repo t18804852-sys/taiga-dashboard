@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baby Steps x Taiga — 現実マッピング</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0c0a;
+  --sf: #18150f;
+  --gold: #d0a050;
+  --gold2: #e0b060;
+  --dim: rgba(220, 200, 160, 0.4);
+  --txt: #e0d8c8;
+  --card-border: rgba(208, 160, 80, 0.15);
+  --card-glow: rgba(208, 160, 80, 0.05);
+  --section-gap: 2rem;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  line-height: 1.8;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* --- Ambient Background --- */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 20%, rgba(208, 160, 80, 0.03) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(192, 144, 64, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Header --- */
+.header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  position: relative;
+}
+
+.header::after {
+  content: '';
+  display: block;
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 2rem auto 0;
+}
+
+.header h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.6rem, 5vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  background: linear-gradient(135deg, var(--gold2), #f0c870, var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.header h1 span {
+  display: inline-block;
+  font-size: 0.5em;
+  vertical-align: middle;
+  opacity: 0.6;
+  margin: 0 0.3em;
+}
+
+.header .subtitle {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+  color: var(--dim);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+}
+
+.header .subtitle strong {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* --- Section --- */
+.section {
+  margin-bottom: var(--section-gap);
+}
+
+.section-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: clamp(1.15rem, 3.5vw, 1.5rem);
+  font-weight: 700;
+  color: var(--gold2);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+/* --- Card --- */
+.card {
+  background: var(--sf);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(208, 160, 80, 0.35);
+}
+
+.card-glow {
+  box-shadow: 0 0 30px var(--card-glow), inset 0 1px 0 rgba(208, 160, 80, 0.08);
+}
+
+/* --- Quotes --- */
+.quote {
+  border-left: 3px solid var(--gold);
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0;
+  background: rgba(208, 160, 80, 0.04);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.92rem;
+}
+
+.quote .ref {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.65rem;
+  color: var(--gold);
+  opacity: 0.6;
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.body-text {
+  font-size: 0.95rem;
+  color: var(--txt);
+  opacity: 0.85;
+  margin: 0.5rem 0;
+}
+
+/* --- OS Rewrite Block --- */
+.os-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.os-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.os-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.os-old .os-label {
+  background: rgba(180, 60, 60, 0.2);
+  color: #c07070;
+  border: 1px solid rgba(180, 60, 60, 0.3);
+}
+
+.os-new .os-label {
+  background: rgba(80, 180, 80, 0.15);
+  color: #80c080;
+  border: 1px solid rgba(80, 180, 80, 0.25);
+}
+
+.os-content {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.os-old .os-content {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.os-new .os-content {
+  color: var(--gold2);
+}
+
+/* --- Arrow Transform --- */
+.transform-arrow {
+  text-align: center;
+  font-size: 1.4rem;
+  color: var(--gold);
+  margin: 0.5rem 0;
+  opacity: 0.5;
+}
+
+/* --- Block-to-Pillar --- */
+.conversion-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.block-item, .pillar-item {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.block-item {
+  background: rgba(180, 60, 60, 0.1);
+  border: 1px solid rgba(180, 60, 60, 0.2);
+  color: #c08080;
+}
+
+.pillar-item {
+  background: rgba(208, 160, 80, 0.1);
+  border: 1px solid rgba(208, 160, 80, 0.25);
+  color: var(--gold2);
+}
+
+.arrow-cell {
+  color: var(--gold);
+  font-size: 1.2rem;
+  text-align: center;
+  opacity: 0.5;
+}
+
+/* --- Roadmap --- */
+.roadmap {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.roadmap::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--gold), rgba(208, 160, 80, 0.1));
+}
+
+.roadmap-node {
+  position: relative;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.2rem;
+  background: var(--sf);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  transition: border-color 0.3s;
+}
+
+.roadmap-node:hover {
+  border-color: rgba(208, 160, 80, 0.4);
+}
+
+.roadmap-node::before {
+  content: '';
+  position: absolute;
+  left: -1.65rem;
+  top: 1.2rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(208, 160, 80, 0.4);
+}
+
+.roadmap-node.node-now::before {
+  width: 14px;
+  height: 14px;
+  left: calc(-1.65rem - 2px);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.roadmap-node.node-vision {
+  border-color: var(--gold);
+  background: rgba(208, 160, 80, 0.06);
+}
+
+.roadmap-node.node-vision::before {
+  width: 16px;
+  height: 16px;
+  left: calc(-1.65rem - 3px);
+  background: linear-gradient(135deg, var(--gold2), #f0c870);
+  box-shadow: 0 0 16px rgba(208, 160, 80, 0.5);
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 8px rgba(208, 160, 80, 0.4); }
+  50% { box-shadow: 0 0 16px rgba(208, 160, 80, 0.7); }
+}
+
+.node-time {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-bottom: 0.4rem;
+}
+
+.node-items {
+  list-style: none;
+  padding: 0;
+}
+
+.node-items li {
+  font-size: 0.9rem;
+  padding: 0.2rem 0;
+  padding-left: 1.2rem;
+  position: relative;
+  opacity: 0.85;
+}
+
+.node-items li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65rem;
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--dim);
+  border-radius: 2px;
+}
+
+.node-vision .node-items li {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold2);
+  opacity: 1;
+}
+
+.node-vision .node-items li::before {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+
+/* --- Daily Implementation --- */
+.daily-block {
+  margin-bottom: 1rem;
+}
+
+.daily-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--bg);
+  background: var(--gold);
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
+  border-radius: 4px;
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+}
+
+.daily-items {
+  list-style: none;
+  padding: 0;
+}
+
+.daily-items li {
+  font-size: 0.9rem;
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+  opacity: 0.85;
+}
+
+.daily-items li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.7rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  opacity: 0.6;
+}
+
+.daily-items li strong {
+  color: var(--gold2);
+  font-weight: 500;
+}
+
+.daily-sub {
+  list-style: none;
+  padding: 0 0 0 1rem;
+  margin-top: 0.2rem;
+}
+
+.daily-sub li {
+  font-size: 0.85rem;
+  padding: 0.15rem 0 0.15rem 1rem;
+  position: relative;
+  opacity: 0.7;
+}
+
+.daily-sub li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 5px;
+  height: 1px;
+  background: var(--dim);
+}
+
+.highlight-warn {
+  color: #e08040;
+  font-weight: 500;
+}
+
+/* --- Check Grid --- */
+.check-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 580px) {
+  .check-grid { grid-template-columns: 1fr; }
+}
+
+.check-card {
+  background: var(--sf);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 1.2rem;
+}
+
+.check-card-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+  opacity: 0.8;
+}
+
+.check-list {
+  list-style: none;
+  padding: 0;
+}
+
+.check-list li {
+  font-size: 0.85rem;
+  padding: 0.35rem 0 0.35rem 1.3rem;
+  position: relative;
+  opacity: 0.8;
+}
+
+.check-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--dim);
+  border-radius: 2px;
+}
+
+.check-metric {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.6rem;
+  color: var(--gold);
+  opacity: 0.5;
+  margin-right: 0.3rem;
+}
+
+/* --- Countdown --- */
+.countdown-wrap {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.countdown-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(3rem, 12vw, 5rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold2), #f0c870, var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.countdown-unit {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  margin-top: 0.3rem;
+}
+
+.countdown-desc {
+  margin-top: 1rem;
+  font-size: 0.92rem;
+  opacity: 0.7;
+  line-height: 2;
+}
+
+.countdown-desc strong {
+  color: var(--gold2);
+  font-weight: 500;
+}
+
+/* --- Footer --- */
+.footer {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-top: 1px solid var(--card-border);
+  margin-top: 2rem;
+}
+
+.footer .footer-en {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  opacity: 0.5;
+  margin-bottom: 0.8rem;
+}
+
+.footer .footer-jp {
+  font-size: 0.9rem;
+  color: var(--dim);
+  font-weight: 300;
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+  .container { padding: 1rem; }
+  .card { padding: 1rem; }
+  .roadmap { padding-left: 1.5rem; }
+  .roadmap-node { padding: 0.8rem 1rem; }
+  .conversion-grid {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+  .arrow-cell {
+    transform: rotate(90deg);
+    font-size: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <h1>Baby Steps <span>&times;</span> Taiga</h1>
+    <p class="subtitle">現実マッピング — <strong>複利で勝つ。今日1日だけ本気で頑張る</strong></p>
+  </header>
+
+  <!-- ===== SECTION 1: 複利の原理 ===== -->
+  <section class="section">
+    <div class="section-label">Section 01</div>
+    <h2 class="section-title">複利の原理</h2>
+
+    <div class="card card-glow">
+      <div class="quote">
+        1日の遅れは1ヶ月後には3日の遅れ。1年後には10日。3年後には1ヶ月。
+        <span class="ref">まなとけいたOS #002</span>
+      </div>
+
+      <p class="body-text">
+        逆もまた真。今日1本の台本を全力で磨けば、その能力は全chに横展開される。
+      </p>
+
+      <div class="quote">
+        複利。今日一日だけ本気で頑張る。これ続けてれば未来は明るい。
+        <span class="ref">まなとけいたOS #062</span>
+      </div>
+
+      <p class="body-text" style="margin-top: 1rem; color: var(--gold2); font-weight: 500;">
+        831回のカキカキ = まなとけいたOSが無意識に入るまでの反復回数
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 2: 核心の書き換え ===== -->
+  <section class="section">
+    <div class="section-label">Section 02</div>
+    <h2 class="section-title">核心の書き換え</h2>
+
+    <div class="card card-glow">
+      <div class="os-block">
+        <div class="os-row os-old">
+          <span class="os-label">OLD OS</span>
+          <span class="os-content">仕事 = 有能感の証明手段</span>
+        </div>
+        <div class="transform-arrow">&#x2193;</div>
+        <div class="os-row os-new">
+          <span class="os-label">NEW OS</span>
+          <span class="os-content">仕事 = 最高に楽しいゲーム（攻略本 &times; ポケモン）</span>
+        </div>
+      </div>
+
+      <p class="body-text" style="margin-top: 1.2rem; margin-bottom: 0.5rem;">これが変わると:</p>
+
+      <div style="padding-left: 0.5rem; font-size: 0.92rem; line-height: 2.2;">
+        <span style="color: var(--gold2);">&#x2192;</span> 楽しいから速くやりたい <span style="color: var(--gold); font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 0.1em;">SPEED</span><br>
+        <span style="color: var(--gold2);">&#x2192;</span> 楽しいゲームを終わらせたくない <span style="color: var(--gold); font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 0.1em;">DEFENSE</span><br>
+        <span style="color: var(--gold2);">&#x2192;</span> 楽しいゲームを一緒にやりたい <span style="color: var(--gold); font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 0.1em;">LOVE</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="body-text" style="text-align: center; margin-bottom: 0.8rem; opacity: 0.6; font-size: 0.8rem;">3つのブロックが3つの柱に変換される</p>
+      <div class="conversion-grid">
+        <div class="block-item">完璧主義</div>
+        <div class="arrow-cell">&#x2192;</div>
+        <div class="pillar-item">SPEED</div>
+
+        <div class="block-item">攻撃偏重</div>
+        <div class="arrow-cell">&#x2192;</div>
+        <div class="pillar-item">DEFENSE</div>
+
+        <div class="block-item">個人主義</div>
+        <div class="arrow-cell">&#x2192;</div>
+        <div class="pillar-item">LOVE</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3: 目標マップ ===== -->
+  <section class="section">
+    <div class="section-label">Section 03</div>
+    <h2 class="section-title">Taigaの目標マップ</h2>
+
+    <div class="roadmap">
+      <div class="roadmap-node node-now">
+        <div class="node-time">NOW &mdash; 2026年4月</div>
+        <ul class="node-items">
+          <li>みさをch 月7,000再生</li>
+          <li>ディレクターレイヤー</li>
+        </ul>
+      </div>
+
+      <div class="roadmap-node">
+        <div class="node-time">3ヶ月後 &mdash; 2026年7月</div>
+        <ul class="node-items">
+          <li>みさをch 月5万再生</li>
+          <li>まなとくんとの添削差分を縮める</li>
+          <li>体は夏完成</li>
+        </ul>
+      </div>
+
+      <div class="roadmap-node">
+        <div class="node-time">誕生日 &mdash; 2027年1月</div>
+        <ul class="node-items">
+          <li>月20万再生</li>
+          <li>報酬テーブル上昇</li>
+        </ul>
+      </div>
+
+      <div class="roadmap-node">
+        <div class="node-time">1年後</div>
+        <ul class="node-items">
+          <li>3チャンネル安定運営</li>
+          <li>月商3,000万</li>
+          <li>将軍レイヤーへ</li>
+        </ul>
+      </div>
+
+      <div class="roadmap-node node-vision">
+        <div class="node-time">VISION</div>
+        <ul class="node-items">
+          <li>みんなでNetflix超えて最高の景色見て嬉し泣きする</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 4: 毎日の実装 ===== -->
+  <section class="section">
+    <div class="section-label">Section 04</div>
+    <h2 class="section-title">毎日の実装</h2>
+
+    <div class="card card-glow">
+      <!-- 朝 -->
+      <div class="daily-block">
+        <div class="daily-label">MORNING</div>
+        <ul class="daily-items">
+          <li>ロック画面を見る <strong>&#x2192; 今日のボスを1つ決める</strong></li>
+          <li>「今日このボスを倒せば、月20万再生に1mm近づく」</li>
+        </ul>
+      </div>
+
+      <!-- 日中 -->
+      <div class="daily-block">
+        <div class="daily-label">DAYTIME</div>
+        <ul class="daily-items">
+          <li><strong>ボスを倒す</strong>（台本 or 企画 or 壁打ち）</li>
+          <li>90分集中ブロック &times; 3-4回</li>
+          <li>まなとけいたの10分振り返り
+            <ul class="daily-sub">
+              <li>「この10分、結果に繋がってた？」</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 夜 -->
+      <div class="daily-block">
+        <div class="daily-label">NIGHT</div>
+        <ul class="daily-items">
+          <li><strong>3行振り返り</strong>
+            <ul class="daily-sub">
+              <li>1. 今日のボスを倒したか？</li>
+              <li>2. 限界まで使い倒したか？</li>
+              <li>3. 明日のボスは何か？</li>
+            </ul>
+          </li>
+          <li class="highlight-warn">「あーやらないとなぁ」で寝たらその日は負け
+            <span style="font-family: 'Orbitron'; font-size: 0.6rem; opacity: 0.5; margin-left: 0.3rem;">#011</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 5: 週次・月次チェック ===== -->
+  <section class="section">
+    <div class="section-label">Section 05</div>
+    <h2 class="section-title">週次・月次チェック</h2>
+
+    <div class="check-grid">
+      <div class="check-card">
+        <div class="check-card-title">WEEKLY CHECK</div>
+        <ul class="check-list">
+          <li>今週の完了数は？（労働時間ではなく完了数）</li>
+          <li>ボールを何日持ってた？（即投げできたか？）</li>
+          <li>3つのブロックが動いた瞬間はあったか？</li>
+        </ul>
+      </div>
+
+      <div class="check-card">
+        <div class="check-card-title">MONTHLY CHECK</div>
+        <ul class="check-list">
+          <li><span class="check-metric">SPEED</span> 思いついたことを即実行できた割合</li>
+          <li><span class="check-metric">DEFENSE</span> 問題を予測して先に潰した回数</li>
+          <li><span class="check-metric">LOVE</span> チームの成長に貢献した具体的行動</li>
+          <li>「月初のTaiga」と「月末のTaiga」の差分</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 6: カウントダウン ===== -->
+  <section class="section">
+    <div class="section-label">Section 06</div>
+    <h2 class="section-title">カウントダウン</h2>
+
+    <div class="card card-glow">
+      <div class="countdown-wrap">
+        <div class="countdown-number" id="countdown-days">---</div>
+        <div class="countdown-unit">DAYS TO BIRTHDAY</div>
+        <div style="font-family: 'Orbitron'; font-size: 0.6rem; color: var(--dim); margin-top: 0.3rem; letter-spacing: 0.15em;">2027-01-01</div>
+        <div class="countdown-desc">
+          <span id="countdown-days-text">---</span>回の「今日1日だけ本気で頑張る」<br>
+          <strong>1日1mm。<span id="countdown-mm">---</span>mmで<span id="countdown-cm">---</span>cm。十分な距離。</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-en">Baby Steps to Giant Strides.</div>
+    <div class="footer-jp">今日1日だけ本気で頑張る。それを繰り返すだけ。</div>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  const birthday = new Date('2027-01-01T00:00:00+09:00');
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = birthday - now;
+    const days = Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+
+    document.getElementById('countdown-days').textContent = days;
+    document.getElementById('countdown-days-text').textContent = days;
+    document.getElementById('countdown-mm').textContent = days;
+    document.getElementById('countdown-cm').textContent = (days / 10).toFixed(1);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 60000);
+})();
+</script>
+
+</body>
+</html>

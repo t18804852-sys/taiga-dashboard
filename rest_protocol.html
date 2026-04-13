@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REST PROTOCOL / 休息の技術</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c12;
+    --sf: #10141e;
+    --blue: #5070a0;
+    --blue2: #6080b8;
+    --blue3: #4060a0;
+    --dim: rgba(160, 180, 220, 0.4);
+    --txt: #c0d0e8;
+    --card-border: rgba(80, 112, 160, 0.15);
+    --card-glow: rgba(96, 128, 184, 0.06);
+    --accent-soft: rgba(96, 128, 184, 0.12);
+    --highlight: #8aa8d4;
+  }
+
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 400;
+    line-height: 1.8;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ---------- ambient background ---------- */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -30%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background:
+      radial-gradient(ellipse 600px 600px at 15% 20%, rgba(60, 80, 140, 0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 500px at 80% 70%, rgba(50, 70, 120, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  /* ---------- header ---------- */
+  .header {
+    padding: 72px 0 48px;
+    text-align: center;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  }
+
+  .header-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 16px;
+  }
+
+  .header-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(28px, 7vw, 48px);
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--blue2);
+    line-height: 1.2;
+    text-shadow: 0 0 40px rgba(96, 128, 184, 0.15);
+  }
+
+  .header-subtitle {
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--dim);
+    letter-spacing: 1px;
+    line-height: 1.8;
+  }
+
+  /* ---------- sections ---------- */
+  .section {
+    margin-top: 56px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .section-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blue);
+    background: var(--accent-soft);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    letter-spacing: 2px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(14px, 3.5vw, 18px);
+    font-weight: 700;
+    color: var(--blue2);
+    letter-spacing: 2px;
+  }
+
+  .section-title-jp {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: clamp(14px, 3.5vw, 17px);
+    font-weight: 600;
+    color: var(--blue2);
+    letter-spacing: 1px;
+  }
+
+  /* ---------- cards ---------- */
+  .card {
+    background: var(--sf);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    margin-bottom: 16px;
+    position: relative;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    border-color: rgba(96, 128, 184, 0.3);
+    box-shadow: 0 4px 30px var(--card-glow);
+  }
+
+  .card-accent {
+    border-left: 3px solid var(--blue);
+  }
+
+  .card p {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--txt);
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ---------- key statement / formula ---------- */
+  .key-statement {
+    background: linear-gradient(135deg, rgba(80, 112, 160, 0.1), rgba(64, 96, 160, 0.05));
+    border: 1px solid rgba(80, 112, 160, 0.2);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--highlight);
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  .key-statement .formula {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* ---------- quote block ---------- */
+  .quote-block {
+    background: rgba(80, 112, 160, 0.06);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 22px;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.9;
+    color: rgba(160, 180, 220, 0.7);
+  }
+
+  .quote-block .quote-source {
+    display: block;
+    margin-top: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--blue);
+  }
+
+  /* ---------- list items ---------- */
+  .item-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .item-list li {
+    position: relative;
+    padding: 10px 0 10px 24px;
+    font-size: 14px;
+    line-height: 1.8;
+    border-bottom: 1px solid rgba(80, 112, 160, 0.06);
+    color: var(--txt);
+  }
+
+  .item-list li:last-child {
+    border-bottom: none;
+  }
+
+  .item-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 18px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    opacity: 0.6;
+  }
+
+  .item-list li strong {
+    color: var(--highlight);
+    font-weight: 600;
+  }
+
+  /* ---------- stat / metric row ---------- */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: rgba(80, 112, 160, 0.06);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 800;
+    color: var(--blue2);
+    line-height: 1.2;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--dim);
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ---------- protocol timeline ---------- */
+  .protocol-group {
+    margin-bottom: 28px;
+  }
+
+  .protocol-group-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(80, 112, 160, 0.15);
+  }
+
+  .protocol-item {
+    display: flex;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(80, 112, 160, 0.06);
+    align-items: flex-start;
+  }
+
+  .protocol-item:last-child {
+    border-bottom: none;
+  }
+
+  .protocol-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    border: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .protocol-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--txt);
+    padding-top: 6px;
+  }
+
+  /* ---------- danger card ---------- */
+  .danger-card {
+    background: rgba(180, 80, 80, 0.06);
+    border: 1px solid rgba(180, 80, 80, 0.15);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 16px 0;
+  }
+
+  .danger-card .danger-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(200, 110, 110, 0.8);
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+  }
+
+  .danger-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .danger-card ul li {
+    position: relative;
+    padding: 6px 0 6px 22px;
+    font-size: 13px;
+    color: rgba(200, 160, 160, 0.7);
+    line-height: 1.7;
+  }
+
+  .danger-card ul li::before {
+    content: '\00D7';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    color: rgba(200, 100, 100, 0.5);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  /* ---------- flow diagram ---------- */
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+
+  .flow-node {
+    background: var(--accent-soft);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--highlight);
+    text-align: center;
+  }
+
+  .flow-arrow {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    color: var(--blue);
+    opacity: 0.5;
+  }
+
+  /* ---------- footer ---------- */
+  .footer {
+    margin-top: 72px;
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid rgba(80, 112, 160, 0.1);
+  }
+
+  .footer-quote {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--blue2);
+    line-height: 2;
+    margin-bottom: 8px;
+  }
+
+  .footer-sub {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--dim);
+    margin-top: 16px;
+  }
+
+  /* ---------- separator ---------- */
+  .sep {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--card-border), transparent);
+    margin: 40px 0;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 600px) {
+    .container {
+      padding: 0 16px 60px;
+    }
+
+    .header {
+      padding: 56px 0 36px;
+    }
+
+    .card {
+      padding: 22px 18px;
+    }
+
+    .stat-row {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .flow-row {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .flow-arrow {
+      transform: rotate(90deg);
+    }
+
+    .protocol-icon {
+      width: 32px;
+      height: 32px;
+      font-size: 14px;
+    }
+
+    .section {
+      margin-top: 44px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .stat-row {
+      grid-template-columns: 1fr;
+    }
+
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="header-label">STRATEGIC RECOVERY SYSTEM</div>
+    <h1 class="header-title">REST PROTOCOL</h1>
+    <p class="header-subtitle">休息の技術 — 戦略的回復で最大出力を持続させる</p>
+  </header>
+
+  <!-- ==================== SECTION 1 ==================== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <h2 class="section-title-jp">休息の定義</h2>
+    </div>
+
+    <div class="key-statement">
+      休息 ≠ 怠け<br>
+      <span class="formula">休息 = 戦略的な投資</span>
+    </div>
+
+    <div class="quote-block">
+      「休みを入れずにハードワークしすぎると自分が気づかない範囲でIQが下がっていく」
+      <span class="quote-source">MANATO-KEITA OS #081</span>
+    </div>
+
+    <div class="card card-accent">
+      <p><strong>脱力の哲学との接続</strong></p>
+      <p>最小の力で最大の出力 = 休む時は完全に休む。中途半端な休息は回復にも仕事にもならない。スマホを見ながらダラダラする1時間は、集中した15分の休息に劣る。</p>
+    </div>
+
+    <div class="card">
+      <p><strong>Taigaの課題パターン</strong></p>
+      <p>人生はマラソン。スプリントの連続はブースト→落ちの繰り返しになる。高エネルギーで爆走→燃え尽き→停滞のサイクルを回し続ける限り、累積的な成長は起こらない。</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2 ==================== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <h2 class="section-title-jp">睡眠の科学</h2>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-item">
+        <div class="stat-value">7.5-8.5h</div>
+        <div class="stat-label">理想の睡眠時間</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">70%</div>
+        <div class="stat-label">深い睡眠中の成長ホルモン分泌</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">-15%</div>
+        <div class="stat-label">5h睡眠1週間のテストステロン低下</div>
+      </div>
+    </div>
+
+    <div class="card card-accent">
+      <p><strong>睡眠不足の連鎖</strong></p>
+      <ul class="item-list">
+        <li>最低7時間、理想は7.5〜8.5時間を確保する</li>
+        <li>成長ホルモンの<strong>70%</strong>は深い睡眠中に分泌される</li>
+        <li>テストステロンは睡眠中に回復。5時間睡眠を1週間続けるとテストステロンが<strong>10〜15%低下</strong></li>
+        <li>睡眠不足 → コルチゾール上昇 → 脂肪蓄積 + 筋肉分解。体づくりの努力が無駄になる</li>
+      </ul>
+    </div>
+
+    <div class="danger-card">
+      <div class="danger-title">SLEEP DESTROYERS / TOP 5</div>
+      <ul>
+        <li>寝る直前のスマホ（ブルーライト + ドーパミン刺激）</li>
+        <li>不規則な就寝・起床時刻</li>
+        <li>カフェインの遅い摂取（午後以降）</li>
+        <li>寝酒（睡眠の質を破壊する）</li>
+        <li>部屋の温度が高い（深部体温が下がらない）</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <p><strong>入眠ルーティン</strong></p>
+      <div class="flow-row">
+        <div class="flow-node">就寝90分前<br>入浴</div>
+        <span class="flow-arrow">&rarr;</span>
+        <div class="flow-node">暖色照明に<br>切り替え</div>
+        <span class="flow-arrow">&rarr;</span>
+        <div class="flow-node">カフェイン<br>8時間前カット</div>
+        <span class="flow-arrow">&rarr;</span>
+        <div class="flow-node">ストレッチ<br>+ 呼吸</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 3 ==================== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <h2 class="section-title-jp">アクティブリカバリー</h2>
+    </div>
+
+    <div class="key-statement">
+      運動 = PFCリセット装置<br>
+      <span class="formula">万能薬ではない。使い方を間違えるな</span>
+    </div>
+
+    <div class="card card-accent">
+      <p><strong>20〜30分の中強度有酸素運動</strong>で以下が同時に起動する：</p>
+      <ul class="item-list">
+        <li><strong>BDNF</strong>（脳由来神経栄養因子）の分泌</li>
+        <li><strong>PFC</strong>（前頭前皮質）の酸素化</li>
+        <li><strong>実行機能</strong>の窓が開く</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <p><strong>運動後の最適な接続</strong></p>
+      <div class="flow-row">
+        <div class="flow-node">運動<br>(20-30min)</div>
+        <span class="flow-arrow">&rarr;</span>
+        <div class="flow-node">3段接続を<br>紙に書く</div>
+        <span class="flow-arrow">&rarr;</span>
+        <div class="flow-node">タスク着手</div>
+      </div>
+      <p style="margin-top: 16px; font-size: 13px; color: var(--dim);">運動で脳がリセットされた直後に、思考を構造化してからタスクに入る。この順番を守る。</p>
+    </div>
+
+    <div class="card">
+      <p><strong>脳を切り替える物理的手段</strong></p>
+      <ul class="item-list">
+        <li><strong>散歩</strong> — 最も手軽なPFCリセット。15分でも効果あり</li>
+        <li><strong>軽い筋トレ</strong> — テストステロン+集中力の回復</li>
+        <li><strong>ストレッチ</strong> — 副交感神経への切り替え。デスクワーク後に</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 4 ==================== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <h2 class="section-title-jp">ブースト → 落ちの予防</h2>
+    </div>
+
+    <div class="card" style="border-left: 3px solid rgba(200, 100, 100, 0.4);">
+      <p><strong>Taigaの課題パターン</strong></p>
+      <p>高いエネルギーで爆走 → 燃え尽き → 停滞。これを繰り返すたびに、自己効力感が削られる。「またやってしまった」という認知が蓄積される。</p>
+    </div>
+
+    <div class="quote-block">
+      「マジ鬱になったら終わり。人生はマラソン」
+      <span class="quote-source">MANATO-KEITA OS #080</span>
+    </div>
+
+    <div class="card card-accent">
+      <p><strong>予防策</strong></p>
+      <ul class="item-list">
+        <li><strong>90分集中 → 15分完全休息</strong>のウルトラディアンリズムを守る</li>
+        <li><strong>週1の完全オフ日</strong>を設ける。仕事のことを一切考えない</li>
+        <li>エネルギーが高い日にこそ<strong>「明日のために残す」</strong>感覚を持つ</li>
+        <li>「今日はこのくらいでいいか」→「<strong>限界まで使ったか？</strong>」の判断を正確にする。妥協と戦略的撤退は別物</li>
+      </ul>
+    </div>
+
+    <div class="key-statement">
+      エネルギーが高い日に100%使い切るな。<br>
+      <span class="formula">85%で止めて、残り15%を明日の起動力にしろ</span>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5 ==================== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <h2 class="section-title-jp">日・週・月のプロトコル</h2>
+    </div>
+
+    <!-- DAILY -->
+    <div class="card">
+      <div class="protocol-group">
+        <div class="protocol-group-title">DAILY</div>
+        <div class="protocol-item">
+          <div class="protocol-icon">&#9790;</div>
+          <div class="protocol-text"><strong>7.5時間睡眠を死守</strong>する。これが全ての土台</div>
+        </div>
+        <div class="protocol-item">
+          <div class="protocol-icon">&#9728;</div>
+          <div class="protocol-text">起床後<strong>15分以内</strong>に太陽光を浴びる</div>
+        </div>
+        <div class="protocol-item">
+          <div class="protocol-icon">&#9201;</div>
+          <div class="protocol-text"><strong>90分 × 3〜4ブロック</strong>の集中 + 15分休息</div>
+        </div>
+        <div class="protocol-item">
+          <div class="protocol-icon">&#9998;</div>
+          <div class="protocol-text">寝る前に3行振り返り +「<strong>限界まで使ったか？</strong>」</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEKLY -->
+    <div class="card">
+      <div class="protocol-group">
+        <div class="protocol-group-title">WEEKLY</div>
+        <div class="protocol-item">
+          <div class="protocol-icon">&#9724;</div>
+          <div class="protocol-text">週1回の<strong>完全オフ</strong>（仕事ゼロ）</div>
+        </div>
+        <div class="protocol-item">
+          <div class="protocol-icon">&#9899;</div>
+          <div class="protocol-text">週2〜3回の<strong>運動</strong>（PFCリセット）</div>
+        </div>
+        <div class="protocol-item">
+          <div class="protocol-icon">&#9881;</div>
+          <div class="protocol-text">週1回の<strong>振り返り</strong>（shishou.py -m review）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MONTHLY -->
+    <div class="card">
+      <div class="protocol-group">
+        <div class="protocol-group-title">MONTHLY</div>
+        <div class="protocol-item">
+          <div class="protocol-icon">&#9733;</div>
+          <div class="protocol-text">月1回の<strong>まなとくんとの壁打ち</strong></div>
+        </div>
+        <div class="protocol-item">
+          <div class="protocol-icon">&#9634;</div>
+          <div class="protocol-text">月末に<strong>成長の棚卸し</strong></div>
+        </div>
+        <div class="protocol-item">
+          <div class="protocol-icon">&#9655;</div>
+          <div class="protocol-text">「<strong>もしこの生活を3年続けたら？</strong>」をイメージする</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <p class="footer-quote">3時間の集中は8時間のダラダラに100倍勝る。</p>
+    <p class="footer-quote">脱力 = 最小の力で最大の出力。</p>
+    <div class="footer-sub">REST PROTOCOL / TAIGA</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
