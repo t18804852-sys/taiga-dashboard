@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>近藤大凱 — Complete Profile</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap');
+
+  :root {
+    --bg: #0a0f0d;
+    --panel: rgba(14, 28, 20, 0.85);
+    --panel-border: rgba(0, 200, 150, 0.15);
+    --accent: #00c896;
+    --accent2: #00a0ff;
+    --accent3: #ff6b4a;
+    --accent4: #ffd700;
+    --text: #c8ddd4;
+    --text-dim: #5a7a6a;
+    --text-bright: #e8fff4;
+    --glow: rgba(0, 200, 150, 0.3);
+    --glow2: rgba(0, 160, 255, 0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(0, 200, 150, 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(0, 160, 255, 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(0, 200, 150, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Scan line effect */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 200, 150, 0.008) 2px,
+      rgba(0, 200, 150, 0.008) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Hero Section */
+  .hero {
+    text-align: center;
+    padding: 80px 0 60px;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0, 200, 150, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+  }
+
+  .hero-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--accent);
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--text-bright);
+    letter-spacing: 8px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+
+  .hero .sub {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 4px;
+  }
+
+  .hero .date {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 20px;
+    letter-spacing: 3px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  .section-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    color: var(--accent);
+    opacity: 0.5;
+    min-width: 30px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 2px;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--panel-border), transparent);
+  }
+
+  /* Panel */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 28px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--accent), transparent);
+    opacity: 0.5;
+  }
+
+  .panel.accent2::before { background: linear-gradient(180deg, var(--accent2), transparent); }
+  .panel.accent3::before { background: linear-gradient(180deg, var(--accent3), transparent); }
+  .panel.accent4::before { background: linear-gradient(180deg, var(--accent4), transparent); }
+
+  .panel-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.7;
+  }
+
+  .panel.accent2 .panel-label { color: var(--accent2); }
+  .panel.accent3 .panel-label { color: var(--accent3); }
+  .panel.accent4 .panel-label { color: var(--accent4); }
+
+  .panel h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 12px;
+  }
+
+  .panel p {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  /* Grid */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 32px; letter-spacing: 4px; }
+  }
+
+  /* Stat bars */
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    min-width: 100px;
+    text-align: right;
+    font-weight: 400;
+  }
+
+  .stat-bar-bg {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .stat-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+
+  .stat-bar.green { background: linear-gradient(90deg, #00c896, #00e6a8); }
+  .stat-bar.blue { background: linear-gradient(90deg, #00a0ff, #40c0ff); }
+  .stat-bar.orange { background: linear-gradient(90deg, #ff6b4a, #ff9a7a); }
+  .stat-bar.gold { background: linear-gradient(90deg, #ffd700, #ffe44d); }
+  .stat-bar.red { background: linear-gradient(90deg, #ff4444, #ff7777); }
+
+  .stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    color: var(--text-bright);
+    min-width: 36px;
+  }
+
+  /* Meisiki Table */
+  .meisiki-grid {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 2px;
+    font-size: 13px;
+  }
+
+  .meisiki-cell {
+    padding: 10px 12px;
+    text-align: center;
+    background: rgba(0,200,150,0.03);
+    border: 1px solid rgba(0,200,150,0.08);
+  }
+
+  .meisiki-cell.header {
+    background: rgba(0,200,150,0.08);
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 11px;
+  }
+
+  .meisiki-cell.pillar-label {
+    background: rgba(0,200,150,0.06);
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .meisiki-cell .kanji {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-bright);
+    display: block;
+  }
+
+  .meisiki-cell .element {
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .meisiki-cell .star {
+    font-size: 11px;
+    color: var(--accent2);
+  }
+
+  .meisiki-cell .twelve {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent4);
+  }
+
+  /* Keyword tag */
+  .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    margin: 3px;
+  }
+
+  .tag.green { background: rgba(0,200,150,0.15); color: #00c896; border: 1px solid rgba(0,200,150,0.3); }
+  .tag.blue { background: rgba(0,160,255,0.15); color: #00a0ff; border: 1px solid rgba(0,160,255,0.3); }
+  .tag.orange { background: rgba(255,107,74,0.15); color: #ff6b4a; border: 1px solid rgba(255,107,74,0.3); }
+  .tag.gold { background: rgba(255,215,0,0.15); color: #ffd700; border: 1px solid rgba(255,215,0,0.3); }
+  .tag.red { background: rgba(255,68,68,0.15); color: #ff4444; border: 1px solid rgba(255,68,68,0.3); }
+
+  /* Big kanji display */
+  .big-kanji {
+    text-align: center;
+    padding: 30px;
+  }
+
+  .big-kanji .char {
+    font-size: 96px;
+    font-weight: 900;
+    color: var(--text-bright);
+    text-shadow: 0 0 40px var(--glow), 0 0 80px var(--glow2);
+    line-height: 1;
+  }
+
+  .big-kanji .label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    margin-top: 8px;
+  }
+
+  .big-kanji .desc {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 30px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0;
+    width: 1px; height: 100%;
+    background: linear-gradient(180deg, var(--accent), var(--accent2), transparent);
+    opacity: 0.3;
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -26px; top: 20px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--glow);
+  }
+
+  .timeline-item.active::before {
+    background: var(--accent4);
+    box-shadow: 0 0 12px rgba(255,215,0,0.5);
+    width: 10px; height: 10px;
+    left: -27px;
+  }
+
+  .timeline-age {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 2px;
+  }
+
+  .timeline-item.active .timeline-age { color: var(--accent4); }
+
+  .timeline-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin: 4px 0;
+  }
+
+  .timeline-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* Formula */
+  .formula {
+    background: rgba(0,160,255,0.05);
+    border: 1px solid rgba(0,160,255,0.15);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 10px 0;
+    font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--accent2);
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  /* Cross reference table */
+  .cross-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 12px;
+  }
+
+  .cross-table th {
+    background: rgba(0,200,150,0.08);
+    color: var(--accent);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 11px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  .cross-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    vertical-align: top;
+  }
+
+  .cross-table tr:hover td {
+    background: rgba(0,200,150,0.03);
+  }
+
+  .match-badge {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(0,200,150,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(0,200,150,0.3);
+  }
+
+  /* Relationship card */
+  .rel-card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rel-card .name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+
+  .rel-card .role {
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .rel-card .desc {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* Gogyou visual */
+  .gogyou-visual {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 20px;
+    padding: 30px 0;
+  }
+
+  .gogyou-bar-wrap {
+    text-align: center;
+  }
+
+  .gogyou-bar {
+    width: 50px;
+    border-radius: 4px 4px 0 0;
+    margin: 0 auto 8px;
+    position: relative;
+    transition: height 0.8s ease;
+  }
+
+  .gogyou-bar .val {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-bright);
+  }
+
+  .gogyou-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .gogyou-sub {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* Highlight text */
+  .hl { color: var(--accent); font-weight: 500; }
+  .hl2 { color: var(--accent2); font-weight: 500; }
+  .hl3 { color: var(--accent3); font-weight: 500; }
+  .hl4 { color: var(--accent4); font-weight: 500; }
+
+  /* Quote */
+  .quote {
+    border-left: 2px solid var(--accent);
+    padding: 12px 20px;
+    margin: 16px 0;
+    background: rgba(0,200,150,0.03);
+    font-size: 15px;
+    color: var(--text-bright);
+    font-weight: 400;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--panel-border), transparent);
+    margin: 48px 0;
+  }
+
+  /* Needs radar-like display */
+  .needs-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .needs-label {
+    font-size: 12px;
+    min-width: 110px;
+    text-align: right;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .needs-dots {
+    display: flex;
+    gap: 4px;
+  }
+
+  .needs-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .needs-dot.filled { background: var(--accent); border-color: var(--accent); }
+  .needs-dot.empty { background: rgba(255,255,255,0.03); }
+
+  .needs-score {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    color: var(--text-bright);
+    min-width: 24px;
+  }
+
+  /* Summary box */
+  .summary-box {
+    background: linear-gradient(135deg, rgba(0,200,150,0.08), rgba(0,160,255,0.05));
+    border: 1px solid rgba(0,200,150,0.2);
+    border-radius: 12px;
+    padding: 36px;
+    text-align: center;
+    margin: 40px 0;
+  }
+
+  .summary-box h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 16px;
+  }
+
+  .summary-box p {
+    font-size: 15px;
+    color: var(--text);
+    max-width: 700px;
+    margin: 0 auto 12px;
+  }
+
+  /* Kegan visual */
+  .kegan-scale {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 20px 0;
+    padding: 0 20px;
+  }
+
+  .kegan-stage {
+    padding: 12px 20px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+    flex: 1;
+  }
+
+  .kegan-stage .num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dim);
+  }
+
+  .kegan-stage .lbl {
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .kegan-stage.low {
+    background: rgba(255,68,68,0.1);
+    border-color: rgba(255,68,68,0.2);
+  }
+  .kegan-stage.low .num { color: var(--accent3); }
+
+  .kegan-stage.avg {
+    background: rgba(0,200,150,0.1);
+    border-color: rgba(0,200,150,0.3);
+  }
+  .kegan-stage.avg .num { color: var(--accent); }
+
+  .kegan-stage.peak {
+    background: rgba(255,215,0,0.1);
+    border-color: rgba(255,215,0,0.3);
+  }
+  .kegan-stage.peak .num { color: var(--accent4); }
+
+  .kegan-range {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 12px;
+    font-size: 11px;
+  }
+
+  .kegan-range span {
+    padding: 4px 12px;
+    border-radius: 4px;
+  }
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-label">Complete Integrated Profile</div>
+    <h1>近藤大凱</h1>
+    <div class="sub">KONDO TAIGA</div>
+    <div class="date">UPDATED 2026.04.05 &mdash; ALL DATA INTEGRATED</div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 1. SOUL BLUEPRINT -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">魂の設計図</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="big-kanji">
+      <div class="char">戊</div>
+      <div class="label">DAY MASTER &mdash; TSUCHINOE &mdash; EARTH</div>
+      <div class="desc">山。動かない。揺るがない。そこにいるだけで人が安心する。</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">ESSENCE</div>
+      <h3>偉大な守護者</h3>
+      <p>雄大にそびえ立つ山や岩石のような<span class="hl">圧倒的安定感</span>。現実主義で保守的、判断は確か。確固たる信念で土台を形成し、人々に安らぎと安定をもたらす。思慮深く慎重で、一歩ずつ着実に歩みを進める大きな器の持ち主。</p>
+      <p>面倒見がよく慈悲深い心を持ち、自然と人に慕われ、頼れる指導者として担ぎ出される。</p>
+
+      <div class="quote">これは本人が言語化した最上位哲学「脱力」と完全に一致する。山は頑張って立っていない。ただそこにある。</div>
+
+      <div style="margin-top: 16px;">
+        <span class="tag green">従旺格</span>
+        <span class="tag green">極身強 +8</span>
+        <span class="tag blue">空亡: 午未</span>
+        <span class="tag blue">調候用神: 甲丙癸</span>
+        <span class="tag blue">扶抑用神: 偏官・正官</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2. MEISIKI -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">命式図</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel">
+      <div class="meisiki-grid">
+        <div class="meisiki-cell header"></div>
+        <div class="meisiki-cell header">天干</div>
+        <div class="meisiki-cell header">通変星</div>
+        <div class="meisiki-cell header">地支</div>
+        <div class="meisiki-cell header">蔵干</div>
+        <div class="meisiki-cell header">通変星</div>
+        <div class="meisiki-cell header">十二運</div>
+
+        <div class="meisiki-cell pillar-label">年柱</div>
+        <div class="meisiki-cell"><span class="kanji">壬</span><span class="element">水</span></div>
+        <div class="meisiki-cell"><span class="star">偏財</span></div>
+        <div class="meisiki-cell"><span class="kanji">午</span><span class="element">火</span></div>
+        <div class="meisiki-cell"><span class="star">己 / 劫財</span></div>
+        <div class="meisiki-cell"></div>
+        <div class="meisiki-cell"><span class="twelve">帝旺</span></div>
+
+        <div class="meisiki-cell pillar-label">月柱</div>
+        <div class="meisiki-cell"><span class="kanji">乙</span><span class="element">木</span></div>
+        <div class="meisiki-cell"><span class="star">正官</span></div>
+        <div class="meisiki-cell"><span class="kanji">巳</span><span class="element">火</span></div>
+        <div class="meisiki-cell"><span class="star">庚 / 食神</span></div>
+        <div class="meisiki-cell"></div>
+        <div class="meisiki-cell"><span class="twelve">建禄</span></div>
+
+        <div class="meisiki-cell pillar-label">日柱</div>
+        <div class="meisiki-cell"><span class="kanji">戊</span><span class="element">土</span></div>
+        <div class="meisiki-cell"><span class="star">—</span></div>
+        <div class="meisiki-cell"><span class="kanji">子</span><span class="element">水</span></div>
+        <div class="meisiki-cell"><span class="star">癸 / 正財</span></div>
+        <div class="meisiki-cell"></div>
+        <div class="meisiki-cell"><span class="twelve">胎</span></div>
+
+        <div class="meisiki-cell pillar-label">時柱</div>
+        <div class="meisiki-cell"><span class="kanji">己</span><span class="element">土</span></div>
+        <div class="meisiki-cell"><span class="star">劫財</span></div>
+        <div class="meisiki-cell"><span class="kanji">未</span><span class="element">土</span></div>
+        <div class="meisiki-cell"><span class="star">己 / 劫財</span></div>
+        <div class="meisiki-cell"></div>
+        <div class="meisiki-cell"><span class="twelve">衰</span></div>
+      </div>
+    </div>
+
+    <!-- Tsuuhensei -->
+    <div class="grid-2">
+      <div class="panel accent2">
+        <div class="panel-label">TSUUHENSEI MAP</div>
+        <h3>通変星が描く人物像</h3>
+        <p><span class="hl2">偏財 ×2</span>（年柱・時柱）<br>お金や人脈を大きく動かす力。「Netflix超え」「日本を守る」級のスケール。</p>
+        <p><span class="hl2">正官</span>（月柱）<br>社会的秩序・責任感・ルール。帝王学16項目を言語化して守る律儀さ。</p>
+        <p><span class="hl2">食神</span>（月柱蔵干）<br>隠れた才能。天性の平和主義者。職場の潤滑油。恋愛では癒やしの力。</p>
+        <p><span class="hl2">正財</span>（日柱蔵干）<br>魂が求めるもの＝「自分の手で積み上げた実績が正しく評価される」</p>
+      </div>
+
+      <div class="panel accent4">
+        <div class="panel-label">TWELVE FORTUNE CURVE</div>
+        <h3>十二運の人生曲線</h3>
+        <p><span class="hl4">帝旺</span>（若年期）<br>圧倒的な存在感とエネルギー。子供ながらにリードするカリスマ性。強い主体性と責任感。</p>
+        <p><span class="hl4">建禄</span>（青年期）<br>最もバランスが取れた黄金期。持続力と審美眼。20代〜40代で財と名声を確実に手にする。</p>
+        <p><span class="hl4">胎</span>（中年期）<br>新しい世界へ次々と挑戦していく「再創造」の季節。無限の可能性を信じる心。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 3. GOGYOU -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">五行バランス</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel">
+      <div class="gogyou-visual">
+        <div class="gogyou-bar-wrap">
+          <div class="gogyou-bar" style="height:60px; background: linear-gradient(0deg, #2d7a3a, #4aad5a);">
+            <span class="val">1</span>
+          </div>
+          <div class="gogyou-label">木</div>
+          <div class="gogyou-sub">Wood</div>
+        </div>
+        <div class="gogyou-bar-wrap">
+          <div class="gogyou-bar" style="height:120px; background: linear-gradient(0deg, #cc4422, #ff6644);">
+            <span class="val">2</span>
+          </div>
+          <div class="gogyou-label" style="color: #ff6644;">火</div>
+          <div class="gogyou-sub">Fire</div>
+        </div>
+        <div class="gogyou-bar-wrap">
+          <div class="gogyou-bar" style="height:60px; background: linear-gradient(0deg, #8a7a4a, #bba85a);">
+            <span class="val">1</span>
+          </div>
+          <div class="gogyou-label">土</div>
+          <div class="gogyou-sub">Earth</div>
+        </div>
+        <div class="gogyou-bar-wrap">
+          <div class="gogyou-bar" style="height:6px; background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,68,68,0.5);">
+            <span class="val" style="color: #ff4444;">0</span>
+          </div>
+          <div class="gogyou-label" style="color: #ff4444;">金</div>
+          <div class="gogyou-sub" style="color: #ff4444;">VOID</div>
+        </div>
+        <div class="gogyou-bar-wrap">
+          <div class="gogyou-bar" style="height:120px; background: linear-gradient(0deg, #2266aa, #44aaff);">
+            <span class="val">2</span>
+          </div>
+          <div class="gogyou-label">水</div>
+          <div class="gogyou-sub">Water</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 20px;">
+        <div class="panel accent3" style="margin-bottom:0;">
+          <div class="panel-label">CRITICAL WEAKNESS</div>
+          <h3 style="color: #ff6b4a;">金 = 0（完全欠如）</h3>
+          <p>金＝「決断力・割り切り・<span class="hl3">手放す力</span>」。これがゼロ。</p>
+          <p>一度掴んだものを手放せない → 謝れない → 有能感への執着 → 嫉妬が残る → 正論を突き通して相剋が起きる</p>
+        </div>
+        <div class="panel" style="margin-bottom:0;">
+          <div class="panel-label">FOCUS ELEMENT</div>
+          <h3 style="color: #ff6644;">火 = 注目すべきエネルギー</h3>
+          <p><span class="hl">誠実さ</span>と<span class="hl">冷静な洞察力</span>。「人を見る目」があり、相手の隠れた才能や本質を見抜ける。支配ではなく誠実なリーダーシップの資質。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 4. SOUKOKU -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">相剋構造 — 命式に刻まれた課題</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel accent3">
+        <div class="panel-label">STEM CONFLICT</div>
+        <h3>乙（月柱） → 戊（日柱）</h3>
+        <p>正官が日干を制する＝<span class="hl3">社会的な期待やルールが自分の本質を削る</span>。真面目すぎて心が曇る。</p>
+        <div class="quote" style="border-color: var(--accent3);">リセット時間の確保が命式レベルで必須</div>
+      </div>
+      <div class="panel accent3">
+        <div class="panel-label">BRANCH CONFLICT</div>
+        <h3>巳（月柱） → 子（日柱）</h3>
+        <p><span class="hl3">高いプライド × 素直になれない</span>。感謝しているのに素っ気ない態度を取ったり、一人で抱え込んだりする。</p>
+        <div class="quote" style="border-color: var(--accent3);">笑顔で黙っている方が余裕と優しさが伝わる</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 5. DAIUNN -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">大運 — 人生100年の気運</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-age">0-5 / FOUNDING</div>
+        <div class="timeline-title">乙巳 — 安定した流れ</div>
+        <div class="timeline-desc">建禄。安定した基盤の中で育つ。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-age">5-15 / PHASE 1</div>
+        <div class="timeline-title">丙午 — 大きな飛躍のチャンス</div>
+        <div class="timeline-desc">帝旺。サッカー、リーダーシップ、モテ — 幼少期の圧倒的エネルギー。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-age">15-25 / PHASE 2</div>
+        <div class="timeline-title">丁未 — 次に向けて調整</div>
+        <div class="timeline-desc">衰。暗黒期。有能感ゼロの空白。しかしこれが今のエンジンの裏側を形成した。</div>
+      </div>
+      <div class="timeline-item active">
+        <div class="timeline-age">25-35 / PHASE 3 &mdash; NOW</div>
+        <div class="timeline-title">戊申 — 心と体を整える</div>
+        <div class="timeline-desc">人生のピーク級の気運。仕事で大きな成果。謙虚さを失うと運気を乱す。脱力＝謙虚さのキープが最重要テーマ。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-age">35-45 / PHASE 4</div>
+        <div class="timeline-title">己酉 — 新たな未来を見据える</div>
+        <div class="timeline-desc">死。十二運の「胎」が示す再創造への準備。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-age">45-55 / PHASE 5</div>
+        <div class="timeline-title">庚戌 — 内面が深まる</div>
+        <div class="timeline-desc">墓。五行「金」が初めて大運に登場。手放す力を学ぶ時期。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-age">55-105 / PHASE 6-10</div>
+        <div class="timeline-title">手放し → 再生 → 変化 → 成長</div>
+        <div class="timeline-desc">古いものを手放す → 未来の種が芽吹く → 自分を整えていく → 前向きな変化。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ========================================== -->
+  <!-- 6. PERSONALITY SYSTEMS -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">性格分類の全体像</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="grid-3">
+      <div class="panel">
+        <div class="panel-label">MBTI</div>
+        <h3>ENTJ-A</h3>
+        <p>指揮官型。戦略的思考と自信を持った実行力を備えた天性のリーダー。</p>
+      </div>
+      <div class="panel accent2">
+        <div class="panel-label">FOUR BRAIN</div>
+        <h3>支配者外向</h3>
+        <p>ベースOS：人を巻き込んで勝ちたい。意思決定力、競争心、高い実行力。制御レイヤーを意識的に被せている。</p>
+      </div>
+      <div class="panel accent4">
+        <div class="panel-label">SANMEIGAKU CENTER</div>
+        <h3>龍高星</h3>
+        <p>探求と創造性志向。強い学習意欲、型破りな思考。企画・開発で人をアイデアで驚かせる。</p>
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-top:16px;">
+      <div class="panel">
+        <div class="panel-label">SURFACE</div>
+        <h3>ライオン</h3>
+        <p>リーダーシップ<br>完璧主義<br>威厳</p>
+      </div>
+      <div class="panel">
+        <div class="panel-label">TRUE NATURE</div>
+        <h3>狼</h3>
+        <p>独立<br>独創性<br>非順応的</p>
+      </div>
+      <div class="panel">
+        <div class="panel-label">DECISION</div>
+        <h3>虎</h3>
+        <p>実践的<br>合理的<br>目標志向</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 7. COGNITIVE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <span class="section-title">認知特性</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">COGNITIVE TYPE</div>
+        <h3>脳の使い方</h3>
+        <div class="stat-row">
+          <span class="stat-label">3D</span>
+          <div class="stat-bar-bg"><div class="stat-bar green" style="width:94%"></div></div>
+          <span class="stat-value">56.3</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">カメラ</span>
+          <div class="stat-bar-bg"><div class="stat-bar green" style="width:82%"></div></div>
+          <span class="stat-value">49.4</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">ファンタジー</span>
+          <div class="stat-bar-bg"><div class="stat-bar blue" style="width:69%"></div></div>
+          <span class="stat-value">41.6</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">辞書</span>
+          <div class="stat-bar-bg"><div class="stat-bar orange" style="width:40%"></div></div>
+          <span class="stat-value">23.9</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">ラジオ</span>
+          <div class="stat-bar-bg"><div class="stat-bar orange" style="width:37%"></div></div>
+          <span class="stat-value">21.9</span>
+        </div>
+        <p style="margin-top:12px; font-size:12px; color:var(--text-dim);">映像・図解・マインドマップが最強。テキストだけは最悪。</p>
+      </div>
+
+      <div class="panel accent2">
+        <div class="panel-label">COGNITIVE FUNCTION</div>
+        <h3>認知機能スコア</h3>
+        <div class="stat-row">
+          <span class="stat-label">計算力</span>
+          <div class="stat-bar-bg"><div class="stat-bar gold" style="width:96%"></div></div>
+          <span class="stat-value">128.8</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">抑制力</span>
+          <div class="stat-bar-bg"><div class="stat-bar green" style="width:76%"></div></div>
+          <span class="stat-value">107.2</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">言語力</span>
+          <div class="stat-bar-bg"><div class="stat-bar green" style="width:75%"></div></div>
+          <span class="stat-value">106.8</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">処理速度</span>
+          <div class="stat-bar-bg"><div class="stat-bar blue" style="width:68%"></div></div>
+          <span class="stat-value">100.7</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">注意力</span>
+          <div class="stat-bar-bg"><div class="stat-bar blue" style="width:60%"></div></div>
+          <span class="stat-value">93.5</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">空間力</span>
+          <div class="stat-bar-bg"><div class="stat-bar orange" style="width:52%"></div></div>
+          <span class="stat-value">87.2</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">記憶力</span>
+          <div class="stat-bar-bg"><div class="stat-bar red" style="width:38%"></div></div>
+          <span class="stat-value">76.3</span>
+        </div>
+        <p style="margin-top:12px; font-size:12px; color:var(--text-dim);">計算力が突出。記憶力は繰り返し＋視覚化で補強。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 8. NEEDS -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <span class="section-title">根源的欲求マップ</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel">
+      <div class="needs-row">
+        <span class="needs-label">コントロール</span>
+        <div class="needs-dots">
+          <div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div>
+        </div>
+        <span class="needs-score">10</span>
+      </div>
+      <div class="needs-row">
+        <span class="needs-label">有能感</span>
+        <div class="needs-dots">
+          <div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot empty"></div>
+        </div>
+        <span class="needs-score">9</span>
+      </div>
+      <div class="needs-row">
+        <span class="needs-label">承認（特殊）</span>
+        <div class="needs-dots">
+          <div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div>
+        </div>
+        <span class="needs-score">7</span>
+      </div>
+      <div class="needs-row">
+        <span class="needs-label">自由</span>
+        <div class="needs-dots">
+          <div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div>
+        </div>
+        <span class="needs-score">7</span>
+      </div>
+      <div class="needs-row">
+        <span class="needs-label">安全</span>
+        <div class="needs-dots">
+          <div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div>
+        </div>
+        <span class="needs-score">5</span>
+      </div>
+      <div class="needs-row">
+        <span class="needs-label">所属</span>
+        <div class="needs-dots">
+          <div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot filled"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div><div class="needs-dot empty"></div>
+        </div>
+        <span class="needs-score">3</span>
+      </div>
+
+      <div class="quote" style="margin-top:20px;">最大テーマ：コントロールと有能感で駆動するエンジンを、脱力と信頼で駆動するエンジンに載せ替える。出力は変えない。乗り物を変える。</div>
+
+      <p style="margin-top:16px;"><span class="hl">四柱推命との接続：</span>正財（魂が求めるもの）＝「自分の手で積み上げた実績が正しく評価される」。有能感欲求（9/10）と完全一致。金0（手放せない）＝コントロール欲求（10/10）と完全一致。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 9. KEGAN -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <span class="section-title">キーガン発達段階</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel">
+      <div class="kegan-scale">
+        <div class="kegan-stage">
+          <div class="num">1</div>
+          <div class="lbl">衝動的</div>
+        </div>
+        <div class="kegan-stage low">
+          <div class="num">2</div>
+          <div class="lbl">瞬間最低</div>
+        </div>
+        <div class="kegan-stage">
+          <div class="num">3</div>
+          <div class="lbl">社会化</div>
+        </div>
+        <div class="kegan-stage avg">
+          <div class="num">4</div>
+          <div class="lbl">平均</div>
+        </div>
+        <div class="kegan-stage peak">
+          <div class="num">5</div>
+          <div class="lbl">瞬間最大</div>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top:24px;">
+        <div class="panel" style="margin-bottom:0; background: rgba(0,200,150,0.05);">
+          <div class="panel-label">STAGE 4 EVIDENCE</div>
+          <p style="font-size:12px;">「脱力」という自己著述的哲学<br>まなとの思考を分解→再構築<br>「勝つことが大事か？」を本気で自問<br>高いメタ認知能力</p>
+        </div>
+        <div class="panel accent4" style="margin-bottom:0; background: rgba(255,215,0,0.05);">
+          <div class="panel-label">STAGE 5 GLIMPSES</div>
+          <p style="font-size:12px;">「マネージャーの役割を演じてるだけ」<br>「役割がなくても俺は変わらない」<br>「方法はフェーズで変わる」<br>「俺以外が強くなっても別にいい」</p>
+        </div>
+        <div class="panel accent3" style="margin-bottom:0; background: rgba(255,107,74,0.05);">
+          <div class="panel-label">STAGE 2 DROPS</div>
+          <p style="font-size:12px;">謝れない（有能感の傷）<br>ライバル反応（相手を下げる）<br>恋愛の確認構造<br>友人切り<br>父との断絶</p>
+        </div>
+      </div>
+
+      <div class="quote" style="margin-top:20px;">第5の感覚はすでに掴んでいる。課題は「第2段階への落下を減らす」こと。攻略本はもう読んだ。あとはプレイ時間の蓄積。</div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 10. PHILOSOPHY -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <span class="section-title">哲学体系</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">CORE PHILOSOPHY CHAIN</div>
+
+      <div style="text-align:center; padding: 20px 0;">
+        <span class="tag green" style="font-size:14px; padding:8px 20px;">脱力</span>
+        <span style="color:var(--text-dim); margin: 0 8px;">&rarr;</span>
+        <span class="tag green" style="font-size:14px; padding:8px 20px;">身勝手の極意</span>
+        <span style="color:var(--text-dim); margin: 0 8px;">&rarr;</span>
+        <span class="tag blue" style="font-size:14px; padding:8px 20px;">丸が大きくなる</span>
+        <span style="color:var(--text-dim); margin: 0 8px;">&rarr;</span>
+        <span class="tag blue" style="font-size:14px; padding:8px 20px;">守る範囲が広がる</span>
+        <span style="color:var(--text-dim); margin: 0 8px;">&rarr;</span>
+        <span class="tag gold" style="font-size:14px; padding:8px 20px;">成長速度UP</span>
+      </div>
+
+      <div class="grid-2" style="margin-top:16px;">
+        <div class="panel" style="margin-bottom:0;">
+          <h3>脱力 = 戊（山）の本質</h3>
+          <p>商業クリエイティブ＝流れを見極めて乗る繰り返し。こだわり不要。「当たったか外れたか」だけ。緊張すると勘が鈍るから脱力を最優先にする。</p>
+          <p style="font-size:12px; color:var(--text-dim); margin-top:8px;">仕事＝学校のテスト。結果だけが大事。方法は問わない。</p>
+        </div>
+        <div class="panel accent4" style="margin-bottom:0;">
+          <h3>侍の哲学</h3>
+          <p>「死を受け入れる」を前提にすると恐怖が外れ、全選択肢が見える。有能感トリガー＝「有能感の死が怖い」→選択肢が狭まる。第5段階＝「有能感が死んでも俺は消えない」→全てを選べる。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 11. BATTLE POWER -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">11</span>
+      <span class="section-title">概念モデリング数式</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">CORE FORMULAS</div>
+
+      <div class="formula">戦闘力 = 無条件の愛 &times; サイコパシー &times; 論理的思考</div>
+
+      <div class="grid-3" style="margin: 16px 0;">
+        <div style="text-align:center; padding:12px;">
+          <div style="font-family:'Orbitron'; font-size:28px; color:var(--accent);">6</div>
+          <div style="font-size:11px; color:var(--text-dim);">無条件の愛</div>
+          <div style="font-size:10px; color:var(--accent);">成長ベクトル</div>
+        </div>
+        <div style="text-align:center; padding:12px;">
+          <div style="font-family:'Orbitron'; font-size:28px; color:var(--accent2);">7</div>
+          <div style="font-size:11px; color:var(--text-dim);">サイコパシー</div>
+        </div>
+        <div style="text-align:center; padding:12px;">
+          <div style="font-family:'Orbitron'; font-size:28px; color:var(--accent4);">8</div>
+          <div style="font-size:11px; color:var(--text-dim);">論理的思考</div>
+        </div>
+      </div>
+
+      <div class="formula">信頼 = 能力 &times; 誠実さ &times; 接触頻度</div>
+      <div class="formula">成長速度 = 守る範囲 &times; 実行量 &times; メタ認知</div>
+      <div class="formula">器 = 許容範囲 &minus;（トリガーの穴 &times; 穴の深さ）</div>
+      <div class="formula">脱力 = 1 &minus;（緊張シーン / 全シーン）</div>
+      <div class="formula">体知識 = &Sigma;（仮説 &times; 実行 &times; 結果一致）</div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 12. RELATIONSHIPS -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">12</span>
+      <span class="section-title">人間関係マップ</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="grid-2">
+      <div class="rel-card" style="border-left: 3px solid var(--accent4);">
+        <div class="name">まなと（山尾愛士）</div>
+        <div class="role">師匠 &mdash; 人生を変えた存在</div>
+        <div class="desc">
+          「人格じゃなくて機能に話してくれる」初めての存在。結果がなくても続く関係を初体験。キーガン第3段階への入口を開いた。身旺の命式が予告した「隠れた才能を見抜き引き上げてくれる上司」。
+        </div>
+        <div style="margin-top:10px;">
+          <span class="tag gold">ENTJ</span>
+          <span class="tag gold">司禄星中心</span>
+          <span class="tag gold">白紙型憑依</span>
+        </div>
+      </div>
+
+      <div class="rel-card" style="border-left: 3px solid var(--accent);">
+        <div class="name">いぶき</div>
+        <div class="role">彼女 &mdash; 無条件の安全基地</div>
+        <div class="desc">
+          「半年間何もなくても一緒にいた」＝母以外で初めての無条件の安全基地。まなと＝判断を外す。いぶき＝力を愛に変換する。両方必要だった。
+        </div>
+        <div style="margin-top:10px;">
+          <span class="tag green">ENFP</span>
+          <span class="tag green">禄存星中心×2</span>
+          <span class="tag green">貫索星</span>
+        </div>
+      </div>
+
+      <div class="rel-card" style="border-left: 3px solid var(--accent3);">
+        <div class="name">親父</div>
+        <div class="role">原点 &mdash; コントロールOSの起源</div>
+        <div class="desc">
+          ロジック系で厳しい。話を聞かない。「結果で黙らせよう」思考の起点。言語化・感情表現が苦手な理由の根源。現在は話していない。「戻っちゃう」恐怖。頭では感謝。制御レイヤーが安定してから。
+        </div>
+      </div>
+
+      <div class="rel-card" style="border-left: 3px solid var(--accent2);">
+        <div class="name">だいとくん / ゲーム仲間</div>
+        <div class="role">安全基地 &mdash; 比較のない場所</div>
+        <div class="desc">
+          だいとくん＝高校サッカー部の友達。唯一の安全な友人。ゲーム仲間＝有能感の査定が起きない唯一の空間。比較も競争もない関係。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 13. ROMANCE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">13</span>
+      <span class="section-title">恋愛の構造</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel">
+      <div class="grid-2">
+        <div>
+          <div class="panel-label">SHICHUSUIMEI ROMANCE (DAY BRANCH = 子)</div>
+          <p>表向きクールだが愛する人の前では<span class="hl">繊細な気遣いを見せる寂しがり屋</span>。精神的な繋がりを何よりも重視。パートナーに甘えたいという可愛らしい本音。「好きだからこそのお節介」。</p>
+        </div>
+        <div>
+          <div class="panel-label">SOUL DESIRE (正財)</div>
+          <p>魂が求めているのは<span class="hl">一人との深い信頼</span>。「絶対的な信頼と揺るぎない安定。自分の真心が正しく評価され続けること。」複数関係は有能感の確認装置。命式が求めるものとは構造的に違う。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 14. LIFE HISTORY -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">14</span>
+      <span class="section-title">人生史</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-age">AGE 3-6 / ORIGIN</div>
+        <div class="timeline-title">英雄への憧れ</div>
+        <div class="timeline-desc">父のベンチプレスを見て胸筋に憧れる。ヒーローごっこ、悟空。「強い男」のアイデンティティ形成。幼稚園でモテた → 「モテる自分」の原体験。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-age">AGE 8-12 / FORMATION</div>
+        <div class="timeline-title">サッカーと競争 — 素のまま突き進めた時代</div>
+        <div class="timeline-desc">サッカー開始（小3）。怖いコーチ→ロジカルなコーチで開花。リフティング20回の成功体験。じーちゃんとの将棋（勝つまでやった）。勝負が純粋に楽しく、勝つことに迷いがなかった。ゆうたくんとも仲が良かった。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-age">AGE 13-15 / BREAK POINT</div>
+        <div class="timeline-title">晒された日 — 「素を封じた」転換点</div>
+        <div class="timeline-desc">彼氏持ちの女の子に手を出す→バレて学校中に広められる→「ナメクジ」と呼ばれハブられる。仲が良かったゆうたくんも広める側に回った（裏切りの原体験）。<br>
+        <span style="color:var(--accent3);font-weight:600;">→ 「一番になると叩かれる」「素を出すと晒される」恐怖が刻まれた。</span><br>
+        本当は思い切り戦いたかった。勝つことでみんなのためになることもわかっていた。しかし嫌われるのが怖くなり、制御レイヤーを被せるようになった。承認欲求が「認められたい」から「嫌われたくない」に歪んだ起点。好き避けでモテを喪失。ゆうたくんとの競争で有能感の脅威を初体験。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-age">AGE 15-22 / DARK PERIOD</div>
+        <div class="timeline-title">暗黒期</div>
+        <div class="timeline-desc">サッカー挫折→練習に行かなくなる（「負ける場を去る」パターン初出）。有能感ゼロの長期空白。昼夜逆転、ゲーム漬け。ビジネスで年700万も空虚。留年。ことえさんとの経験で感情キャパの限界を知る。不義理5回。「負けたら何もない」が今のエンジンの裏側。</div>
+      </div>
+      <div class="timeline-item active">
+        <div class="timeline-age">AGE 22- / REBIRTH</div>
+        <div class="timeline-title">まなととの出会い〜現在</div>
+        <div class="timeline-desc">2025年7月、まなとに出会う。「人格じゃなくて機能に話してくれる」初体験。キーガン第3段階への入口。愛を学ぶ。帝王学の言語化、チーム構築、VISION「クリエイティブで日本を守る」策定。いぶきとの関係で無条件の安全基地を経験。全学び統合AI師匠の構築。<br>
+        <span style="color:var(--accent4);font-weight:600;">2026年4月 — 中学で封じた記憶を解凍。「一番になると叩かれる」恐怖の正体を言語化。本来の自分＝「勝って帰る。帰る仲間がいる」を取り戻す。承認欲求の歪み（認められたい→嫌われたくない）の起点を特定。素を封じた制御レイヤーはもう要らないと気づく。Netflixを超える。</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 15. VISION -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">15</span>
+      <span class="section-title">VISION &amp; MISSION</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="summary-box">
+      <div class="hero-label" style="margin-bottom:20px;">LIFE VISION</div>
+      <h2>クリエイティブで日本を守る</h2>
+      <p>最強YouTube集団 → Netflix超え → 全日本クリエイター統合 → GDP1位 → 核なしで国を守る → 文化で世界征服 = 世界が日本を好きになる = 最強の防衛</p>
+
+      <div style="margin-top:24px;">
+        <span class="tag gold" style="font-size:12px; padding:6px 16px;">偏財×2 の命式が裏付け</span>
+        <span class="tag green" style="font-size:12px; padding:6px 16px;">全欲求が自然に満たされる構造</span>
+        <span class="tag blue" style="font-size:12px; padding:6px 16px;">有能感が「結果」に変わる = 第5段階</span>
+      </div>
+    </div>
+
+    <div class="panel accent4">
+      <div class="panel-label">MAXIMUM GOAL</div>
+      <div class="quote" style="border-color: var(--accent4); font-size: 18px; font-weight:500;">みんなでNetflixを超えて、最高の景色を見て嬉し泣きする</div>
+      <p style="margin-top:12px;">「俺が勝つ」ではなく「俺たちが最高の景色を一緒に見る」。有能感×愛の両立。キーガン第5段階の体現。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 16. CROSS REFERENCE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">16</span>
+      <span class="section-title">四柱推命 &times; 心理分析 クロスリファレンス</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel">
+      <table class="cross-table">
+        <tr>
+          <th style="width:30%;">四柱推命の要素</th>
+          <th style="width:45%;">心理分析での対応</th>
+          <th style="width:25%; text-align:center;">一致度</th>
+        </tr>
+        <tr>
+          <td><span class="hl">戊（山・安定の守護者）</span></td>
+          <td>脱力哲学。そこにいるだけで安心させる。</td>
+          <td style="text-align:center;"><span class="match-badge">PERFECT</span></td>
+        </tr>
+        <tr>
+          <td><span class="hl">正財（信頼×安定を求める）</span></td>
+          <td>有能感欲求（9/10）。結果で評価されたい。</td>
+          <td style="text-align:center;"><span class="match-badge">PERFECT</span></td>
+        </tr>
+        <tr>
+          <td><span class="hl">偏財×2（大きく動かす力）</span></td>
+          <td>VISION「Netflix超え→日本を守る」</td>
+          <td style="text-align:center;"><span class="match-badge">PERFECT</span></td>
+        </tr>
+        <tr>
+          <td><span class="hl3">金＝0（手放せない）</span></td>
+          <td>謝れない、有能感執着、嫉妬が残る</td>
+          <td style="text-align:center;"><span class="match-badge">PERFECT</span></td>
+        </tr>
+        <tr>
+          <td><span class="hl">食神（隠れた平和主義）</span></td>
+          <td>安全な場で出る優しさ。まなとの前での食神。</td>
+          <td style="text-align:center;"><span class="match-badge">PERFECT</span></td>
+        </tr>
+        <tr>
+          <td><span class="hl4">帝旺→建禄→胎</span></td>
+          <td>幼少期カリスマ→青年期堅実成長→中年期再創造</td>
+          <td style="text-align:center;"><span class="match-badge">PERFECT</span></td>
+        </tr>
+        <tr>
+          <td><span class="hl3">相剋（天干・地支）</span></td>
+          <td>真面目すぎて心が曇る×プライドで素直になれない</td>
+          <td style="text-align:center;"><span class="match-badge">PERFECT</span></td>
+        </tr>
+        <tr>
+          <td><span class="hl">身旺の重要人物＝上司</span></td>
+          <td>まなと＝才能を見抜き引き上げてくれる存在</td>
+          <td style="text-align:center;"><span class="match-badge">PERFECT</span></td>
+        </tr>
+        <tr>
+          <td><span class="hl">大運「心と体を整える」</span></td>
+          <td>体づくり開始、キーガン段階の安定化に取り組み中</td>
+          <td style="text-align:center;"><span class="match-badge">PERFECT</span></td>
+        </tr>
+        <tr>
+          <td><span class="hl">日支＝子（寂しがり屋×繊細）</span></td>
+          <td>信頼する少数からの承認で存在価値が揺らぐ</td>
+          <td style="text-align:center;"><span class="match-badge">PERFECT</span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 17. JUUOUKAI / GOKUSHINKYO -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">17</span>
+      <span class="section-title">従旺格 &times; 極身強（+8）— 正確版命式</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel accent4">
+      <div class="panel-label">CORRECTED DATA (WITH BIRTH TIME 13:00)</div>
+      <h3>時柱が変わり、命式の本質が変わった</h3>
+      <p>生まれ時間（13:00）を入れることで時柱が<span style="color:var(--accent3);">壬(水)/子(水)</span> → <span style="color:var(--accent4);">己(土)/未(土)</span>に変更。</p>
+      <p>これにより格局が建禄格→<span style="color:var(--accent4);font-weight:700;">従旺格</span>、旺衰が身旺(+6)→<span style="color:var(--accent4);font-weight:700;">極身強(+8)</span>に。五行の土が1→<span style="color:var(--accent4);font-weight:700;">3</span>に増加。</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+        <div style="padding:16px;background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.15);border-radius:6px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:var(--accent4);letter-spacing:2px;margin-bottom:8px;">JUUOUKAI</div>
+          <p style="font-size:14px;"><span style="color:var(--accent4);font-weight:700;">従旺格</span>＝自分の強い土のエネルギーに<span style="color:var(--accent4);">逆らわず従う</span>ことで運が開く命式。抗うほど運気が下がる。山は山として立ち続けるべき。</p>
+        </div>
+        <div style="padding:16px;background:rgba(255,107,74,0.05);border:1px solid rgba(255,107,74,0.15);border-radius:6px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:var(--accent3);letter-spacing:2px;margin-bottom:8px;">GOKUSHINKYO +8</div>
+          <p style="font-size:14px;"><span style="color:var(--accent3);font-weight:700;">極身強（+8）</span>＝家族全員の中で最強の自我。父(+7)すら超える。生まれつきとても強いエネルギーに恵まれており、結果と自我が強い。</p>
+        </div>
+      </div>
+
+      <div class="quote" style="margin-top:16px;">旺衰ランキング：Taiga(+8) > 父(+7) > いぶき(+4) > 母(+2) > 大鷹(+1) > まなと(0)</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">CORRECTED MEISIKI</div>
+      <div class="meisiki-grid">
+        <div class="meisiki-cell header"></div>
+        <div class="meisiki-cell header">天干</div>
+        <div class="meisiki-cell header">通変星</div>
+        <div class="meisiki-cell header">地支</div>
+        <div class="meisiki-cell header">蔵干</div>
+        <div class="meisiki-cell header">通変星</div>
+        <div class="meisiki-cell header">十二運</div>
+
+        <div class="meisiki-cell pillar-label">年柱<br><span style="font-size:9px;color:var(--text-dim);">2002</span></div>
+        <div class="meisiki-cell"><span class="kanji">壬</span><span class="element">水</span></div>
+        <div class="meisiki-cell"><span class="star">偏財</span></div>
+        <div class="meisiki-cell"><span class="kanji">午</span><span class="element">火</span></div>
+        <div class="meisiki-cell"><span class="star">己</span></div>
+        <div class="meisiki-cell"><span class="star">劫財</span></div>
+        <div class="meisiki-cell"><span class="twelve">帝旺</span></div>
+
+        <div class="meisiki-cell pillar-label">月柱<br><span style="font-size:9px;color:var(--text-dim);">5月</span></div>
+        <div class="meisiki-cell"><span class="kanji">乙</span><span class="element">木</span></div>
+        <div class="meisiki-cell"><span class="star">正官</span></div>
+        <div class="meisiki-cell"><span class="kanji">巳</span><span class="element">火</span></div>
+        <div class="meisiki-cell"><span class="star">庚</span></div>
+        <div class="meisiki-cell"><span class="star">食神</span></div>
+        <div class="meisiki-cell"><span class="twelve">建禄</span></div>
+
+        <div class="meisiki-cell pillar-label">日柱<br><span style="font-size:9px;color:var(--text-dim);">20日</span></div>
+        <div class="meisiki-cell"><span class="kanji">戊</span><span class="element">土</span></div>
+        <div class="meisiki-cell"><span class="star">—</span></div>
+        <div class="meisiki-cell"><span class="kanji">子</span><span class="element">水</span></div>
+        <div class="meisiki-cell"><span class="star">癸</span></div>
+        <div class="meisiki-cell"><span class="star">正財</span></div>
+        <div class="meisiki-cell"><span class="twelve">胎</span></div>
+
+        <div class="meisiki-cell pillar-label" style="background:rgba(255,215,0,0.08);">時柱<br><span style="font-size:9px;color:var(--accent4);">13:00</span></div>
+        <div class="meisiki-cell" style="background:rgba(255,215,0,0.04);"><span class="kanji">己</span><span class="element">土</span></div>
+        <div class="meisiki-cell" style="background:rgba(255,215,0,0.04);"><span class="star">劫財</span></div>
+        <div class="meisiki-cell" style="background:rgba(255,215,0,0.04);"><span class="kanji">未</span><span class="element">土</span></div>
+        <div class="meisiki-cell" style="background:rgba(255,215,0,0.04);"><span class="star">己</span></div>
+        <div class="meisiki-cell" style="background:rgba(255,215,0,0.04);"><span class="star">劫財</span></div>
+        <div class="meisiki-cell" style="background:rgba(255,215,0,0.04);"><span class="twelve">衰</span></div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <span class="tag green">従旺格</span>
+        <span class="tag green">極身強 +8</span>
+        <span class="tag blue">空亡: 午未</span>
+        <span class="tag blue">調候用神: 甲丙癸</span>
+        <span class="tag blue">扶抑用神: 比肩・劫財</span>
+        <span class="tag gold">支合: 午×未</span>
+        <span class="tag orange">冲: 午×子</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 18. GOUGOU SHIGOU CHUU -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">18</span>
+      <span class="section-title">干合・支合・冲の構造</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="grid-3">
+      <div class="panel accent3">
+        <div class="panel-label">STEM CONFLICT / 相剋</div>
+        <h3>乙 → 戊</h3>
+        <p>月柱天干と日柱天干が<span style="color:var(--accent3);font-weight:700;">相剋</span>。</p>
+        <p>緻密でしっかりと物事を詰めていける才能。意外にも豊富なアイデアが眠っている。仕事で誰も思いつかなかった手法で業務改善を提案できる。</p>
+        <p>真面目で控えめなところもあるが、思いついたアイデアを胸に秘めてしまいがち。<span style="color:var(--accent3);">遠慮することはない。</span></p>
+      </div>
+
+      <div class="panel accent4">
+        <div class="panel-label">BRANCH COMBINE / 支合</div>
+        <h3>午 &times; 未 = 支合</h3>
+        <p>年柱地支と時柱地支が<span style="color:var(--accent4);font-weight:700;">支合</span>。命式内に支合が成立。</p>
+        <p>平和主義者で人間関係をうまくやりくりする。目的意識が強いため感情的にならない。誠実で事故抑制力にも長けている。</p>
+        <p>安定した人間関係をモットーとしている。ただし我慢をし続けると辛くなる。<span style="color:var(--accent4);">身体を動かすことでストレス発散。</span></p>
+      </div>
+
+      <div class="panel accent3">
+        <div class="panel-label">BRANCH CLASH / 冲</div>
+        <h3>午 &times; 子 = 冲</h3>
+        <p>年柱地支と日柱地支が<span style="color:var(--accent3);font-weight:700;">冲</span>。</p>
+        <p>人生の岐路に立ったとき、<span style="color:var(--accent3);">「頼れるのは自分だけ」と気持ちをしっかり持つこと</span>が大切。自分の頭で考えた方が結果に責任も持てるし、いい方向へ向かう。</p>
+        <p>決められないときは「逆」を選ぶと良い。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 19. WORK DETAILED -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">19</span>
+      <span class="section-title">仕事運の詳細</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">CURRENT WORK STATUS / 食神</div>
+        <h3>楽しみながらマイペースで働きたい</h3>
+        <p>あくせく仕事で働いても、体調を崩せば仕事人生は終わり。楽しみながらのんびり仕事がしたいという願望がある。</p>
+        <p>できる限りマイペースで働こうとしている。だが周りがバタバタしている影響もあり、<span class="hl">苦手な仕事が回ってきやすい現状</span>。</p>
+        <p>苦手と切り捨てず好きな部分を見つけて活路を切り開くべき。</p>
+      </div>
+
+      <div class="panel accent2">
+        <div class="panel-label">VOCATION / 天職</div>
+        <h3>エッセンシャルワーカー</h3>
+        <p>緊急性が高い仕事は向かない。だが近藤大凱さんは何が起こってもすぐに動ける瞬発力があり、想定外の出来事にも落ち着いて対処できる。</p>
+        <p>楽して給料をもらうのは後ろめたい気持ちがあるからこそ、<span class="hl2">手下と命の危険にも関わる仕事の方が緊張感を持って働ける</span>。</p>
+        <p>天職は<span class="hl2">エッセンシャルワーカー</span>。人から頼られやすく、相手に依存心を抱かせることなく、きびきびと現場で活躍できる。</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel accent4">
+        <div class="panel-label">WORK EVALUATION / 3年後</div>
+        <h3>2029年 — 十二運の「死」が巡る</h3>
+        <p>3年後に職場で得られる評価はとても安定。ナンバーワンになりたがるあなたは、<span style="color:var(--accent4);">生まれながらの統率者気質</span>を持っている。</p>
+        <p>責任感がとても強く、自分の味方に対しては最後まで守り抜くような温かさ。その性質が周囲に認められ、<span style="color:var(--accent4);font-weight:700;">誰よりも信頼されており、もっと上の立場を任せようと期待されている</span>。</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-label">CAREER MILESTONE / 5年後</div>
+        <h3>2031年 — 特殊星の「駅馬」が巡る</h3>
+        <p>仕事に恵まれるのがあなたという人の基本的な運勢。周りに対する思いやりや優しさが、幸運という形で返ってくる。</p>
+        <p>良いキャリアを手にすることが約束されている。なにかに堅く信じていたとしても、誰かに助けられるという徳をあなたは持って生まれている。</p>
+        <p><span class="hl">広い視野で世界を見つめ、新たな挑戦を積極的に受けていくことで、今よりもっと高い地位に。</span></p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">WORK STRENGTHS</div>
+      <h3>仕事で一番評価されている部分</h3>
+      <p>のろのろしていて素早く動けない、と自分で感じている評価。だが逆にあなたは<span class="hl">はっきりと正確に仕事を仕上げてくれて、大幅に修正しなければならない間違いが少ないので大助かり</span>。</p>
+      <p>仮に面と向かって相手から責められても、あなたはまだ未熟だと感じてしまう。その謙虚さこそ、特に対人関係では膝を突き合わせることが得意。イライラする人が多い中、<span class="hl">大したことなくてもクレームが発生しやすい中でも、近藤大凱さんなら穏便に済ませてくれるという信頼感</span>がある。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 20. WEAKNESS & STRENGTH -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">20</span>
+      <span class="section-title">弱点と強みの構造</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel accent3">
+        <div class="panel-label">WEAKNESS</div>
+        <h3>褒められると弱い</h3>
+        <p>意外にもおだてられると弱いということ。誰でも褒められると嬉しくなるが、<span style="color:var(--accent3);font-weight:700;">近藤大凱は特にそういう性質が強い</span>。</p>
+        <p>分かっていても貧乏くじを引くはめになったり、<span style="color:var(--accent3);">わざわざ苦労を買って出てしまう</span>ことになったりする。</p>
+        <p>ただ、その性質はとても愛され感謝もされる。そこさえ気を付けていたなら、他の誰よりも優れた人格者として高く評価される。</p>
+        <p>要は、相手の意図を読み取れるようになればいい。人間観察を心掛け、自分に対してのみならず他の人にどういう態度をとっているかを見極めれば利用されることも亡くなる。</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-label">UNCONSCIOUS STRESS</div>
+        <h3>人々からの嫉妬</h3>
+        <p>無自覚のうちに感じているストレスは、<span class="hl">人々からの嫉妬</span>。優秀で有能なあなたは、順当にいけば誰よりも早く出世して当然な人。</p>
+        <p>ただ、あまり周りに対して自分をアピールしないため、<span class="hl">能力がない人からはあなたの能力が見えずにいる</span>。</p>
+        <p>なぜあなたが抜擢されているのか理解できずに嫉妬する人も少なくない。ある程度あなたの方から自己アピールすることにより、不要なストレスを避けることが出来る。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 21. HEALTH -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">21</span>
+      <span class="section-title">健康運</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">HEALTH MANAGEMENT</div>
+      <h3>自己コントロールに長けているが、我慢しすぎ</h3>
+      <p>この先ずっと快適に健康に過ごしたいのであれば、<span class="hl">あまり我慢をしすぎないこと</span>。自己コントロールに長けているため、たとえばお手洗いに行きたくなったとしても「この仕事が終わるまで」と自分に制限をかけてしまう。</p>
+      <p>そうすると出るものも出なくなってしまうし、便秘になってしまいがち。<span class="hl">あなた自身の身体の生理的な欲求にはもっと耳を傾けてあげてください。</span></p>
+    </div>
+
+    <div class="panel accent3">
+      <div class="panel-label">FATIGUE SIGNAL</div>
+      <h3>疲弊サイン = やる気が出ないこと</h3>
+      <p>身体と心が疲弊しているとき、すっかり<span style="color:var(--accent3);font-weight:700;">やる気が出なくなってしまう</span>。分かりやすく疲れを感じてしまい、その場から動きたくなくなる。うつのような状態に近くなることも。</p>
+      <p>それは<span style="color:var(--accent3);">あなたが我慢しすぎだから</span>。これが終わったら休もう、これが終わったら好きなことをしよう、そんなふうに自分のことを後回しにしていると誰も感謝をしてくれません。</p>
+      <p><span style="color:var(--accent3);font-weight:700;">スケジュールにもっと自分を楽しませることを入れ込んで、後回しにしないことが重要。</span>ずるい人はどこにでもいますから、まるでやんごとなき人のようにやるべきことが怖いことが無いようにしましょう。</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">REST & RECOVERY</div>
+      <h3>ゆっくりと休息と体感を</h3>
+      <p>あなたが身を削ってまで仕事に熱中してしまうのは、自分でなかなか自分の成果をアピール出来ないからでしょう。言葉ではなく仕事の中身で評価されたいと頑張るのです。</p>
+      <p>でも、わかってくれないというよりもわかりたくないと思っている人もいますから、キーパーソンにはしっかり自己アピールをした上で、<span class="hl">もっとプライベートを大切にしてください</span>。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 22. FINANCE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">22</span>
+      <span class="section-title">財運</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel accent4">
+      <div class="panel-label">CURRENT FORTUNE / 冠帯</div>
+      <h3>まずまずの財運が訪れている</h3>
+      <p>収入自体が安定しており、今現実的に望める収入は間違いなく入ってくる。<span style="color:var(--accent4);">やりくりを工夫して節約などすれば、どんどんお金は残っていく</span>。</p>
+      <p>その余剰資金をどう動かすかがあなたの金運の面白いところ。あなたに合った<span style="color:var(--accent4);font-weight:700;">金融資産</span>が見つかるので、そこになるべく多くの金額を投資すると良い。</p>
+      <p>あまりリターンが大きいものを選ぶよりも安全牌を選んでください。地に足の着いた行動のほうが良い結果に繋がる運勢だから。成功率の高さを重視してください。</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">2026年6月 — 特殊星の「学士」</div>
+      <h3>1年以内の財運変化</h3>
+      <p>この先1年後の金運も決して悪くない。ただ、少し見栄をはりたくなる運気となっているので、あまり高価なものなど人にマウントを取るような消費の誘惑に負けてしまわないように。</p>
+      <p>1年以内に、あなたは本業で高く評価されることにより、<span class="hl">昇給という形で金運をアップさせる</span>ことになる。リスクの少ない投資が適性。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 23. ROMANCE DETAILED -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">23</span>
+      <span class="section-title">恋愛運の詳細</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel accent2">
+      <div class="panel-label">ROMANCE FORTUNE</div>
+      <h3>落ち着いた安定した恋愛</h3>
+      <p>この先の恋愛運は、落ち着いた安定をしたもの。もともと真面目で地に足のついたあなたですが、<span class="hl2">そんな近藤大凱さんを脅かすことのないような、安心できるものでしょう</span>。</p>
+      <p>ハラハラドキドキすることよりも、迷ったり不安に感じたりすることのない、あなたに向いた恋が待ち受けている。</p>
+      <p>甘い言葉や気障な態度などで恋を盛り上げたりすることもありません。わざと他の異性と親し気に振る舞ったり、気のないそぶりで駆け引きしたりしなくていい、<span class="hl2">面倒なことが不要</span>。</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">IDEAL PARTNER</div>
+      <h3>知的で冷静な異性</h3>
+      <p>もしも出会いを求めているならば、あなたと似たような性質の異性とのご縁がこの先に生じる。お互いをするために理解できるため、無理をする必要がありません。</p>
+      <p>少しそっけないと感じるくらいに、恋人というよりも同志というような異性とのご縁に恵まれていく。知的で冷静で理性的で、激しい情熱に突き動かされて恋をするような人ではない。</p>
+      <p>2人の共通の知人が良い判断し、あなたとその人を引き合わせてくれる。読み通り、2人の少し低め安定のテンションがしっくりくるでしょう。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 24. LIFE PERIODS DETAILED -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">24</span>
+      <span class="section-title">人生の季節 &amp; 重要人物</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">CURRENT PERIOD / YES</div>
+        <h3>今は人生の中でかなり良い時期</h3>
+        <p>今のあなたが迎えているのは、<span class="hl">人生の中でかなり良い時期</span>。普段よりも少しだけ気楽に過ごせるような運勢。周囲との調和が図られており、肩に力を入れて構えなくていい。緊張するシチュエーションとは無縁。</p>
+        <p>あなたに無理をさせるような事件も起きません。人も周囲に居ません。お人好しで頼まれるとなかなか断れないあなたには、<span class="hl">周囲の人の質の良し悪しによって運気もだいぶ変わる</span>。</p>
+      </div>
+
+      <div class="panel accent3">
+        <div class="panel-label">DANGEROUS PERSON</div>
+        <h3>人生の足を引っ張る危険人物</h3>
+        <p><span style="color:var(--accent3);font-weight:700;">真面目でそつのない同僚</span>。その人は大人しい雰囲気で周囲を安心させていますが、内側では刺と傲慢さがある。あまり努力をすることがないのに大きなことを願っています。</p>
+        <p>あなたに対してなにか悪い感情を抱いているということはありませんが、その同僚の心がバッドに入ったときに側にいるとなにか危害を加えられるかもしれません。<span style="color:var(--accent3);">あまり心を許さず表面的な付き合いに終始したほうがあなたの身の安全は守られる。</span></p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel accent4">
+        <div class="panel-label">IMPORTANT PERSON</div>
+        <h3>人生を幸せに導く重要人物 = 魅力的な異性</h3>
+        <p>あなたの人生を幸せに導いてくれる重要人物は、<span style="color:var(--accent4);font-weight:700;">とても魅力的な異性</span>。その人とは特別な関係ではありませんが、職場などあなたの属する集団の中でひときわ目立っている。</p>
+        <p>近藤大凱さん自身もその人のことをそこまで好ましく思っているものの、男女の仲になりたいとまでは思う人ではないでしょう。</p>
+        <p>ただ、その人をよく観察していると、なぜ周囲から好かれ尊重されているのかが次第に理解できていきます。<span style="color:var(--accent4);">突破口がその人のおかげで見えてくる</span>のです。</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-label">SOCIAL STATUS</div>
+        <h3>最終的に手にする社会的地位</h3>
+        <p>活発に動き回るタイプではなく、落ち着いた重厚感で勝負する。立派な役職に就いても不思議ではないほど堂々としている。</p>
+        <p>全てを知っているあなたに聞けば、と社員に言われるようになる。<span class="hl">実質的な経営者としての社会的地位</span>を得ていく。</p>
+        <p>本部から送り込まれてきた雇われ社長よりも、皆があなたの言うことに耳を傾ける。近藤大凱さんのモットーは誠実さ。それを大事にしてきたお陰で、<span class="hl">自宅以外に不動産を所有する財</span>を得る。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 25. LIFE ADVICE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">25</span>
+      <span class="section-title">人生の道しるべ</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="summary-box">
+      <div class="hero-label" style="margin-bottom:20px;">LIFE ADVICE</div>
+      <h2 style="font-size:28px;">素直になり柔軟な思考を持つ</h2>
+      <p style="margin-top:16px;">近藤大凱さんの課題は、<span style="color:var(--accent);font-weight:700;">自分の気持ちを素直に表現することと柔軟な思考を持つこと</span>。</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">CHALLENGES</div>
+        <h3>なぜ素直さが課題なのか</h3>
+        <p>誠実さや責任感の強さゆえに、無理をしてでも他者を優先しがちで、知らず知らずのうちにストレスを溜め、体調を崩すことがある。</p>
+        <p>また、堅実な生き方を求めるあまり、変化を拒んでしまい、チャンスを逃すこともある。</p>
+      </div>
+
+      <div class="panel accent4">
+        <div class="panel-label">PRACTICE</div>
+        <h3>具体的な実践</h3>
+        <p>一日一回、自分の気持ちをノートに書いたり、誰かに話したりすること。</p>
+        <p>週に一度小さなことでもいいので、新しい経験を取り入れること。</p>
+        <p>リラックスする時間を確保し、<span style="color:var(--accent4);font-weight:700;">「何もしない時間」を大切にすること</span>。</p>
+        <p>地道な努力で確実に成果を積み上げていく人。その強みを活かしつつ、自分を大切にし、柔軟な思考を取り入れること。</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">LIFE THEME</div>
+      <h3>晩年までに備えてほしいこと</h3>
+      <p>どちらかといえば孤独に強い人。だが、この先の長い人生を一人きりで生きるにはやはり辛さを覚えてしまう。だからこそ、家族でもパートナーでも友人でも構いません。<span class="hl">心から打ち解けて笑いあえる大切な人を作り、その人との関係を今後も育てていくこと</span>が必要。</p>
+      <p>仕事中毒ともいえるほどに頑張ってしまうあなただからこそ、健康にも気を遣ってください。あれこれと栄養を取るよりも、<span class="hl">シンプルに身体を動かすこと</span>があなたの身体にとって重要。</p>
+      <p>散歩を趣味にしたり、家で出来る踏み台運動などを読書しながら行うというのも良い。海の見える自然の多い家でゆったりとした日々を過ごしていく。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 26. HOBBY & INTERESTS -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">26</span>
+      <span class="section-title">趣味・注力ポイント & 特殊星</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">HOBBY & INTERESTS</div>
+        <h3>今あなたに注力してもらいたいこと = 趣味</h3>
+        <p>落ち着いて自分の好きなことに取り組める運勢が訪れている。今あなたが優先すべきことは、<span class="hl">趣味の世界</span>。</p>
+        <p>勿論仕事に集中して成果を上げることも悪くはありません。ただ、基本的に仕事熱心で頑張り屋ですから、たまにはもっと自分を喜ばせることに力を注いだほうがいい。</p>
+        <p>出来れば、飲み会で大騒ぎも良いですが、<span class="hl">なにか形に残るような趣味の方があなたの満足度は上がる</span>。何かを作り出すことがあなたを満足させます。創作の趣味はなにか持っていたほうが良い。手芸でもプラモデルでも同人誌でも何でも良い。</p>
+      </div>
+
+      <div class="panel accent4">
+        <div class="panel-label">SPECIAL STAR / 天乙貴人</div>
+        <h3>普通的な価値観に満たされる</h3>
+        <p>根本的に素晴らしい運勢に恵まれている。上を望むばかりがありませんが、概ねあなたの人生はこれまで順調だったでしょう。</p>
+        <p>あなたは割と普通で当たり前の感覚を持っている。ですから、あなたは変わった個性を追求することなく、<span style="color:var(--accent4);font-weight:700;">普遍的な価値観</span>を追求すると心の奥底から満たされていきます。</p>
+        <p>安定や安楽があなたを心から充実させてくれる。伝統的な価値観があなたを安心させ、ハイソな習い事もあなたの心を満足させてくれる。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 27. COMPARISON OVERRIDE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">27</span>
+      <span class="section-title">比較トリガーの切り替え回路</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel accent4">
+      <div class="panel-label">TRIGGER PATTERN</div>
+      <h3>いぶきの二段階構造 — 入口と定着は別回路</h3>
+      <p><span style="color:var(--accent4);font-weight:700;">入口</span> = 本能的な身体的魅力（顔・体・華やかさ）。禄存星×2の本能。大谷・ホスト・milk・マッスルバー＝全部「入口」への反応。Taigaの顔で好きになったのも同じ入口。</p>
+      <p><span style="color:var(--accent4);font-weight:700;">定着</span> = 精神的な繋がり。半年間何もなくても一緒にいた＝入口を超えて定着まで到達してる証拠。</p>
+      <div class="quote" style="border-color:var(--accent4);text-align:center;font-size:18px;font-weight:500;">入口で負けてても、定着で選ばれてる。<br>この2つを混ぜるから痛い。分ければ痛くない。</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">OVERRIDE CIRCUIT</div>
+      <h3>切り替え思考回路（3ステップ）</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:12px;">
+        <div style="padding:16px;background:rgba(0,200,150,0.05);border:1px solid rgba(0,200,150,0.15);border-radius:6px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:var(--accent);letter-spacing:2px;margin-bottom:8px;">STEP 1</div>
+          <h3 style="font-size:16px;margin-bottom:8px;">入口も最大化する</h3>
+          <p style="font-size:13px;">山は山のまま立つけど、山を磨くのは止めない。体づくり・服装・見た目＝山の表面を美しくする作業。<span class="hl">「大谷になる」じゃなくて「自分の山を最大化する」</span>。従旺格の正しい使い方。</p>
+        </div>
+        <div style="padding:16px;background:rgba(0,160,255,0.05);border:1px solid rgba(0,160,255,0.15);border-radius:6px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:var(--accent2);letter-spacing:2px;margin-bottom:8px;">STEP 2</div>
+          <h3 style="font-size:16px;margin-bottom:8px;">負けたら遺伝子だし<br>しゃーない</h3>
+          <p style="font-size:13px;">身体的魅力の上限は遺伝で決まる。変えられない。<span class="hl2">変えられないものに執着＝金0の罠。変えられないと認識＝論理で金を代替。</span>これがTaigaに最も合った手放し方。</p>
+        </div>
+        <div style="padding:16px;background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.15);border-radius:6px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:var(--accent4);letter-spacing:2px;margin-bottom:8px;">STEP 3</div>
+          <h3 style="font-size:16px;margin-bottom:8px;">過去は変わらん。<br>未来何ができるか。</h3>
+          <p style="font-size:13px;">過去に執着＝緊張。未来の実行に切り替え＝脱力。<span style="color:var(--accent4);">脱力 = 1 −（緊張シーン / 全シーン）の分子を減らす作業。</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel accent3">
+      <div class="panel-label">FORMULA</div>
+      <div class="formula" style="background:rgba(255,107,74,0.05);border-color:rgba(255,107,74,0.15);color:var(--accent3);">入口の最大化 = &Sigma;（体づくり + 服装 + 見た目）&times; 継続</div>
+      <div class="formula" style="background:rgba(255,107,74,0.05);border-color:rgba(255,107,74,0.15);color:var(--accent3);">手放し = 遺伝的上限の認識（変えられないものは変えられない）</div>
+      <div class="formula" style="background:rgba(255,107,74,0.05);border-color:rgba(255,107,74,0.15);color:var(--accent3);">切り替え = 過去（固定）&rarr; 未来（変数）にフォーカス</div>
+      <p style="margin-top:12px;text-align:center;font-size:13px;">比較は止められない（人間の本能）。でも比較の後に何をするかは選べる。<br>恋愛だけでなく、仕事の競争相手にも全て適用可能。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 28. MANATO STRATEGY -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">28</span>
+      <span class="section-title">まなとが求めているもの &times; Taigaが渡せるもの</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="summary-box">
+      <div class="hero-label" style="margin-bottom:20px;">CORE NEED</div>
+      <h2>「手を離しても勝手に育つ投資先」</h2>
+      <p>司禄星の本質。教えた → 育った → 自分の手を離れても成長し続ける → 最高の喜び。<br>「教えてください」じゃなくて「やってみたらこうなりました」。これが司禄星が最も報われる瞬間。</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="panel">
+        <div class="panel-label">SOUL DESIRE / 偏印</div>
+        <h3>独創的な発想と未知の探求</h3>
+        <p>既存の枠に収まるものには興味がない。誰にも思いつかないアイデアやビジョンを求めている。</p>
+        <p><span class="hl">Taigaが渡せるもの：</span>龍高星（中心星）の探求×型破りな発想。まなとが持っていない角度からの仮説。<span class="hl">生煮えでも面白い仮説を持っていく</span>こと自体が価値。</p>
+      </div>
+
+      <div class="panel accent4">
+        <div class="panel-label">CENTER STAR / 司禄星</div>
+        <h3>蒔いた種が育つのを見る</h3>
+        <p>まなとがTaigaに教えてきたことは「投資」。司禄星が一番満たされるのは、<span style="color:var(--accent4);font-weight:700;">投資先が自分の手を離れても勝手に成長していく瞬間</span>。</p>
+        <p><span style="color:var(--accent4);">Taigaが渡せるもの：</span>言われなくても自分で成長して、結果を持って帰る。「教えてもらったことが、ここでこう効きました」という<span style="color:var(--accent4);">回収の報告</span>。</p>
+      </div>
+
+      <div class="panel accent3">
+        <div class="panel-label">FIVE ELEMENT / 火1</div>
+        <h3>情熱の供給</h3>
+        <p>まなとの火は1で最小タイ。中和(0)は裏を返せば<span style="color:var(--accent3);">自分では爆発的に動かない</span>。</p>
+        <p><span style="color:var(--accent3);">Taigaが渡せるもの：</span>火2の情熱。「俺はここまで行きたい」という火を見せること。まなとは誰かの火を見て「じゃあこうすれば」と設計する方が本領を発揮する。</p>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="panel accent2">
+        <div class="panel-label">SOCIAL STAR / 車騎星&times;2</div>
+        <h3>即断即決で動ける実行者</h3>
+        <p>社会面が車騎星&times;2＝<span class="hl2">スピーディーな行動力と決断力</span>を求めている。</p>
+        <p><span class="hl2">Taigaが渡せるもの：</span>まなとの判断を受け取って、考え込まずに動く。「なるほど、やります」で即実行して結果を見せる。「1人で成果出す」パターンが<span class="hl2">正しく発動する場所</span>。</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-label">FRIEND STAR / 鳳閣星</div>
+        <h3>一緒にいて楽しい関係</h3>
+        <p>友人面は鳳閣星＝享楽の星。自然体で楽しむ。重い義務感や気を遣う関係は求めていない。</p>
+        <p><span class="hl">Taigaが渡せるもの：</span>仕事の話だけじゃなく、純粋に楽しい時間。くだらない雑談、一緒の飯。<span class="hl">「師匠と弟子」だけでなく「友達としても楽しい」</span>が加わると関係が安定する。</p>
+      </div>
+
+      <div class="panel accent4">
+        <div class="panel-label">CURRENT DAIUNN / 休息期</div>
+        <h3>引っ張り出さないこと</h3>
+        <p>今のまなとに最も必要なのは<span style="color:var(--accent4);font-weight:700;">「引っ張り出されないこと」</span>。</p>
+        <p><span style="color:var(--accent4);">Taigaがやるべきこと：</span>焦らせない。連絡ない＝自責しない。まなとが充電してる間に<span style="color:var(--accent4);">自分で成長して、戻ってきた時に「伸びてるな」と思わせる</span>。最高の距離感。</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">ELEMENTAL EXCHANGE</div>
+      <h3>命式レベルで渡せるもの</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <p>Taigaの<span class="hl">火2</span> → まなとの火1を補う（情熱の供給）</p>
+          <p>Taigaの<span class="hl">土3</span> → まなとの土2を支える（圧倒的な実行基盤）</p>
+        </div>
+        <div>
+          <p>Taigaの<span class="hl">龍高星</span> → まなとの偏印を満たす（面白い仮説の供給）</p>
+          <p>Taigaの<span class="hl">極身強+8</span> → まなとの中和0を動かす（背中を押す推進力）</p>
+        </div>
+      </div>
+      <div class="quote" style="margin-top:16px;text-align:center;font-size:16px;">全部「自分で動いた結果」として持っていくこと。<br>「教えてください」ではなく「やってみたらこうなりました」。</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ========================================== -->
+  <!-- 29. INTERPRETATION CIRCUIT -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">29</span>
+      <span class="section-title">解釈回路 &mdash; 戦闘民族ではない山の勝ち方</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="summary-box">
+      <div class="hero-label" style="margin-bottom:20px;">CORE DISCOVERY &mdash; 2026.04.06</div>
+      <h2>Taigaは戦闘民族ではない。探求者である。</h2>
+      <p>命式の中心に戦いの星（車騎星・偏官）はない。あるのは<span class="hl">龍高星（探求・創造）</span>、<span class="hl2">食神（天性の平和主義者）</span>、<span class="hl4">正財（積み上げ・安定）</span>。<br>
+      戦闘民族の解釈回路を借りて走ると、食神が抵抗 &rarr; エネルギーロス &rarr; 結果出ない &rarr; 有能感削れる悪循環。<br>
+      命式に合った解釈回路に書き換えることで、全ての星が味方になる。</p>
+    </div>
+
+    <!-- 借り物回路 vs 本来の回路 -->
+    <div class="grid-2">
+      <div class="panel accent3">
+        <div class="panel-label">OLD OS / 戦闘民族の借り物回路</div>
+        <h3>&cross; 合わないOS</h3>
+        <p style="font-size:13px;">仕事 = 戦場（敵を倒す場所）</p>
+        <p style="font-size:13px;">結果 = 勝利（相手より上に立つ）</p>
+        <p style="font-size:13px;">競合 = 倒すべき敵</p>
+        <p style="font-size:13px;">圧力 = 戦わなきゃいけない</p>
+        <p style="font-size:13px;">出力 = 探求を中断して成果物を出す</p>
+        <p style="font-size:13px;">失敗 = 負け（有能感が傷つく）</p>
+        <p style="font-size:13px;">自分 = 一番戦わなきゃいけない人</p>
+        <p style="margin-top:12px;font-size:12px;color:var(--accent3);">車騎星・偏官が中心にある人間のOS。Taigaの命式には存在しない。<br>このOSで走ると食神が抵抗し、龍高星が封じられ、全武器が使えなくなる。</p>
+      </div>
+      <div class="panel">
+        <div class="panel-label">NEW OS / 龍高星&times;食神&times;正財&times;戊</div>
+        <h3>&check; 命式に合ったOS</h3>
+        <p style="font-size:13px;"><span class="hl">仕事</span> = 未踏のダンジョン（解き明かす場所）</p>
+        <p style="font-size:13px;"><span class="hl">結果</span> = 攻略の証明（仮説が当たった証拠）</p>
+        <p style="font-size:13px;"><span class="hl">競合</span> = 観察対象（研究データ）</p>
+        <p style="font-size:13px;"><span class="hl">圧力</span> = 解像度不足のサイン</p>
+        <p style="font-size:13px;"><span class="hl">出力</span> = 探求の最深層</p>
+        <p style="font-size:13px;"><span class="hl">失敗</span> = 攻略本の1ページ追加</p>
+        <p style="font-size:13px;"><span class="hl">自分</span> = 攻略本を書く山</p>
+        <p style="margin-top:12px;font-size:12px;color:var(--accent);">龍高星が起動し、食神が味方し、正財が積み上げ、戊が安定する。<br>全ての星が同じ方向を向く。</p>
+      </div>
+    </div>
+
+    <!-- 7つの解釈回路 -->
+    <div class="panel" style="margin-top:16px;">
+      <div class="panel-label">SEVEN INTERPRETATION CIRCUITS</div>
+      <h3>7つの解釈回路</h3>
+
+      <div style="display:grid;grid-template-columns:auto 1fr 1fr auto;gap:2px;font-size:13px;margin-top:16px;">
+        <div class="meisiki-cell header">回路</div>
+        <div class="meisiki-cell header">解釈</div>
+        <div class="meisiki-cell header">なぜこれが正しいか</div>
+        <div class="meisiki-cell header">対応する星</div>
+
+        <div class="meisiki-cell pillar-label">01 仕事</div>
+        <div class="meisiki-cell">未踏のダンジョン<br><span style="font-size:11px;color:var(--text-dim);">「今日は何を解き明かすか」で入る</span></div>
+        <div class="meisiki-cell"><span style="font-size:11px;">龍高星の起動条件は「敵」じゃなくて「謎」</span></div>
+        <div class="meisiki-cell"><span class="tag green">龍高星</span></div>
+
+        <div class="meisiki-cell pillar-label">02 結果</div>
+        <div class="meisiki-cell">攻略の証明<br><span style="font-size:11px;color:var(--text-dim);">仮説が当たったか外れたか</span></div>
+        <div class="meisiki-cell"><span style="font-size:11px;">勝ち負けは積み上がらない。仮説精度は積み上がる</span></div>
+        <div class="meisiki-cell"><span class="tag gold">正財</span></div>
+
+        <div class="meisiki-cell pillar-label">03 競合</div>
+        <div class="meisiki-cell">観察対象・研究データ<br><span style="font-size:11px;color:var(--text-dim);">「なぜウケてるのか」で分析</span></div>
+        <div class="meisiki-cell"><span style="font-size:11px;">「抜いてやる」&rarr;食神抵抗。「なぜ？」&rarr;龍高星起動</span></div>
+        <div class="meisiki-cell"><span class="tag green">龍高星</span><span class="tag blue">食神</span></div>
+
+        <div class="meisiki-cell pillar-label">04 圧力</div>
+        <div class="meisiki-cell">解像度不足のサイン<br><span style="font-size:11px;color:var(--text-dim);">もう一段深く掘る合図</span></div>
+        <div class="meisiki-cell"><span style="font-size:11px;">「戦わなきゃ」&rarr;有能感トリガー退行。「見えてない」&rarr;探求</span></div>
+        <div class="meisiki-cell"><span class="tag green">龍高星</span></div>
+
+        <div class="meisiki-cell pillar-label">05 出力</div>
+        <div class="meisiki-cell" style="background:rgba(0,200,150,0.06);"><strong style="color:var(--accent);">探求の最深層</strong><br><span style="font-size:11px;color:var(--text-dim);">作って初めて「わかった」と言える</span></div>
+        <div class="meisiki-cell" style="background:rgba(0,200,150,0.06);"><span style="font-size:11px;">L1:読んだ &rarr; L2:説明できる &rarr; L3:作れる &rarr; L4:人に渡せる<br>L1で止まるのは「探求を途中でやめてる」</span></div>
+        <div class="meisiki-cell" style="background:rgba(0,200,150,0.06);"><span class="tag green">龍高星</span><span class="tag gold">正財</span></div>
+
+        <div class="meisiki-cell pillar-label">06 失敗</div>
+        <div class="meisiki-cell">攻略本の1ページ追加<br><span style="font-size:11px;color:var(--text-dim);">「この方法では起きない」が確定</span></div>
+        <div class="meisiki-cell"><span style="font-size:11px;">有能感は傷つかない。資産が増えた（正財）</span></div>
+        <div class="meisiki-cell"><span class="tag gold">正財</span></div>
+
+        <div class="meisiki-cell pillar-label">07 役割</div>
+        <div class="meisiki-cell">攻略本を書く山<br><span style="font-size:11px;color:var(--text-dim);">一番深く理解してる人が一番貢献</span></div>
+        <div class="meisiki-cell"><span style="font-size:11px;">山は動かない。でも山がなければ地形が成立しない</span></div>
+        <div class="meisiki-cell"><span class="tag green">戊</span><span class="tag blue">食神</span></div>
+      </div>
+    </div>
+
+    <!-- 命式的根拠 -->
+    <div class="grid-3" style="margin-top:16px;">
+      <div class="panel">
+        <div class="panel-label">RYUUTAKUSEI / CENTER STAR</div>
+        <h3>龍高星 = 探求が好き</h3>
+        <p>中心星が探求・創造の星。車騎星（戦いの星）ではない。</p>
+        <p>起動条件は「敵」じゃなくて<span class="hl">「謎」</span>。攻略本見ながらゲームが最高状態なのは龍高星そのもの。</p>
+        <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">好きなもの全てが「解き明かし」で説明できる：サッカー、ゲーム、まなと憑依、YouTube、進化心理学、四柱推命、AI師匠、数式化。</p>
+      </div>
+      <div class="panel accent2">
+        <div class="panel-label">SHOKUJIN / TALENT STAR</div>
+        <h3>食神 = 天性の平和主義者</h3>
+        <p>月柱通変星。本質的な才能。楽しみながらマイペースに働く。</p>
+        <p>戦闘民族の回路で走ると<span class="hl2">食神が抵抗してエネルギーロス</span>する。戦わない回路なら味方になる。</p>
+        <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">「脱力」の哲学は食神が自然に導き出した戦略。力まずに流れに乗る。</p>
+      </div>
+      <div class="panel accent4">
+        <div class="panel-label">SEIZAI / SOUL DESIRE</div>
+        <h3>正財 = 積み上げの魂</h3>
+        <p>日柱通変星。魂が求めるのは信頼と安定、一つずつの実績。</p>
+        <p><span style="color:var(--accent4);">勝ち負けは積み上がらない</span>。仮説&rarr;検証の精度と、攻略本のページ数が積み上がる。</p>
+        <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">短期で爆発する戦闘民族と違い、正財は閾値を超えた瞬間に長期で圧倒する。</p>
+      </div>
+    </div>
+
+    <!-- 悟飯モデル -->
+    <div class="panel accent2" style="margin-top:16px;">
+      <div class="panel-label">CHARACTER MODEL</div>
+      <h3>悟飯モデル &mdash; 戦い好きじゃないまま最強になった男</h3>
+      <div class="grid-2">
+        <div>
+          <p><span class="hl2">悟空（戦闘民族）</span><br>「強いやつと戦いたい！」&rarr; 戦いが目的。燃料 = 敵。</p>
+          <p style="margin-top:12px;"><span class="hl2">悟飯（探求者）</span><br>「戦いは好きじゃない。でも守りたいものがある時、誰よりも強くなる。」</p>
+        </div>
+        <div>
+          <p style="font-size:13px;">
+            <span style="color:var(--accent2);">&bull;</span> サイヤ人最高の潜在能力 = 極身強(+8)<br>
+            <span style="color:var(--accent2);">&bull;</span> 戦いより勉強が好き = 探求が好き<br>
+            <span style="color:var(--accent2);">&bull;</span> 怒ると全キャラ最強 = 有能感トリガーで瞬間最大<br>
+            <span style="color:var(--accent2);">&bull;</span> 仲間が傷つくと覚醒 = 守る範囲で成長速度UP<br>
+            <span style="color:var(--accent2);">&bull;</span> 修行サボりがち = 結果出た&rarr;やめるパターン
+          </p>
+        </div>
+      </div>
+      <div class="quote" style="margin-top:16px;text-align:center;">
+        <strong>アルティメット悟飯 = 脱力の完成形</strong><br>
+        変身しない。気を荒げない。常態で最強。力まず、自然体で、全ての力が出る。<br>
+        悟空の身勝手の極意 = 「戦闘の中で」力みを抜く。<br>
+        悟飯のアルティメット = 「そもそも戦闘モードに入らず」全力が出る。<br>
+        <span style="color:var(--accent);">Taigaの脱力は悟飯型。探求してるだけで、結果的に最強の場所にいる。</span>
+      </div>
+    </div>
+
+    <!-- アウトプット = 探求の最深層 -->
+    <div class="panel accent3" style="margin-top:16px;">
+      <div class="panel-label">CRITICAL CIRCUIT / MOST IMPORTANT</div>
+      <h3>回路5：アウトプット = 探求の最深層</h3>
+      <p>インプット中毒の根本解決。アウトプットしないのは「探求好き」じゃなく<span style="color:var(--accent3);font-weight:700;">「探求を途中でやめてる」</span>。</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:20px 0;font-size:14px;flex-wrap:wrap;">
+        <span class="tag blue">L1 読んだ</span>
+        <span style="color:var(--text-dim);">&rarr;</span>
+        <span class="tag blue">L2 説明できる</span>
+        <span style="color:var(--text-dim);">&rarr;</span>
+        <span class="tag green">L3 作って再現できる</span>
+        <span style="color:var(--text-dim);">&rarr;</span>
+        <span class="tag gold">L4 人に渡して回る</span>
+      </div>
+      <p style="text-align:center;font-size:13px;">龍高星が本当に満足するのはL3以降。L1で「わかった」は探求が浅いまま止まってる。</p>
+      <div class="formula" style="background:rgba(255,107,74,0.05);border-color:rgba(255,107,74,0.15);color:var(--accent3);margin-top:16px;">実践ルール：30分インプット &rarr; 5分雑言語化（穴を見つける &rarr; 次の探求テーマ）</div>
+      <p style="text-align:center;font-size:12px;color:var(--text-dim);margin-top:8px;">karadaドメインの表現：「頭の体脂肪率、減らせよ。インプット=食料。アウトプット=運動。使って初めて筋肉になる。」</p>
+    </div>
+
+    <!-- 全ドメイン検証結果 -->
+    <div class="panel accent4" style="margin-top:16px;">
+      <div class="panel-label">CROSS-DOMAIN VALIDATION / ALL 6 DOMAINS CONFIRMED</div>
+      <h3>全6ドメインのナレッジが同じ結論を指している</h3>
+      <p style="font-size:13px;">2026-04-06、全ドメイン横断クエリで検証。manato/mote/karada/growth/gengo/youtube、全てが「個人が戦うな、仕組みに戦わせろ」「探求と理解こそお前の武器」と回答。</p>
+      <div style="margin-top:12px;font-size:13px;">
+        <p><span style="color:var(--accent4);">&bull; growthドメイン：</span>「お前が戦うべきは『人』じゃない。『非効率』『無駄』『本質的でないこと』だ」</p>
+        <p><span style="color:var(--accent4);">&bull; 全ドメイン共通：</span>「仕組みがKPIと戦う。お前は設計する側に回れ」</p>
+        <p><span style="color:var(--accent4);">&bull; karadaドメイン：</span>「頭の体脂肪率を減らせ。インプットは食料、アウトプットは運動」</p>
+      </div>
+      <p style="margin-top:12px;font-size:12px;color:var(--text-dim);">学んできたナレッジ自体が「戦わずに勝つ」を教えていた。受け取る側の解釈回路が戦闘民族仕様だったから噛み合わなかっただけ。</p>
+    </div>
+
+    <!-- 山の勝ち方 -->
+    <div class="big-kanji" style="padding:40px 0;">
+      <div class="char" style="font-size:28px;letter-spacing:2px;">山は走らない。山は戦わない。<br>でも山は一番高い場所にいる。</div>
+      <div class="desc" style="margin-top:20px;font-size:14px;color:var(--text);max-width:600px;">
+        戦闘民族が平地で走り回って戦ってる間に、山はそこにあって、全体が見えてて、人と結果が集まってくる。<br>
+        戦って勝つんじゃなくて、一番深く理解してる場所に立ってるだけで自然に集まる構造を作る。<br>
+        <span style="color:var(--accent);">「戦闘民族じゃない自分」を弱みじゃなくて設計思想として信じ切ること。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ========================================== -->
+  <!-- FINAL SUMMARY -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">&infin;</span>
+      <span class="section-title">近藤大凱とは何者か</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="summary-box" style="text-align:left;">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+        <div>
+          <p><span class="hl4">魂の設計図</span><br>山。動かない。揺るがない。そこにいるだけで安心させる。</p>
+          <p style="margin-top:16px;"><span class="hl4">エンジン</span><br>コントロール(10)×有能感(9)。火2＋水2で情熱と知性は十分。だが金0で手放せない。</p>
+          <p style="margin-top:16px;"><span class="hl4">OS</span><br>支配者外向（ENTJ）に制御レイヤーを被せている。プレッシャーで剥がれる。</p>
+          <p style="margin-top:16px;"><span class="hl4">現在地</span><br>キーガン第4段階。第5の感覚はある。第2への落下を減らすのが課題。</p>
+        </div>
+        <div>
+          <p><span class="hl4">哲学</span><br>脱力&rarr;身勝手の極意&rarr;丸が大きくなる&rarr;守る範囲が広がる&rarr;成長速度UP。</p>
+          <p style="margin-top:16px;"><span class="hl4">解釈回路</span><br>戦闘民族ではなく探求者。仕事=攻略、結果=仮説検証、出力=探求の最深層。悟飯モデル。</p>
+          <p style="margin-top:16px;"><span class="hl4">VISION</span><br>クリエイティブで日本を守る。みんなでNetflixを超えて嬉し泣きする。</p>
+          <p style="margin-top:16px;"><span class="hl4">大運</span><br>25-35歳はピーク級の気運。成果は出る。謙虚さを保てるかが分かれ道。</p>
+          <p style="margin-top:16px;"><span class="hl4">正確版命式</span><br>従旺格。極身強(+8)。土3/金0。支合(午未)・冲(午子)。家族最強の自我を持つ山。</p>
+          <p style="margin-top:16px;"><span class="hl4">人生の道しるべ</span><br>素直になり柔軟な思考を持つ。我慢しすぎない。自分を楽しませることを後回しにしない。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="big-kanji" style="padding: 40px 0;">
+      <div class="char" style="font-size:36px; letter-spacing:4px;">山の器に、火と水のエンジンを積んで、<br>金の手放す力だけが欠けてる男</div>
+      <div class="desc" style="margin-top:20px; font-size:16px; color:var(--text);">従旺格。極身強+8。家族最強の自我を持つ山。<br>素直になり、柔軟な思考を持ち、自分を楽しませることを後回しにしない。<br>脱力して、笑顔で、リセット時間を取る。命式が全部それを裏付けてる。</div>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding:40px 0; font-size:10px; color:var(--text-dim); font-family:'Orbitron',sans-serif; letter-spacing:3px;">
+    ALL DATA INTEGRATED &mdash; SHICHUSUIMEI (WITH BIRTH TIME) / SANMEIGAKU / MBTI / FOUR BRAIN / ANIMAL ZODIAC / COGNITIVE TRAITS / KEGAN / EVOLUTIONARY PSYCHOLOGY<br>
+    WORK / HEALTH / FINANCE / ROMANCE / 12-YEAR FORECAST / LIFE ADVICE / INTERPRETATION CIRCUITS<br>
+    GENERATED BY AI SHISHOU SYSTEM &mdash; 2026.04.06
+  </div>
+
+</div>
+
+</body>
+</html>

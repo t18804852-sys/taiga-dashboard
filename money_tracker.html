@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money Tracker</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;
+    background:#060a08;color:#c8ddd2;font-size:14px;line-height:1.7;
+    min-height:100vh;
+    background-image:radial-gradient(ellipse at 20% 0%,rgba(62,201,167,.04) 0%,transparent 60%);
+  }
+  .c{max-width:640px;margin:0 auto;padding:24px 16px 80px}
+
+  /* ヘッダー */
+  .hdr{text-align:center;margin-bottom:28px}
+  .hdr h1{font-size:20px;font-weight:800;color:#e8f0ec;margin-bottom:2px}
+  .hdr .sub{font-size:11px;color:rgba(200,221,210,.3);letter-spacing:1px}
+  .month-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:12px}
+  .month-nav button{background:none;border:1px solid rgba(62,201,167,.15);color:#3ec9a7;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:13px}
+  .month-nav button:hover{border-color:#3ec9a7}
+  .month-label{font-size:15px;font-weight:700;color:#e8f0ec;min-width:120px;text-align:center}
+
+  /* 残高カード */
+  .balance-card{
+    text-align:center;padding:28px 20px;margin-bottom:20px;
+    border-radius:14px;background:rgba(14,24,18,.9);
+    border:1px solid rgba(62,201,167,.12);
+  }
+  .balance-label{font-size:11px;color:rgba(200,221,210,.3);letter-spacing:2px;margin-bottom:6px}
+  .balance-amount{font-size:36px;font-weight:900;color:#e8f0ec;letter-spacing:-1px}
+  .balance-amount .yen{font-size:18px;font-weight:400;color:rgba(200,221,210,.4);margin-right:2px}
+
+  /* フローバー */
+  .flow-row{display:flex;gap:10px;margin-bottom:24px}
+  .flow-box{
+    flex:1;padding:14px;border-radius:10px;text-align:center;
+    background:rgba(14,24,18,.85);border:1px solid rgba(62,201,167,.08);
+  }
+  .flow-box .fl{font-size:10px;color:rgba(200,221,210,.3);letter-spacing:1px;margin-bottom:4px}
+  .flow-box .fv{font-size:18px;font-weight:800}
+  .flow-box.income .fv{color:#3ec9a7}
+  .flow-box.expense .fv{color:#e85d5d}
+  .flow-box.fixed .fv{color:#c9a63e}
+
+  /* 固定費セクション */
+  .section-title{
+    font-size:12px;font-weight:700;color:rgba(62,201,167,.5);
+    letter-spacing:2px;margin-bottom:12px;padding-bottom:6px;
+    border-bottom:1px solid rgba(62,201,167,.08);
+  }
+
+  .fixed-list{margin-bottom:24px}
+  .fixed-item{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 14px;margin-bottom:6px;border-radius:8px;
+    background:rgba(201,166,62,.03);border:1px solid rgba(201,166,62,.08);
+  }
+  .fixed-item .fi-name{font-size:13px;color:#c9a63e;font-weight:600}
+  .fixed-item .fi-cat{font-size:10px;color:rgba(200,221,210,.3);margin-top:1px}
+  .fixed-item .fi-amount{font-size:14px;font-weight:700;color:#c9a63e}
+  .fixed-item .fi-del{
+    background:none;border:none;color:rgba(232,93,93,.4);cursor:pointer;
+    font-size:16px;margin-left:10px;padding:0 4px;
+  }
+  .fixed-item .fi-del:hover{color:#e85d5d}
+
+  /* 支出リスト */
+  .expense-list{margin-bottom:24px}
+  .expense-day{font-size:11px;color:rgba(200,221,210,.25);margin:14px 0 6px;letter-spacing:1px}
+  .expense-item{
+    display:flex;align-items:center;padding:10px 14px;margin-bottom:4px;
+    border-radius:8px;background:rgba(14,24,18,.85);
+    border:1px solid rgba(62,201,167,.06);transition:border-color .2s;
+  }
+  .expense-item:hover{border-color:rgba(62,201,167,.2)}
+  .ei-cat-dot{
+    width:8px;height:8px;border-radius:50%;margin-right:10px;flex-shrink:0;
+  }
+  .ei-body{flex:1;min-width:0}
+  .ei-name{font-size:13px;color:#e8f0ec;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ei-cat{font-size:10px;color:rgba(200,221,210,.3)}
+  .ei-right{text-align:right;flex-shrink:0;margin-left:12px}
+  .ei-amount{font-size:14px;font-weight:700;color:#e85d5d}
+  .ei-balance{font-size:10px;color:rgba(200,221,210,.2)}
+  .ei-del{
+    background:none;border:none;color:rgba(232,93,93,.3);cursor:pointer;
+    font-size:14px;margin-left:8px;padding:0 2px;
+  }
+  .ei-del:hover{color:#e85d5d}
+
+  /* カテゴリ集計 */
+  .cat-summary{margin-bottom:24px}
+  .cat-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .cat-name{font-size:12px;color:rgba(200,221,210,.5);width:80px;flex-shrink:0;text-align:right}
+  .cat-bar-bg{flex:1;height:8px;background:rgba(62,201,167,.06);border-radius:4px;overflow:hidden}
+  .cat-bar-fill{height:100%;border-radius:4px;transition:width .4s}
+  .cat-amount{font-size:12px;font-weight:700;color:rgba(200,221,210,.5);width:70px;flex-shrink:0}
+
+  /* 入力フォーム */
+  .add-section{
+    position:fixed;bottom:0;left:0;right:0;
+    background:rgba(8,14,10,.97);border-top:1px solid rgba(62,201,167,.1);
+    padding:12px 16px;backdrop-filter:blur(12px);z-index:100;
+  }
+  .add-row{display:flex;gap:6px;max-width:640px;margin:0 auto;align-items:center}
+  .add-row input,.add-row select{
+    padding:8px 10px;border-radius:8px;border:1px solid rgba(62,201,167,.12);
+    background:rgba(14,24,18,.9);color:#e8f0ec;font-size:13px;
+    font-family:inherit;
+  }
+  .add-row input:focus,.add-row select:focus{outline:none;border-color:#3ec9a7}
+  .add-row .in-name{flex:2;min-width:0}
+  .add-row .in-amount{flex:1;min-width:70px}
+  .add-row select{flex:1;min-width:0}
+  .add-btn{
+    padding:8px 14px;border-radius:8px;border:none;
+    background:#3ec9a7;color:#0a1610;font-weight:700;font-size:13px;
+    cursor:pointer;flex-shrink:0;
+  }
+  .add-btn:hover{background:#5dd4b8}
+
+  /* モーダル */
+  .modal-bg{
+    position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;
+    display:none;align-items:center;justify-content:center;
+  }
+  .modal-bg.show{display:flex}
+  .modal{
+    background:#0e1812;border:1px solid rgba(62,201,167,.15);
+    border-radius:14px;padding:24px;width:90%;max-width:400px;
+  }
+  .modal h3{font-size:16px;font-weight:700;color:#e8f0ec;margin-bottom:16px}
+  .modal label{font-size:12px;color:rgba(200,221,210,.4);display:block;margin-bottom:4px;margin-top:12px}
+  .modal input,.modal select{
+    width:100%;padding:10px 12px;border-radius:8px;
+    border:1px solid rgba(62,201,167,.12);background:rgba(14,24,18,.9);
+    color:#e8f0ec;font-size:14px;font-family:inherit;
+  }
+  .modal input:focus,.modal select:focus{outline:none;border-color:#3ec9a7}
+  .modal-btns{display:flex;gap:8px;margin-top:20px}
+  .modal-btns button{
+    flex:1;padding:10px;border-radius:8px;border:none;font-size:14px;
+    font-weight:600;cursor:pointer;
+  }
+  .modal-btns .btn-ok{background:#3ec9a7;color:#0a1610}
+  .modal-btns .btn-cancel{background:rgba(62,201,167,.08);color:rgba(200,221,210,.5)}
+
+  /* タブ */
+  .tabs{display:flex;gap:6px;margin-bottom:20px}
+  .tab{
+    padding:6px 14px;border-radius:8px;border:1px solid rgba(62,201,167,.1);
+    background:rgba(14,24,18,.8);color:rgba(200,221,210,.4);
+    font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;
+  }
+  .tab:hover{border-color:rgba(62,201,167,.25);color:#c8ddd2}
+  .tab.active{background:rgba(62,201,167,.12);border-color:#3ec9a7;color:#3ec9a7}
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="hdr">
+    <h1>Money Tracker</h1>
+    <div class="sub">無駄を消して、必要なところにリソース投下</div>
+    <div class="month-nav">
+      <button onclick="changeMonth(-1)">&lt;</button>
+      <span class="month-label" id="monthLabel"></span>
+      <button onclick="changeMonth(1)">&gt;</button>
+    </div>
+  </div>
+
+  <!-- 残高 -->
+  <div class="balance-card" onclick="editBalance()">
+    <div class="balance-label">BALANCE</div>
+    <div class="balance-amount"><span class="yen">¥</span><span id="balanceDisplay">0</span></div>
+  </div>
+
+  <!-- フロー -->
+  <div class="flow-row">
+    <div class="flow-box income">
+      <div class="fl">INCOME</div>
+      <div class="fv" id="incomeDisplay">¥0</div>
+    </div>
+    <div class="flow-box expense">
+      <div class="fl">EXPENSE</div>
+      <div class="fv" id="expenseDisplay">¥0</div>
+    </div>
+    <div class="flow-box fixed">
+      <div class="fl">FIXED</div>
+      <div class="fv" id="fixedDisplay">¥0</div>
+    </div>
+  </div>
+
+  <!-- タブ -->
+  <div class="tabs">
+    <div class="tab active" data-tab="expenses" onclick="switchTab(this)">支出</div>
+    <div class="tab" data-tab="fixed" onclick="switchTab(this)">固定費</div>
+    <div class="tab" data-tab="category" onclick="switchTab(this)">カテゴリ</div>
+  </div>
+
+  <!-- 支出タブ -->
+  <div id="tab-expenses">
+    <div class="section-title">EXPENSES</div>
+    <div class="expense-list" id="expenseList"></div>
+  </div>
+
+  <!-- 固定費タブ -->
+  <div id="tab-fixed" style="display:none">
+    <div class="section-title">MONTHLY FIXED COSTS</div>
+    <div class="fixed-list" id="fixedList"></div>
+    <div style="text-align:center;margin-top:12px">
+      <button onclick="showFixedModal()" style="padding:8px 20px;border-radius:8px;border:1px solid rgba(201,166,62,.2);background:rgba(201,166,62,.06);color:#c9a63e;font-size:13px;cursor:pointer;font-weight:600">+ 固定費を追加</button>
+    </div>
+  </div>
+
+  <!-- カテゴリタブ -->
+  <div id="tab-category" style="display:none">
+    <div class="section-title">CATEGORY BREAKDOWN</div>
+    <div class="cat-summary" id="catSummary"></div>
+  </div>
+</div>
+
+<!-- 入力バー -->
+<div class="add-section" id="addSection">
+  <div class="add-row">
+    <input class="in-name" id="inName" placeholder="何に使った？" />
+    <input class="in-amount" id="inAmount" type="number" placeholder="¥" />
+    <select id="inCat">
+      <option value="食費">食費</option>
+      <option value="交通">交通</option>
+      <option value="日用品">日用品</option>
+      <option value="趣味">趣味</option>
+      <option value="交際費">交際費</option>
+      <option value="衣服">衣服</option>
+      <option value="美容">美容</option>
+      <option value="学び">学び</option>
+      <option value="仕事">仕事</option>
+      <option value="その他">その他</option>
+    </select>
+    <button class="add-btn" onclick="addExpense()">追加</button>
+  </div>
+</div>
+
+<!-- 残高編集モーダル -->
+<div class="modal-bg" id="balanceModal">
+  <div class="modal">
+    <h3>口座残高を設定</h3>
+    <label>残高（円）</label>
+    <input id="balanceInput" type="number" placeholder="例: 500000" />
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('balanceModal')">キャンセル</button>
+      <button class="btn-ok" onclick="saveBalance()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 固定費追加モーダル -->
+<div class="modal-bg" id="fixedModal">
+  <div class="modal">
+    <h3>固定費を追加</h3>
+    <label>名目</label>
+    <input id="fixedName" placeholder="例: Netflix, 家賃, ジム" />
+    <label>カテゴリ</label>
+    <select id="fixedCat">
+      <option value="住居">住居</option>
+      <option value="通信">通信</option>
+      <option value="サブスク">サブスク</option>
+      <option value="保険">保険</option>
+      <option value="学び">学び</option>
+      <option value="その他">その他</option>
+    </select>
+    <label>月額（円）</label>
+    <input id="fixedAmount" type="number" placeholder="例: 1980" />
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('fixedModal')">キャンセル</button>
+      <button class="btn-ok" onclick="addFixed()">追加</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CAT_COLORS = {
+  '食費':'#3ec9a7','交通':'#6ea8f7','日用品':'#a78bfa','趣味':'#f472b6',
+  '交際費':'#fb923c','衣服':'#c084fc','美容':'#f9a8d4','学び':'#60a5fa',
+  '仕事':'#34d399','その他':'#94a3b8',
+  '住居':'#c9a63e','通信':'#6ea8f7','サブスク':'#a78bfa','保険':'#94a3b8',
+};
+
+let currentMonth = new Date().toISOString().slice(0, 7); // "2026-04"
+
+function getKey(type) { return `money_${type}_${currentMonth}`; }
+function getData(type) { return JSON.parse(localStorage.getItem(getKey(type)) || '[]'); }
+function setData(type, data) { localStorage.setItem(getKey(type), JSON.stringify(data)); }
+function getBalance() { return parseInt(localStorage.getItem(`money_balance_${currentMonth}`) || '0'); }
+function setBalance(v) { localStorage.setItem(`money_balance_${currentMonth}`, v); }
+function getFixedCosts() { return JSON.parse(localStorage.getItem('money_fixed_costs') || '[]'); }
+function setFixedCosts(data) { localStorage.setItem('money_fixed_costs', JSON.stringify(data)); }
+
+function fmt(n) { return Math.abs(n).toLocaleString(); }
+function today() { return new Date().toISOString().slice(0, 10); }
+
+// 月ナビ
+function updateMonthLabel() {
+  const [y, m] = currentMonth.split('-');
+  document.getElementById('monthLabel').textContent = `${y}年${parseInt(m)}月`;
+}
+function changeMonth(d) {
+  const [y, m] = currentMonth.split('-').map(Number);
+  const dt = new Date(y, m - 1 + d, 1);
+  currentMonth = dt.toISOString().slice(0, 7);
+  updateMonthLabel();
+  render();
+}
+
+// 残高
+function editBalance() {
+  document.getElementById('balanceInput').value = getBalance() || '';
+  document.getElementById('balanceModal').classList.add('show');
+  document.getElementById('balanceInput').focus();
+}
+function saveBalance() {
+  const v = parseInt(document.getElementById('balanceInput').value) || 0;
+  setBalance(v);
+  closeModal('balanceModal');
+  render();
+}
+
+// 固定費
+function showFixedModal() {
+  document.getElementById('fixedName').value = '';
+  document.getElementById('fixedAmount').value = '';
+  document.getElementById('fixedModal').classList.add('show');
+  document.getElementById('fixedName').focus();
+}
+function addFixed() {
+  const name = document.getElementById('fixedName').value.trim();
+  const cat = document.getElementById('fixedCat').value;
+  const amount = parseInt(document.getElementById('fixedAmount').value) || 0;
+  if (!name || !amount) return;
+  const costs = getFixedCosts();
+  costs.push({ id: Date.now(), name, cat, amount });
+  setFixedCosts(costs);
+  closeModal('fixedModal');
+  render();
+}
+function deleteFixed(id) {
+  setFixedCosts(getFixedCosts().filter(f => f.id !== id));
+  render();
+}
+
+// 支出
+function addExpense() {
+  const name = document.getElementById('inName').value.trim();
+  const amount = parseInt(document.getElementById('inAmount').value) || 0;
+  const cat = document.getElementById('inCat').value;
+  if (!name || !amount) return;
+  const expenses = getData('expenses');
+  expenses.push({ id: Date.now(), name, amount, cat, date: today() });
+  setData('expenses', expenses);
+  document.getElementById('inName').value = '';
+  document.getElementById('inAmount').value = '';
+  render();
+}
+function deleteExpense(id) {
+  setData('expenses', getData('expenses').filter(e => e.id !== id));
+  render();
+}
+
+// タブ
+function switchTab(el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const tab = el.dataset.tab;
+  document.getElementById('tab-expenses').style.display = tab === 'expenses' ? '' : 'none';
+  document.getElementById('tab-fixed').style.display = tab === 'fixed' ? '' : 'none';
+  document.getElementById('tab-category').style.display = tab === 'category' ? '' : 'none';
+  // 支出タブ以外では入力バーを隠す
+  document.getElementById('addSection').style.display = tab === 'expenses' ? '' : 'none';
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// レンダリング
+function render() {
+  const startBalance = getBalance();
+  const expenses = getData('expenses').sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
+  const fixedCosts = getFixedCosts();
+  const totalFixed = fixedCosts.reduce((s, f) => s + f.amount, 0);
+  const totalExpense = expenses.reduce((s, e) => s + e.amount, 0);
+  const remaining = startBalance - totalExpense - totalFixed;
+
+  // 残高
+  const balEl = document.getElementById('balanceDisplay');
+  balEl.textContent = fmt(remaining);
+  balEl.style.color = remaining >= 0 ? '#e8f0ec' : '#e85d5d';
+
+  // フロー
+  document.getElementById('incomeDisplay').textContent = '¥' + fmt(startBalance);
+  document.getElementById('expenseDisplay').textContent = '-¥' + fmt(totalExpense);
+  document.getElementById('fixedDisplay').textContent = '-¥' + fmt(totalFixed);
+
+  // 支出リスト（日付ごとにグルーピング + 残高推移）
+  const listEl = document.getElementById('expenseList');
+  listEl.innerHTML = '';
+  let runningBalance = startBalance - totalFixed;
+  let lastDate = '';
+
+  expenses.forEach(e => {
+    if (e.date !== lastDate) {
+      lastDate = e.date;
+      const dayEl = document.createElement('div');
+      dayEl.className = 'expense-day';
+      const d = new Date(e.date);
+      dayEl.textContent = `${d.getMonth()+1}/${d.getDate()} (${['日','月','火','水','木','金','土'][d.getDay()]})`;
+      listEl.appendChild(dayEl);
+    }
+    runningBalance -= e.amount;
+    const color = CAT_COLORS[e.cat] || '#94a3b8';
+    const div = document.createElement('div');
+    div.className = 'expense-item';
+    div.innerHTML = `
+      <div class="ei-cat-dot" style="background:${color}"></div>
+      <div class="ei-body">
+        <div class="ei-name">${esc(e.name)}</div>
+        <div class="ei-cat">${e.cat}</div>
+      </div>
+      <div class="ei-right">
+        <div class="ei-amount">-¥${fmt(e.amount)}</div>
+        <div class="ei-balance">残 ¥${fmt(runningBalance)}</div>
+      </div>
+      <button class="ei-del" onclick="deleteExpense(${e.id})">×</button>
+    `;
+    listEl.appendChild(div);
+  });
+
+  if (expenses.length === 0) {
+    listEl.innerHTML = '<div style="text-align:center;color:rgba(200,221,210,.2);padding:32px;font-size:13px">まだ支出がない</div>';
+  }
+
+  // 固定費リスト
+  const fixedEl = document.getElementById('fixedList');
+  fixedEl.innerHTML = '';
+  fixedCosts.forEach(f => {
+    const div = document.createElement('div');
+    div.className = 'fixed-item';
+    div.innerHTML = `
+      <div>
+        <div class="fi-name">${esc(f.name)}</div>
+        <div class="fi-cat">${f.cat}</div>
+      </div>
+      <div style="display:flex;align-items:center">
+        <span class="fi-amount">-¥${fmt(f.amount)}</span>
+        <button class="fi-del" onclick="deleteFixed(${f.id})">×</button>
+      </div>
+    `;
+    fixedEl.appendChild(div);
+  });
+
+  // カテゴリ集計
+  const catMap = {};
+  expenses.forEach(e => { catMap[e.cat] = (catMap[e.cat] || 0) + e.amount; });
+  fixedCosts.forEach(f => { catMap[f.cat] = (catMap[f.cat] || 0) + f.amount; });
+  const catEntries = Object.entries(catMap).sort((a, b) => b[1] - a[1]);
+  const maxCat = catEntries.length > 0 ? catEntries[0][1] : 1;
+
+  const catEl = document.getElementById('catSummary');
+  catEl.innerHTML = '';
+  catEntries.forEach(([cat, amount]) => {
+    const color = CAT_COLORS[cat] || '#94a3b8';
+    const pct = (amount / maxCat * 100).toFixed(0);
+    catEl.innerHTML += `
+      <div class="cat-bar-row">
+        <div class="cat-name">${cat}</div>
+        <div class="cat-bar-bg"><div class="cat-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+        <div class="cat-amount" style="color:${color}">¥${fmt(amount)}</div>
+      </div>
+    `;
+  });
+
+  if (catEntries.length === 0) {
+    catEl.innerHTML = '<div style="text-align:center;color:rgba(200,221,210,.2);padding:32px;font-size:13px">データなし</div>';
+  }
+}
+
+function esc(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+// Enterキーで追加
+document.getElementById('inAmount').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') addExpense();
+});
+document.getElementById('balanceInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') saveBalance();
+});
+document.getElementById('fixedAmount').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') addFixed();
+});
+
+// モーダル外クリックで閉じる
+document.querySelectorAll('.modal-bg').forEach(m => {
+  m.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('show');
+  });
+});
+
+// 初期化
+updateMonthLabel();
+render();
+</script>
+</body>
+</html>

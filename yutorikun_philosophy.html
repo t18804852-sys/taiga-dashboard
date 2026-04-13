@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ゆとりくん（片石貴展）思考・哲学マップ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap');
+  :root{--bg:#0d0b08;--panel:rgba(20,16,10,0.88);--panel-border:rgba(255,200,60,0.15);--accent:#ffc83c;--accent2:#ffe066;--accent3:#ff6b4a;--accent4:#00b4dc;--accent5:#00c896;--accent6:#c084fc;--text:#c8b898;--text-dim:#6a5c48;--text-bright:#f0e8d8;--glow:rgba(255,200,60,0.3)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-weight:300;line-height:1.8;overflow-x:hidden}
+  body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 25% 45%,rgba(255,200,60,0.03)0%,transparent 50%),radial-gradient(ellipse at 75% 55%,rgba(255,107,74,0.02)0%,transparent 50%);pointer-events:none;z-index:0}
+  .container{max-width:1200px;margin:0 auto;padding:40px 20px;position:relative;z-index:1}
+  .hero{text-align:center;padding:60px 0 50px;position:relative}
+  .hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(255,200,60,0.08)0%,transparent 70%);border-radius:50%;animation:pulse 4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:translate(-50%,-50%)scale(1);opacity:.5}50%{transform:translate(-50%,-50%)scale(1.2);opacity:1}}
+  .hero-label{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:6px;color:var(--accent);text-transform:uppercase;opacity:.7;margin-bottom:12px}
+  .hero h1{font-size:36px;font-weight:900;color:var(--text-bright);letter-spacing:4px;margin-bottom:8px}
+  .hero .sub{font-size:14px;color:var(--text-dim);max-width:700px;margin:0 auto}
+  .hero .date{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--text-dim);margin-top:16px;letter-spacing:3px}
+  .section{margin-bottom:48px}
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:8px;border-bottom:1px solid var(--panel-border)}
+  .section-num{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--accent);opacity:.5;min-width:30px}
+  .section-title{font-size:18px;font-weight:700;color:var(--text-bright);letter-spacing:2px}
+  .section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--panel-border),transparent)}
+  .panel{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden}
+  .panel::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--accent),transparent);opacity:.5}
+  .panel.orange::before{background:linear-gradient(180deg,var(--accent3),transparent)}
+  .panel.cyan::before{background:linear-gradient(180deg,var(--accent4),transparent)}
+  .panel.green::before{background:linear-gradient(180deg,var(--accent5),transparent)}
+  .panel.purple::before{background:linear-gradient(180deg,var(--accent6),transparent)}
+  .panel-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;opacity:.7}
+  .panel.orange .panel-label{color:var(--accent3)}.panel.cyan .panel-label{color:var(--accent4)}.panel.green .panel-label{color:var(--accent5)}.panel.purple .panel-label{color:var(--accent6)}
+  .panel h3{font-size:20px;font-weight:700;color:var(--text-bright);margin-bottom:12px}
+  .panel p{margin-bottom:10px;font-size:14px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}.hero h1{font-size:24px}}
+  .tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;margin:3px}
+  .tag.gold{background:rgba(255,200,60,0.15);color:#ffc83c;border:1px solid rgba(255,200,60,0.3)}
+  .tag.orange{background:rgba(255,107,74,0.15);color:#ff6b4a;border:1px solid rgba(255,107,74,0.3)}
+  .tag.cyan{background:rgba(0,180,220,0.15);color:#00b4dc;border:1px solid rgba(0,180,220,0.3)}
+  .tag.green{background:rgba(0,200,150,0.15);color:#00c896;border:1px solid rgba(0,200,150,0.3)}
+  .tag.purple{background:rgba(192,132,252,0.15);color:#c084fc;border:1px solid rgba(192,132,252,0.3)}
+  .tag.red{background:rgba(255,68,68,0.15);color:#ff4444;border:1px solid rgba(255,68,68,0.3)}
+  .quote{border-left:2px solid var(--accent);padding:12px 20px;margin:16px 0;background:rgba(255,200,60,0.03);font-size:15px;color:var(--text-bright)}
+  .quote.orange{border-left-color:var(--accent3);background:rgba(255,107,74,0.03)}
+  .quote.cyan{border-left-color:var(--accent4);background:rgba(0,180,220,0.03)}
+  .quote.green{border-left-color:var(--accent5);background:rgba(0,200,150,0.03)}
+  .hl{color:var(--accent);font-weight:500}.hl3{color:var(--accent3);font-weight:500}.hl4{color:var(--accent4);font-weight:500}.hl5{color:var(--accent5);font-weight:500}.hl6{color:var(--accent6);font-weight:500}
+  .formula{background:rgba(255,200,60,0.05);border:1px solid rgba(255,200,60,0.15);border-radius:6px;padding:16px 20px;margin:10px 0;font-family:'Orbitron','Noto Sans JP',sans-serif;font-size:13px;color:var(--accent);text-align:center;letter-spacing:1px}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--panel-border),transparent);margin:48px 0}
+  .summary-box{background:linear-gradient(135deg,rgba(255,200,60,0.08),rgba(255,107,74,0.05));border:1px solid rgba(255,200,60,0.2);border-radius:12px;padding:36px;text-align:center;margin:40px 0}
+  .summary-box h2{font-size:22px;font-weight:700;color:var(--text-bright);margin-bottom:16px}
+  .summary-box p{font-size:15px;color:var(--text);max-width:700px;margin:0 auto 12px}
+  .element-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;padding:16px;text-align:center;position:relative;overflow:hidden}
+  .element-card .num{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--accent);opacity:.3;position:absolute;top:8px;right:12px}
+  .element-card .name{font-size:16px;font-weight:700;color:var(--text-bright);margin-bottom:6px}
+  .element-card .desc{font-size:11px;color:var(--text-dim);line-height:1.5}
+  .rule-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .rule-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;opacity:.5}
+  .rule-card .rule-num{font-family:'Orbitron',sans-serif;font-size:40px;font-weight:900;position:absolute;top:12px;right:16px;opacity:.08;color:var(--accent)}
+  .rule-card .rule-tag{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;opacity:.7}
+  .rule-card h3{font-size:18px;font-weight:700;color:var(--text-bright);margin-bottom:10px}
+  .rule-card p{font-size:13px;margin-bottom:8px}
+  .rule-card .connect{background:rgba(0,180,220,0.05);border:1px solid rgba(0,180,220,0.12);border-radius:6px;padding:12px 16px;margin-top:12px;font-size:12px}
+  .rule-card .connect-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--accent4);margin-bottom:4px}
+  details{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+  details summary{padding:16px 20px;cursor:pointer;font-size:15px;font-weight:700;color:var(--text-bright);display:flex;align-items:center;gap:10px;list-style:none;user-select:none;transition:background .2s}
+  details summary::-webkit-details-marker{display:none}
+  details summary::before{content:'▸';font-size:12px;color:var(--accent);transition:transform .2s;flex-shrink:0}
+  details[open] summary::before{transform:rotate(90deg)}
+  details summary:hover{background:rgba(255,200,60,0.04)}
+  details .toggle-content{padding:0 20px 20px;font-size:13px;line-height:1.8}
+  details .toggle-content p{margin-bottom:8px}
+  .compare-table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0}
+  .compare-table th{background:rgba(255,200,60,0.08);color:var(--accent);padding:10px 12px;text-align:left;font-weight:500;font-size:11px;border-bottom:1px solid var(--panel-border)}
+  .compare-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:top}
+  .compare-table tr:hover td{background:rgba(255,200,60,0.03)}
+
+  @media (max-width: 600px) {
+    body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+    .container, .c, [class*="container"] { padding-left: 12px !important; padding-right: 12px !important; max-width: 100% !important; }
+    p, li, td, th, span, div, a, label { font-size: max(12px, inherit) !important; }
+    h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+    h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+    h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+    .grid-2, .grid-3, [class*="grid"] { grid-template-columns: 1fr !important; }
+    [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    .rule-card { padding: 16px !important; }
+    html, body { overflow-x: hidden !important; }
+    * { max-width: 100vw; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-label">Capitalism Game Theory</div>
+    <h1>ゆとりくん<br>思考 &times; 哲学マップ</h1>
+    <div class="sub">片石貴展（yutori代表）の資本主義観・経営哲学・カード交換ゲーム理論。YouTube 4本 + インタビュー記事から抽出し、Taigaの文脈に接続。</div>
+    <div class="date">EXTRACTED 2026.04.12 &mdash; FOR TAIGA</div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 01. プロフィール -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">01</span><span class="section-title">片石貴展 &mdash; プロフィール</span><span class="section-line"></span></div>
+
+    <div class="panel">
+      <div class="panel-label">IDENTITY</div>
+      <h3>ゆとりくん / 片石貴展</h3>
+      <p><span class="hl">1993年生まれ</span>（Taigaの9歳上）。神奈川県出身。株式会社yutori代表取締役社長。</p>
+      <p>2018年（24歳）、Instagram「古着女子」で<span class="hl">初期投資0円</span>起業。2023年12月（30歳）、<span class="hl">東証グロース市場上場</span>（アパレル史上最年少）。35以上のブランドを運営。平均社員年齢25歳・180人組織。</p>
+      <p>著書『若者帝国 &mdash; 好きな人たちと、好きなことに熱狂して働く』（KADOKAWA）</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="element-card">
+        <div class="num">0</div>
+        <div class="name">初期投資0円</div>
+        <div class="desc">Instagramアカウント1つから。お金カードなしでゲーム開始</div>
+      </div>
+      <div class="element-card">
+        <div class="num">30</div>
+        <div class="name">最年少上場</div>
+        <div class="desc">資本金10万 &rarr; 東証グロース。5年で年商43億</div>
+      </div>
+      <div class="element-card">
+        <div class="num">35+</div>
+        <div class="name">ブランド数</div>
+        <div class="desc">1つを大きくするのではなくコンパクトに複数展開。新陳代謝で回す</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 02. 核心思想 -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">02</span><span class="section-title">核心思想 &mdash; 資本主義はゲーム</span><span class="section-line"></span></div>
+
+    <div class="summary-box" style="margin-top:0;">
+      <h2>&ldquo;勝たないと意味がない。勝ってこそ、<br>自分たちの考え方が正当化される。<br>資本主義って、そういうゲームなんで&rdquo;</h2>
+      <p style="margin-top:16px;"><span class="hl">GOETHE誌インタビュー原文</span> &mdash; 全4動画の裏側にある共通OS</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">CORE BELIEF 1</div>
+        <div class="quote">&ldquo;僕は努力を信仰しない。商売の本質は努力じゃない&rdquo;</div>
+        <p style="margin-top:12px;font-size:13px;">努力信者で商売の本質をつかんでいる人は、あまりいない。タイミング &times; 夢中が努力量に勝る。</p>
+      </div>
+      <div class="panel orange">
+        <div class="panel-label">CORE BELIEF 2</div>
+        <div class="quote orange">&ldquo;努力は夢中に勝てない&rdquo;</div>
+        <p style="margin-top:12px;font-size:13px;">夢中な人間は寝てる時間以外全部そこにいる。努力で追いつける量じゃない。好きだから熱狂が止まらない状態が最強の燃料。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 03. 6ルール -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">03</span><span class="section-title">資本主義のゲーム &mdash; 6つのルール</span><span class="section-line"></span></div>
+
+    <!-- RULE 1 -->
+    <div class="rule-card" style="border-left:3px solid var(--accent);">
+      <div class="rule-num">01</div>
+      <div class="rule-tag" style="color:var(--accent);">RULE 01 &mdash; TIMING &times; PASSION</div>
+      <h3>勝ち筋は「努力量」ではなく「タイミング &times; 夢中」</h3>
+      <p>コロナ禍のマスク販売が好例。同じ努力でもタイミングが違えば結果は100倍変わる。<span class="hl">「いつやるか」が「どれだけやるか」に勝る</span>。そして待つことも戦略。市場の波を読み取り、正しい瞬間に乗る。</p>
+      <div class="formula">結果 = タイミング &times; 夢中 &gt;&gt; 努力量</div>
+      <div class="connect">
+        <div class="connect-label">TAIGA CONNECTION</div>
+        <p style="margin:0;">夢中は<span class="hl4">燃料</span>（加算の力）。Taigaの脱力は<span class="hl4">到達点</span>（ゼロの状態）。夢中 &rarr; 反復 &rarr; 回路配線 &rarr; 脱力、の順序。同じものではない。</p>
+      </div>
+    </div>
+
+    <!-- RULE 2 -->
+    <div class="rule-card" style="border-left:3px solid var(--accent5);">
+      <div class="rule-num">02</div>
+      <div class="rule-tag" style="color:var(--accent5);">RULE 02 &mdash; CIRCULATION</div>
+      <h3>お金は「稼ぐもの」ではなく「循環させるもの」</h3>
+      <p>お金目的で動くと、お金が入った瞬間に動機が消える。でもお金を循環の媒体として捉えると、入ってきたお金が次の価値を生み、それがさらに循環する。</p>
+      <div class="quote green"><span class="hl5">お金 = 血液。止まったら死ぬ。</span>循環させて次の価値を生み続けるのが本質。</div>
+      <p>ゆとりくんが資本金10万で上場できたのは、お金カードが弱くても他のカード（タイミング &times; 情熱 &times; SNSの波）で勝てることの証明。</p>
+      <div class="connect">
+        <div class="connect-label">TAIGA CONNECTION</div>
+        <p style="margin:0;">帝王学「Netflix超えて嬉し泣き」がゴールなら、お金は手段。お金を循環させて仲間の才能を開花させる = <span class="hl4">従旺格の山（戊）として土台を提供し続ける構造</span>。</p>
+      </div>
+    </div>
+
+    <!-- RULE 3 -->
+    <div class="rule-card" style="border-left:3px solid var(--accent3);">
+      <div class="rule-num">03</div>
+      <div class="rule-tag" style="color:var(--accent3);">RULE 03 &mdash; SUBTRACTION</div>
+      <h3>やらないことを決める仕組み化（引き算のゲーム）</h3>
+      <p>MEGUMI回の核心。面白い商品は<span class="hl3">「真面目に考えても生まれない」</span>。ラフに話す中で生まれたアイデアの方が有効。</p>
+      <p>やることを増やすゲームじゃなくて、<span class="hl3">やらないことを仕組みで排除して、残った領域に全リソースを注ぐ</span>ゲーム。MEGUMIの「直感が時代を引き寄せる」理由 = 引き算でノイズを消した結果、本質的な信号だけが見えるようになる。</p>
+      <div class="connect">
+        <div class="connect-label">TAIGA CONNECTION</div>
+        <p style="margin:0;"><span class="hl4">結果起点I/O（まなと）の引き算版</span>。やることを逆算するだけじゃなく、やらないことを仕組みで先に排除する。龍高星の「面白そう &rarr; 飛び込む」衝動に対して「これはやらない」のフィルターを設計で置く。</p>
+      </div>
+    </div>
+
+    <!-- RULE 4 -->
+    <div class="rule-card" style="border-left:3px solid var(--accent4);">
+      <div class="rule-num">04</div>
+      <div class="rule-tag" style="color:var(--accent4);">RULE 04 &mdash; BIRD'S EYE</div>
+      <h3>「現場が正しい」は逃げ。俯瞰が勝つ。</h3>
+      <p>TBS Bloomberg回の核心。現場主義は心地いいけど、それは目の前の問題を解くだけで全体最適にはならない。</p>
+      <div class="quote cyan"><span class="hl4">「ビビってる経営者多すぎ」</span> &mdash; 現場に逃げる経営者は設計を放棄してる。俯瞰的視点を持って全体を設計できる人間がゲームを制する。</div>
+      <div class="connect">
+        <div class="connect-label">TAIGA CONNECTION</div>
+        <p style="margin:0;"><span class="hl4">望遠鏡と顕微鏡の理論と同構造</span>。「宇宙視座で考え目の前を狂気的に実行」= 現場（顕微鏡）に逃げずに俯瞰（望遠鏡）を持つ。</p>
+      </div>
+    </div>
+
+    <!-- RULE 5 -->
+    <div class="rule-card" style="border-left:3px solid var(--accent6);">
+      <div class="rule-num">05</div>
+      <div class="rule-tag" style="color:var(--accent6);">RULE 05 &mdash; COGNITIVE FILTER</div>
+      <h3>口癖がゲームの入口を決める</h3>
+      <p><span class="hl6">「どうせ無理」は認知フィルター</span>。この口癖が走ると、脳が「無理な理由」を自動収集し始める。結果、チャンスの入口が閉じる。</p>
+      <div class="formula">運がいい人の正体 = 気づきの総量が多い人 = フィルターが開いてる人</div>
+      <p>口癖は無意識の言語化。「どうせ無理」が走ると、認知の入口（felt sense）自体が歪む。運は能力じゃなくて知覚の問題。</p>
+      <div class="connect">
+        <div class="connect-label">TAIGA CONNECTION</div>
+        <p style="margin:0;"><span class="hl4">言語化の定義と直結</span>。言語化能力が上がる = 自分の口癖 = 無意識の出力を監査できるようになる。felt senseの質が上がれば、気づきの総量が増える。</p>
+      </div>
+    </div>
+
+    <!-- RULE 6 -->
+    <div class="rule-card" style="border-left:3px solid var(--accent);border-right:3px solid var(--accent);">
+      <div class="rule-num">06</div>
+      <div class="rule-tag" style="color:var(--accent);">RULE 06 &mdash; META GAME</div>
+      <h3>自分が勝つんじゃなくて、勝てる環境を作る</h3>
+      <div class="quote">&ldquo;僕はクリエイターではない。才能を持ってる人がそれを発揮できる環境を作るのが仕事&rdquo;</div>
+      <p><span class="hl">「臆病な秀才の最初のきっかけを創る」「ハグレモノをツワモノに」</span>。プレイヤーとして勝つゲームじゃなく、プレイヤーが勝てるフィールドを設計するメタゲーム。</p>
+      <p>マネジメント禁止、プロデュース重視。作り手に主権を持たせて試行錯誤させる。成長しないブランドは撤退（Yリーグ制度）。</p>
+      <div class="connect">
+        <div class="connect-label">TAIGA CONNECTION</div>
+        <p style="margin:0;"><span class="hl4">Prestige戦略の完成形</span>。「答えを渡さず問いを渡す」のさらに先。問いすら渡さず、勝てる環境そのものを設計する。ただしTaigaは前線プレイヤー兼設計者のデュアル構造が正解。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 04. カード交換ゲーム -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">04</span><span class="section-title">カード交換ゲーム理論</span><span class="section-line"></span></div>
+
+    <div class="panel">
+      <div class="panel-label">GAME BOARD</div>
+      <h3>資本主義 = カード交換で手札の総価値を上げるゲーム</h3>
+      <p>プレイヤーは手持ちのカード（時間・スキル・人脈・お金・信用・情熱）を交換しながら手札の総価値を上げていく。<span class="hl">何を何と交換するかの判断</span>がゲームを決める。努力量じゃなくて<span class="hl">判断精度</span>。</p>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <div class="panel-label">YUTORIKUN'S PLAY</div>
+      <h3>ゆとりくんの勝ちパターン</h3>
+      <p>2018年、24歳。手札は：お金カード = <span class="hl3">ほぼゼロ</span>。でも<span class="hl">タイミングカード</span>（Instagram &times; 古着 &times; Z世代の波）を正確に切った。弱いカードで戦わず、強いカードを正しい瞬間に切ることで、0円から上場まで到達。</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="panel cyan">
+      <div class="panel-label">TAIGA'S HAND &mdash; AGE 23</div>
+      <h3>Taigaの手札（23歳現在）</h3>
+      <table class="compare-table">
+        <tr><th style="width:20%">カード</th><th style="width:15%">強さ</th><th>詳細</th></tr>
+        <tr><td><span class="hl">時間</span></td><td><span class="hl" style="font-weight:700;">最大</span></td><td>23歳。ゆとりくんより9年分多い。複利が最も長く効くカード。</td></tr>
+        <tr><td><span class="hl4">スキル</span></td><td><span class="hl4" style="font-weight:700;">レア</span></td><td>構造分解力・3D認知（56.3）・メタ認知・計算力（128.80）。替えが効かないカード。</td></tr>
+        <tr><td><span class="hl5">人脈</span></td><td><span class="hl5" style="font-weight:700;">高質</span></td><td>まなとくん・ゆとりくん・チームメンバー。質が高い。量はこれから。</td></tr>
+        <tr><td><span class="hl3">お金</span></td><td><span class="hl3" style="font-weight:700;">少</span></td><td>まだ少ない。でもゆとりくんも0円スタートだった。</td></tr>
+        <tr><td><span class="hl6">信用</span></td><td><span class="hl6" style="font-weight:700;">構築中</span></td><td>帝王学の成果が出ればここが急拡大する。</td></tr>
+        <tr><td><span class="hl">情熱</span></td><td><span class="hl" style="font-weight:700;">十分</span></td><td>「クリエイティブで日本を守る」。VISION確定済み。燃料は足りてる。</td></tr>
+      </table>
+    </div>
+
+    <div class="summary-box">
+      <h2>23歳の問い</h2>
+      <p>&ldquo;どう結果を出すか&rdquo; ではなく<br><span class="hl" style="font-size:18px;">&ldquo;今持ってるカードの中で、何を何に交換するのが最もレートが高いか&rdquo;</span></p>
+      <div class="formula" style="font-size:14px;margin-top:16px;">最適交換 = まなとの逆算思考 &times; ゆとりくんのタイミング感覚 &times; Taigaの構造分解力</div>
+      <p style="margin-top:16px;">23歳の1時間の学びは、35歳の1時間より複利が長く効く。<br>「時間」を「目先のお金」に交換するのはレートが悪い。<br>「時間」を「スキル &times; 人脈 &times; 信用」に交換するのが今のフェーズの最高レート。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 05. 経営哲学の補足 -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">05</span><span class="section-title">経営哲学 &mdash; 補足</span><span class="section-line"></span></div>
+
+    <details>
+      <summary><span class="tag gold">熱狂</span> 「好きな人と好きなことに熱狂して働く」</summary>
+      <div class="toggle-content">
+        <div class="quote">&ldquo;好きなことを好きな人と一緒にしたいという気持ちが強くて。それが人生で一番幸せなことだと思うんです。でも儲けないと続けられないから、そのために常に戦略的でいます&rdquo;</div>
+        <p>熱狂と戦略は矛盾しない。熱狂が方向を決め、戦略がその方向を最短距離で走らせる。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="tag orange">新陳代謝</span> コンパクトブランドの複数展開</summary>
+      <div class="toggle-content">
+        <p>ひとつのブランドを大きくするのではなく、<span class="hl3">コンパクトなサイズのブランドをいくつも展開</span>する。D2Cの利点を最大化し、変化への対応力を高める。</p>
+        <p>成長しないブランドは撤退（Yリーグ制度）。<span class="hl3">「成功体験にしがみついていては従来のアパレル会社と同じ」</span>。新陳代謝がこのゲームの生存条件。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="tag cyan">組織</span> 終身雇用 &times; 平均年齢25歳</summary>
+      <div class="toggle-content">
+        <p>「令和にスポ根」と言われるマネジメント。平均年齢25歳の若い組織で終身雇用を推奨。</p>
+        <p>「臆病でも不器用でも、好きなことがあるならやってみよう」 &mdash; <span class="hl4">臆病な秀才の最初のきっかけを創る。ハグレモノをツワモノに。</span></p>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="tag green">初期衝動</span> Z世代の「やりたい」を最優先</summary>
+      <div class="toggle-content">
+        <p>マネジメント禁止、プロデュース重視。作り手に主権を持たせ、試行錯誤させる。Z世代の<span class="hl5">初期衝動</span>が持つエネルギーを管理で殺さない。</p>
+        <p>「今、手が届かないことへの憧憬より、身近で楽しめることが求められている時代」 &mdash; ユーザーが「自分たちでトレンドを作り出している」意識を理解する。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="tag purple">現実主義</span> 父からの教育と起業観</summary>
+      <div class="toggle-content">
+        <p>父が中小企業経営者。「会社なんて興すもんじゃない」という教育。起業に対してロマンティズムなし、<span class="hl6">徹底した現実認識</span>から入っている。</p>
+        <p>お金という言語を使ってゆとり世代の価値観を大人たちに語りかける。三位一体 = リアリズム &times; 哲学 &times; 実行力。</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 06. 構造的違い -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">06</span><span class="section-title">ゆとりくん &times; Taiga &mdash; 構造的違い</span><span class="section-line"></span></div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">YUTORIKUN</div>
+        <h3>裏方 &times; 環境設計者</h3>
+        <p>「僕はクリエイターではない」宣言。才能ある人間がそれを発揮できるフィールドを設計する。自分は前に出ない。</p>
+        <p><span class="tag gold">メタゲーマー</span> <span class="tag green">Prestige純粋型</span></p>
+      </div>
+      <div class="panel orange">
+        <div class="panel-label">TAIGA</div>
+        <h3>前線プレイヤー &times; フィールド設計</h3>
+        <p>龍高星 &times; 支配者外向 = 前に出て探求する天然。でも帝王学は環境設計も要求する。両方を同時にやるデュアル構造が正解。</p>
+        <p><span class="tag orange">プレイヤー兼設計者</span> <span class="tag cyan">Prestige移行中</span></p>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <div class="panel-label">KEY DIFFERENCE</div>
+      <h3>コピーじゃなくて翻訳</h3>
+      <p>ゆとりくんの哲学をそのままコピーすると、Taigaの天性（龍高星の探求 &times; 前に出る突破力）が死ぬ。<span class="hl">取るべきは「哲学の構造」であって「ポジション」じゃない</span>。</p>
+      <p>悟空は裏方にはならない。<span class="hl3">戦いながら仲間を育てる</span>。帝王学の16項目がまさにこのデュアル構造を要求してる。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- FOOTER -->
+  <!-- ========================================== -->
+  <div class="divider"></div>
+
+  <div class="panel" style="text-align:center;border-color:rgba(255,200,60,0.08);">
+    <div class="panel-label">SOURCES</div>
+    <p style="font-size:12px;color:var(--text-dim);margin:0;">
+      YouTube: ゆとりくんch &times; MEGUMI「やらないことを決める仕組み化」 / ゆとりくんch「どうせ無理は危険信号」 / TBS Bloomberg「令和の生存戦略・若者帝国」 / ゆとりくんch「引き寄せの本質・お金を循環させる力」<br>
+      GOETHE誌「アパレル不況でも年商17億超え」 / THE21「僕は努力を信仰しない」 / Woman type「努力は夢中に勝てない」
+    </p>
+  </div>
+
+</div>
+</body>
+</html>

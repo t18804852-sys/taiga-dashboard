@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>まなとを超える戦略書</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#0a0808;color:#d4cbc4;
+  font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;
+  font-size:12.5px;line-height:1.7;overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse at 20% 0%,rgba(196,30,58,.06) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 100%,rgba(212,160,23,.04) 0%,transparent 50%);
+}
+::selection{background:rgba(196,30,58,.35);color:#fff}
+.container{max-width:860px;margin:0 auto;padding:24px 16px 48px}
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.25,.46,.45,.94)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+.header{text-align:center;padding:60px 24px 48px;border-bottom:1px solid rgba(196,30,58,.25);margin-bottom:36px;position:relative}
+.header::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:3px;background:linear-gradient(90deg,transparent,#c41e3a,transparent)}
+.header-tag{font-size:10px;letter-spacing:6px;color:#c41e3a;margin-bottom:12px}
+.header h1{font-size:26px;font-weight:900;color:#e8ddd4;letter-spacing:2px;margin-bottom:6px}
+.header .sub{font-size:12px;color:#8a7e74;letter-spacing:1px;margin-bottom:24px}
+.header-quote{background:linear-gradient(135deg,rgba(26,20,20,.95),rgba(18,14,14,.95));border:1px solid rgba(196,30,58,.2);border-left:3px solid #c41e3a;padding:16px 20px;max-width:660px;margin:0 auto;font-size:13px;line-height:1.9;color:#c9b896}
+
+.ch{background:linear-gradient(135deg,#120e0e,#1a1414);border:1px solid rgba(196,30,58,.12);border-left:3px solid #c41e3a;border-radius:5px;padding:24px 24px 20px;margin-bottom:22px;position:relative}
+.ch:hover{border-color:rgba(196,30,58,.25)}
+.ch-num{font-size:10px;letter-spacing:3px;color:#c41e3a;opacity:.7;margin-bottom:3px}
+.ch-title{font-size:17px;font-weight:800;color:#e8ddd4;margin-bottom:3px;letter-spacing:1px}
+.ch-sub{font-size:11.5px;color:#8a7e74;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.05)}
+.ch.gold{border-left-color:#d4a017;background:linear-gradient(135deg,#0f0d08,#1a1610)}
+.ch.gold .ch-num{color:#d4a017}
+
+.sh{font-size:12.5px;font-weight:700;color:#d4a017;margin:16px 0 8px;display:flex;align-items:center;gap:6px}
+.sh::before{content:'';width:10px;height:1px;background:#d4a017;flex-shrink:0}
+
+table{width:100%;border-collapse:collapse;margin:8px 0 12px;font-size:11.5px}
+th{background:rgba(196,30,58,.1);color:#d4a017;text-align:left;padding:7px 10px;font-weight:600;border-bottom:1px solid rgba(196,30,58,.2);font-size:11px}
+td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top}
+tr:hover td{background:rgba(196,30,58,.03)}
+
+ul,ol{margin:6px 0 10px 16px}
+li{margin-bottom:3px}
+li strong{color:#c9b896}
+
+.hl{color:#d4a017;font-weight:600}
+.red{color:#c41e3a;font-weight:600}
+.dim{color:#6a6058}
+
+.qb{background:linear-gradient(135deg,rgba(212,160,23,.06),rgba(139,69,19,.04));border:1px solid rgba(212,160,23,.15);border-left:3px solid #d4a017;padding:12px 16px;margin:10px 0 14px;font-size:12.5px;color:#c9b896}
+.qb .qt{font-style:italic;line-height:1.9;font-size:13px}
+.qb .qm{margin-top:6px;font-style:normal;font-size:11.5px;color:#8a7e74;padding-top:6px;border-top:1px solid rgba(212,160,23,.1)}
+
+/* Raw quote - manato's exact words */
+.raw{background:rgba(212,160,23,.04);border:1px solid rgba(212,160,23,.1);border-radius:4px;padding:12px 16px;margin:8px 0;font-size:12.5px;color:#c9b896;line-height:1.9;position:relative}
+.raw::before{content:'まなと';position:absolute;top:-8px;left:12px;background:#0a0808;padding:0 6px;font-size:9px;letter-spacing:2px;color:#d4a017;font-weight:700}
+
+.cb{background:rgba(196,30,58,.06);border:1px solid rgba(196,30,58,.15);padding:12px 16px;margin:12px 0 4px;border-radius:4px;font-size:12px}
+.cb .label{font-size:10px;letter-spacing:2px;color:#c41e3a;font-weight:700;margin-bottom:4px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+.gcard{background:rgba(18,14,14,.8);border:1px solid rgba(196,30,58,.1);border-radius:5px;padding:14px 16px}
+.gcard h4{font-size:12px;font-weight:700;color:#e8ddd4;margin-bottom:4px}
+.gcard p{font-size:11.5px;line-height:1.6}
+
+.formula{background:#0d0a0a;border:1px solid rgba(212,160,23,.12);border-radius:4px;padding:12px 16px;margin:10px 0;font-family:'SF Mono',monospace;font-size:12px;color:#d4a017;line-height:1.8}
+
+.vs{display:flex;gap:0;margin:10px 0}
+.vs-l,.vs-r{flex:1;padding:12px 14px;border:1px solid rgba(196,30,58,.1);font-size:11.5px}
+.vs-l{border-radius:5px 0 0 5px;background:#1a0d0d}
+.vs-r{border-radius:0 5px 5px 0;background:#0d1a0d}
+.vs-l h4{color:#c44a4a;font-size:11px;margin-bottom:4px}
+.vs-r h4{color:#4ac48a;font-size:11px;margin-bottom:4px}
+.vs-m{display:flex;align-items:center;padding:0 6px;font-size:10px;color:#555;background:#111;border-top:1px solid rgba(196,30,58,.1);border-bottom:1px solid rgba(196,30,58,.1)}
+
+.footer{text-align:center;padding:40px 0 20px;border-top:1px solid rgba(196,30,58,.15);margin-top:16px}
+.footer p{font-size:11px;color:#5a524a;letter-spacing:1px}
+.footer .bar{width:40px;height:2px;margin:12px auto;background:linear-gradient(90deg,transparent,#c41e3a,transparent)}
+
+/* ===== VISUAL ADDITIONS ===== */
+.mountain-svg{width:100%;height:auto;margin:16px 0}
+.vs-bar{margin:12px 0}
+.vs-row{display:flex;align-items:center;gap:8px;margin:6px 0}
+.vs-label{width:100px;font-size:10px;color:#d4a017;text-align:right;flex-shrink:0}
+.vs-track{flex:1;height:18px;background:#1a1414;border-radius:3px;overflow:hidden;display:flex}
+.vs-fill-m{height:100%;background:linear-gradient(90deg,#c41e3a,#ff4466);border-radius:3px 0 0 3px}
+.vs-fill-t{height:100%;background:linear-gradient(90deg,#2d7d9a,#4ac4e8);border-radius:0 3px 3px 0}
+.vs-legend{display:flex;gap:16px;justify-content:center;margin:8px 0;font-size:10px}
+.vs-legend .dot-m{display:inline-block;width:8px;height:8px;border-radius:50%;background:#c41e3a;margin-right:3px;vertical-align:middle}
+.vs-legend .dot-t{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2d7d9a;margin-right:3px;vertical-align:middle}
+.loop{display:flex;align-items:center;justify-content:center;gap:0;margin:20px 0;flex-wrap:wrap}
+.loop-node{background:linear-gradient(135deg,rgba(212,160,23,.08),rgba(212,160,23,.03));border:1px solid rgba(212,160,23,.2);border-radius:8px;padding:12px 14px;text-align:center;min-width:110px}
+.loop-node .icon{font-size:22px;margin-bottom:2px}
+.loop-node .lbl{font-size:11px;font-weight:700;color:#e8ddd4}
+.loop-node .lsub{font-size:9px;color:#8a7e74;margin-top:2px}
+.loop-arrow{font-size:18px;color:#d4a017;padding:0 4px;animation:arrowPulse 1.5s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.3;transform:translateX(0)}50%{opacity:1;transform:translateX(4px)}}
+.timeline{position:relative;padding:0 0 0 24px;margin:16px 0}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#c41e3a,#d4a017)}
+.tl-item{position:relative;margin-bottom:14px;padding-left:20px}
+.tl-item::before{content:'';position:absolute;left:-20px;top:6px;width:10px;height:10px;border-radius:50%;background:#c41e3a;border:2px solid #0a0808}
+.tl-date{font-size:9px;color:#c41e3a;letter-spacing:1px;font-weight:700}
+.tl-text{font-size:12px;color:#c9b896;margin-top:2px;line-height:1.7;font-style:italic}
+.mm-root{text-align:center;padding:10px 20px;background:linear-gradient(135deg,#c41e3a,#8a1528);border-radius:8px;font-size:13px;font-weight:900;color:#fff;display:inline-block;margin:0 auto 10px}
+.mm-branches{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0}
+.mm-branch{background:rgba(18,14,14,.8);border:1px solid rgba(196,30,58,.12);border-radius:6px;padding:12px}
+.mm-branch h4{font-size:12px;font-weight:800;color:#d4a017;margin-bottom:6px}
+.mm-leaf{font-size:11px;color:#c9b896;line-height:1.6}
+.mm-detail{font-size:10px;color:#8a7e74;margin-top:4px;padding-top:4px;border-top:1px solid rgba(255,255,255,.05)}
+.goal-dual{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.goal-card{border-radius:8px;padding:16px;text-align:center}
+.goal-card h3{font-size:14px;font-weight:800;margin-bottom:4px}
+.goal-card p{font-size:11px;line-height:1.6}
+.goal-personal{background:rgba(196,30,58,.06);border:1px solid rgba(196,30,58,.2)}
+.goal-personal h3{color:#c41e3a}
+.goal-team{background:rgba(212,160,23,.06);border:1px solid rgba(212,160,23,.2)}
+.goal-team h3{color:#d4a017}
+/* Gauge bars */
+.gauge{margin:6px 0}
+.gauge-row{display:flex;align-items:center;gap:8px;margin:4px 0}
+.gauge-label{width:140px;font-size:10px;color:#8a7e74;text-align:right;flex-shrink:0}
+.gauge-track{flex:1;height:8px;background:#1a1414;border-radius:4px;overflow:hidden}
+.gauge-fill{height:100%;border-radius:4px;transition:width 1s ease-out}
+.gauge-fill.red{background:linear-gradient(90deg,#c41e3a,#ff4466)}
+.gauge-fill.gold{background:linear-gradient(90deg,#d4a017,#f0d060)}
+.gauge-fill.blue{background:linear-gradient(90deg,#2d7d9a,#4ac4e8)}
+.gauge-fill.green{background:linear-gradient(90deg,#2a9d6a,#4ae88a)}
+/* Icon grid */
+.icon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.icon-card{background:rgba(18,14,14,.8);border:1px solid rgba(196,30,58,.1);border-radius:8px;padding:14px;text-align:center;transition:all .3s}
+.icon-card:hover{border-color:rgba(196,30,58,.3);transform:translateY(-2px)}
+.icon-card .ic-icon{font-size:28px;margin-bottom:4px}
+.icon-card .ic-label{font-size:11px;font-weight:700;color:#e8ddd4}
+.icon-card .ic-sub{font-size:9px;color:#8a7e74;margin-top:2px}
+/* Process flow */
+.process{display:flex;align-items:stretch;gap:0;margin:16px 0}
+.process-step{flex:1;padding:12px 8px;text-align:center;position:relative;background:rgba(18,14,14,.8);border:1px solid rgba(196,30,58,.1)}
+.process-step:first-child{border-radius:8px 0 0 8px}
+.process-step:last-child{border-radius:0 8px 8px 0}
+.process-step .ps-num{font-size:20px;font-weight:900;color:#c41e3a;line-height:1}
+.process-step .ps-label{font-size:10px;font-weight:700;color:#e8ddd4;margin-top:4px}
+.process-step .ps-sub{font-size:9px;color:#8a7e74;margin-top:2px}
+.process-step::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:#d4a017;font-size:16px;z-index:1}
+.process-step:last-child::after{content:''}
+/* Pie-like visual */
+.donut-wrap{display:flex;justify-content:center;margin:12px 0}
+.center-metric{text-align:center;margin:12px 0}
+.center-metric .big{font-size:36px;font-weight:900;line-height:1}
+.center-metric .big.red{color:#c41e3a}
+.center-metric .big.gold{color:#d4a017}
+.center-metric .small{font-size:11px;color:#8a7e74;margin-top:4px}
+@media(max-width:600px){.grid2,.mm-branches,.goal-dual{grid-template-columns:1fr}.container{padding:16px 10px 32px}.loop{flex-direction:column}.loop-arrow{transform:rotate(90deg)}.icon-grid{grid-template-columns:1fr 1fr}.process{flex-direction:column}.process-step::after{content:'↓';right:50%;top:auto;bottom:-10px;transform:translateX(50%)}}
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-tag">SURPASS THE MASTER</div>
+  <h1>まなとを超える戦略書</h1>
+  <div class="sub">世界（市場）→ 競合（まなとを超える）→ 自社（Taiga）→ まなとの教え → センターピン → 心技体</div>
+  <!-- 目標の二重構造 -->
+  <div class="goal-dual">
+    <div class="goal-card goal-personal">
+      <h3>個人目標</h3>
+      <p>まなとくんを超える<br>売上×利益×数字→YouTube力→全額複利投下</p>
+    </div>
+    <div class="goal-card goal-team">
+      <h3>チーム目標</h3>
+      <p>みんなでNetflix超えて最高の景色見て嬉し泣きする<br>まなとくんも一緒に成長させる</p>
+    </div>
+  </div>
+
+  <!-- Mountain Map -->
+  <svg class="mountain-svg" viewBox="0 0 700 220" style="max-width:700px;margin:20px auto 0;display:block">
+    <polygon points="0,220 150,80 300,160 450,30 600,100 700,220" fill="rgba(196,30,58,.05)" stroke="rgba(196,30,58,.12)" stroke-width="1"/>
+    <path d="M50,200 Q150,170 200,155 Q280,130 320,120 Q380,95 420,70 Q460,45 450,30" fill="none" stroke="#d4a017" stroke-width="2" stroke-dasharray="6,4" opacity=".5"/>
+    <circle cx="200" cy="155" r="7" fill="#2d7d9a" stroke="#fff" stroke-width="2"/>
+    <text x="200" y="178" text-anchor="middle" fill="#2d7d9a" font-size="10" font-weight="700">Taiga（今ここ）</text>
+    <circle cx="420" cy="70" r="7" fill="#c41e3a" stroke="#fff" stroke-width="2"/>
+    <text x="420" y="60" text-anchor="middle" fill="#c41e3a" font-size="10" font-weight="700">まなと</text>
+    <text x="450" y="22" text-anchor="middle" fill="#d4a017" font-size="10" font-weight="700">Netflix超え</text>
+    <circle cx="490" cy="45" r="4" fill="#d4a017" opacity=".4"/>
+    <text x="490" y="38" text-anchor="middle" fill="#d4a017" font-size="8" opacity=".5">ゆとりくん</text>
+  </svg>
+</div>
+
+<!-- ===== CHAPTER 3: 市場 ===== -->
+<div class="ch reveal">
+  <div class="ch-num">第一章</div>
+  <div class="ch-title">市場（Market）— 外部環境</div>
+  <div class="ch-sub">YouTube/コンテンツ産業の構造変化</div>
+
+  <!-- Visual: 3つの波 -->
+  <div class="icon-grid">
+    <div class="icon-card"><div class="ic-icon">🤖</div><div class="ic-label">AI爆増</div><div class="ic-sub">制作力の価値↓↓<br>判断構造の価値↑↑</div></div>
+    <div class="icon-card"><div class="ic-icon">📺</div><div class="ic-label">TV化</div><div class="ic-sub">コネクテッドTV 45%<br>放送局型が勝つ</div></div>
+    <div class="icon-card"><div class="ic-icon">🏢</div><div class="ic-label">法人化</div><div class="ic-sub">個人→チーム<br>上位1%に集中</div></div>
+  </div>
+
+  <table>
+    <tr><th>トレンド</th><th>具体</th><th>Taigaへの意味</th></tr>
+    <tr><td class="hl">AI生成コンテンツの爆増</td><td>Sora, Runway等で映像生成コスト1/100に</td><td>「制作能力」の価値暴落。「何を作るか（判断構造）」の価値暴騰</td></tr>
+    <tr><td class="hl">YouTubeのTV化</td><td>コネクテッドTV視聴45%超</td><td>チャンネル単体→複数チャンネルの「放送局」が勝つ</td></tr>
+    <tr><td class="hl">クリエイターの法人化</td><td>MrBeastがIPO級法人に</td><td>「プロ集団」のVISIONは市場の構造変化と合致</td></tr>
+  </table>
+
+  <div class="sh">Netflix超えの定義</div>
+  <div class="formula">
+Netflix = データで需要を読む × 複数ジャンルのポートフォリオ × グローバル配信網
+
+Taiga版 = (まなとの判断構造×AI分析) × (複数チャンネルポートフォリオ) × (YouTubeアルゴリズム)
+  </div>
+  <p>日本でこのポジションを明確に取っているプレイヤーはまだいない。</p>
+
+  <div class="sh">後発が先発を超えた共通パターン</div>
+  <ol>
+    <li><strong>同じ土俵で戦わない</strong> — 先発の強みが無効化される新ルール</li>
+    <li><strong>テクノロジーレバレッジ</strong> — 新技術を先発より早く使い倒す</li>
+    <li><strong>コスト構造の非対称性</strong> — 先発が捨てられないコストを持たない身軽さ</li>
+    <li><strong>再投資ループの速度</strong> — 利益を即再投資して複利で差を広げる</li>
+    <li><strong>定義の書き換え</strong> — 「何で勝つか」のルール自体を変える</li>
+  </ol>
+</div>
+
+<!-- ===== CHAPTER 2: 目的の定義 ===== -->
+<div class="ch reveal">
+  <div class="ch-num">第二章</div>
+  <div class="ch-title">目的 — 「まなとを超える」とは何か</div>
+  <div class="ch-sub">同じ土俵で上回るのではなく、次元を変える</div>
+
+  <!-- Visual: 次元の転換 -->
+  <div class="process">
+    <div class="process-step"><div class="ps-num">×</div><div class="ps-label">同じ土俵</div><div class="ps-sub">1対1で上回る</div></div>
+    <div class="process-step"><div class="ps-num">×</div><div class="ps-label">もっと上手く</div><div class="ps-sub">同じスキルで勝つ</div></div>
+    <div class="process-step"><div class="ps-num">×</div><div class="ps-label">追いつく</div><div class="ps-sub">走って追いかける</div></div>
+    <div class="process-step" style="border-color:rgba(212,160,23,.3)"><div class="ps-num" style="color:#d4a017">◎</div><div class="ps-label" style="color:#d4a017">次元を変える</div><div class="ps-sub">違うゲームをする</div></div>
+  </div>
+
+  <div class="sh">超えた瞬間の定義</div>
+  <p>まなとくんが「俺がいなくてもTaigaのチームは回る。しかも俺が見れる範囲より広い」と認める瞬間。</p>
+
+  <div class="sh">歴史の共通パターン</div>
+  <p>弟子は師匠の「限界」ではなく<span class="red">「前提」を超える</span>。同じ土俵で上回るのではなく、次元を変える。</p>
+  <table>
+    <tr><th>師匠</th><th>弟子</th><th>超えた構造</th></tr>
+    <tr><td>ソクラテス</td><td>プラトン</td><td>口伝→書物（メディア変換）</td></tr>
+    <tr><td>プラトン</td><td>アリストテレス</td><td>理想→現実（抽象→具体の次元転換）</td></tr>
+    <tr><td>アリストテレス</td><td>アレクサンドロス</td><td>知の体系化→帝国経営に実装（知→実行）</td></tr>
+    <tr><td>信長の革新性</td><td>秀吉</td><td>行動ではなく「情報の非対称性を作る」構造を盗んだ。行動をコピーした勝家は滅んだ</td></tr>
+  </table>
+
+  <div class="formula">
+まなとくん = 個人の判断力 × YouTube運用の深さ × Prestige型1対1
+Taiga      = チームの判断力 × 事業ポートフォリオの広さ × システム×AI型1対N
+
+まなとくん = 1本の剣を極めた剣聖
+Taiga      = 剣聖の技を兵法書にして軍を率いる将軍
+  </div>
+</div>
+
+<!-- ===== CHAPTER 4: 競合 ===== -->
+<div class="ch reveal">
+  <div class="ch-num">第二章（続）</div>
+  <div class="ch-title">競合 — まなとくん（激強ライバル）</div>
+  <div class="ch-sub">Taigaが実際に感じている、まなとくんの本当の強さ</div>
+
+  <div class="sh">まなとくんの強さ — Taigaの目線</div>
+  <p style="margin-bottom:8px">簡単に勝てる相手ではない。正直、今の延長線上では勝てない。それが前提。</p>
+
+  <!-- VS Bar Visual -->
+  <div class="vs-legend"><span><span class="dot-m"></span>まなと</span><span><span class="dot-t"></span>Taiga</span></div>
+  <div class="vs-bar">
+    <div class="vs-row"><div class="vs-label">数字を出す力</div><div class="vs-track"><div class="vs-fill-m" style="width:85%"></div><div class="vs-fill-t" style="width:15%"></div></div></div>
+    <div class="vs-row"><div class="vs-label">クリエイティブ力</div><div class="vs-track"><div class="vs-fill-m" style="width:80%"></div><div class="vs-fill-t" style="width:20%"></div></div></div>
+    <div class="vs-row"><div class="vs-label">徹底的な合理性</div><div class="vs-track"><div class="vs-fill-m" style="width:75%"></div><div class="vs-fill-t" style="width:25%"></div></div></div>
+    <div class="vs-row"><div class="vs-label">メンタルの強さ</div><div class="vs-track"><div class="vs-fill-m" style="width:78%"></div><div class="vs-fill-t" style="width:22%"></div></div></div>
+    <div class="vs-row"><div class="vs-label">言語化</div><div class="vs-track"><div class="vs-fill-m" style="width:82%"></div><div class="vs-fill-t" style="width:18%"></div></div></div>
+    <div class="vs-row"><div class="vs-label">感覚のセンス</div><div class="vs-track"><div class="vs-fill-m" style="width:80%"></div><div class="vs-fill-t" style="width:20%"></div></div></div>
+    <div class="vs-row"><div class="vs-label">根底の安定感</div><div class="vs-track"><div class="vs-fill-m" style="width:83%"></div><div class="vs-fill-t" style="width:17%"></div></div></div>
+  </div>
+
+  <table>
+    <tr><th style="width:140px">強み</th><th>Taigaが感じてること</th></tr>
+    <tr><td class="red">数字を出す力</td><td>結果を出す。口だけじゃない。事実を作り続けてきた人間。3ヶ月で編集者→事業700万を実現した実行力</td></tr>
+    <tr><td class="red">クリエイティブ力</td><td>企画・台本・サムネ・編集、全領域を統合的に見れる。101点を出せるクリエイター。AI量産では代替できない次元</td></tr>
+    <tr><td class="red">徹底的な合理性</td><td>こだわりを捨てられる。事実に基づく。感情で判断しない。「楽に結果を出す」を体現してる</td></tr>
+    <tr><td class="red">メンタルの強さ</td><td>40.7℃でも更新を止めない。「死んでも現実を追いつかせる」を本気で言える。根底が揺れない</td></tr>
+    <tr><td class="red">言語化</td><td>感覚を構造にできる。「脱力」という抽象概念を具体的な行動原則8つに落とせる。教えられる</td></tr>
+    <tr><td class="red">感覚のセンス</td><td>データだけじゃない。「こんなん見るしかないって」と嗅覚で面白いものを見つけられる。論理と感覚の両方がある</td></tr>
+    <tr><td class="red">根底の安定感</td><td>ブレない。「関わる人には謙虚に、自分にはとことん傲慢に」が一貫してる。思想が変化しても軸がある</td></tr>
+  </table>
+
+  <div class="cb">
+    <div class="label">現実</div>
+    <span class="red">今のTaigaの延長線上では勝てない。</span><br>
+    同じ土俵で「もっと上手くやる」では追いつけない。追いつく頃にはまなとくんはさらに先にいる。<br>
+    勝ち筋があるとしたら、まなとくんと<strong>同じゲームをしないこと</strong>。次元を変えること。<br>
+    ただし、どこで次元を変えるかはまだ見えていない。これは正直に認める。<br>
+    見えるようになるには、まなとくんの強さの構造をもっと正確に理解する必要がある。
+  </div>
+
+  <div class="sh">さらに厳しい現実</div>
+  <table>
+    <tr><th>要素</th><th>現実</th></tr>
+    <tr><td class="red">まなとの憑依先</td><td>今まなとくんが憑依（モデリング）してるのは<strong>ゆとりくん</strong>（アパレル最年少上場）。どう考えてもTaigaよりレベルが上の人間と会って、構造を吸収し続けてる。差は開く方向にある</td></tr>
+    <tr><td class="red">1人では勝てない</td><td>個人vs個人では勝てる要素がほぼない。知識の数、経験値、人脈、全部負けてる。1人で頑張って追いつく戦略は成立しない</td></tr>
+    <tr><td class="red">知識の量が違う</td><td>まなとくんは上のレベルの人間から構造を取り続けてる。インプットの質と量で差がつく。これは時間が経つほど複利で広がる</td></tr>
+  </table>
+
+  <div class="sh">唯一の隙（感情論ではなく構造として）</div>
+  <table>
+    <tr><th>まなとくんの特性</th><th>構造的に意味すること</th></tr>
+    <tr><td>体調を崩すことがある</td><td>稼働時間に波がある。常時フルスロットルではない</td></tr>
+    <tr><td>他の人と遊びたがる</td><td>リソースの一部が成果に直結しない時間に使われる</td></tr>
+  </table>
+  <p style="margin-top:8px">→ Taigaが<span class="hl">合理でいける部分を徹底的に使う</span>ことで、稼働時間あたりの成果密度で差を詰められる<strong>可能性がある</strong>。ただしこれは「隙」であって「勝ち筋」ではない。まなとくんが遊んでる時間にTaigaが積んだとしても、まなとくんのインプットの質（ゆとりくんレベルの人間からの吸収）が上なら、量で埋まらない。</p>
+
+  <div class="sh">勝ち筋 — まず超えるもの</div>
+  <div class="cb">
+    <div class="label">第一優先</div>
+    <span class="red">売上と利益を出す力 × 数字を出す力 → YouTube力</span><br><br>
+    クリエイティブ力やセンスで勝とうとしない。<br>
+    まず<strong>金を作る → 金を全て成長に複利で投下 → さらに金を作る</strong>。<br>
+    このループを先に回す。
+  </div>
+
+  <!-- 複利ループ図 -->
+  <div class="loop">
+    <div class="loop-node"><div class="icon">💰</div><div class="lbl">売上・利益を出す</div><div class="lsub">YouTube力で数字を作る</div></div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-node"><div class="icon">🔄</div><div class="lbl">全額を成長に投下</div><div class="lsub">人材・AI・ツール・打席数</div></div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-node"><div class="icon">📈</div><div class="lbl">YouTube力が上がる</div><div class="lsub">判断力×チーム力×ch数</div></div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-node"><div class="icon">🔁</div><div class="lbl">さらに売上が出る</div><div class="lsub">複利で加速</div></div>
+  </div>
+
+  <div class="sh">なぜこれが勝ち筋か</div>
+  <table>
+    <tr><th>理由</th><th>構造</th></tr>
+    <tr><td class="hl">金は再投資できる</td><td>センスは複製できないが、金は人・ツール・時間に変換できる。金→人材→成果→金のループが回れば、個人の能力差を仕組みで超えられる</td></tr>
+    <tr><td class="hl">数字は嘘をつかない</td><td>まなとくんの教え「事実に基づく」「数字を出すかにコミット」。感覚やセンスは比較しにくいが、売上と利益は誰が見ても明確</td></tr>
+    <tr><td class="hl">合理でいける領域</td><td>まなとくんが遊んだり体調崩したりする時間、Taigaは合理で金を作る仕組みを回せる。稼働時間あたりの収益密度で差を詰める</td></tr>
+    <tr><td class="hl">YouTube力は金で加速する</td><td>編集者・ディレクター・AI師匠への投資で打席数が増える。打席数＝仮説検証量。まなとくんが「仮説検証の量が全く足りてない」と言ってた。金で打席を買える</td></tr>
+  </table>
+
+  <div class="formula">
+勝ち筋のループ:
+売上・利益を出す → 全額を成長に複利投下 → YouTube力が上がる → さらに売上が出る → ...
+
+まなとくんが「個人の才能×時間」で積み上げてる間に、
+Taigaは「仕組み×金×チーム×時間」で積み上げる。
+
+同じゲームをしない。金のループで次元を変える。
+  </div>
+
+  <div class="sh">勝ち筋以外の仮説（中長期・随時更新）</div>
+  <ul>
+    <li>リソース配分の最適化 — チーム・AI・仕組みで1対1の構図を崩す</li>
+    <li>合理で削れる部分を削る — 同じ成果を少ないリソースで出す</li>
+    <li>知識のルートを変える — AI×多ドメイン統合で「違うルートの知識量」を積む</li>
+    <li>まなとくんの強さの構造を理解し続ける — 勝ち筋は理解の深さから生まれる</li>
+  </ul>
+</div>
+
+<!-- ===== CHAPTER 5: 自社 ===== -->
+<div class="ch reveal">
+  <div class="ch-num">第三章</div>
+  <div class="ch-title">自社（Company）— Taigaのカードと現在地</div>
+  <div class="ch-sub">最大化されてないカード × ボトルネック</div>
+
+  <!-- エンジンの正体 -->
+  <div class="cb" style="border-left:3px solid #c41e3a;background:rgba(196,30,58,.04)">
+    <div class="label">Taigaのエンジンの正体</div>
+    <span class="red">弱肉強食を愛している。</span><br><br>
+    無我夢中で成長し続ける理由はここ。支配者外向のOSの根底にあるもの。<br>
+    コントロール(10)×有能感(9)はこの「弱肉強食への愛」から生まれてる。<br>
+    恐怖じゃない。<span class="hl">好き</span>なんよ。勝負が。競争が。上に登ることが。<br><br>
+    これがTaigaの成長の燃料であり、まなとを超えたいと思う理由の根っこ。<br>
+    脱力は「弱肉強食をやめる」ことではない。<strong>弱肉強食を愛しながら力まない</strong>こと。<br>
+    ライオンは力んで狩りをしない。でも狩りを愛してる。
+  </div>
+
+  <!-- Visual: 5カードの活用度 -->
+  <div class="gauge">
+    <div class="gauge-row"><div class="gauge-label">計算力(128.80)</div><div class="gauge-track"><div class="gauge-fill blue" style="width:30%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">AI師匠システム</div><div class="gauge-track"><div class="gauge-fill blue" style="width:25%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">龍高星の探求力</div><div class="gauge-track"><div class="gauge-fill blue" style="width:20%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">従旺格（土台力）</div><div class="gauge-track"><div class="gauge-fill blue" style="width:35%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">横断知識</div><div class="gauge-track"><div class="gauge-fill blue" style="width:15%"></div></div></div>
+  </div>
+  <p style="text-align:center;font-size:10px;color:#8a7e74;margin:4px 0 12px">▲ 現在の活用度（青が濃いほど使えてる。全部まだ低い）</p>
+
+  <div class="sh">最大化されていないカード5枚</div>
+  <table>
+    <tr><th>カード</th><th>現状</th><th>最大化したら</th></tr>
+    <tr><td class="hl">計算力(128.80)</td><td>まだ感覚で判断してる場面が多い</td><td>全チャンネルのKPIダッシュボード化。まなとにない強み</td></tr>
+    <tr><td class="hl">AI師匠システム</td><td>個人の学習ツールで止まってる</td><td>チーム全員の判断支援システムにすれば10倍</td></tr>
+    <tr><td class="hl">龍高星の探求力</td><td>みさをch1つにしか使ってない</td><td>新ジャンル立ち上げフェーズではまなとより速い。並行で仕掛ける</td></tr>
+    <tr><td class="hl">従旺格（山の土台力）</td><td>「1人で成果出す無意識」がまだ強い</td><td>転換完了の瞬間、組織の成長上限が一気に上がる</td></tr>
+    <tr><td class="hl">全学び統合の横断知識</td><td>台本品質だけに使ってる</td><td>戦略設計・人材育成・事業設計に転用で差別化</td></tr>
+  </table>
+
+  <div class="sh">最大のボトルネック</div>
+  <!-- Visual -->
+  <div class="grid2" style="margin-bottom:8px">
+    <div class="center-metric"><div class="big red">1人分</div><div class="small">Taigaが10時間働いても</div></div>
+    <div class="center-metric"><div class="big gold">100時間分</div><div class="small">委譲できたら10人×10時間</div></div>
+  </div>
+  <div class="cb">
+    <div class="label">「1人で成果出す無意識」</div>
+    Taigaが10時間働いてもTaiga1人分の成果。<br>
+    判断構造を委譲できたら、10人×10時間=100時間分の成果。<br>
+    <span class="red">10倍の差は「能力の差」では絶対に埋められない。仕組みの差でしか生まれない。</span>
+  </div>
+
+  <div class="sh">複利の方程式</div>
+  <div class="formula">
+個人の複利: Taigaの判断力 × (1 + Taigaの成長率)^年数
+チームの複利: チームの判断力 × (1 + 全メンバーの成長率の合計)^年数
+
+まなとが個人戦の複利なら、Taigaはチーム戦の複利で超える。
+  </div>
+</div>
+
+<!-- ===== CHAPTER 1: まなとくんの教え 完全版 ===== -->
+<div class="ch gold reveal">
+  <div class="ch-num">第四章</div>
+  <div class="ch-title">まなとくんの教え — 完全収録</div>
+  <div class="ch-sub">まなとくんがTaigaに直接言った言葉。一言も漏らさず、構造化して収録</div>
+
+  <!-- ===== 0: 直接言われた言葉（原文完全保存） ===== -->
+  <div class="sh">Taigaに直接言った言葉 — 原文完全保存</div>
+  <p style="font-size:11px;color:#8a7e74;margin-bottom:10px">以下はまなとくんがTaigaに直接話した内容。一言も漏らさず原文のまま保存。</p>
+  <div class="raw" style="line-height:2.1;white-space:pre-line">物事を多面的に捉えるための客観がいる
+例えば、人との壁打ちやったり、データを見たり
+合わせるための補助輪である
+
+主観で全体像と解像度を捉えるのだが、ありのままを捉えられない時も存在する
+だから、そこ見るだけ
+
+マラソンかな
+時間投下は大事だけど、投下を目的にしてると
+
+振り返りを永遠にし続ける
+金と時間の無駄
+効率化しすぎても
+リターンあるとこしか
+
+1ヶ月前の意思決定ミス
+バッファが長くなる
+時間軸長くなるほど成長している
+楽に結果出す
+
+努力は苦労して、頑張ろう
+やること洗う
+思考する時間と作業する時間を分ける
+
+盤面整理、これ、これ、これ
+意外と時間かからん
+時間測って
+
+90-300時間
+
+今やってることの時間どれくらい
+
+ストップではかる
+
+今やることをやるほど俯瞰できない
+
+思考、戦略を入れた上でやる
+
+月1で洗い出す
+月2で洗い出す
+
+何をどんな感じでやれるか
+
+全体像になるほど、今後こうなる
+長期の視点で、リソース状況、利益が出るまで置いとく
+条件発火型、期限パターン
+
+大人になっていく
+機会損失を産んでいないか
+
+今やってることっていいのかな？
+これどうよくなるのかな？
+リソース開けなきゃいけない
+意味ないタスク
+
+時間埋めない、楽して稼ご
+
+サムネの数、
+アウトプットって思考量
+
+このタスク必要？任せられる？
+
+人入った瞬間
+売り上げたつと、人入れてもよくね？
+アップロード任せられるくない
+
+何をなるみにまかせるの？
+時間も月どれくらい？
+
+成長って、楽でもいいし、努力でもいいんやな
+投下して、空ける、投下して、空ける
+
+脳の疲労と体の疲労は別
+
+なんのためにそれ？
+労働やめたいだと、質落ちる
+
+どうやっていこう
+
+振り返り
+細部までやりきる
+また同じこと起きてね
+要するに同じじゃねってところをなくす
+できることの広がり
+
+洗い出す
+これどうしたら？を質問
+
+一回からどれくらい学べる
+なぜ？の抽象段階
+
+解決策を人にやってもらうけど、見てる
+知っておく、学ぶ
+
+学び方の質
+
+楽に成長して、楽に成果だそう
+楽とはより最適ってことかな
+柔軟に対応する、問題解決
+全部が売り上げに利益の最大化
+事実に基づく
+こだわりを捨てる
+
+定性はタスク化できない、連携しつつ
+頑固になってないかなーー
+
+クリエイティブにvalue
+新しいところ
+
+数字を出すかにコミット</div>
+
+  <!-- ===== 構造化マインドマップ ===== -->
+  <div class="sh">まなとの教え — マインドマップ</div>
+  <div style="text-align:center"><div class="mm-root">楽に結果を出す = 全ての根底</div></div>
+  <div class="mm-branches">
+    <div class="mm-branch"><h4>🧠 思考</h4><div class="mm-leaf">客観は補助輪 / 一回から学べる量 / なぜ？の深さ / 思考をパクれ / 頑固になってないか</div><div class="mm-detail">学び方の質が成長速度を決める</div></div>
+    <div class="mm-branch"><h4>⏱️ 時間</h4><div class="mm-leaf">マラソン（投下を目的にするな）/ 思考と作業を分ける / ストップウォッチ / 月1〜2で盤面整理 / 時間埋めない</div><div class="mm-detail">90-300時間の全体像を把握</div></div>
+    <div class="mm-branch"><h4>🔄 振り返り</h4><div class="mm-leaf">永遠にやるのは無駄 / リターンあるとこだけ / 細部までやりきる / 同じことをなくす / バッファ短縮＝成長</div><div class="mm-detail">目的は「同じミスをなくす」だけ</div></div>
+    <div class="mm-branch"><h4>📋 委譲</h4><div class="mm-leaf">必要？任せられる？ / 売上立ったら人入れる / 見てるけど任せる / 投下→空ける→投下→空ける</div><div class="mm-detail">リソース開けて次の機会を入れる</div></div>
+    <div class="mm-branch"><h4>🎯 数字</h4><div class="mm-leaf">全部が売上・利益の最大化 / 事実に基づく / 数字にコミット / アウトプット＝思考量 / こだわり捨てる</div><div class="mm-detail">感覚じゃなく事実。数字が全て</div></div>
+    <div class="mm-branch"><h4>💪 メンタル</h4><div class="mm-leaf">なんのためにそれ？ / 逃げの動機で動くな / 脳疲労と体疲労は別 / 機会損失チェック / 楽でも努力でもいい</div><div class="mm-detail">逃げの動機で動くと質が落ちる</div></div>
+  </div>
+
+  <!-- ===== 以下、構造化の詳細 ===== -->
+  <!-- ===== 1-1: 客観と主観 ===== -->
+  <div class="sh">客観と主観 — 物事の捉え方</div>
+  <div class="raw">
+    物事を多面的に捉えるための客観がいる。<br>
+    例えば、人との壁打ちやったり、データを見たり。<br>
+    合わせるための補助輪である。<br><br>
+    主観で全体像と解像度を捉えるのだが、ありのままを捉えられない時も存在する。<br>
+    だから、そこ見るだけ。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    主観が基本。でも主観だけだとありのままが見えない時がある。<br>
+    客観（壁打ち・データ）は「補助輪」。主観の歪みを補正するためだけに使う。<br>
+    客観が主役になったら本末転倒。
+  </div>
+
+  <!-- ===== 1-2: マラソン ===== -->
+  <div class="sh">マラソン — 時間投下の罠</div>
+  <div class="raw">
+    マラソンかな。<br>
+    時間投下は大事だけど、投下を目的にしてると。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    走ること自体が目的になると、どこに向かってるか見えなくなる。<br>
+    時間を使うこと＝頑張ってる、ではない。<br>
+    「何のために走ってるか」が先。走る量は後。
+  </div>
+
+  <!-- ===== 1-3: 振り返り ===== -->
+  <div class="sh">振り返り — やりすぎの罠と本質</div>
+  <div class="raw">
+    振り返りを永遠にし続ける。金と時間の無駄。<br>
+    効率化しすぎても。リターンあるとこしか。<br><br>
+    1ヶ月前の意思決定ミス。バッファが長くなる。<br>
+    時間軸長くなるほど成長している。<br><br>
+    細部までやりきる。また同じこと起きてね。<br>
+    要するに同じじゃねってところをなくす。<br>
+    できることの広がり。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    振り返りは大事だが、永遠にやるのは無駄。リターンがあるところだけ。<br>
+    振り返りの目的は「同じミスを繰り返さない」こと。<br>
+    1ヶ月前のミスに気づけるのは成長してる証拠。バッファ（気づくまでの時間）が短くなるのが成長。<br>
+    細部までやりきる→同じことが起きない→できることが広がる。
+  </div>
+
+  <!-- ===== 1-4: 楽に結果を出す ===== -->
+  <div class="sh">楽に結果を出す</div>
+  <div class="raw">
+    楽に結果出す。<br><br>
+    努力は苦労して、頑張ろう。<br><br>
+    楽に成長して、楽に成果だそう。<br>
+    楽とはより最適ってことかな。<br>
+    柔軟に対応する、問題解決。<br>
+    全部が売り上げに利益の最大化。<br>
+    事実に基づく。<br>
+    こだわりを捨てる。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    「楽」＝サボることではない。「最適」ということ。<br>
+    努力＝苦労ではない。最短で結果に到達すること。<br>
+    こだわりを捨てる。事実だけを見る。全部が売上と利益の最大化に繋がっているか？
+  </div>
+
+  <!-- ===== 1-5: 思考と作業の分離 ===== -->
+  <div class="sh">思考と作業の分離</div>
+  <div class="raw">
+    やること洗う。<br>
+    思考する時間と作業する時間を分ける。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    思考と作業を同時にやると両方の質が落ちる。<br>
+    まずやることを洗い出す（思考）。その後やる（作業）。混ぜない。
+  </div>
+
+  <!-- ===== 1-6: 盤面整理 ===== -->
+  <div class="sh">盤面整理 — 全体を見る</div>
+  <div class="raw">
+    盤面整理、これ、これ、これ。<br>
+    意外と時間かからん。<br>
+    時間測って。<br><br>
+    90-300時間。<br>
+    今やってることの時間どれくらい。<br>
+    ストップではかる。<br><br>
+    今やることをやるほど俯瞰できない。<br>
+    思考、戦略を入れた上でやる。<br><br>
+    月1で洗い出す。月2で洗い出す。<br>
+    何をどんな感じでやれるか。<br><br>
+    全体像になるほど、今後こうなる。<br>
+    長期の視点で、リソース状況、利益が出るまで置いとく。<br>
+    条件発火型、期限パターン。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    盤面整理＝今何にどれだけ時間使ってるかの棚卸し。意外と時間かからない。<br>
+    ストップウォッチで実測。感覚ではなく事実で把握する。<br>
+    目の前をやるほど俯瞰できなくなる→だから月1〜2で強制的に全体を見る時間を作る。<br>
+    戦略を入れた上で作業する。作業から入るな。<br>
+    長期視点でリソース配置。条件発火型（この条件が揃ったらやる）と期限パターン（いつまでにやる）。
+  </div>
+
+  <!-- ===== 1-7: 機会損失 ===== -->
+  <div class="sh">機会損失と時間の使い方</div>
+  <div class="raw">
+    大人になっていく。<br>
+    機会損失を産んでいないか。<br><br>
+    今やってることっていいのかな？<br>
+    これどうよくなるのかな？<br>
+    リソース開けなきゃいけない。<br>
+    意味ないタスク。<br><br>
+    時間埋めない、楽して稼ご。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    常に自問：「今やってることは本当にいいのか？」「機会損失を産んでないか？」<br>
+    意味のないタスクを捨てる。リソースを空ける。<br>
+    時間を埋めること＝仕事ではない。空白を作ることで次の機会が入る。
+  </div>
+
+  <!-- ===== 1-8: 委譲 ===== -->
+  <div class="sh">委譲 — 任せる設計</div>
+  <div class="raw">
+    サムネの数、アウトプットって思考量。<br><br>
+    このタスク必要？任せられる？<br><br>
+    人入った瞬間。<br>
+    売り上げたつと、人入れてもよくね？<br>
+    アップロード任せられるくない。<br><br>
+    何をなるみにまかせるの？<br>
+    時間も月どれくらい？<br><br>
+    解決策を人にやってもらうけど、見てる。<br>
+    知っておく、学ぶ。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    全タスクに対して「必要？」「任せられる？」を問う。<br>
+    売上が立ったら人を入れる判断をする。任せる具体（誰に何を、月何時間）を明確にする。<br>
+    任せても「見てる」は必要。丸投げではなく、学びながら委譲する。<br>
+    アウトプットの量＝思考量。数をこなすことが思考の質を上げる。
+  </div>
+
+  <!-- ===== 1-9: 成長のペース ===== -->
+  <div class="sh">成長のペース — 投下と余白</div>
+  <div class="raw">
+    成長って、楽でもいいし、努力でもいいんやな。<br>
+    投下して、空ける、投下して、空ける。<br><br>
+    脳の疲労と体の疲労は別。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    成長の形に正解はない。楽でも努力でもいい。<br>
+    投下→空ける→投下→空ける。ずっと投下し続けると壊れる。<br>
+    脳の疲労と体の疲労は別物。体は元気でも脳が死んでることがある。逆も然り。分けて管理する。
+  </div>
+
+  <!-- ===== 1-10: 目的意識 ===== -->
+  <div class="sh">目的意識 — なんのために？</div>
+  <div class="raw">
+    なんのためにそれ？<br>
+    労働やめたいだと、質落ちる。<br><br>
+    どうやっていこう。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    全ての行動に「なんのため？」を問う。<br>
+    「労働をやめたい」が目的だと質が落ちる＝逃げの動機は出力を下げる。<br>
+    「どうやっていこう」＝攻めの問いを立てる。
+  </div>
+
+  <!-- ===== 1-11: 学び方の質 ===== -->
+  <div class="sh">学び方の質</div>
+  <div class="raw">
+    一回からどれくらい学べる。<br>
+    なぜ？の抽象段階。<br><br>
+    学び方の質。<br><br>
+    洗い出す。<br>
+    これどうしたら？を質問。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    1回の経験からどれだけ抽出できるかが成長速度を決める。<br>
+    「なぜ？」の階層を深く掘る。表面の「なぜ」で止まらない。<br>
+    洗い出して→「これどうしたら？」を質問する。自分の中で完結させない。
+  </div>
+
+  <!-- ===== 1-12: 頑固さへの警告 ===== -->
+  <div class="sh">頑固さへの警告</div>
+  <div class="raw">
+    定性はタスク化できない、連携しつつ。<br>
+    頑固になってないかなーー。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    定性的なこと（感覚・人間関係・空気感）はタスク化できない。連携しながら進める。<br>
+    「頑固になってないか？」＝自分のやり方に固執してないか？柔軟性を常にチェック。
+  </div>
+
+  <!-- ===== 1-13: 数字とクリエイティブ ===== -->
+  <div class="sh">数字とクリエイティブ</div>
+  <div class="raw">
+    クリエイティブにvalue。<br>
+    新しいところ。<br><br>
+    数字を出すかにコミット。
+  </div>
+  <div class="cb">
+    <div class="label">構造</div>
+    クリエイティブに価値を置く。新しいことに価値がある。<br>
+    でも最終的には数字を出すことにコミットする。<br>
+    クリエイティブと数字は両立させる。どちらかだけではない。
+  </div>
+
+  <!-- ===== まなとのX投稿（時系列） ===== -->
+  <div class="sh">まなとのX投稿 — 思想の変遷（時系列順）</div>
+  <p style="font-size:11px;color:#8a7e74;margin-bottom:10px">@YTListmarketing の投稿から、まなとくんの思考の変化を時系列で追う。染まるべき思想。</p>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2023.09.27</span>
+    【無意識を意識する】<br>
+    この考えが無い人ほど「俺、今すげぇ頑張ってる」って感じるだけで、無駄な行動が多い。<br>
+    売上のために使える時間は限られてるのに自分の予定を見てみると<br>
+    ・義務の予定<br>
+    ・知らぬ間に入ってる予定<br>
+    ・ルーティン化した予定<br>
+    で溢れてる。<br>
+    脳死した状態でスケジュール通りに。
+  </div>
+  <div class="cb"><div class="label">思想</div>「頑張ってる感」は無意味。無意識を意識して、時間の使い方を見直す。盤面整理と同じ構造。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2023.10.02</span>
+    インフルで過去最高40.7℃更新しつつYouTubeの更新も死にかけながら維持してる。<br>
+    結局体が資本ですね。<br>
+    10月の目標は新規chの収益化&既存事業YouTubeのオーガニックのみで売上600万。
+  </div>
+  <div class="cb"><div class="label">思想</div>体が資本。でも止まらない。具体的な数字目標を常に掲げる。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2023.10.06</span>
+    「現実から逆算して目標を設定すんじゃねぇバカでかい目標に死んでも現実を追い付かせるんだよ」<br><br>
+    だから圧倒的な成長と成果が出る。<br>
+    3ヶ月前までただの編集者だった俺はそう考えてる。<br><br>
+    10月は1事業700万、もう1事業は立ち上げ&売上100万出す。<br>
+    今までも当たり前にやってきた。今からもやるだけ。
+  </div>
+  <div class="cb"><div class="label">思想</div>現実から逆算するな。でかい目標に現実を追いつかせろ。3ヶ月で編集者→事業700万。これが「事実を作る力」。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2023.10.09</span>
+    最近強く重要性を感じるのは「組織の理念は末端まで届かせる」ってこと。<br>
+    これが組織構築においてめちゃくちゃ大事。<br>
+    うちであれば<br>
+    ・圧倒的スピード<br>
+    ・手数の多さ<br>
+    ・仲間を思いやる<br>
+    ・売上主義<br>
+    ・光属性の人間だけしか入れない<br>
+    それが末端まで。
+  </div>
+  <div class="cb"><div class="label">思想</div>理念を末端まで届かせる。文化の浸透＝組織の強さ。帝王学のVALUEと同じ構造。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2023.10.29</span>
+    「これに全リソース注げたらとんでもなく結果出るのになぁ」って思ってる人って<br>
+    「本気出せば俺やべぇから。」<br>
+    「まだ本気出してねぇだけだから。」って言ってる中学生とまじで変わらない。
+  </div>
+  <div class="cb"><div class="label">思想</div>「本気出せば」は言い訳。今の全力が実力。Taigaの「冷笑＝全力を出さない防衛」と直結。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2023.11.03</span>
+    ディープインパクトくらい圧倒的に突き抜けたい。<br>
+    なんなら翼広げたい。
+  </div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2023.11.21</span>
+    自分の強み・本当にやりたいことは偶然天から降ってくることはなく、自分の過去の経験からしか生まれない。<br><br>
+    黙ってひたすらやる。ただこれだけ。<br><br>
+    これさえできない奴が9割の世界なんだからやるやつが勝つのは当たり前。<br>
+    能力とかまじで関係ない。
+  </div>
+  <div class="cb"><div class="label">思想</div>能力関係ない。やるかやらないか。9割はやらない。だからやるだけで勝てる。執念の定義そのもの。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2023.11.21</span>
+    組織に1人だけ圧倒的に結果・行動が伴っていて模範的な人間がいれば<br>
+    ①優秀な人材が入ってくる<br>
+    ②全員のレベルが自然に上がる<br>
+    ③組織全体のスピードが上がる<br>
+    ④指揮が上がる<br><br>
+    最強のエースが1人いれば組織の拡大は全てイージーになるってこと。<br>
+    みんなエースになろう。経営者はエースを育てよう。
+  </div>
+  <div class="cb"><div class="label">思想</div>組織は1人のエースで変わる。エースになるか、エースを育てるか。Taigaが目指すべきはエースを育てる側。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2025.03.07</span>
+    claudecode革命が私にもやってきた。AIでグラデーション的に作業代替してナレッジをコツコツAIに移管するのがよさそう。
+  </div>
+  <div class="cb"><div class="label">思想の変化</div>2023年はアナログ×行動量。2025年にAI活用に舵を切った。ナレッジのAI移管＝Taigaが今やってるAI師匠システムと同じ方向。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2025.03.09</span>
+    AIでおもんない台本量産してもあんま意味ない。台本は101点を出すのが大事。<br>
+    60点レベルの台本をAIで量産したとてそこには創意工夫がないため、直近制作は楽になるが再生数で見ると3〜6ヶ月スパンでは指数関数的に落ちていく。<br>
+    しかも怖いのがこの数値の低下になかなか気づけないこと。気づいたらGAMEOVER。
+  </div>
+  <div class="cb"><div class="label">思想</div>AIは道具。使い方を間違えると指数関数的に死ぬ。101点を出すことに使え、60点の量産に使うな。「偶然結果が出て慢心」の発展形。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2025.03.13</span>
+    個人的にはAI時代にYouTubeで勝ち切るにはどこに体重をかけるべきなのかが重要だと思っていて<br>
+    AIで量産できない世界観とかサムネの雰囲気、台本の冒頭に体重をかけつつ、台本の本編はAI使いつつ90点くらいの出力で妥協する。<br>
+    マジでチャンネルの流れを変える激アツな動画だけは全部しっかりやるけど基本。
+  </div>
+  <div class="cb"><div class="label">思想</div>AI時代の選択と集中。体重をかけるべき場所（世界観・サムネ・冒頭）と妥協していい場所（本編90点）を分ける。全部100点は非効率。激アツだけ全力。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2025.03.20</span>
+    もっとクリエイティブだけでぶっちぎりてえ。高みにいきたい。仮説検証の量が全く足りてないな。
+  </div>
+  <div class="cb"><div class="label">思想</div>まなとくん自身もまだ「足りない」と思ってる。師匠も走ってる。止まってたら差は開く一方。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2025.03.23</span>
+    関わる人に対しては謙虚に自分に対してはとことん傲慢にプライド高く日々泥臭く積み上げる。
+  </div>
+  <div class="cb"><div class="label">思想</div>対外的な謙虚さと対内的な傲慢さ。この二面性がPrestige型リーダーシップの実装。</div>
+
+  <div class="raw" style="border-left:2px solid #c41e3a">
+    <span style="font-size:9px;color:#666;float:right">2025.03.26</span>
+    クリエイターとして僕が一番大事にしてること言います。"脱力"です。<br>
+    ・変なこだわり持たない<br>
+    ・トレンドに乗る<br>
+    ・シンプルに考える<br>
+    ・当てることに執着する<br>
+    ・勝ちやすい市場を見つける<br>
+    ・大事な変数に体重をかける<br>
+    ・自分の面白さ追求しすぎない<br>
+    ・参入ハードルの高い市場であえて戦う
+  </div>
+  <div class="cb"><div class="label">思想</div>Taigaの最上位哲学「脱力」はまなとくんから来ている。師匠の核心思想。これが全ての教えの根底にある。</div>
+
+  <div class="sh">まなとの思想の変遷 — タイムライン</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-date">2023.09</div><div class="tl-text">「無意識を意識する。"俺、今すげぇ頑張ってる"って感じるだけで無駄な行動が多い」</div></div>
+    <div class="tl-item"><div class="tl-date">2023.10</div><div class="tl-text">「バカでかい目標に死んでも現実を追い付かせるんだよ」→ 事業700万</div></div>
+    <div class="tl-item"><div class="tl-date">2023.10</div><div class="tl-text">「組織の理念は末端まで届かせる」</div></div>
+    <div class="tl-item"><div class="tl-date">2023.11</div><div class="tl-text">「黙ってひたすらやる。能力とかまじで関係ない」</div></div>
+    <div class="tl-item"><div class="tl-date">2023.11</div><div class="tl-text">「最強のエースが1人いれば組織の拡大は全てイージーになる」</div></div>
+    <div class="tl-item"><div class="tl-date" style="color:#d4a017">2025.03 — 転換点</div><div class="tl-text">「claudecode革命。ナレッジをコツコツAIに移管」</div></div>
+    <div class="tl-item"><div class="tl-date">2025.03</div><div class="tl-text">「AIで60点量産しても3〜6ヶ月で指数関数的に落ちる。101点を出すのが大事」</div></div>
+    <div class="tl-item"><div class="tl-date">2025.03</div><div class="tl-text">「仮説検証の量が全く足りてないな」</div></div>
+    <div class="tl-item"><div class="tl-date" style="color:#d4a017">2025.03 — 核心</div><div class="tl-text" style="font-size:14px;color:#d4a017">「クリエイターとして一番大事にしてること。"脱力"です」</div></div>
+  </div>
+
+  <div class="sh">まなとの思想の変遷 — テーブル</div>
+  <table>
+    <tr><th>時期</th><th>フェーズ</th><th>核心思想</th></tr>
+    <tr><td class="hl">2023.09〜10</td><td>爆速行動期</td><td>バカでかい目標に現実を追いつかせる。時間の無意識を意識する。体が資本。数字で語る</td></tr>
+    <tr><td class="hl">2023.10〜11</td><td>組織構築期</td><td>理念を末端まで。エースが1人いれば組織は変わる。やるやつが勝つ。能力関係ない</td></tr>
+    <tr><td class="hl">2025.03</td><td>AI活用＋脱力期</td><td>AI革命を取り込む。ナレッジのAI移管。でも101点は人間がやる。体重のかけ方を最適化。そして全ての根底に「脱力」</td></tr>
+  </table>
+  <div class="cb">
+    <div class="label">変遷の構造</div>
+    2023年は<span class="hl">「行動量×スピード×でかい目標」</span>で突き抜けた。<br>
+    2025年は<span class="hl">「選択と集中×AI活用×脱力」</span>に進化した。<br>
+    力で突き抜ける→力を抜いて最適化する。これはまさに<span class="red">執着（行動量で証明）→ 執念（最適に勝つ）</span>への移行。<br>
+    武蔵が吉岡一門→農業編に至った構造と同じ。まなとくんも同じ道を歩んでいる。
+  </div>
+
+  <!-- ===== Notionの会議ログからの教え ===== -->
+  <div class="sh">会議ログからの教え</div>
+
+  <div class="raw">
+    実行までやらないと結果は出ないで。<br>
+    頭で理解する、目標を事実にする、解釈とか、頭の中だけで終わらせない。<br>
+    高い目標立てて現実から目をそらす。
+  </div>
+
+  <div class="raw">
+    感情よりも吸収。<br>
+    まなとくんに負けてるで。<br>
+    負けてるとかどうでも良くてシンプルダサくて、なんか泣ける、でも泣いても変わらん、吸収。<br>
+    youtubeだけなんだからいけるで、解像度をくっそ高くする。<br>
+    すげーは、相手の気持ちをあげるために言う、脳死して、憧れすぎてできないだけは頭は吸収のための質問してきたい。<br>
+    他人を羨ましいと思うのは前提正常なので、それを受け入れてあげて。<br>
+    羨ましいと思った要素を分解して学びに学ぶ。
+  </div>
+
+  <div class="raw">
+    思考をパクれ。<br>
+    行動だけ学ぶと1→1しか行けない。<br>
+    行動の背景には、意思決定がある、ここまで俯瞰してみる。
+  </div>
+
+  <div class="raw">
+    成長するから負けてもいいみたいな感覚？<br>
+    成長とは状態へのコミットなはずだから、負けるとかのかんかくはないし、その成長へのムーブをしたら勝ちに繋がるはずだから、言い訳するならん。<br>
+    自己正当化リストアップ気をつけたい。<br>
+    状態にフォーカスするなら、状態という目標は必ず達成。<br>
+    そもそも、勝つために状態にこだわることを目的にしてるからね。
+  </div>
+
+  <div class="raw">
+    偶然結果が出て慢心。<br>
+    成果だけ追って、結果が偶然出て（実力以上）出て中身ゴミでもいいか、、、<br>
+    みたいな思考なるリスクがある、気を付ける。<br>
+    絶対に未来を現実化するために、内容は今常に向上する意識、妥協を許さないし、時間制約ないなら無限に、これこうできたのにな、、を出し続ける。<br>
+    自分の最底辺のレベルが実力と捉える。
+  </div>
+
+  <div class="raw">
+    報告は大事。相手のリソースの確保。
+  </div>
+
+  <div class="raw">
+    勝ち負け、仲間には絶対この思想向けない。<br>
+    自分の成長に意識。<br>
+    下を見下すの成長にならへん。
+  </div>
+
+  <div class="raw">
+    ライフで受ける重要性。<br>
+    今までの価値観と違うことやる時は、感情やストレス、睡眠不足など、がおきたりする。<br>
+    それは脳や体の細胞、内臓に負荷をかけてしまう時がある、それもまた事実。<br>
+    人間は寝なかったら死ぬ。
+  </div>
+
+  <div class="raw">
+    タイミーの強さ。<br>
+    ビジョンを伝える力×論理的思考(読み切る力)×リスクを踏む力。
+  </div>
+
+  <div class="raw">
+    ことえさんとの関係ミスからの学び：<br>
+    ・期待値のコントロール：仕事のクオリティは常に相手の期待値を上回り、格上のポジションを維持<br>
+    ・「失敗している自分」への陶酔を捨てる<br>
+    ・セルフケアとリフレッシュ：自分の機嫌は自分で取る<br>
+    ・感情の細分化と理解：「感情＝悪い」と一括りにしない<br>
+    ・根回しとタイミング：正論をぶつけるだけでなく現実的な立ち回り<br>
+    ・共感の境界線：共感しすぎると負の連鎖<br>
+    ・情報の取捨選択：誰に何を話すか厳選<br>
+    ・愛を持って接する：詰めるのではなく感謝ベース<br>
+    ・ビジョンと報酬の設計：演者が目指すべきロールモデルを明確に<br>
+    ・行動で示す：口だけでなく自らの行動で解決策を見せる<br>
+    ・適切な人材配置とタイミング：固執せず早い段階で適切な人を当てる<br>
+    ・「仲は良いが、仕事はクッソやる」文化<br>
+    ・意思決定の質：形式的ではなく「解決に向かうか」で判断
+  </div>
+</div>
+
+<!-- ===== CHAPTER 6: センターピンTOP10 ===== -->
+<div class="ch reveal">
+  <div class="ch-num">第五章</div>
+  <div class="ch-title">センターピンTOP10</div>
+  <div class="ch-sub">「これが欠けたら他の全てが機能しない」レベルのもの</div>
+
+  <!-- Visual: TOP3 を大きく -->
+  <div class="icon-grid">
+    <div class="icon-card" style="border-color:rgba(196,30,58,.3)"><div class="ic-icon">🧠</div><div class="ic-label" style="color:#c41e3a">#1 メタ認知</div><div class="ic-sub">複利の利率そのもの<br>OSなしにアプリは動かない</div></div>
+    <div class="icon-card" style="border-color:rgba(212,160,23,.3)"><div class="ic-icon">🎯</div><div class="ic-label" style="color:#d4a017">#2 意図的練習</div><div class="ic-sub">毎日0.1%改善<br>= 年36.5%の複利</div></div>
+    <div class="icon-card" style="border-color:rgba(212,160,23,.3)"><div class="ic-icon">✂️</div><div class="ic-label" style="color:#d4a017">#3 何をしないか</div><div class="ic-sub">分散→利率が薄まる<br>集中が複利の前提</div></div>
+  </div>
+  <div class="gauge" style="margin-top:8px">
+    <div class="gauge-row"><div class="gauge-label">#4 FB即時性</div><div class="gauge-track"><div class="gauge-fill gold" style="width:80%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#5 環境設計</div><div class="gauge-track"><div class="gauge-fill gold" style="width:75%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#6 構造を盗む</div><div class="gauge-track"><div class="gauge-fill gold" style="width:70%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#7 言語化</div><div class="gauge-track"><div class="gauge-fill gold" style="width:65%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#8 損失回避制御</div><div class="gauge-track"><div class="gauge-fill gold" style="width:60%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#9 比較の利用</div><div class="gauge-track"><div class="gauge-fill gold" style="width:55%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#10 異分野接続</div><div class="gauge-track"><div class="gauge-fill gold" style="width:50%"></div></div></div>
+  </div>
+  <p style="text-align:center;font-size:10px;color:#8a7e74;margin:4px 0 12px">▲ 重要度（上位ほど「これがないと全部崩れる」）</p>
+
+  <table>
+    <tr><th style="width:30px">#</th><th style="width:180px">センターピン</th><th>なぜ最重要か</th><th>まなとの教えとの接続</th></tr>
+    <tr><td class="red">1</td><td class="hl">メタ認知のリアルタイム稼働</td><td>複利の利率そのもの。1回の試行からどれだけ学べるかを決める。OSなしにアプリは動かない</td><td>「一回からどれくらい学べる」「なぜ？の抽象段階」</td></tr>
+    <tr><td class="red">2</td><td class="hl">意図的練習の設計</td><td>複利の回転数を最大化。毎日0.1%改善が年36.5%の複利</td><td>「細部までやりきる」「同じことが起きないようにする」</td></tr>
+    <tr><td class="red">3</td><td class="hl">「何をしないか」の決定</td><td>分散するとr(利率)が薄まる。集中が複利の前提</td><td>「選択と集中」「意味ないタスク」「リソース開けなきゃ」</td></tr>
+    <tr><td>4</td><td class="hl">フィードバックの即時性</td><td>サイクルが1日なら365回の複利。速度が全て</td><td>「振り返り」「1ヶ月前の意思決定ミス→バッファが長くなる」</td></tr>
+    <tr><td>5</td><td class="hl">環境設計（デフォルト書換）</td><td>行動の95%は環境に従う。意志力に頼らない仕組み</td><td>「盤面整理」「条件発火型」「ストップウォッチで測る」</td></tr>
+    <tr><td>6</td><td class="hl">師匠の構造を盗む能力</td><td>自力10年→師匠から3ヶ月で抽出。複利の開始地点を前倒し</td><td>「思考をパクれ」「行動だけ学ぶと1→1」</td></tr>
+    <tr><td>7</td><td class="hl">言語化能力</td><td>暗黙知を複利が回る形式に変換する装置</td><td>「洗い出す」「これどうしたら？を質問」</td></tr>
+    <tr><td>8</td><td class="hl">損失回避の制御</td><td>執着の正体。手放すべきものを手放せない</td><td>「こだわりを捨てる」「頑固になってないか」</td></tr>
+    <tr><td>9</td><td class="hl">社会的比較の戦略的利用</td><td>比較は止められない（本能）。解釈回路だけ変える</td><td>「感情よりも吸収」「羨ましいと思った要素を分解して学ぶ」</td></tr>
+    <tr><td>10</td><td class="hl">知識の異分野接続</td><td>単一分野は線形。2分野の接続で掛け算になる</td><td>「全部が売上に利益の最大化」「クリエイティブにvalue」</td></tr>
+  </table>
+</div>
+
+<!-- ===== CHAPTER: 憑依の習得 ===== -->
+<div class="ch gold reveal">
+  <div class="ch-num">憑依篇</div>
+  <div class="ch-title">分析型憑依 — まなとのOSを横に立てる</div>
+  <div class="ch-sub">白紙型はTaigaには無理。デュアルOS型で習得する</div>
+
+  <!-- Visual: 2つの型 -->
+  <div class="grid2">
+    <div class="gcard" style="border-left:3px solid #c41e3a">
+      <h4 style="color:#c41e3a">× 白紙型（まなと）</h4>
+      <p>自分を消して相手に入る<br>モニター1台で相手の画面を映す<br><br><strong>Taigaには無理</strong><br>自分を消す＝有能感の消滅＝脳がパニック</p>
+    </div>
+    <div class="gcard" style="border-left:3px solid #d4a017">
+      <h4 style="color:#d4a017">◎ 分析型（Taiga用）</h4>
+      <p>自分のOSを保ったまま横にVMを立てる<br>デュアルモニターで自分と相手を同時表示<br><br><strong>有能感を壊さずに構造を取れる</strong><br>攻略本を見ながらプレイする感覚と同じ</p>
+    </div>
+  </div>
+
+  <div class="sh">なぜ身体感覚が必要か</div>
+  <p>認知科学の「身体化された認知」：思考は脳だけでやってない。身体の状態が判断を変える。まなとの「脱力した判断」は脱力した身体から生まれてる。テキストや動画では身体の微細な状態は伝わらない。だから<span class="hl">同じ空間で同じ作業をする</span>ことに意味がある。</p>
+
+  <div class="sh">分析型憑依のフルプロトコル</div>
+
+  <!-- Visual: Process -->
+  <div class="icon-grid">
+    <div class="icon-card"><div class="ic-icon">👓</div><div class="ic-label">メガネON</div><div class="ic-sub">まなとVM起動<br>「まなとならどう見る？」<br>が自動で走る</div></div>
+    <div class="icon-card"><div class="ic-icon">⏸️</div><div class="ic-label">2秒止める</div><div class="ic-sub">判断の分岐点で<br>「俺の判断」と<br>「まなとVM」を並列出力</div></div>
+    <div class="icon-card"><div class="ic-icon">📊</div><div class="ic-label">差分を図にする</div><div class="ic-sub">テキスト禁止<br>フローチャートか<br>3D空間で描く</div></div>
+  </div>
+
+  <div class="sh">まなとと会う時</div>
+  <table>
+    <tr><th style="width:130px">観察レイヤー</th><th>何を見るか</th></tr>
+    <tr><td class="hl">判断の瞬間</td><td>選択肢が2つ以上ある場面で、何を選んだか。選ぶ前の「間」は何秒か（0秒＝自動化。3秒以上＝意識的）。選ばなかった方は何か</td></tr>
+    <tr><td class="hl">しなかったこと</td><td>発言できたのにしなかった。指摘できたのにスルーした。俺なら口出してた場面で黙ってた。<strong>不作為にまなとの構造が出る</strong></td></tr>
+    <tr><td class="hl">空気感（3D写真）</td><td>呼吸のリズム、肩の位置、視線の動き方、声のトーン変化。言語化は後。まず3D認知で一枚の写真として取り込む</td></tr>
+  </table>
+  <p style="margin-top:6px;font-size:11px">質問テンプレ: 「今なんでそっち選んだ？」「もう片方は頭にあった？」「即決？ちょっと迷った？」</p>
+
+  <div class="sh">最強クリエイターから学ぶ時</div>
+  <table>
+    <tr><th style="width:130px">方法</th><th>具体</th></tr>
+    <tr><td class="hl">コンテンツ分析</td><td><strong>「捨てたもの」を見る</strong>。何を入れたかじゃなく何を入れなかったか。クリエイターの実力は引き算で測れる。冒頭3秒で何を見せて何を見せなかったか</td></tr>
+    <tr><td class="hl">テンポ設計</td><td>カット切替タイミング、テロップ表示時間、BGM変化ポイント。「飽きる直前に切り替えてる」場所を見つける</td></tr>
+    <tr><td class="hl">感情導線</td><td>最初にどの感情→中盤でどう転換→ラストでどの感情。フローチャートにする</td></tr>
+    <tr><td class="hl">俺ならこうする</td><td>分析の最後に必ず入れる。差分を出すことで有能感も維持。白紙型との最大の違い</td></tr>
+  </table>
+
+  <div class="sh">身体感覚の取り込み（メガネON時のみ）</div>
+  <table>
+    <tr><th>Level</th><th>やること</th><th>目的</th></tr>
+    <tr><td class="hl">L1</td><td>まなとの生活リズムを把握。起床/就寝/食事/集中時間/休憩の比率</td><td>判断時の脳の状態（血糖値・覚醒度）を近づける</td></tr>
+    <tr><td class="hl">L2</td><td>作業環境の再現。デスク配置、モニター高さ、椅子の座り方</td><td>環境が認知に与える影響（アフォーダンス）を利用</td></tr>
+    <tr><td class="hl">L3</td><td>呼吸パターン5分コピー→そのまま企画。姿勢を再現して作業30分</td><td>身体を合わせることで認知モードを変える。Embodied Cognition</td></tr>
+  </table>
+  <p style="font-size:11px;color:#8a7e74;margin-top:4px">※ L3は週1回、メガネON時のみ。24時間やるとTaigaのOSが揺らぐ。デイ＝ルイス式はTaigaには向かない</p>
+
+  <div class="sh">歴史的根拠</div>
+  <table>
+    <tr><th>事例</th><th>憑依の構造</th></tr>
+    <tr><td class="hl">武蔵（バガボンド）</td><td>各剣士から「技」じゃなく「その剣士がなぜ強いか」の構造を盗んだ。胤舜→殺気を消す構造（脱力）。石舟斎→戦わずして勝つ構造</td></tr>
+    <tr><td class="hl">五輪書「観の目」</td><td>「見の目」＝個別動作を見る。「観の目」＝全体を場として観る。武蔵は「観の目強く」と言った。Taigaの3D認知はこの「観の目」に最適</td></tr>
+    <tr><td class="hl">デ・ニーロ（メソッド）</td><td>タクシードライバーで12時間実際に運転手。環境に没入→1日50回「この人物ならどうする？」。Taigaの「まなとVM」と同構造</td></tr>
+    <tr><td class="hl">秀吉→信長</td><td>信長の「行動」じゃなく「情報の非対称性を作る」構造を盗んだ。行動をコピーした勝家は滅んだ。まさに「思考をパクれ」</td></tr>
+  </table>
+
+  <div class="sh">VMを増やす（中長期）</div>
+  <p>まなとVMだけじゃなく、他の最強クリエイターのVMも立てられる。3D空間にNPCを増やしていく感覚。</p>
+  <ul>
+    <li>まなとVM — YouTube判断の構造</li>
+    <li>ゆとりくんVM — 事業スケールの構造（まなと経由で間接的に）</li>
+    <li>最強クリエイターVM — 会った人、コンテンツで学んだ人を追加</li>
+  </ul>
+  <p>VM数が増えるほど、判断の分岐点で参照できる視点が増える。これが<span class="hl">「知識の異分野接続（センターピン#10）」</span>の実装形。</p>
+
+  <div class="cb">
+    <div class="label">最終到達点</div>
+    メガネなしでも「あ、ここまなとならこう見るな」が勝手に出る状態。<br>
+    <span class="red">攻略本が体に染み込んで、攻略本なしでプレイできる。</span><br>
+    これが分析型憑依の完成形＝身勝手の極意の一形態。<br>
+    白紙型とは別物。自分のOSを100%保ちながら、横にもう1人分の判断エンジンが走ってる。<br>
+    <span class="hl">メンデルの因子ゲーム。混ぜても薄まらない。</span>
+  </div>
+</div>
+
+<!-- ===== CHAPTER 7: 心技体 ===== -->
+<div class="ch reveal">
+  <div class="ch-num">第六章</div>
+  <div class="ch-title">心技体 — 差分を埋めるためにやること</div>
+  <div class="ch-sub">まなとの教え × センターピン × Taigaの現在地から逆算</div>
+
+  <!-- Mindmap Overview -->
+  <div style="text-align:center"><div class="mm-root">勝ち筋: 売上×利益×数字 → YouTube力 → 全額複利投下</div></div>
+  <div class="mm-branches">
+    <div class="mm-branch" style="border-left:3px solid #c41e3a">
+      <h4 style="color:#c41e3a">心</h4>
+      <div class="mm-leaf">境界線 / 執念 / 自己正当化の検知 / 頑固さの手放し / ライフで受ける</div>
+      <div class="mm-detail">→ 燃料を恐怖→意志に。利に合えば動き合わなければ止まる</div>
+    </div>
+    <div class="mm-branch" style="border-left:3px solid #d4a017">
+      <h4>技</h4>
+      <div class="mm-leaf">思考パクる / 思考と作業分離 / 盤面整理 / 学び方の質 / 言語化</div>
+      <div class="mm-detail">→ 1回から最大量を抽出。なぜ？を深く掘る</div>
+    </div>
+    <div class="mm-branch" style="border-left:3px solid #2d7d9a">
+      <h4 style="color:#2d7d9a">体</h4>
+      <div class="mm-leaf">事実を作る / 委譲 / 時間埋めない / 数字にコミット / 報告と恩</div>
+      <div class="mm-detail">→ やった感いらん。数字だけ。金を全額複利投下</div>
+    </div>
+  </div>
+
+  <div class="sh">心（マインド・認知）</div>
+  <table>
+    <tr><th>やること</th><th>まなとの教え</th><th>具体アクション</th></tr>
+    <tr><td class="hl">執念と執着を分ける</td><td>「感情よりも吸収」「泣いても変わらん」</td><td>有能感トリガーが出たら「検知→ラベル→切替」。燃料が恐怖か意志かを判別する</td></tr>
+    <tr><td class="hl">境界線を持つ</td><td>「なんのためにそれ？」「労働やめたいだと質落ちる」</td><td>全行動に「利に合うか？」を問う。他者の土俵に乗らない。逃げの動機で動かない</td></tr>
+    <tr><td class="hl">自己正当化を検知する</td><td>「成長するから負けてもいい、は言い訳」「最底辺のレベルが実力」</td><td>言い訳が出た瞬間をラベリング。「それ事実？解釈？」で切り分け</td></tr>
+    <tr><td class="hl">頑固さを手放す</td><td>「こだわりを捨てる」「頑固になってないか」「柔軟に対応」</td><td>月1で「今の方法に固執してないか？」を自問。まなとに聞く</td></tr>
+    <tr><td class="hl">ライフで受ける</td><td>「価値観変える時は負荷かかる」「人間は寝なかったら死ぬ」</td><td>脳疲労と体疲労を分けて管理。投下→空ける→投下→空ける</td></tr>
+  </table>
+
+  <div class="sh">技（スキル・判断力）</div>
+  <table>
+    <tr><th>やること</th><th>まなとの教え</th><th>具体アクション</th></tr>
+    <tr><td class="hl">思考をパクる</td><td>「行動だけ学ぶと1→1」「意思決定まで俯瞰」</td><td>まなとの判断の瞬間を観察。「なぜ今そう判断した？」を聞く。差分を取る</td></tr>
+    <tr><td class="hl">思考と作業を分ける</td><td>「思考する時間と作業する時間を分ける」</td><td>朝は思考（戦略・洗い出し）。昼は作業（実行）。混ぜない</td></tr>
+    <tr><td class="hl">盤面整理を習慣化</td><td>「月1〜2で洗い出す」「ストップウォッチで測る」「意外と時間かからん」</td><td>月初に全タスクの棚卸し。各タスクの実時間を計測。機会損失を点検</td></tr>
+    <tr><td class="hl">学び方の質を上げる</td><td>「一回からどれくらい学べる」「なぜ？の抽象段階」</td><td>毎日1つ、経験から「構造」を抽出してメモ。表面の学びで止まらない</td></tr>
+    <tr><td class="hl">言語化を徹底する</td><td>「洗い出す」「これどうしたら？を質問」</td><td>AI師匠に言語化→構造化のループを回す。暗黙知を形式知にする</td></tr>
+  </table>
+
+  <div class="sh">体（行動・仕組み）</div>
+  <table>
+    <tr><th>やること</th><th>まなとの教え</th><th>具体アクション</th></tr>
+    <tr><td class="hl">実行で事実を作る</td><td>「実行までやらないと結果は出ない」「やった感いらん」「圧倒的な事実を作り出す」</td><td>頭の中で完結させない。事実＝数字で測れる結果だけが重要</td></tr>
+    <tr><td class="hl">委譲する</td><td>「このタスク必要？任せられる？」「人入れてもよくね？」</td><td>毎日1つ「自分がやった方が速い」を人に振る。80%の品質で通す</td></tr>
+    <tr><td class="hl">時間を埋めない</td><td>「時間埋めない、楽して稼ご」「リソース開けなきゃ」</td><td>意味ないタスクを捨てる。空白を作る。空白に次の機会が入る</td></tr>
+    <tr><td class="hl">数字にコミットする</td><td>「数字を出すかにコミット」「事実に基づく」</td><td>全チャンネルのKPIを数値化。感覚ではなくデータで意思決定</td></tr>
+    <tr><td class="hl">報告と恩を返す</td><td>「報告は大事＝相手のリソース確保」「小さな約束を守る」</td><td>報告の徹底。約束を雑にしない。目標を目指すほど基本が崩れるリスク</td></tr>
+  </table>
+</div>
+
+<!-- ===== CHAPTER 8: まなとの教えの全体マップ ===== -->
+<div class="ch gold reveal">
+  <div class="ch-num">最終章</div>
+  <div class="ch-title">まなとの教え × センターピン — 接続マップ</div>
+  <div class="ch-sub">まなとくんの言葉が、どのセンターピンと接続するか</div>
+
+  <!-- Visual: 接続密度 -->
+  <p style="font-size:10px;color:#8a7e74;margin-bottom:8px;text-align:center">まなとの教えが最も多く接続するセンターピン（＝最重要）</p>
+  <div class="gauge">
+    <div class="gauge-row"><div class="gauge-label">#1 メタ認知</div><div class="gauge-track"><div class="gauge-fill red" style="width:90%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#3 何をしないか</div><div class="gauge-track"><div class="gauge-fill red" style="width:85%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#5 環境設計</div><div class="gauge-track"><div class="gauge-fill red" style="width:80%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#4 FB即時性</div><div class="gauge-track"><div class="gauge-fill gold" style="width:55%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#8 損失回避</div><div class="gauge-track"><div class="gauge-fill gold" style="width:45%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#6 構造を盗む</div><div class="gauge-track"><div class="gauge-fill gold" style="width:45%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#2 意図的練習</div><div class="gauge-track"><div class="gauge-fill gold" style="width:35%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#9 比較の利用</div><div class="gauge-track"><div class="gauge-fill gold" style="width:30%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#10 異分野接続</div><div class="gauge-track"><div class="gauge-fill gold" style="width:25%"></div></div></div>
+    <div class="gauge-row"><div class="gauge-label">#7 言語化</div><div class="gauge-track"><div class="gauge-fill gold" style="width:20%"></div></div></div>
+  </div>
+  <p style="text-align:center;font-size:10px;color:#8a7e74;margin-bottom:12px">▲ まなとの教えとの接続回数が多い＝まなとが最も重要視してるセンターピン</p>
+
+  <table>
+    <tr><th>まなとの教え（原文）</th><th>接続するセンターピン</th></tr>
+    <tr><td>物事を多面的に捉えるための客観がいる。補助輪である</td><td>#1 メタ認知</td></tr>
+    <tr><td>マラソンかな。時間投下は大事だけど、投下を目的にしてると</td><td>#3 何をしないか</td></tr>
+    <tr><td>振り返りを永遠にし続ける。金と時間の無駄</td><td>#3 何をしないか / #4 FB即時性</td></tr>
+    <tr><td>1ヶ月前の意思決定ミス。バッファが長くなる。時間軸長くなるほど成長</td><td>#4 FB即時性 / #1 メタ認知</td></tr>
+    <tr><td>楽に結果出す。楽とはより最適ってこと</td><td>#3 何をしないか / #5 環境設計</td></tr>
+    <tr><td>こだわりを捨てる。事実に基づく</td><td>#8 損失回避の制御</td></tr>
+    <tr><td>思考する時間と作業する時間を分ける</td><td>#5 環境設計</td></tr>
+    <tr><td>盤面整理。意外と時間かからん。ストップではかる</td><td>#5 環境設計 / #1 メタ認知</td></tr>
+    <tr><td>今やることをやるほど俯瞰できない。思考、戦略を入れた上でやる</td><td>#1 メタ認知 / #3 何をしないか</td></tr>
+    <tr><td>月1〜2で洗い出す</td><td>#4 FB即時性</td></tr>
+    <tr><td>機会損失を産んでいないか。意味ないタスク。リソース開ける</td><td>#3 何をしないか</td></tr>
+    <tr><td>時間埋めない、楽して稼ご</td><td>#3 何をしないか / #5 環境設計</td></tr>
+    <tr><td>このタスク必要？任せられる？</td><td>#3 何をしないか / #5 環境設計</td></tr>
+    <tr><td>解決策を人にやってもらうけど、見てる。学ぶ</td><td>#6 師匠の構造を盗む</td></tr>
+    <tr><td>投下して、空ける、投下して、空ける</td><td>#2 意図的練習 / #5 環境設計</td></tr>
+    <tr><td>脳の疲労と体の疲労は別</td><td>#5 環境設計</td></tr>
+    <tr><td>なんのためにそれ？労働やめたいだと質落ちる</td><td>#1 メタ認知</td></tr>
+    <tr><td>一回からどれくらい学べる。なぜ？の抽象段階。学び方の質</td><td>#1 メタ認知 / #6 師匠の構造を盗む</td></tr>
+    <tr><td>頑固になってないかなーー</td><td>#8 損失回避の制御</td></tr>
+    <tr><td>クリエイティブにvalue。数字を出すかにコミット</td><td>#10 異分野接続</td></tr>
+    <tr><td>実行までやらないと結果は出ないで。頭の中だけで終わらせない</td><td>#2 意図的練習</td></tr>
+    <tr><td>感情よりも吸収。羨ましいと思った要素を分解して学ぶ</td><td>#9 社会的比較の戦略的利用</td></tr>
+    <tr><td>思考をパクれ。行動だけ学ぶと1→1。意思決定まで俯瞰</td><td>#6 師匠の構造を盗む</td></tr>
+    <tr><td>成長するから負けてもいい、は言い訳。状態にコミット</td><td>#8 損失回避の制御</td></tr>
+    <tr><td>偶然結果が出て慢心。最底辺のレベルが実力</td><td>#1 メタ認知 / #2 意図的練習</td></tr>
+    <tr><td>報告は大事。相手のリソースの確保</td><td>#7 言語化能力</td></tr>
+    <tr><td>仲間に勝ち負けの思想を向けない。下を見下すの成長にならへん</td><td>#9 社会的比較の戦略的利用</td></tr>
+    <tr><td>ライフで受ける。人間は寝なかったら死ぬ</td><td>#5 環境設計</td></tr>
+    <tr><td>ビジョン×論理×リスクを踏む力</td><td>#10 異分野接続</td></tr>
+    <tr><td>全体像→長期視点→リソース状況→条件発火型・期限パターン</td><td>#5 環境設計 / #3 何をしないか</td></tr>
+    <tr><td>90-300時間。今やってることの時間どれくらい</td><td>#4 FB即時性 / #5 環境設計</td></tr>
+  </table>
+
+  <div class="cb">
+    <div class="label">まなとの教えの核心を一文で</div>
+    <span class="red">「楽に結果を出す」= 最適な場所に最適なリソースを置いて、事実で測り、こだわりを捨てて、思考と作業を分けて、月1で盤面を整理して、任せられるものは任せて、空白を作って、その空白に次の成長を入れる。</span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="bar"></div>
+  <p>まなとを超える戦略書 — 世界→競合→自社→まなとの教え→センターピン→心技体</p>
+  <p style="margin-top:6px;color:#3a3430">Generated for Taiga — 2026.04.08</p>
+</div>
+
+</div>
+
+<script>
+const obs = new IntersectionObserver(e => e.forEach(el => {
+  if (el.isIntersecting) el.target.classList.add('visible');
+}), {threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

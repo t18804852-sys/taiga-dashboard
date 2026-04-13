@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube教科書 Knowledge Base</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0a;--sidebar-bg:#0d0d0d;--card-bg:#111;--border:#1a1a1a;
+  --text:#ccc;--text-dim:#777;--text-bright:#eee;
+  --accent:#2d7d9a;--accent2:#2a9d6a;--accent-dim:#1a4a5a;
+  --hover:#151515;--active:#0f2a35;
+  --callout-bg:#0d1f1a;--callout-border:#2a9d6a;
+  --check-accent:#2d7d9a;
+}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;background:var(--bg);color:var(--text);font-size:12px;line-height:1.5}
+a{color:var(--accent);text-decoration:none}
+
+/* Layout */
+.app{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:260px;min-width:260px;background:var(--sidebar-bg);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.sidebar-header{padding:10px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sidebar-header h1{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:0.5px}
+.sidebar-header .sub{font-size:10px;color:var(--text-dim);margin-top:2px}
+.sidebar-search{padding:8px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sidebar-search input{width:100%;background:#0a0a0a;border:1px solid var(--border);border-radius:4px;padding:5px 8px;color:var(--text);font-size:11px;outline:none}
+.sidebar-search input:focus{border-color:var(--accent)}
+.sidebar-search input::placeholder{color:#444}
+.tree-wrap{flex:1;overflow-y:auto;padding:6px 0}
+.tree-wrap::-webkit-scrollbar{width:4px}
+.tree-wrap::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+
+/* Tree */
+.tree-node{user-select:none}
+.tree-label{display:flex;align-items:center;padding:3px 8px 3px 0;cursor:pointer;font-size:11.5px;color:var(--text);border-left:2px solid transparent;transition:background .1s}
+.tree-label:hover{background:var(--hover)}
+.tree-label.active{background:var(--active);color:var(--text-bright);border-left-color:var(--accent)}
+.tree-arrow{width:18px;height:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:8px;color:#555;transition:transform .15s}
+.tree-arrow.expanded{transform:rotate(90deg)}
+.tree-arrow.hidden{visibility:hidden}
+.tree-icon{margin-right:4px;font-size:10px;color:var(--accent2);flex-shrink:0}
+.tree-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tree-children{display:none}
+.tree-children.open{display:block}
+.depth-0 > .tree-label{padding-left:8px;font-weight:600;font-size:12px;color:var(--accent)}
+.depth-1 > .tree-label{padding-left:26px}
+.depth-2 > .tree-label{padding-left:44px}
+.tree-line{position:relative}
+.depth-1 > .tree-label::before{content:'';position:absolute;left:18px;top:0;bottom:0;width:1px;background:#1a1a1a}
+.depth-2 > .tree-label::before{content:'';position:absolute;left:36px;top:0;bottom:0;width:1px;background:#1a1a1a}
+
+/* Content Panel */
+.content-wrap{flex:1;overflow-y:auto;padding:0}
+.content-wrap::-webkit-scrollbar{width:6px}
+.content-wrap::-webkit-scrollbar-thumb{background:#222;border-radius:3px}
+.content-topbar{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:8px}
+.breadcrumb{font-size:11px;color:var(--text-dim)}
+.breadcrumb span{color:var(--accent)}
+.breadcrumb .sep{margin:0 4px;color:#333}
+.content-body{padding:16px 24px 60px;max-width:900px}
+.content-body.empty{display:flex;align-items:center;justify-content:center;height:calc(100vh - 40px);color:#333;font-size:14px}
+
+/* Content types */
+.c-heading{font-size:15px;font-weight:700;color:var(--text-bright);margin:18px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.c-heading:first-child{margin-top:0}
+.c-text{margin:6px 0;color:var(--text);line-height:1.65}
+.c-list,.c-numbered,.c-checklist-wrap{margin:6px 0 10px;padding-left:18px}
+.c-list li,.c-numbered li{margin:3px 0;line-height:1.6;color:var(--text)}
+.c-list li::marker{color:var(--accent2)}
+.c-numbered li::marker{color:var(--accent);font-weight:600}
+.c-callout{margin:8px 0;padding:8px 12px;background:var(--callout-bg);border-left:3px solid var(--callout-border);border-radius:0 4px 4px 0;font-size:12px;line-height:1.6;color:var(--accent2)}
+.c-table{margin:8px 0;width:100%;border-collapse:collapse;font-size:11.5px}
+.c-table th{background:#141414;color:var(--accent);font-weight:600;padding:5px 8px;text-align:left;border:1px solid var(--border)}
+.c-table td{padding:5px 8px;border:1px solid var(--border);color:var(--text);line-height:1.5}
+.c-table tr:hover td{background:#0f0f0f}
+
+/* Checklist */
+.c-checklist-wrap{list-style:none;padding-left:4px}
+.c-check-item{display:flex;align-items:flex-start;gap:6px;margin:4px 0;line-height:1.6;cursor:pointer}
+.c-check-item input[type=checkbox]{margin-top:3px;accent-color:var(--check-accent);cursor:pointer;flex-shrink:0}
+.c-check-item.checked .c-check-text{color:#555;text-decoration:line-through}
+.c-check-text{color:var(--text)}
+
+/* Hamburger */
+.hamburger{display:none;position:fixed;top:8px;left:8px;z-index:100;width:32px;height:32px;background:var(--sidebar-bg);border:1px solid var(--border);border-radius:4px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.hamburger span{display:block;width:16px;height:1.5px;background:var(--text)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:49}
+
+@media(max-width:768px){
+  .sidebar{position:fixed;left:-280px;z-index:50;transition:left .2s;width:280px;min-width:280px}
+  .sidebar.open{left:0}
+  .hamburger{display:flex}
+  .overlay.show{display:block}
+  .content-body{padding:16px 14px 60px}
+  .content-topbar{padding:8px 14px 8px 48px}
+}
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+<div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+<div class="overlay" id="overlay"></div>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h1>YouTube教科書</h1>
+      <div class="sub">Knowledge Base</div>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" id="searchInput" placeholder="検索...">
+    </div>
+    <div class="tree-wrap" id="treeWrap"></div>
+  </aside>
+  <main class="content-wrap" id="contentWrap">
+    <div class="content-topbar" id="topbar">
+      <div class="breadcrumb" id="breadcrumb"></div>
+    </div>
+    <div class="content-body empty" id="contentBody">トピックを選択してください</div>
+  </main>
+</div>
+
+<script>
+const DATA = {"sections": [{"id": "mindset", "title": "マインドセット（前提）", "children": [{"id": "mindset-purpose", "title": "YouTubeの目的", "content": [{"type": "heading", "text": "YouTubeの目的"}, {"type": "callout", "text": "通りすがりの人をファンにすること = 視聴者の感情を揺らすこと（できるだけポジティブな感情に）"}, {"type": "text", "text": "YouTubeは単なる情報発信プラットフォームではない。視聴者との感情的な接点を作り、「この人の動画をもっと見たい」と思わせることが本質。機能的価値（ノウハウ）だけでは差別化できない時代、感情を動かせるかどうかが勝敗を分ける。"}]}, {"id": "mindset-director", "title": "ディレクターの心構え", "content": [{"type": "heading", "text": "ディレクターの心構え"}, {"type": "list", "items": ["常にYouTubeを見続ける。1日8時間競合の動画やアナリティクスを見る", "常にWhyを深堀り続ける。浅い分析では伸びない", "徹底的な視聴者目線。ペルソナと同じ人を1人用意して聞くのが大正解。結局自分が一番大好きなジャンルに参入するのが一番勝率が高い"]}, {"type": "callout", "text": "長編動画の分析例 ── 表面的分析：「サムネがキャッチーだから伸びた」→ 深い分析：「サムネのコピーが矛盾型で好奇心を刺激し、表情が驚き系で目を止め、タイトルで具体的ベネフィットを提示し、冒頭30秒で視聴者の悩みを3つ列挙して自分ごと化させ、構成が問題提起→解決→再問題提起のループで維持率を保っている」"}, {"type": "text", "text": "表面的な「伸びた/伸びなかった」ではなく、最小単位の変数まで分解して「なぜ」を言語化できるかが、ディレクターの実力を決める。"}]}, {"id": "mindset-principles", "title": "3つの原則", "content": [{"type": "heading", "text": "3つの原則"}, {"type": "numbered", "items": ["サムネ → タイトル → 冒頭 → 台本の順で設計（入口から作る）", "数字で判断し感覚を疑う（仮説 → 検証 → 言語化）", "ベースのクオリティ x 継続（ホームラン < 毎打席ヒット）"]}, {"type": "callout", "text": "順番が超重要。台本から作り始めるのはNG。どれだけ良い台本を書いても、サムネでクリックされなければ再生数はゼロ。入口（サムネ）から逆算して全体を設計する。"}]}, {"id": "mindset-performer", "title": "演者の心構え", "content": [{"type": "heading", "text": "演者の心構え"}, {"type": "numbered", "items": ["本来の自分の演者力を最大限引き出す。中田敦彦やヒカルを真似るのはNG。人を真似た言葉遣い・ジェスチャー・抑揚は不自然で違和感", "「視聴者にこうなってほしい」というピュアな感情で撮影。打算的=胡散臭い。ピュア≒必死さ≒リアル感≒話の緩急", "ロボットにならない。文字が想起させるイメージを思い浮かべながら喋る。身振り手振りも重要", "綺麗な言葉で淡々 < 多少汚い言葉でも熱量がこもっている方が3倍良い", "緊張は論外。自分の感情は視聴者に伝播する。伝えたいのは熱意", "ペルソナを具体的に描く。100人中1人だけに刺しにいくマインド。演者対多数ではなく演者対1人"]}]}]}, {"id": "research", "title": "リサーチ", "children": [{"id": "research-procedure", "title": "企画リサーチ手順", "content": [{"type": "heading", "text": "企画リサーチ手順"}, {"type": "numbered", "items": ["再生回数 > チャンネル登録者の動画を10個リサーチ（最近の投稿ほど良い）", "競合で伸びてる/伸びてない動画の違いを「企画サムネタイトル」と「中身」の2軸で分析", "なぜ伸びているかを最小単位の複数軸で分析（企画・タイトル・サムネ文言・台本構成・内容・演者ビジュアル・抑揚・リズム・背景・音質・画質・画角・編集テンポ）", "コメント欄やコメントへのいいねから視聴者が求めていたことを分析。コメントは期待値以上の価値や共感が生まれた時にしかされない", "伸びる要素を組み込んだサムネ案・タイトル案を決める（必ずサムネ→タイトル→台本構成→内容の順）"]}, {"type": "callout", "text": "大前提：YouTubeにオリジナリティは不要。答えはYouTube市場にある。「抽象 ⇔ 具体」で企画を捻出する。"}]}, {"id": "research-samune-planning", "title": "サムネタイトル・企画リサーチの実践手順", "content": [{"type": "callout", "text": "必ずプライベートブラウザで行う。通常ブラウザだとおすすめが自分に最適化されてしまい、フラットなリサーチができない。"}, {"type": "heading", "text": "検索 → フィルタリング手順"}, {"type": "numbered", "items": ["調べたいジャンルのキーワードで検索する（例：「英語 勉強」）", "フィルターを「視聴回数順」に並べる", "期間を「今年」に設定する（※市場が小さくて伸びてる動画が少ない場合は期間を広げてOK）", "ここから企画のネタを持ってくる"]}, {"type": "heading", "text": "持ってくる動画の基準"}, {"type": "list", "items": ["再生回数がチャンネル登録者数の3倍以上（300%超え）の動画を選ぶ", "例：登録者26.3万人に対して再生1,619万回 → 約1000%。これは余裕でOK", "登録者より再生回数が少ない = 登録者内でしか回っていない = 当たってない企画", "登録者より再生回数が多い = 登録者外にリーチしている = ファン以外が見ている = 伸びてる企画", "その中で「自分が再現できそうだな」と思える企画を持ってくる"]}, {"type": "heading", "text": "市場が小さい場合の代替手法"}, {"type": "list", "items": ["登録者の3倍以上の動画があまりない市場もある", "その場合：ベンチマークチャンネルを3つほど選定する", "そのチャンネルの動画の平均再生回数をだいたい算出する", "平均より1.5倍以上回っている動画を持ってくる", "（実際にうちも市場が小さめのチャンネルではこの方法でやっている）"]}, {"type": "heading", "text": "動画を選ぶ時の目利き"}, {"type": "list", "items": ["コラボ動画は属人性（ゲストの知名度）で伸びてる可能性があるので注意", "「卒業」「引退」系は一過性のバズなので参考にならないケースが多い", "ファンが多いチャンネル（大手）はあまり参考にならない — ファン力で回ってるだけの可能性", "立ち上げ半年〜1年で登録者10万人に到達したチャンネルは再現性が高いベンチマーク"]}, {"type": "callout", "text": "ポイント：「なぜこの動画が伸びてるのか」を常に分解する。数字だけ見てパクるのではなく、伸びてる構造を理解して自分の文脈に変換する。"}]}, {"id": "research-competitor", "title": "競合チャンネル分析", "content": [{"type": "heading", "text": "競合チャンネル分析"}, {"type": "list", "items": ["TOP5〜10の登録者・平均再生数・投稿頻度を一覧化", "ベンチマークチャンネルのリサーチ：やればやるほどいい", "いろんなチャンネルを眺めると「こういう企画当たるよね」という視聴者の悩みが掴めてくる", "そこから生物としての欲求に近いものを探る"]}, {"type": "heading", "text": "ベンチマークチャンネルのリストアップ手順"}, {"type": "numbered", "items": ["キーワードを変えてひたすら検索する — 「YouTubeマーケティング」「YouTube広告」「YouTubeコンサル」など切り口を変えて検索し、出てきたチャンネルを全てリストアップする", "登録者数 + リンクで一覧化する — リスト化すると「この業界で今一番強いのはここだな」が見えてくる。その理由を分解していく", "共通点を抽出する — いろんなチャンネルを見れば見るほど共通点が見えてくる。その共通点をどんどん落とし込んでいくのが大事", "伸びてる動画の傾向を読む — 伸びてる/伸びてないの差から「だいたいこういう動画が伸びるよね」が見えてくる"]}, {"type": "callout", "text": "とにかく数を出す。無限にリストアップしてから絞る。"}, {"type": "heading", "text": "伸びてる動画の傾向の読み方"}, {"type": "list", "items": ["属人性が強い（すでに知名度がある人）で伸びてるケースを見分ける — それは「企画力」ではなく「知名度」で伸びてる可能性がある", "ゼロイチのスタート系（「どうやって運営するか」「どうやってやるか」）が伸びてて、先のテクニック系は伸びてない → 視聴者層はこういうフェーズの人が多いと読める", "伸びてない動画も重要 — 例：インフルエンサーマーケ系が伸びてない → その視聴者層にはまだ早い/需要がないと判断できる", "「どういう企業が見てるチャンネルなんだな」というように、視聴者像を動画の傾向から逆算する"]}]}, {"id": "research-market", "title": "市場分析", "content": [{"type": "heading", "text": "市場分析"}, {"type": "list", "items": ["キーワード検索ボリューム調査（Googleトレンド / YouTube検索サジェスト / VidIQ）", "マーケットの天井見積もり（特化ジャンルTOPの登録者数 = 天井の目安）", "トレンド方向性（縮小トレンド → 実力20%上げないと現状維持すら不可）"]}, {"type": "callout", "text": "再生数 = 需要 x 供給のバランス"}]}, {"id": "research-persona", "title": "ペルソナ作成", "content": [{"type": "heading", "text": "ペルソナ作成"}, {"type": "text", "text": "明確なターゲットをイメージできていないと視聴者に伝わらない。初心者/中級者/上級者の区分けが必要。"}, {"type": "heading", "text": "ペルソナテンプレート"}, {"type": "table", "headers": ["項目", "記入欄"], "rows": [["層", "初心者 / 中級者 / 上級者"], ["名前", "具体的な名前"], ["性別", ""], ["年齢", ""], ["家族構成", ""], ["仕事", ""], ["年収", ""], ["人生の目標", ""], ["ジャンルへの知識", ""], ["悩み", ""], ["価値観", ""], ["休日の過ごし方", ""]]}]}, {"id": "research-planning", "title": "企画の原則", "content": [{"type": "heading", "text": "企画の原則"}, {"type": "text", "text": "判断基準：「サムネが想像できるか」"}, {"type": "heading", "text": "当たりパターン"}, {"type": "list", "items": ["ポジティブ x 具体 x 数字 x AI文脈"]}, {"type": "heading", "text": "外しパターン"}, {"type": "list", "items": ["コンセプト外の企画", "冒頭の宣伝パート"]}, {"type": "text", "text": "必要性 x 緊急性 x 信頼性で企画設計する。"}, {"type": "heading", "text": "初期動画の順番"}, {"type": "numbered", "items": ["1本目：ロング動画（自己紹介系）", "2本目以降：1本目=動機付け / 2本目=危機感 / 3本目=信頼性担保"]}]}]}, {"id": "thumbnail-title", "title": "サムネ・タイトル", "children": [{"id": "thumb-6steps", "title": "6ステップ", "content": [{"type": "heading", "text": "サムネ制作6ステップ"}, {"type": "numbered", "items": ["STEP1 目的定義：誰にクリックされたいか/されたくないか。発見経路で設計方針が変わる", "STEP2 観察：7つの観点で観察 ── コピー / 表情 / 構図 / 配色 / フォント / 情報量 / 差別化要素", "STEP3 分析：類似企画間の差異分析。勝ち/負けパターンを言語化", "STEP4 設計：4軸チェック x Z構図", "STEP5 具体化：影響度順 ── コピー > 表情 > 配色 > フォント > レイアウト", "STEP6 検証：ABテスト2〜3パターン。15分後CTR 6%以下なら秒で差替え"]}]}, {"id": "thumb-4axis", "title": "4軸チェック", "content": [{"type": "heading", "text": "4軸チェック"}, {"type": "table", "headers": ["軸", "意味", "例"], "rows": [["インパクト", "目が止まる", "大きな数字、強い色、驚きの表情"], ["具体", "何の話か理解", "「在宅ワーク」「物販」等"], ["ベネフィット", "自分に得がありそう", "「月収60万」「時給3万円」"], ["好奇心", "もっと知りたい", "モザイク、矛盾ワード、意外な組み合わせ"]]}, {"type": "callout", "text": "2024年までは3軸で勝てたが、2026年は好奇心がないと差別化できない。好奇心軸が最も重要度が上がっている。"}]}, {"id": "thumb-curiosity", "title": "好奇心コピーの型", "content": [{"type": "heading", "text": "好奇心コピーの型"}, {"type": "table", "headers": ["型", "説明", "例"], "rows": [["矛盾型", "常識と逆のことを言う", "「働かないほど稼げる」"], ["数字ギャップ型", "予想外の数字で驚かせる", "「1日5分で月収100万」"], ["否定型", "常識を否定する", "「努力するな」"], ["暴露型", "隠された情報を匂わせる", "「誰も言わない真実」"], ["ボタンの掛け違い型", "ずれた前提を提示する", "「あなたが痩せない本当の理由」"]]}]}, {"id": "thumb-rules", "title": "制作ルール", "content": [{"type": "heading", "text": "サムネ制作ルール"}, {"type": "list", "items": ["Z構図で左上に最強要素", "サムネ x タイトル x 冒頭 = 3点セットで設計", "2〜3パターン用意 → ABテスト", "サムネとタイトルの文言は意図的にずらす", "サムネは明るい方が良い（シンプルに目立つ）", "サムネのROIが最も高い（改善だけで再生数1.5倍の事例あり）", "コピーは業界用語でなく一般層に伝わる言葉", "結末を悟らせない", "弱いスペック・再現性の演出"]}, {"type": "heading", "text": "タイトルの考え方"}, {"type": "text", "text": "サムネで抱いた興味をさらに深堀りするようなタイトルにする。サムネとタイトルで同じ情報を繰り返すのは無駄。サムネで好奇心を刺激し、タイトルで具体的なベネフィットを提示する等、役割分担を意識する。"}]}, {"id": "thumb-swap", "title": "差替え判断基準", "content": [{"type": "heading", "text": "差替え判断基準"}, {"type": "table", "headers": ["15分後CTR", "アクション"], "rows": [["6%以下", "秒で差替え"], ["6〜9%", "30分まで様子見"], ["9%以上", "キープ"]]}]}, {"id": "thumb-checklist", "title": "サムネ制作チェックリスト", "content": [{"type": "heading", "text": "サムネ制作チェックリスト"}, {"type": "checklist", "items": ["この動画は誰に届けたいか明確か？", "競合・自チャンネルの当たり/外れパターンを分析したか？", "差を生んでいる変数を言語化できているか？", "4軸（インパクト・具体・ベネフィット・好奇心）は全部入っているか？", "Z構図で左上に最強の要素を置いているか？", "コピーは業界用語でなく一般層に伝わる言葉か？", "サムネとタイトルの文言は意図的にずらしているか？", "結末を悟らせていないか？", "弱いスペック・再現性の演出は入っているか？", "表情はチャンネルの勝ちパターンに合っているか？", "配色は4色以内？トンマナ統一されているか？", "スマホ実機・暗い部屋で視認性を確認したか？", "2〜3パターン用意してABテストに回せるか？", "サムネ・タイトル・冒頭30秒は3点セットで設計したか？"]}]}]}, {"id": "script", "title": "台本制作", "children": [{"id": "script-mindset", "title": "ディレクター必読マインド", "content": [{"type": "heading", "text": "ディレクター必読マインド"}, {"type": "numbered", "items": ["添削依頼時の台本提出は200%で作りこめた状態で提出。誤字脱字・語尾重複は論外。音読やダブルチェック必須。「この動画を投稿したら伸びる」状態を当たり前に。制作をKPIに置くマインドは捨てる。使命はアベレージPVの上昇・売上の増加のみ", "全ての文章に意図を持って書く。無駄な文章を入れない。意図のない言葉は単語単位で入れない。意図を聞かれた時に即答できない状態は論外"]}]}, {"id": "script-flow", "title": "台本制作フロー", "content": [{"type": "heading", "text": "台本制作フロー"}, {"type": "numbered", "items": ["参考動画の洗い出し・リサーチ", "抽出した要素を書き出す", "構成の作成", "執筆"]}]}, {"id": "script-points", "title": "台本作成ポイント", "content": [{"type": "heading", "text": "台本作成ポイント"}, {"type": "numbered", "items": ["3つほどの異なる競合動画の構成と内容の共通項を書く。バズる要因はしっかり抑える。変に構成の順番を変えたり内容を変えない。自社の優位的要素（権威、社会的証明、実績、オリジナルノウハウ、演者の感情）を盛り込む", "YouTubeは結局「演者が8割」。演者の人柄・喋り方・考え方・夢を深く理解した上で「その演者が言いそうなこと」を書く。「なんか胡散臭い」「この人こんな言い回し普段しないだろ」を減らす", "伸びている動画は総じて「視聴者の感情を揺らす動画」。機能的価値（ノウハウ、実践的方法、有益情報）か感情的価値（モチベ、刺激、気づき、人間的に好き、応援したい）が入っているか確認", "書き言葉ではなく話し言葉で書く。完成台本を最低3回音読。普通の会話で使わないような文語的な言い回しは視聴者の違和感＝ストレス", "接続詞を使いこなす。視聴者が「全く予測不可能」を防ぎストレスを軽減"]}]}, {"id": "script-structure", "title": "構成設計", "content": [{"type": "heading", "text": "構成設計"}, {"type": "list", "items": ["最初と最後に衝撃的な情報（常識の破壊や超具体的なノウハウ）", "冒頭は第一印象が100%。最初に有益性を感じさせないとすぐ離脱", "最後は有益性＋気づき＋価値観 → タメになったと感じさせる → 回遊に影響", "前振りは最長1分30秒以内。脳死で悩み拡大とか使わない"]}]}, {"id": "script-opening", "title": "冒頭設計", "content": [{"type": "heading", "text": "冒頭設計"}, {"type": "text", "text": "複数ペルソナ列挙 + 2つの見どころ予告が有効。冒頭30秒以内で40〜50%が離脱する。"}, {"type": "heading", "text": "冒頭で狙う視聴者の反応"}, {"type": "list", "items": ["「これから何が起こるんだろう？」（期待値を高める）", "「何それ？どうゆうこと？」（新たな問題提起）", "「それ悩んでたんだよねー！」（予定調和を裏切る）"]}, {"type": "heading", "text": "経路別の冒頭設計"}, {"type": "table", "headers": ["流入経路", "冒頭の方針"], "rows": [["検索", "結論予告（答えを求めて来ている）"], ["おすすめ", "好奇心維持（受動的に出会っている）"], ["関連動画", "差分提示（前の動画との違い）"], ["SNS", "人格の延長（人起点で来ている）"]]}, {"type": "callout", "text": "宣伝セリフは冒頭NG（画像LINE誘導はOK）"}]}, {"id": "script-kaiyuu", "title": "回遊施策", "content": [{"type": "heading", "text": "回遊施策"}, {"type": "text", "text": "概要欄にリンク + 編集でサムネ挿入時は下に白テキストでタイトル + 概要欄リンクありと記載する。"}]}, {"id": "script-checklist", "title": "台本チェックリスト", "content": [{"type": "heading", "text": "台本チェックリスト"}, {"type": "checklist", "items": ["文字はArial10、行間1.15行、標準テキスト適用", "構成は赤文字で太文字を適用", "起承転結ごと・文章の転換点・セリフなど改行は読みやすいか", "なぜそのサムネの文言なのか？なぜそのデザインなのか？全てに理由が書いてあるか？", "前振りは1分30秒以内か", "内容は視聴者にとって鬼有益でタメになり新しい気づきを与えられているか", "視聴者の動画視聴の流れ（サムネ→タイトル→クリック）を理解した設計か", "回遊の仕組みは作れているか", "表面的じゃない視聴者の奥底の感情の共感は得られているか", "視聴者と会話しているか（常に質問はできているか）", "視聴者を本気で動画に釘付けにできているか（参加型ワーク等）", "コメント欄を読んでいるか", "最低1回は声に出して台本を読んだか", "最後まで視聴する施策（プレゼント、NG集、近況報告等）を打てているか", "冒頭での離脱は極限まで抑えられているか", "ネガティブ感情は徹底的に排除できているか", "脳内SEO（思い出してもらう頻度）を増やす仕組みはあるか", "初稿を投稿しても150%伸びるという絶対的自信の基に提出できているか"]}]}]}, {"id": "shooting", "title": "撮影", "children": [{"id": "shoot-tips", "title": "気持ちよく撮影するコツ", "content": [{"type": "heading", "text": "気持ちよく撮影するコツ"}, {"type": "list", "items": ["恥ずかしさを捨てる", "台本に面白いを散りばめる", "普段使わない言葉を極限まで削る & 撮影時違和感ある言葉は適宜修正"]}]}, {"id": "shoot-environment", "title": "撮影環境設定", "content": [{"type": "heading", "text": "撮影環境設定"}, {"type": "list", "items": ["WB / ISO / 明るさ全オート、露出 -0.7", "有線マイク推奨", "1回で4〜6本撮影", "カメラはiPhoneで十分。光とカメラワークが重要", "日中光が入るインテリアがオシャレな部屋。観葉植物やPCモニターや壁画", "HD 30fps、HDRオフ、16:9", "撮影後素材は必ずPCに移し一つのファイルにまとめる", "ギガファイル便の保持期限は100日、フォルダは必ず一つにまとめる"]}]}, {"id": "shoot-checklist", "title": "演者チェックリスト", "content": [{"type": "heading", "text": "演者チェックリスト"}, {"type": "checklist", "items": ["非言語的要素（表情、髪型、喋るスピード、声の抑揚、装飾物、服装、背景、画質、音質、ジェスチャー、清潔感）は完璧か", "その動画に魂は乗っているか（8割コレ）", "画面の向こうの1人の人間を本気で変えたいと思えているか", "動画を撮影すること自体が目的（タスク）になってないか", "ネガティブ感情は排除できているか", "日中自然光で撮影できているか", "画質・画角は適切か", "画面の比率は16:9か"]}]}]}, {"id": "editing", "title": "編集", "children": [{"id": "edit-line", "title": "LINE誘導", "content": [{"type": "heading", "text": "LINE誘導"}, {"type": "list", "items": ["冒頭（10秒以内）+ 途中 + 最後で画像付き", "殆どの人は最後でしかLINE誘導しないが、冒頭・途中にも入れることで獲得リストの母数を最大化", "「教育がかかってない薄いリスト」→ 登録後のLINEやメルマガの導線が作り込まれていれば問題ない"]}]}, {"id": "edit-bgm", "title": "BGMルール", "content": [{"type": "heading", "text": "BGMルール"}, {"type": "list", "items": ["音数が少ない曲を選ぶ（音量を下げるのではない）", "内容や場面や感情が切り替わる時にBGMも切り替え", "機能的価値ベースの有益情報 vs 感情的メッセージのシーンで使い分け", "同じBGMをずっと使用するのはNG"]}]}, {"id": "edit-telop", "title": "テロップルール", "content": [{"type": "heading", "text": "テロップルール"}, {"type": "list", "items": ["テロップの先出し厳禁（演者が喋る前に内容が伝わると飽き→離脱）", "フォント・大きさ・エフェクトをシーンで使い分け（ずっと単調は飽きの原因）", "感情に合わせたデザイン・エフェクト・SE（例：ポジティブ→金色メタリック・シャキーンSE・集中線画角拡大・フラッシュインエフェクト）", "テロップの感情と台本の感情を合わせないと視聴者の脳内に情報が入りづらい"]}]}, {"id": "edit-se", "title": "SE・フリー素材", "content": [{"type": "heading", "text": "SE・フリー素材"}, {"type": "callout", "text": "最低5秒に1回は挿入して飽きさせない"}]}, {"id": "edit-shorts", "title": "ショート動画", "content": [{"type": "heading", "text": "ショート動画"}, {"type": "list", "items": ["ロングの切り抜きが基本。冒頭2秒勝負", "活用法：投稿期間が空く時の繋ぎ + 通常尺動画への誘導", "ショートの視聴回数の0.6〜1.6%がロングへ誘導可能", "連発するとインプが広がりすぎて視聴者属性が狂う → ロングの切り抜きやダイジェストなら属性統一しながら伸ばせる"]}]}, {"id": "edit-checklist", "title": "編集チェックリスト", "content": [{"type": "heading", "text": "編集チェックリスト"}, {"type": "checklist", "items": ["LINE誘導が冒頭・途中・最後で画像付きで入っているか", "視聴者を飽きさせない編集か（フォント・BGM・文字の大きさの使い分け）", "SE/フリー素材の挿入は最低5秒に1回あるか", "ネガティブ感情は排除できているか（音質・BGM・テンポ等）", "BGMはシーンの切り替えで変えているか", "テロップのフォントはシーンで使い分けているか", "テロップの先出しをしていないか", "冒頭不要パートはカットしたか"]}]}]}, {"id": "posting", "title": "投稿・運用", "children": [{"id": "post-frequency", "title": "投稿頻度", "content": [{"type": "heading", "text": "投稿頻度"}, {"type": "list", "items": ["ロング週1〜2本 + ショート", "頻度増は視聴者の可処分時間次第", "動画増やしても総再生時間が増えない or 新規視聴者数の増加が一定 → 可処分時間が余ってない"]}]}, {"id": "post-initial", "title": "初期戦略", "content": [{"type": "heading", "text": "初期戦略"}, {"type": "list", "items": ["新規チャンネルを完全オーガニックで伸ばすのは困難", "他SNSのフォロワー活用。ただし流入元と流入先の属性を合わせる", "属性がずれると → クリックされない → 評価低下 → インプ激減", "コラボでチャンネルが壊れるのもおすすめ先がブレるのが理由", "ズレがある場合は公式LINEやSNSサブアカでスクリーニングしてYouTubeに流入"]}]}, {"id": "post-vseo", "title": "VSEO", "content": [{"type": "heading", "text": "VSEO（Video SEO）"}, {"type": "list", "items": ["市場の大きいジャンルや初期立ち上げは検索流入を狙う", "SEO対策は小手先。動画自体が伸びることが上位表示の一番の要因", "VidIQでAve Views 10万以上（できれば20万以上）のワードを狙う"]}]}, {"id": "post-fan", "title": "ファン化施策", "content": [{"type": "heading", "text": "ファン化施策"}, {"type": "callout", "text": "x 好きになるから知ろうとする / ○ 人を知れば知るほど好きになる"}, {"type": "list", "items": ["演者のプライベートや人間性を出す。ノウハウの話に絡めて1-2文（10秒）で散りばめる", "ファン化されてないch → 情報に対してのコメント", "ファン化されてるch → 嬉しい・楽しい・面白いなど情報価値以外のコメント", "情報優位性よりファン化の方が圧倒的に成約率が上がる（同一ジャンル3ch所有で売上10倍以上の差）", "アナリティクスのカスタマイズでチャンネル登録者向けに自己紹介動画や熱量マシマシ動画を配置"]}]}, {"id": "post-longterm", "title": "長期再生型動画", "content": [{"type": "heading", "text": "長期再生型動画"}, {"type": "callout", "text": "教科書となるような何度も見返す動画が最も売上を作る。初心者にも上級者にも勉強になる内容。"}]}, {"id": "post-kaiyuu", "title": "回遊施策", "content": [{"type": "heading", "text": "回遊施策"}, {"type": "text", "text": "5本の動画で伸ばす。回遊の誘導は常に行う。1本の動画で完結させず、次の動画への導線を必ず設計する。"}]}]}, {"id": "analytics", "title": "分析・改善", "children": [{"id": "analytics-algorithm", "title": "アルゴリズム評価軸", "content": [{"type": "heading", "text": "アルゴリズム評価軸"}, {"type": "table", "headers": ["優先度", "指標", "詳細"], "rows": [["主要1", "CTR", "クリック率。サムネ・タイトルの成績"], ["主要2", "視聴継続率", "どこまで見られたか"], ["主要3", "平均視聴時間 / 平均再生率", "動画全体の視聴深度"], ["副次", "高評価・コメント・共有", "エンゲージメント指標"]]}, {"type": "callout", "text": "競合だけでなく自分の過去動画とも比較される「相対評価」。過去の自分を超え続ける必要がある。"}]}, {"id": "analytics-post-check", "title": "サムネ投稿後チェック", "content": [{"type": "heading", "text": "サムネ投稿後チェック"}, {"type": "text", "text": "投稿後15分でCTR確認。仮説を立て次回に活かす。この地味な作業の蓄積が莫大な資産を作る。"}]}, {"id": "analytics-method", "title": "分析手法", "content": [{"type": "heading", "text": "分析手法"}, {"type": "list", "items": ["詳細モード（使用者約8%）", "トラフィックソース分解（検索/ブラウジング/関連/登録フィード別にCTR確認）", "グルーピング機能で企画カテゴリ別平均値", "相対的な視聴維持率（PC版のみ）：山=維持理由を言語化 / 谷=離脱原因を特定"]}]}, {"id": "analytics-monthly", "title": "月次振り返り", "content": [{"type": "heading", "text": "月次振り返り"}, {"type": "callout", "text": "月間再生数アベレージを前月比で上げ続ける。これが唯一のKPI。"}]}, {"id": "analytics-cta", "title": "CTA改善", "content": [{"type": "heading", "text": "CTA改善"}, {"type": "callout", "text": "CTA反応 = 信頼蓄積 x 緊急性の認知 x 行動コストの低さ"}, {"type": "text", "text": "タイミング：30分尺なら10分/20分/最後の計2〜3回。10分前後で1回目。「分かるけど自分では難しい」ポイントに特典を対応させる。"}, {"type": "table", "headers": ["CTA反応率", "評価"], "rows": [["0.1%", "低い"], ["0.2〜0.3%", "売上2〜3倍"], ["1〜2%", "継続的に実現可能"], ["3.5%", "最高実績"]]}]}]}, {"id": "journey", "title": "視聴者ジャーニー", "children": [{"id": "journey-phase0", "title": "Phase 0: 潜在状態", "content": [{"type": "heading", "text": "Phase 0: 潜在状態"}, {"type": "text", "text": "視聴者が動画に出会う前の状態。認知のレベルによって刺さるコンテンツが異なる。"}, {"type": "numbered", "items": ["無知層 ── 問題すら認識していない", "認知層 ── 問題は認識しているが解決策を知らない", "興味層 ── 解決策に興味を持ち始めている", "比較検討層 ── 複数の解決策を比較している", "購入直前層 ── あと一押しで行動する"]}]}, {"id": "journey-phase1", "title": "Phase 1: 接触", "content": [{"type": "heading", "text": "Phase 1: 接触"}, {"type": "text", "text": "視聴者が動画と出会う4つの経路。それぞれで設計方針が異なる。"}, {"type": "table", "headers": ["経路", "特徴", "設計方針"], "rows": [["検索", "能動的、VSEO有効", "結論ファースト"], ["おすすめ", "受動的、好奇心", "インパクト重視"], ["関連動画", "延長欲求", "差分・深堀り"], ["SNS", "人起点、属性統一必須", "人格の延長"]]}]}, {"id": "journey-phase2", "title": "Phase 2: サムネ・タイトル判断", "content": [{"type": "heading", "text": "Phase 2: サムネ・タイトル判断"}, {"type": "text", "text": "判断時間は0.1〜0.2秒。3層の期待値で判断される。"}, {"type": "numbered", "items": ["情報の期待値 ── 自分に関係ある情報がありそうか", "感情の期待値 ── 面白そう・楽しそう・刺激的か", "品質の期待値 ── ちゃんとした動画か"]}, {"type": "heading", "text": "クリックされない4パターン"}, {"type": "list", "items": ["無関係 ── 自分に関係ないと判断", "既知 ── もう知ってる内容だと判断", "品質不信 ── クオリティが低そうと判断", "後回し ── 今じゃなくていいと判断"]}]}, {"id": "journey-phase3", "title": "Phase 3: 冒頭確認", "content": [{"type": "heading", "text": "Phase 3: 冒頭確認（0〜30秒）"}, {"type": "text", "text": "視聴者は冒頭で3つを確認する。"}, {"type": "list", "items": ["期待値との一貫性 ── サムネ・タイトルで期待した内容と合っているか", "品質水準 ── 映像・音声・編集のクオリティ", "「自分ごと」か ── この動画は自分のための動画か"]}]}, {"id": "journey-phase4", "title": "Phase 4: 本編視聴", "content": [{"type": "heading", "text": "Phase 4: 本編視聴"}, {"type": "heading", "text": "視聴者の4つの状態"}, {"type": "table", "headers": ["状態", "説明", "対策"], "rows": [["集中", "前のめりで見ている", "この状態を維持する設計"], ["待機", "なんとなく見続けている", "フックを入れて集中に戻す"], ["退屈", "飽き始めている", "展開を変える・SE/素材で刺激"], ["離脱", "もう見る価値がないと判断", "ここに至る前に手を打つ"]]}, {"type": "text", "text": "中間CTAは「分かるけど自分では難しい」と感じるポイントに設置する。"}]}, {"id": "journey-phase5", "title": "Phase 5: 視聴後評価", "content": [{"type": "heading", "text": "Phase 5: 視聴後評価"}, {"type": "text", "text": "視聴者は動画を見終わった後、無意識に評価を下す。"}, {"type": "list", "items": ["機能的価値 ── 役に立つ情報・ノウハウが得られたか", "感情的価値 ── 楽しかった・刺激を受けた・応援したいと思えたか"]}, {"type": "callout", "text": "長期的には感情的価値 > 機能的価値。人格はコピーできない。情報はコピーできるが、「この人から聞きたい」は唯一無二。"}]}, {"id": "journey-phase6", "title": "Phase 6: リピートループ", "content": [{"type": "heading", "text": "Phase 6: リピートループ"}, {"type": "text", "text": "Phase1→5を何周も回すことでファン化が進む。"}, {"type": "list", "items": ["単純接触効果 ── 見れば見るほど好きになる", "疑似社会的関係 ── 演者を知人のように感じ始める", "唯一性の認知 ── 「この人じゃないとダメ」", "帰還先の構築 ── チャンネルが居場所になる", "未来の挫折予告 ── 「また困ったら戻ってくる」設計", "洗脳解除 ── 他の情報源への依存を解く"]}]}, {"id": "journey-phase7", "title": "Phase 7: CTA反応", "content": [{"type": "heading", "text": "Phase 7: CTA反応"}, {"type": "text", "text": "信頼が閾値を超えた時にCTA反応が起きる。"}, {"type": "callout", "text": "CTA反応 = 信頼蓄積 x 緊急性の認知 x 行動コストの低さ"}, {"type": "text", "text": "信頼蓄積が不足していると、どれだけ緊急性を煽っても反応しない。逆に信頼が十分にあれば、軽いCTAでも反応する。"}]}, {"id": "journey-phase8", "title": "Phase 8: セールス", "content": [{"type": "heading", "text": "Phase 8: セールス"}, {"type": "callout", "text": "購入 = (欲求 x 緊急性) / (不安 + 先延ばし) x 支払い能力"}, {"type": "text", "text": "欲求と緊急性を高め、不安と先延ばしを減らし、支払い能力のある層にリーチすることが成約の公式。"}]}]}, {"id": "tools", "title": "便利ツール・参考", "children": [{"id": "tools-chrome", "title": "Chrome拡張", "content": [{"type": "heading", "text": "おすすめChrome拡張"}, {"type": "list", "items": ["YouTube Summary with ChatGPT & Claude", "vidIQ", "YouTube Tags", "Video Speed Controller"]}]}, {"id": "tools-twitter", "title": "チェックすべきTwitter", "content": [{"type": "heading", "text": "チェックすべきTwitterアカウント"}, {"type": "list", "items": ["MAX", "ぶひこ", "小山竜央", "GO（全ツイート遡る）"]}]}, {"id": "tools-youtube", "title": "参考YouTubeチャンネル", "content": [{"type": "heading", "text": "参考YouTubeチャンネル"}, {"type": "list", "items": ["動画マーケティング攻略チャンネル"]}]}]}]};
+
+// State
+let activeId = null;
+let checkStates = {};
+const LS_KEY = 'yt_kb_checks';
+
+// Load checks from localStorage
+try { checkStates = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(e) {}
+
+function saveChecks() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(checkStates)); } catch(e) {}
+}
+
+// Build flat index for search
+const flatIndex = [];
+function indexNode(node, parentTitles) {
+  const path = [...parentTitles, node.title];
+  const contentText = (node.content || []).map(c => {
+    if (c.text) return c.text;
+    if (c.items) return c.items.join(' ');
+    if (c.headers) return c.headers.join(' ') + ' ' + (c.rows||[]).flat().join(' ');
+    return '';
+  }).join(' ');
+  flatIndex.push({ id: node.id, title: node.title, path, contentText, hasContent: !!node.content });
+  if (node.children) node.children.forEach(ch => indexNode(ch, path));
+}
+DATA.sections.forEach(s => indexNode(s, []));
+
+// Find node by id
+function findNode(id, nodes) {
+  for (const n of nodes) {
+    if (n.id === id) return n;
+    if (n.children) { const f = findNode(id, n.children); if (f) return f; }
+  }
+  return null;
+}
+
+// Build tree
+function buildTree(sections, depth, filterSet) {
+  let html = '';
+  for (const sec of sections) {
+    const hasChildren = sec.children && sec.children.length > 0;
+    const hasContent = sec.content && sec.content.length > 0;
+    const isLeaf = !hasChildren;
+
+    // Filter logic
+    if (filterSet && !filterSet.has(sec.id)) {
+      // Check if any descendant matches
+      if (!hasDescendant(sec, filterSet)) continue;
+    }
+
+    const arrowClass = hasChildren ? (depth === 0 ? 'tree-arrow expanded' : 'tree-arrow expanded') : 'tree-arrow hidden';
+    const activeClass = activeId === sec.id ? ' active' : '';
+
+    html += `<div class="tree-node depth-${depth}" data-id="${sec.id}">`;
+    html += `<div class="tree-label${activeClass}" data-id="${sec.id}" data-leaf="${isLeaf}" data-has-content="${hasContent}">`;
+    html += `<span class="${arrowClass}" data-id="${sec.id}">&#9654;</span>`;
+    html += `<span class="tree-text">${sec.title}</span>`;
+    html += `</div>`;
+    if (hasChildren) {
+      html += `<div class="tree-children open">`;
+      html += buildTree(sec.children, depth + 1, filterSet);
+      html += `</div>`;
+    }
+    html += `</div>`;
+  }
+  return html;
+}
+
+function hasDescendant(node, filterSet) {
+  if (filterSet.has(node.id)) return true;
+  if (node.children) return node.children.some(ch => hasDescendant(ch, filterSet));
+  return false;
+}
+
+function renderTree(filterSet) {
+  document.getElementById('treeWrap').innerHTML = buildTree(DATA.sections, 0, filterSet);
+  attachTreeEvents();
+}
+
+function attachTreeEvents() {
+  document.querySelectorAll('.tree-label').forEach(el => {
+    el.addEventListener('click', (e) => {
+      const id = el.dataset.id;
+      const isLeaf = el.dataset.leaf === 'true';
+      const hasContent = el.dataset.hasContent === 'true';
+
+      // Toggle children
+      const parent = el.closest('.tree-node');
+      const children = parent.querySelector(':scope > .tree-children');
+      const arrow = el.querySelector('.tree-arrow');
+
+      if (children) {
+        children.classList.toggle('open');
+        if (arrow) arrow.classList.toggle('expanded');
+      }
+
+      // Show content if has content
+      if (hasContent || isLeaf) {
+        selectNode(id);
+      }
+    });
+  });
+}
+
+function selectNode(id) {
+  activeId = id;
+  // Update active state
+  document.querySelectorAll('.tree-label').forEach(el => {
+    el.classList.toggle('active', el.dataset.id === id);
+  });
+
+  const node = findNode(id, DATA.sections);
+  if (!node) return;
+
+  // Breadcrumb
+  const entry = flatIndex.find(e => e.id === id);
+  const bc = entry ? entry.path.map((p, i) => i < entry.path.length - 1 ? `${p}<span class="sep">&rsaquo;</span>` : `<span>${p}</span>`).join('') : node.title;
+  document.getElementById('breadcrumb').innerHTML = bc;
+
+  // Content
+  if (!node.content || node.content.length === 0) {
+    document.getElementById('contentBody').className = 'content-body empty';
+    document.getElementById('contentBody').innerHTML = 'サブトピックを選択してください';
+    return;
+  }
+
+  document.getElementById('contentBody').className = 'content-body';
+  let html = '';
+  let checkIdx = 0;
+
+  for (const block of node.content) {
+    switch (block.type) {
+      case 'heading':
+        html += `<h2 class="c-heading">${esc(block.text)}</h2>`;
+        break;
+      case 'text':
+        html += `<p class="c-text">${esc(block.text)}</p>`;
+        break;
+      case 'list':
+        html += '<ul class="c-list">' + block.items.map(i => `<li>${esc(i)}</li>`).join('') + '</ul>';
+        break;
+      case 'numbered':
+        html += '<ol class="c-numbered">' + block.items.map(i => `<li>${esc(i)}</li>`).join('') + '</ol>';
+        break;
+      case 'callout':
+        html += `<div class="c-callout">${esc(block.text)}</div>`;
+        break;
+      case 'table':
+        html += '<table class="c-table"><thead><tr>' + block.headers.map(h => `<th>${esc(h)}</th>`).join('') + '</tr></thead><tbody>';
+        for (const row of block.rows) {
+          html += '<tr>' + row.map(c => `<td>${esc(c)}</td>`).join('') + '</tr>';
+        }
+        html += '</tbody></table>';
+        break;
+      case 'checklist':
+        html += '<div class="c-checklist-wrap">';
+        for (const item of block.items) {
+          const key = `${id}_${checkIdx}`;
+          const checked = checkStates[key] || false;
+          html += `<label class="c-check-item${checked ? ' checked' : ''}">`;
+          html += `<input type="checkbox" data-key="${key}" ${checked ? 'checked' : ''}>`;
+          html += `<span class="c-check-text">${esc(item)}</span>`;
+          html += `</label>`;
+          checkIdx++;
+        }
+        html += '</div>';
+        break;
+    }
+  }
+
+  document.getElementById('contentBody').innerHTML = html;
+
+  // Attach checkbox events
+  document.querySelectorAll('.c-check-item input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const key = cb.dataset.key;
+      checkStates[key] = cb.checked;
+      cb.closest('.c-check-item').classList.toggle('checked', cb.checked);
+      saveChecks();
+    });
+  });
+
+  // Mobile: close sidebar
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// Search
+const searchInput = document.getElementById('searchInput');
+let searchTimeout;
+searchInput.addEventListener('input', () => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    const q = searchInput.value.trim().toLowerCase();
+    if (!q) {
+      renderTree(null);
+      return;
+    }
+    const matchIds = new Set();
+    flatIndex.forEach(entry => {
+      if (entry.title.toLowerCase().includes(q) || entry.contentText.toLowerCase().includes(q)) {
+        matchIds.add(entry.id);
+      }
+    });
+    renderTree(matchIds);
+  }, 200);
+});
+
+// Hamburger
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+});
+document.getElementById('overlay').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+});
+
+// Init
+renderTree(null);
+// Auto-select first leaf
+const firstLeaf = flatIndex.find(e => e.hasContent && findNode(e.id, DATA.sections) && (!findNode(e.id, DATA.sections).children || findNode(e.id, DATA.sections).children.length === 0));
+if (firstLeaf) selectNode(firstLeaf.id);
+</script>
+</body>
+</html>

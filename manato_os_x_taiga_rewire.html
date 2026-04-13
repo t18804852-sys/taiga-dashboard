@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>まなとOS完全解析 × Taiga無意識リワイヤリング</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0e1c14; color:#c8e6d0; font-family:'Noto Sans JP',sans-serif; min-height:100vh; overflow-x:hidden; }
+  .river-bg { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; opacity:0.2; }
+  .river-bg svg { width:100%; height:100%; }
+  .hud { position:relative; z-index:1; max-width:1400px; margin:0 auto; padding:30px 20px; }
+
+  .header { text-align:center; margin-bottom:40px; padding:30px; background:linear-gradient(135deg,rgba(14,28,20,0.95),rgba(20,60,40,0.8)); border:1px solid rgba(80,200,140,0.3); border-radius:12px; position:relative; overflow:hidden; }
+  .header::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,#50c88c,#40b8a0,transparent); }
+  .header .date { font-family:'Orbitron',sans-serif; font-size:12px; color:#40b8a0; letter-spacing:3px; margin-bottom:8px; }
+  .header h1 { font-family:'Orbitron',sans-serif; font-size:24px; background:linear-gradient(135deg,#50c88c,#40b8a0,#60d8b0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:12px; line-height:1.4; }
+  .header .sub { font-size:13px; color:rgba(200,230,210,0.6); line-height:1.6; }
+
+  .sec-title { font-family:'Orbitron',sans-serif; font-size:11px; color:#40b8a0; letter-spacing:4px; text-transform:uppercase; margin:40px 0 20px; padding-bottom:8px; border-bottom:1px solid rgba(80,200,140,0.15); }
+
+  .panel { background:rgba(14,28,20,0.85); border:1px solid rgba(80,200,140,0.2); border-radius:10px; padding:24px; margin-bottom:20px; position:relative; backdrop-filter:blur(10px); transition:border-color 0.3s; }
+  .panel:hover { border-color:rgba(80,200,140,0.5); }
+  .panel::before { content:''; position:absolute; top:0; left:20px; right:20px; height:1px; background:linear-gradient(90deg,transparent,rgba(80,200,140,0.4),transparent); }
+
+  .plabel { font-family:'Orbitron',sans-serif; font-size:10px; color:#40b8a0; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .plabel .dot { width:6px; height:6px; border-radius:50%; background:#50c88c; box-shadow:0 0 8px rgba(80,200,140,0.6); animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+  .panel h2 { font-size:18px; font-weight:700; color:#e0f5e8; margin-bottom:14px; line-height:1.4; }
+  .panel h3 { font-size:14px; font-weight:600; color:#70d8a0; margin:18px 0 8px; }
+  .panel p,.text { font-size:13px; line-height:1.8; color:rgba(200,230,210,0.8); }
+
+  .grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin-bottom:20px; }
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:20px; }
+  @media(max-width:900px) { .grid-2,.grid-3 { grid-template-columns:1fr; } }
+
+  .formula { background:rgba(20,40,30,0.9); border:1px solid rgba(80,200,140,0.15); border-radius:8px; padding:16px 20px; font-family:'Orbitron',monospace; font-size:12px; color:#70d8a0; margin:12px 0; line-height:1.8; overflow-x:auto; }
+
+  .manato-quote { background:rgba(40,30,15,0.5); border-left:3px solid #d0a050; padding:14px 18px; margin:10px 0; border-radius:0 8px 8px 0; }
+  .manato-quote .qlabel { font-size:10px; color:#d0a050; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+  .manato-quote p { font-size:13px; color:rgba(220,200,160,0.85); line-height:1.7; }
+
+  .taiga-now { background:rgba(60,30,20,0.4); border:1px solid rgba(200,100,60,0.3); border-radius:8px; padding:14px 18px; margin:10px 0; }
+  .taiga-now .qlabel { font-size:10px; color:#d08060; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+  .taiga-now p { font-size:13px; color:rgba(220,180,160,0.8); line-height:1.7; }
+
+  .rewire { background:rgba(20,40,30,0.5); border:1px solid rgba(80,200,140,0.3); border-radius:8px; padding:14px 18px; margin:10px 0; }
+  .rewire .qlabel { font-size:10px; color:#50c88c; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+  .rewire p { font-size:13px; color:rgba(200,230,210,0.85); line-height:1.7; }
+  .rewire strong { color:#50c88c; }
+
+  .os-card { background:rgba(14,28,20,0.85); border:1px solid rgba(80,200,140,0.2); border-radius:10px; padding:20px; transition:border-color 0.3s,transform 0.2s; }
+  .os-card:hover { border-color:rgba(80,200,140,0.5); transform:translateY(-2px); }
+  .os-num { font-family:'Orbitron',sans-serif; font-size:10px; color:#40b8a0; letter-spacing:2px; margin-bottom:6px; }
+  .os-title { font-size:15px; font-weight:700; color:#e0f5e8; margin-bottom:10px; line-height:1.4; }
+
+  .diff-bar { display:flex; align-items:center; gap:10px; margin:8px 0; }
+  .diff-label { font-size:12px; color:#80c8a0; min-width:100px; text-align:right; }
+  .diff-bg { flex:1; height:8px; background:rgba(80,200,140,0.1); border-radius:4px; overflow:hidden; position:relative; }
+  .diff-fill-m { height:100%; border-radius:4px; background:linear-gradient(90deg,#d0a050,#e0b060); position:absolute; top:0; left:0; }
+  .diff-fill-t { height:100%; border-radius:4px; background:linear-gradient(90deg,#5090c8,#70a8d8); position:absolute; top:0; left:0; }
+  .diff-val { font-family:'Orbitron',sans-serif; font-size:11px; min-width:30px; }
+  .diff-val.m { color:#d0a050; }
+  .diff-val.t { color:#5090c8; }
+
+  .tag { display:inline-block; font-family:'Orbitron',sans-serif; font-size:9px; letter-spacing:1px; padding:2px 8px; border-radius:3px; margin-bottom:6px; margin-right:4px; }
+  .tag.speed { background:rgba(200,60,60,0.3); color:#d06060; }
+  .tag.defense { background:rgba(60,100,200,0.3); color:#6090d0; }
+  .tag.team { background:rgba(200,180,60,0.3); color:#d0c060; }
+  .tag.mindset { background:rgba(150,80,200,0.3); color:#b080d0; }
+  .tag.money { background:rgba(60,180,100,0.3); color:#60b080; }
+  .tag.body { background:rgba(200,120,60,0.3); color:#d09060; }
+  .tag.youtube { background:rgba(200,60,60,0.3); color:#d06070; }
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+
+<div class="river-bg">
+  <svg viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice">
+    <rect width="1400" height="900" fill="url(#w)"/>
+    <defs><linearGradient id="w" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#1a3a2a;stop-opacity:0.3"/><stop offset="50%" style="stop-color:#2a5a40;stop-opacity:0.2"/><stop offset="100%" style="stop-color:#1a3a2a;stop-opacity:0.3"/></linearGradient></defs>
+    <g opacity="0.15"><path d="M0,450 Q350,400 700,450 T1400,430" stroke="#40b8a0" stroke-width="1" fill="none"><animate attributeName="d" dur="8s" repeatCount="indefinite" values="M0,450 Q350,400 700,450 T1400,430;M0,440 Q350,460 700,440 T1400,450;M0,450 Q350,400 700,450 T1400,430"/></path></g>
+  </svg>
+</div>
+
+<div class="hud">
+
+<div class="header">
+  <div class="date">2026.04.09 — OS ANALYSIS & REWIRE</div>
+  <h1>MANATO OS 完全解析<br>× TAIGA 無意識リワイヤリング</h1>
+  <div class="sub">まなとくんの脳のOSを構造化し、Taigaの現在の無意識との差分を取り、書き換えるべき回路を設計する</div>
+</div>
+
+<!-- ===== OS構造化 ===== -->
+<div class="sec-title">MANATO OS — 12の無意識プログラム</div>
+
+<div class="grid-3">
+
+<div class="os-card">
+  <div class="os-num">OS 01</div>
+  <span class="tag speed">SPEED</span>
+  <div class="os-title">「今やる」がデフォルト</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>思いついた瞬間に終わらせる。とにかくスピード。「明日でいっか」は悪魔のワード。1人が1タスク遅れると全体が3遅れる。遅れは複利で効いてくる。</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>龍高星の「探求→次」で動くが、「今すぐ終わらせる」ではなく「もっと良い方法があるかも」で止まる。P的な思考。納期を守らない無意識。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>「完璧にやる」→「今終わらせる」に書き換え。</strong>龍高星の探求を止める必要はない。探求しながらでも「手元のボールは今投げる」。エーちゃんのノート＝書いた瞬間に完了。考えてから書くんじゃない。</p></div>
+</div>
+
+<div class="os-card">
+  <div class="os-num">OS 02</div>
+  <span class="tag defense">DEFENSE</span>
+  <div class="os-title">「倒産させない」が絶対KPI</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>俺のKPIは売上じゃない。会社を倒産させないこと。勝とうとするから負ける。負けないようにするから勝てる。攻めと守りの両立。最悪の未来のリスクヘッジ施策を同時に打つ。</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>「勝ちたい」「有能感を証明したい」が先行。守りの概念が薄い。ブースト→落ちの繰り返し＝攻撃だけで防御がない状態。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>「勝つ」→「死なない」を最上位に。</strong>従旺格の山は「崩れない」ことが最大の価値。攻撃は山の上から行う。まず山を固める。これが計画＝攻略マップの本質。マップなしで攻める＝防御ゼロ。</p></div>
+</div>
+
+<div class="os-card">
+  <div class="os-num">OS 03</div>
+  <span class="tag team">TEAM</span>
+  <div class="os-title">仲間の成長 ＝ 最強の資産</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>メンバーが成長して報酬が上がるのが嬉しすぎる。事業成長のスピードは優秀なメンバーの数にマジ比例する。もはや仲間集めの手段として事業があるのではないか？</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>「俺がやらなきゃ」のコントロール欲(10)。委譲が怖い。根源＝他人に任せる＝コントロールを手放す＝有能感の喪失。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>「委譲＝コントロールの喪失」→「委譲＝影響範囲の拡大」。</strong>まなとくんは自分が手放すほど組織が強くなることを体感してる。「この子そろそろいけるかな？よし任せよう！」の判断＝Prestige戦略。将軍レイヤーの核心がここ。</p></div>
+</div>
+
+<div class="os-card">
+  <div class="os-num">OS 04</div>
+  <span class="tag money">MONEY</span>
+  <div class="os-title">ポートフォリオ経営</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>目的は倒産させないこと。複数会社で施策をバラして同時検証。ストック型を全事業に導入。縦を伸ばしつつ横に拡げる。これだけ。</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>みさをch単体で考えがち。リョータchや他chとの接続が抽象的。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>「1chを伸ばす」→「複数chのポートフォリオを管理する」視座。</strong>まなとくんは1つのchに賭けてない。「パチンコで言えば当たりの台を選ぶのが俺の役目」。お前の仕事も「再生される動画を作る能力」をどのchに配分するか＝ポートフォリオ思考。</p></div>
+</div>
+
+<div class="os-card">
+  <div class="os-num">OS 05</div>
+  <span class="tag speed">SPEED</span>
+  <div class="os-title">ボールを持たない</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>自分のボールなんか持ったらあかん。すぐ投げるか、下育ててそいつに投げてもらえる仕組みを秒で作る。タスクを自分の手からすぐ離したい症候群の人が上手くいく。</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>コントロール欲(10)でボールを握り続ける。手放すのが怖い＝金0の症状。「俺がやった方が早い」で抱え込む。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>「持つ＝安心」→「離す＝速い＝勝てる」。</strong>ボールを持ってる時間＝チーム全体が止まってる時間。スピードが差別化要素なら、握ること自体が負け筋。金0を論理で補完する実践がここ。</p></div>
+</div>
+
+<div class="os-card">
+  <div class="os-num">OS 06</div>
+  <span class="tag mindset">MINDSET</span>
+  <div class="os-title">問題解決が「楽しい」</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>問題解決が楽しすぎる。「これやったらこうなるんじゃないか！？」が好きすぎてドーパミン中毒。やっぱ仕事してる時がエネルギー高い。仕事＝最高のプライベート。</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>ドーパミンの供給源＝女、ポルノ、スマホ。仕事からドーパミンが出る回路が弱い。攻略本×ポケモンの感覚が出れば仕事がドーパミン源になるはずだが、環境リセットがないと入れない。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>まなとくんはドーパミンの供給源が「仕事の仮説検証」。</strong>お前の最高パフォーマンス状態も同じ構造。違いは「いつでも入れるかどうか」。入口＝企画の仮説を立てる瞬間。「この企画だったらバズるんじゃないか？」のワクワク＝まなとくんが「施策思いついた時の興奮」と同じ。<strong>仕事をゲーム化する＝仮説を立てる習慣を作る</strong>。</p></div>
+</div>
+
+<div class="os-card">
+  <div class="os-num">OS 07</div>
+  <span class="tag team">TEAM</span>
+  <div class="os-title">無理難題＝最強の育成法</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>抽象的な指示であればあるほど能動的に仕事をこなさざるを得なくなる。それでも納期は絶対。自分を超えたタスクを納期を巻いて納品する練習。</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>まさに今まなとくんから無理難題を受けてる側。みさをchを伸ばせ＝抽象的な指示。お前自身が育成されてる最中。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>今は「受ける側」でいい。</strong>でも将来将軍になるなら「出す側」になる必要がある。まなとくんの無理難題の出し方を観察する。「YouTubeチャンネル2個あてといて」と言えるようになった時＝将軍。そのためにまず自分が1ch当てる。</p></div>
+</div>
+
+<div class="os-card">
+  <div class="os-num">OS 08</div>
+  <span class="tag body">BODY</span>
+  <div class="os-title">テストステロン ＝ 経営のインフラ</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>社長のテストステロン値と会社の業績はガチで比例する。筋トレとキックボクシングでメンタルヘルスが安定してるし競争心が増えた。全員筋トレして格闘技やった方がいい。</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>筋トレ、キックはやってる。体づくりの動機が「有能感の確認」に留まってる。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>「体づくり＝見た目のため」→「体づくり＝経営パフォーマンスのインフラ」。</strong>まなとくんにとって筋トレは「テストステロン→決断力→業績」の因果関係。お前の体づくりも同じ位置づけにする。有能感の確認じゃなく、仕事の土台。</p></div>
+</div>
+
+<div class="os-card">
+  <div class="os-num">OS 09</div>
+  <span class="tag mindset">MINDSET</span>
+  <div class="os-title">自分との約束を死ぬ気で守る</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>一回決めた目標は自分との約束なんだから死ぬ気で達成するという勢いで立ち向かわないといけない。ぬくぬく温玉でやってたら自分や周りの命守れない。</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>「自分は時間を守らない」というセルフイメージ。不義理5回の過去。「自分との約束を破る」が無意識の許可制になってる。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>「約束を破っても許される」→「約束＝命」。</strong>まなとくんのこの感覚は侍の哲学と同じ。お前が既に持ってる「死を前提に選択肢が広がる」の実装がここ。約束を守る＝覚悟。覚悟がある人は言動から覇気が出る。</p></div>
+</div>
+
+<div class="os-card">
+  <div class="os-num">OS 10</div>
+  <span class="tag money">MONEY</span>
+  <div class="os-title">お金は無限に欲しい。それでいい</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>やっぱ無限にお金欲しい。「人生お金じゃないよ」って言う人いるけど俺は違う。100億持ったらどうなる？周りと好きなことしまくれるよ。みんなで楽しいことしたい。</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>お金への欲求が「有能感の証明」に紐づいてる（A社長）。「お金＝俺の価値の証明」。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>まなとくんの「お金欲しい」は「みんなで楽しいことするため」（B社長）。</strong>お前の「Netflix超えて嬉し泣き」と同じ構造。お金の目的を「証明」から「実現」に変えるだけ。欲求の量は変えなくていい。方向を変える。</p></div>
+</div>
+
+<div class="os-card">
+  <div class="os-num">OS 11</div>
+  <span class="tag youtube">YOUTUBE</span>
+  <div class="os-title">個の力を極限まで鍛える</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>80点の人材5人より200点の人材1人の方が遥かに大きい売上が出る。とにかく個の力を強くしていく。YouTube界のアベンジャーズみたいなチーム作りてえ。全パラメーターSでYouTube力だけSSSみたいな人間になりたい。</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>みさをch月7,000再生。まだ個の力が足りてない段階。でも龍高星×3D認知×攻略本モードのポテンシャルは持ってる。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>「色々やりたい」→「まずYouTube力だけSSS」。</strong>まなとくんですら「ひたすらYouTube力を高め続けるだけ」と言い切ってる。お前のセンターピンも同じ。一点突破。週1本の台本を壁打ちで磨き切る。これ以外は全部後回し。</p></div>
+</div>
+
+<div class="os-card">
+  <div class="os-num">OS 12</div>
+  <span class="tag mindset">MINDSET</span>
+  <div class="os-title">逆境＝ドーパミン</div>
+  <div class="manato-quote"><div class="qlabel">まなと原文</div>
+  <p>逆境楽しいいい！「この企業に負けてる」って感覚を味わえるの幸せやなあ。20代こそ問題や困難に直面しまくりたい。解決しまくって経験を血肉に変えて上に這い上がりたい。</p></div>
+  <div class="taiga-now"><div class="qlabel">Taiga現在</div>
+  <p>「負けたら何もない」が裏エンジン。逆境＝有能感の脅威＝恐怖。楽しめてない。</p></div>
+  <div class="rewire"><div class="qlabel">リワイヤリング</div>
+  <p><strong>「負け＝恐怖」→「負け＝情報＋燃料」。</strong>まなとくんは負けてる感覚を「幸せ」と言える。これはキーガン第5の状態。お前の中にもこの感覚はある（「本気でいたい」の構造）。冷笑モードを「おっ、負けてる。燃えるな」に変換する。</p></div>
+</div>
+
+</div>
+
+<!-- ===== 差分マップ ===== -->
+<div class="sec-title">DIFFERENTIAL MAP — まなと vs Taiga 無意識の差分</div>
+
+<div class="panel">
+  <div class="plabel"><span class="dot"></span>UNCONSCIOUS GAP ANALYSIS</div>
+  <h2>12のOS項目 差分マップ</h2>
+  <p class="text" style="margin-bottom:16px; font-size:11px; color:rgba(200,230,210,0.5);">
+    <span style="color:#d0a050;">■</span> まなと無意識レベル
+    <span style="color:#5090c8;">■</span> Taiga現在の無意識レベル
+    （10=完全に無意識で動いてる / 1=意識的にも動けてない）
+  </p>
+
+  <div class="diff-bar"><span class="diff-label">今やる</span><div class="diff-bg"><div class="diff-fill-m" style="width:95%"></div></div><span class="diff-val m">10</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:30%"></div></div><span class="diff-val t">3</span></div>
+
+  <div class="diff-bar" style="margin-top:12px;"><span class="diff-label">負けない経営</span><div class="diff-bg"><div class="diff-fill-m" style="width:95%"></div></div><span class="diff-val m">10</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:20%"></div></div><span class="diff-val t">2</span></div>
+
+  <div class="diff-bar" style="margin-top:12px;"><span class="diff-label">仲間＝資産</span><div class="diff-bg"><div class="diff-fill-m" style="width:90%"></div></div><span class="diff-val m">9</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:50%"></div></div><span class="diff-val t">5</span></div>
+
+  <div class="diff-bar" style="margin-top:12px;"><span class="diff-label">ポートフォリオ</span><div class="diff-bg"><div class="diff-fill-m" style="width:90%"></div></div><span class="diff-val m">9</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:30%"></div></div><span class="diff-val t">3</span></div>
+
+  <div class="diff-bar" style="margin-top:12px;"><span class="diff-label">ボール離す</span><div class="diff-bg"><div class="diff-fill-m" style="width:90%"></div></div><span class="diff-val m">9</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:20%"></div></div><span class="diff-val t">2</span></div>
+
+  <div class="diff-bar" style="margin-top:12px;"><span class="diff-label">仕事＝ドーパミン</span><div class="diff-bg"><div class="diff-fill-m" style="width:95%"></div></div><span class="diff-val m">10</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:40%"></div></div><span class="diff-val t">4</span></div>
+
+  <div class="diff-bar" style="margin-top:12px;"><span class="diff-label">無理難題で育てる</span><div class="diff-bg"><div class="diff-fill-m" style="width:90%"></div></div><span class="diff-val m">9</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:20%"></div></div><span class="diff-val t">2</span></div>
+
+  <div class="diff-bar" style="margin-top:12px;"><span class="diff-label">テストステロン経営</span><div class="diff-bg"><div class="diff-fill-m" style="width:85%"></div></div><span class="diff-val m">9</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:50%"></div></div><span class="diff-val t">5</span></div>
+
+  <div class="diff-bar" style="margin-top:12px;"><span class="diff-label">自分との約束</span><div class="diff-bg"><div class="diff-fill-m" style="width:95%"></div></div><span class="diff-val m">10</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:30%"></div></div><span class="diff-val t">3</span></div>
+
+  <div class="diff-bar" style="margin-top:12px;"><span class="diff-label">お金＝みんなのため</span><div class="diff-bg"><div class="diff-fill-m" style="width:90%"></div></div><span class="diff-val m">9</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:50%"></div></div><span class="diff-val t">5</span></div>
+
+  <div class="diff-bar" style="margin-top:12px;"><span class="diff-label">個の力SSS</span><div class="diff-bg"><div class="diff-fill-m" style="width:95%"></div></div><span class="diff-val m">10</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:40%"></div></div><span class="diff-val t">4</span></div>
+
+  <div class="diff-bar" style="margin-top:12px;"><span class="diff-label">逆境＝ドーパミン</span><div class="diff-bg"><div class="diff-fill-m" style="width:90%"></div></div><span class="diff-val m">9</span></div>
+  <div class="diff-bar"><span class="diff-label"></span><div class="diff-bg"><div class="diff-fill-t" style="width:30%"></div></div><span class="diff-val t">3</span></div>
+
+  <h3 style="margin-top:24px;">差分が最も大きいTOP5（リワイヤリング優先順）</h3>
+  <div class="formula">
+1. 「今やる」（差分 -7）→ スピードの無意識化<br>
+2. 「負けない経営」（差分 -8）→ 守りの思考を入れる<br>
+3. 「ボールを離す」（差分 -7）→ 金0の克服<br>
+4. 「自分との約束」（差分 -7）→ 不義理パターンの書き換え<br>
+5. 「仕事＝ドーパミン」（差分 -6）→ ドーパミン供給源の切り替え
+  </div>
+</div>
+
+<!-- ===== リワイヤリング統合 ===== -->
+<div class="sec-title">REWIRE PROTOCOL — 無意識の書き換え手順</div>
+
+<div class="panel">
+  <div class="plabel"><span class="dot"></span>CORE REWIRE</div>
+  <h2>まなとOSをTaigaのOSに移植する方法</h2>
+
+  <p class="text" style="margin-bottom:20px;">まなとくんのOSを丸コピーしてもTaigaのハードウェア（龍高星×支配者外向×戊）では動かない。構造を取って、自分のOSに再構築する。</p>
+
+  <div class="formula">
+まなとOS = 癸(雨)×中和(0)×司禄星×白紙型<br>
+→ バランス重視、蓄積型、変幻自在<br>
+<br>
+TaigaOS = 戊(山)×極身強(+8)×龍高星×支配者外向<br>
+→ 突破型、探求型、パワー重視<br>
+<br>
+移植方法 = まなとの「構造」をTaigaの「言語」に翻訳する
+  </div>
+
+  <h3>翻訳テーブル</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:13px; margin-top:12px;">
+    <thead><tr>
+      <th style="font-family:'Orbitron'; font-size:10px; color:#d0a050; text-align:left; padding:8px 12px; border-bottom:1px solid rgba(80,200,140,0.2);">まなとの言語</th>
+      <th style="font-family:'Orbitron'; font-size:10px; color:#5090c8; text-align:left; padding:8px 12px; border-bottom:1px solid rgba(80,200,140,0.2);">Taigaの言語に翻訳</th>
+    </tr></thead>
+    <tbody>
+      <tr><td style="padding:10px 12px; color:rgba(220,200,160,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">今すぐやる。スピード命</td><td style="padding:10px 12px; color:rgba(180,210,230,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">攻略本のページをめくったら即実行。読んでから動くんじゃない。読みながら動く</td></tr>
+      <tr><td style="padding:10px 12px; color:rgba(220,200,160,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">負けない経営。守りが先</td><td style="padding:10px 12px; color:rgba(180,210,230,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">山は崩れないことが最大の価値。山が固ければ上から何でもできる</td></tr>
+      <tr><td style="padding:10px 12px; color:rgba(220,200,160,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">仲間の成長が嬉しい</td><td style="padding:10px 12px; color:rgba(180,210,230,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">みんなでNetflix超えて嬉し泣きする。その「みんな」のレベルを上げるのが俺の仕事</td></tr>
+      <tr><td style="padding:10px 12px; color:rgba(220,200,160,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">ボールをすぐ離す</td><td style="padding:10px 12px; color:rgba(180,210,230,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">俺が握ってる間、チーム全体が止まってる。離す方が山が大きくなる</td></tr>
+      <tr><td style="padding:10px 12px; color:rgba(220,200,160,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">問題解決が楽しすぎる</td><td style="padding:10px 12px; color:rgba(180,210,230,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">「この企画だったらバズるんじゃないか？」のワクワク＝攻略本×ポケモン</td></tr>
+      <tr><td style="padding:10px 12px; color:rgba(220,200,160,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">自分との約束は死ぬ気で守る</td><td style="padding:10px 12px; color:rgba(180,210,230,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">侍の覚悟。死を前提にすると約束を破る選択肢が消える</td></tr>
+      <tr><td style="padding:10px 12px; color:rgba(220,200,160,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">逆境楽しい</td><td style="padding:10px 12px; color:rgba(180,210,230,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">冷笑が出たら「俺もそっちに行きたい」。負けてる感覚＝本気に行けるサイン</td></tr>
+      <tr><td style="padding:10px 12px; color:rgba(220,200,160,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">お金は無限に欲しい。みんなのため</td><td style="padding:10px 12px; color:rgba(180,210,230,0.8); border-bottom:1px solid rgba(80,200,140,0.08);">クリエイティブで日本を守る。そのためのリソースとしてお金を集める</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== まなとくんの隠れた弱さ ===== -->
+<div class="sec-title">HIDDEN LAYER — まなとくんが見せた「弱さ」の構造</div>
+
+<div class="panel">
+  <div class="plabel"><span class="dot"></span>VULNERABILITY ANALYSIS</div>
+  <h2>まなとくんも完璧じゃない。そこにヒントがある</h2>
+
+  <div class="grid-2">
+    <div>
+      <h3>まなとくんが認めてる弱点</h3>
+      <div class="manato-quote"><div class="qlabel">原文から抽出</div>
+      <p>
+        「ADHDって人よりも2〜3倍お金かかりそう。ホテル予約できてないし違う目的地言ってまうし新幹線に遅れる」<br><br>
+        「ここ1ヶ月くらいずっと昼12時起き→朝5時まで仕事を繰り返してる」<br><br>
+        「500万でインスタ買ったのにリソース足りてなくて全く手つけれてないまじでポンコツすぎる」<br><br>
+        「寿命が猛烈に縮まってる感覚。なんなら心地良いまである」<br><br>
+        「一度興味が向いたら不要なものは全部捨てちゃう。人間関係も全捨てしたり」
+      </p></div>
+    </div>
+    <div>
+      <h3>Taigaとの構造的類似点</h3>
+      <div class="rewire"><div class="qlabel">INSIGHT</div>
+      <p>
+        まなとくんも<strong>P的な側面がある</strong>（ADHD、遅刻、リソース管理の甘さ）。でもそれを<strong>「スピード」と「仲間」で補ってる</strong>。完璧なJ型人間じゃない。<br><br>
+        まなとくんも<strong>ハードワーク依存で体を壊すリスク</strong>がある。大運の「休息期」はこれへの警告。<br><br>
+        まなとくんも<strong>「興味あるものに全BET→不要なもの全捨て」</strong>をやる。龍高星（右手）が動いてる瞬間。お前と同じ。<br><br>
+        <strong>つまり、まなとくんを「完璧な存在」として崇拝する必要はない。</strong>まなとくんにもP的な弱さがある。それを司禄星の仕組み化とスピードで補ってるだけ。お前も同じことをやればいい。
+      </p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 最終統合 ===== -->
+<div class="sec-title">FINAL INTEGRATION — 脳みそを変えるための統合数式</div>
+
+<div class="panel" style="padding:30px;">
+  <div class="plabel"><span class="dot"></span>MASTER FORMULA</div>
+  <h2>まなとOSのTaiga版 実装</h2>
+
+  <div class="formula" style="font-size:13px;">
+まなとの脳 = スピード(10) × 守り(10) × 仲間投資(9) × 仕事楽しい(10) × 約束死守(10)<br>
+<br>
+Taigaの脳（現在）= スピード(3) × 守り(2) × 仲間投資(5) × 仕事楽しい(4) × 約束死守(3)<br>
+<br>
+差分の根源 = 全部「無意識の設定」の違い<br>
+<br>
+まなと: 「仕事＝ドーパミン」が無意識に入ってる → だから速い、だから守れる、だから仲間に投資する<br>
+Taiga: 「仕事＝有能感の証明」が無意識に入ってる → だから遅い（完璧にしたい）、守らない（攻撃で証明したい）、握る（手放すと有能感が減る）<br>
+<br>
+────────────────────<br>
+<br>
+書き換えるべき根本設定は1つだけ:<br>
+<br>
+旧: 仕事 = 有能感の証明手段<br>
+新: 仕事 = 最高に楽しいゲーム<br>
+<br>
+これが変わると全部変わる:<br>
+→ 楽しいから速くやりたい（スピードUP）<br>
+→ 楽しいゲームを終わらせたくない（守りの意識）<br>
+→ 楽しいゲームを一緒にやりたい（仲間投資）<br>
+→ 楽しいから仕事がドーパミン源になる（安い刺激が要らなくなる）<br>
+→ 楽しいゲームの約束は守りたい（納期死守）<br>
+<br>
+仕事 = 攻略本見ながらポケモンやってる感覚<br>
+この状態を「環境リセットなしで毎日起動する」のが全ての答え
+  </div>
+
+  <h3 style="margin-top:24px;">毎日の起動シーケンス</h3>
+  <div class="formula" style="font-size:12px;">
+朝起きる<br>
+→ ロック画面を見る（行き先の確認）<br>
+→ 「今日のボスは何だ？」を1つ決める（ゲーム開始）<br>
+→ 台本 or 企画に手をつける（最初の3分で脳がゲームモードに入る）<br>
+→ 壁打ちで仮説をぶつける（「これバズるんじゃね？」のワクワク）<br>
+→ 1つ完了させる（ドーパミン発生。ポルノより強い）<br>
+→ 振り返りを3行書く（エーちゃんのカキカキ。司禄星の蓄積）<br>
+→ 翌朝、前日の3行を見て「あ、俺成長してる」（有能感が仕事から供給される）<br>
+<br>
+これを30日続けたら → 無意識が書き変わる<br>
+まなとくんも最初からこのOSじゃなかった<br>
+「やり続ける力だけが残る」と本人が言ってる<br>
+天性じゃない。831回のカキカキで後天的に獲得できる
+  </div>
+</div>
+
+<div style="height:60px;"></div>
+
+</div>
+
+</body>
+</html>

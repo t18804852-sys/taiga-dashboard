@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>言語力×YouTube発信力 統合トレーニング</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap');
+  :root{--bg:#0a0d0e;--panel:rgba(14,20,24,0.88);--panel-border:rgba(0,180,220,0.15);--accent:#00b4dc;--accent2:#40d8f0;--accent3:#ff6b4a;--accent4:#ffd700;--accent5:#00c896;--accent6:#c084fc;--text:#b8d4e0;--text-dim:#4a6878;--text-bright:#e0f4ff;--glow:rgba(0,180,220,0.3)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-weight:300;line-height:1.8;overflow-x:hidden}
+  body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 25% 45%,rgba(0,180,220,0.04)0%,transparent 50%),radial-gradient(ellipse at 75% 55%,rgba(0,200,150,0.03)0%,transparent 50%);pointer-events:none;z-index:0}
+  .container{max-width:1200px;margin:0 auto;padding:40px 20px;position:relative;z-index:1}
+  .hero{text-align:center;padding:60px 0 50px;position:relative}
+  .hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(0,180,220,0.08)0%,transparent 70%);border-radius:50%;animation:pulse 4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:translate(-50%,-50%)scale(1);opacity:.5}50%{transform:translate(-50%,-50%)scale(1.2);opacity:1}}
+  .hero-label{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:6px;color:var(--accent);text-transform:uppercase;opacity:.7;margin-bottom:12px}
+  .hero h1{font-size:36px;font-weight:900;color:var(--text-bright);letter-spacing:4px;margin-bottom:8px}
+  .hero .sub{font-size:14px;color:var(--text-dim);max-width:600px;margin:0 auto}
+  .hero .date{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--text-dim);margin-top:16px;letter-spacing:3px}
+  .section{margin-bottom:48px}
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:8px;border-bottom:1px solid var(--panel-border)}
+  .section-num{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--accent);opacity:.5;min-width:30px}
+  .section-title{font-size:18px;font-weight:700;color:var(--text-bright);letter-spacing:2px}
+  .section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--panel-border),transparent)}
+  .panel{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden}
+  .panel::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--accent),transparent);opacity:.5}
+  .panel.orange::before{background:linear-gradient(180deg,var(--accent3),transparent)}
+  .panel.gold::before{background:linear-gradient(180deg,var(--accent4),transparent)}
+  .panel.green::before{background:linear-gradient(180deg,var(--accent5),transparent)}
+  .panel.purple::before{background:linear-gradient(180deg,var(--accent6),transparent)}
+  .panel-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;opacity:.7}
+  .panel.orange .panel-label{color:var(--accent3)}.panel.gold .panel-label{color:var(--accent4)}.panel.green .panel-label{color:var(--accent5)}.panel.purple .panel-label{color:var(--accent6)}
+  .panel h3{font-size:20px;font-weight:700;color:var(--text-bright);margin-bottom:12px}
+  .panel p{margin-bottom:10px;font-size:14px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  .grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+  @media(max-width:768px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.hero h1{font-size:24px}}
+  .tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;margin:3px}
+  .tag.blue{background:rgba(0,180,220,0.15);color:#00b4dc;border:1px solid rgba(0,180,220,0.3)}
+  .tag.orange{background:rgba(255,107,74,0.15);color:#ff6b4a;border:1px solid rgba(255,107,74,0.3)}
+  .tag.gold{background:rgba(255,215,0,0.15);color:#ffd700;border:1px solid rgba(255,215,0,0.3)}
+  .tag.green{background:rgba(0,200,150,0.15);color:#00c896;border:1px solid rgba(0,200,150,0.3)}
+  .tag.purple{background:rgba(192,132,252,0.15);color:#c084fc;border:1px solid rgba(192,132,252,0.3)}
+  .tag.red{background:rgba(255,68,68,0.15);color:#ff4444;border:1px solid rgba(255,68,68,0.3)}
+  .quote{border-left:2px solid var(--accent);padding:12px 20px;margin:16px 0;background:rgba(0,180,220,0.03);font-size:15px;color:var(--text-bright)}
+  .quote.orange{border-left-color:var(--accent3);background:rgba(255,107,74,0.03)}
+  .quote.gold{border-left-color:var(--accent4);background:rgba(255,215,0,0.03)}
+  .quote.green{border-left-color:var(--accent5);background:rgba(0,200,150,0.03)}
+  .hl{color:var(--accent);font-weight:500}.hl3{color:var(--accent3);font-weight:500}.hl4{color:var(--accent4);font-weight:500}.hl5{color:var(--accent5);font-weight:500}.hl6{color:var(--accent6);font-weight:500}
+  .formula{background:rgba(0,180,220,0.05);border:1px solid rgba(0,180,220,0.15);border-radius:6px;padding:16px 20px;margin:10px 0;font-family:'Orbitron','Noto Sans JP',sans-serif;font-size:13px;color:var(--accent);text-align:center;letter-spacing:1px}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--panel-border),transparent);margin:48px 0}
+  .summary-box{background:linear-gradient(135deg,rgba(0,180,220,0.08),rgba(0,200,150,0.05));border:1px solid rgba(0,180,220,0.2);border-radius:12px;padding:36px;text-align:center;margin:40px 0}
+  .summary-box h2{font-size:22px;font-weight:700;color:var(--text-bright);margin-bottom:16px}
+  .summary-box p{font-size:15px;color:var(--text);max-width:700px;margin:0 auto 12px}
+  .element-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;padding:16px;text-align:center;position:relative;overflow:hidden}
+  .element-card .num{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--accent);opacity:.3;position:absolute;top:8px;right:12px}
+  .element-card .name{font-size:16px;font-weight:700;color:var(--text-bright);margin-bottom:6px}
+  .element-card .desc{font-size:11px;color:var(--text-dim);line-height:1.5}
+  .sched-table{width:100%;border-collapse:collapse;font-size:13px}
+  .sched-table th{background:rgba(0,180,220,0.08);color:var(--accent);padding:10px 12px;text-align:left;font-weight:500;font-size:11px;border-bottom:1px solid var(--panel-border)}
+  .sched-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:top}
+  .sched-table tr:hover td{background:rgba(0,180,220,0.03)}
+  .sched-table .time{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--accent4);min-width:50px}
+  .timeline-v{position:relative;padding-left:24px;margin:16px 0}
+  .timeline-v::before{content:'';position:absolute;left:6px;top:0;width:2px;height:100%;background:linear-gradient(180deg,var(--accent),var(--accent5),var(--accent6),transparent);opacity:.3}
+  .timeline-v .step{position:relative;margin-bottom:16px;padding:14px 18px;background:var(--panel);border:1px solid var(--panel-border);border-radius:6px}
+  .timeline-v .step::before{content:'';position:absolute;left:-22px;top:18px;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--glow)}
+  .timeline-v .step-num{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--accent);letter-spacing:2px;margin-bottom:4px}
+  .timeline-v .step h4{font-size:14px;font-weight:700;color:var(--text-bright);margin-bottom:4px}
+  .timeline-v .step p{font-size:12px;color:var(--text-dim);margin:0}
+  .color-legend{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}
+  .color-item{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-dim)}
+  .color-dot{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+  /* Toggle / Accordion */
+  details{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+  details summary{padding:16px 20px;cursor:pointer;font-size:15px;font-weight:700;color:var(--text-bright);display:flex;align-items:center;gap:10px;list-style:none;user-select:none;transition:background .2s}
+  details summary::-webkit-details-marker{display:none}
+  details summary::before{content:'▸';font-size:12px;color:var(--accent);transition:transform .2s;flex-shrink:0}
+  details[open] summary::before{transform:rotate(90deg)}
+  details summary:hover{background:rgba(0,180,220,0.04)}
+  details .toggle-content{padding:0 20px 20px;font-size:13px;line-height:1.8}
+  details .toggle-content p{margin-bottom:8px}
+  details .toggle-content .ex{padding:12px;background:rgba(0,180,220,0.03);border:1px solid rgba(0,180,220,0.08);border-radius:6px;margin:8px 0}
+  details .toggle-content .ex-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--accent);margin-bottom:6px}
+  details .toggle-content .ex-ng{color:var(--accent3)}
+  details .toggle-content .ex-ok{color:var(--accent5)}
+  .tag-sm{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:500;margin:2px}
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-label">Integrated Training System</div>
+    <h1>言語力 &times; YouTube発信力<br>統合トレーニング</h1>
+    <div class="sub">8要素（フック・ストーリー・感情・具体・笑い・信頼・CTA・リズム）＋ 根本の国語力（語彙・構造・表現）を業務外で鍛えるプラン</div>
+    <div class="date">DESIGNED FOR TAIGA &mdash; 2026.04.05</div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 00. 言語化とは何か -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">00</span><span class="section-title">言語化とは何か — 定義と構造</span><span class="section-line"></span></div>
+
+    <!-- 核心定義 -->
+    <div class="summary-box" style="margin-top:0;">
+      <h2>言語化 = 内側の暗黙知に言語構造を当てて輪郭を与え、<br>その過程で対象自体を変容させる、限界を持った往復作業</h2>
+      <p>「事象を言葉にする」は<span class="hl3">描写</span>。「内側の感覚・直感・イメージを言葉にする」が<span class="hl">言語化</span>。<br>この区別がすべての出発点。</p>
+    </div>
+
+    <!-- 5つの構成要素 -->
+    <div class="panel">
+      <div class="panel-label">5 COMPONENTS</div>
+      <h3>言語化の5構成要素</h3>
+      <div class="formula">対象（暗黙知） &times; 素材（他者の言語構造） &times; 作業（往復） &times; 副産物（変容） &times; 前提（限界の自覚）</div>
+    </div>
+
+    <div class="grid-3" style="margin-top:16px;">
+      <div class="element-card">
+        <div class="num">01</div>
+        <div class="name" style="color:var(--accent)">対象</div>
+        <div class="desc">身体化された暗黙知・felt sense。まだ言葉になる前の「もや」。Taigaの「攻略本感覚で見える」アレがこれに当たる</div>
+      </div>
+      <div class="element-card">
+        <div class="num">02</div>
+        <div class="name" style="color:var(--accent3)">素材</div>
+        <div class="desc">過去に内化した他者の言語構造。まなとから受け取った言葉の構造がTaigaの言語化の上限を作っている</div>
+      </div>
+      <div class="element-card">
+        <div class="num">03</div>
+        <div class="name" style="color:var(--accent4)">作業</div>
+        <div class="desc">言葉を当てる → ズレを感じる → 当て直す。この往復が言語化の実作業。片道翻訳ではなく反復彫刻</div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:12px;">
+      <div class="element-card">
+        <div class="num">04</div>
+        <div class="name" style="color:var(--accent5)">副産物</div>
+        <div class="desc">言葉を当てた瞬間に対象そのものが変わる（felt shift）。言語化は記録ではなく、認知を彫刻する行為</div>
+      </div>
+      <div class="element-card">
+        <div class="num">05</div>
+        <div class="name" style="color:var(--accent6)">前提</div>
+        <div class="desc">完全な言語化は原理的に不可能。限界点を見極めて、その手前まで精密に降ろせるのが達人</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 2段階構造 -->
+    <div class="panel" style="margin-top:16px;">
+      <div class="panel-label">2-STAGE MODEL</div>
+      <h3>言語化の2段階構造</h3>
+      <p>先に<span class="hl">捉える</span>（メタ認知）、次に<span class="hl4">当てる</span>（構造化）。この2段を分けて認識することで、どちらが詰まっているか特定できる。</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">STAGE 1</div>
+        <h3><span class="hl">捉える</span> — メタ認知レイヤー</h3>
+        <p>まだ言葉になっていない「何か」が自分の中にある、とまず気づく段階。ここが起動しないと②は始まらない。</p>
+        <div class="quote">Taigaの「攻略本感覚で見える」はこの①がすでに高水準で完了している状態。</div>
+      </div>
+      <div class="panel gold">
+        <div class="panel-label">STAGE 2</div>
+        <h3><span class="hl4">当てる</span> — 構造化レイヤー</h3>
+        <p>その「何か」の輪郭にフィットする言葉と並びを選ぶ段階。他人がコピー・操作できる粒度まで降ろす作業。</p>
+        <div class="quote gold">まなとに伝える・みさをchの企画に落とす時に詰まるのがここ。弱点は①じゃなく②。</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 世界の定義 -->
+    <div class="panel" style="margin-top:16px;">
+      <div class="panel-label">ACADEMIC FOUNDATIONS</div>
+      <h3>世界の定義 — 6つの学術フレーム</h3>
+      <p>言語化の定義を高角度で支える6つの理論。すべてが上記の2段階モデルと接続する。</p>
+    </div>
+
+    <!-- Polanyi -->
+    <details>
+      <summary><span class="tag blue">暗黙知</span> Michael Polanyi『暗黙知の次元』(1966)</summary>
+      <div class="toggle-content">
+        <div class="quote">"We can know more than we can tell"（人は語れる以上のことを知っている）</div>
+        <p>知識を<span class="hl">暗黙知（tacit knowledge）</span>と<span class="hl4">形式知（explicit knowledge）</span>に分けた。自転車の乗り方のように身体化されているが言葉にできない知の存在を示した。</p>
+        <p><span class="hl5">言語化＝暗黙知を形式知に変換する作業</span>。これが学術的な言語化定義の本丸。</p>
+        <div class="ex">
+          <div class="ex-label">TAIGA接続</div>
+          <p>「攻略本感覚で見える」は暗黙知の最高品質形。だから言語化が難しいのは当然 — <span class="hl">対象が高密度すぎる</span>だけで、Taigaが鈍いのではない。</p>
+        </div>
+      </div>
+    </details>
+
+    <!-- 野中 SECI -->
+    <details>
+      <summary><span class="tag gold">知識創造</span> 野中郁次郎 SECIモデル (1995)</summary>
+      <div class="toggle-content">
+        <p>Polanyiを経営学に接続。知識創造を4プロセスに分解した：</p>
+        <div class="grid-4" style="margin:12px 0;">
+          <div class="element-card"><div class="name" style="font-size:13px;">共同化</div><div class="desc">Socialization<br>暗黙知 → 暗黙知</div></div>
+          <div class="element-card" style="border-color:var(--accent4);"><div class="name" style="font-size:13px;color:var(--accent4);">表出化</div><div class="desc">Externalization<br>暗黙知 → 形式知</div></div>
+          <div class="element-card"><div class="name" style="font-size:13px;">連結化</div><div class="desc">Combination<br>形式知 → 形式知</div></div>
+          <div class="element-card"><div class="name" style="font-size:13px;">内面化</div><div class="desc">Internalization<br>形式知 → 暗黙知</div></div>
+        </div>
+        <p><span class="hl4">表出化（Externalization）＝「言語化」そのもの</span>。野中は「メタファーが言語化の最初の鍵」と明言。暗黙知をメタファー・アナロジー・モデルで形式知に変換する段階。</p>
+        <div class="ex">
+          <div class="ex-label">TAIGA接続</div>
+          <p>まなと憑依＝共同化（S）。言語化＝表出化（E）。概念モデリング数式＝連結化（C）。身体で覚える＝内面化（I）。Taigaは全4プロセスをすでに回している。</p>
+        </div>
+      </div>
+    </details>
+
+    <!-- Gendlin -->
+    <details>
+      <summary><span class="tag green">体感→言葉</span> Eugene Gendlin『Focusing』(1978)</summary>
+      <div class="toggle-content">
+        <p>心理療法から来た最も精密な言語化理論。</p>
+        <p>人間の中には言葉になる前の身体的な<span class="hl5">「felt sense（体感）」</span>がある。それに<span class="hl">「handle（取っ手としての言葉）」</span>を当てる作業を反復することで、felt senseが<span class="hl3">「felt shift（体感の変容）」</span>を起こす。</p>
+        <div class="formula">felt sense → handle（言葉を当てる） → felt shift（対象が変わる） → 再度handle → …</div>
+        <div class="quote green">言葉を当てた瞬間、対象そのものが変わる。言語化は記述ではなく相互作用。観測が対象を変える量子論的構造。</div>
+        <div class="ex">
+          <div class="ex-label">TAIGA接続</div>
+          <p>2段階モデルの①捉える＝felt sense、②当てる＝handle。このフレームはGendlinのFocusingとほぼ同型。言語化を「片道翻訳」ではなく「往復彫刻」と捉えるべき根拠。</p>
+        </div>
+      </div>
+    </details>
+
+    <!-- Vygotsky -->
+    <details>
+      <summary><span class="tag orange">社会→内言</span> Vygotsky『思考と言語』(1934)</summary>
+      <div class="toggle-content">
+        <p>言語化は孤立した内省ではなく、<span class="hl3">他者との社会的言語が内化して内言になり、それを再度外化したもの</span>。</p>
+        <p>つまり言語化能力＝<span class="hl">過去に取り込んだ他者の言葉の総量と質</span>で決まる。インプットの質が言語化の上限を規定する。</p>
+        <div class="quote orange">まなとから受け取った言葉の構造が、Taigaの言語化の上限を作っている。憑依学習が言語化に効くのはここに理由がある。</div>
+        <div class="ex">
+          <div class="ex-label">TAIGA接続</div>
+          <p>言語化力を上げる＝まなと憑依の継続（質の高い言語構造の内化）。「自分の言葉で表現する」の前に「質の高い他者の言葉を大量にインストールする」がVygotsky的に先行する。</p>
+        </div>
+      </div>
+    </details>
+
+    <!-- Wittgenstein -->
+    <details>
+      <summary><span class="tag purple">限界</span> Wittgenstein『論理哲学論考』(1921)</summary>
+      <div class="toggle-content">
+        <div class="quote" style="border-left-color:var(--accent6);background:rgba(192,132,252,0.03);">"Wovon man nicht sprechen kann, dar&uuml;ber muss man schweigen"<br>（語りえぬものについては、沈黙しなければならない）</div>
+        <p>言語化には<span class="hl6">原理的な限界域</span>がある。すべては言語化できないという前提が、高リテラシー側の常識。</p>
+        <p>言語化の達人＝「言語化できることを最大化する人」ではなく、<span class="hl6">「限界点を見極めて、その手前まで精密に降ろせる人」</span>。</p>
+        <div class="ex">
+          <div class="ex-label">TAIGA接続</div>
+          <p>脱力哲学と直結。言語化に固執しないことが、逆説的に言語化を強くする。「ここは沈黙」と明示できる感覚が第5の構成要素。</p>
+        </div>
+      </div>
+    </details>
+
+    <!-- Lakoff -->
+    <details>
+      <summary><span class="tag red">メタファー</span> Lakoff &amp; Johnson『Metaphors We Live By』(1980)</summary>
+      <div class="toggle-content">
+        <p><span class="hl3">抽象概念は身体経験のメタファーを通してしか言語化できない</span>（Conceptual Metaphor Theory）。</p>
+        <p>「議論は<em>戦争</em>だ」「人生は<em>旅</em>だ」「時間は<em>お金</em>だ」 — 人間は身体で経験したことをマッピング基盤にして、抽象を言葉にする。</p>
+        <div class="quote" style="border-left-color:var(--accent3);background:rgba(255,107,74,0.03);">言語化＝身体経験のマッピング作業でもある。身体を通過していない概念は、言葉にしても伝わらない。</div>
+        <div class="ex">
+          <div class="ex-label">TAIGA接続</div>
+          <p>Taigaの概念モデリング数式（戦闘力＝愛×サイコパシー×論理 等）はまさにこのメタファー変換。身体実感のあるメタファーを選べることが言語化の精度を決める。</p>
+        </div>
+      </div>
+    </details>
+
+    <div class="divider"></div>
+
+    <!-- 統合公式 -->
+    <div class="summary-box">
+      <h2>統合公式</h2>
+      <div class="formula" style="font-size:16px;padding:20px;">言語化能力 = インプットの質（Vygotsky） &times; 往復の回数（Gendlin） &times; 限界の自覚（Wittgenstein）</div>
+      <p style="margin-top:16px;">インプットの質を上げる＝まなと憑依の継続。往復の回数を増やす＝対話・書き出し。限界の自覚＝脱力との統合。</p>
+      <p>この3方向から同時に効かせることで、言語化能力は掛け算で伸びる。</p>
+    </div>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 1. WHY -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">01</span><span class="section-title">なぜこのトレーニングが必要か</span><span class="section-line"></span></div>
+
+    <div class="panel">
+      <div class="panel-label">CORE FORMULA</div>
+      <div class="formula">動画の力 = フック &times; ストーリー &times; 感情設計 &times; 具体性 &times; 笑い &times; 信頼 &times; 行動喚起 &times; リズム</div>
+      <p style="text-align:center;margin-top:12px;">どれかゼロなら動画が死ぬ。全部掛け算。</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="panel orange">
+        <div class="panel-label">BOTTLENECK</div>
+        <h3>具体の解像度が甘い</h3>
+        <p>まなとからの指摘。4ドメイン（まなと/YouTube/成長/言語化）全てが同じことを言った。<span class="hl3">「すごい」「めっちゃ」「大事」を具体に変換する力</span>が最大のボトルネック。</p>
+      </div>
+      <div class="panel">
+        <div class="panel-label">COGNITIVE FIT</div>
+        <h3>Taigaの脳に最適化</h3>
+        <p>3D（56.3）＝ 図解ベース。計算力（128.80）＝ 数値化。辞書（23.9）＝ テキスト学習NG。<span class="hl">小説を読むのは最悪手。映像を分解するのが正解。</span></p>
+      </div>
+      <div class="panel gold">
+        <div class="panel-label">GOAL</div>
+        <h3>身勝手の極意</h3>
+        <p>8要素が<span class="hl4">考えなくても出る状態</span>。体知識 = Σ（仮説 &times; 実行 &times; 結果一致）のΣを積み上げるだけ。毎日28分 &times; 180日 = 84時間で回路が配線される。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 1.5 国語の基礎構造 -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">02</span><span class="section-title">国語の基礎構造 — 伝わる文の土台</span><span class="section-line"></span></div>
+
+    <div class="panel">
+      <div class="panel-label">WHY THIS MATTERS</div>
+      <p>テクニック（フック・ストーリー等）の前に、<span class="hl">文そのものの構造</span>が崩れていると何を言っても伝わらない。台本を書く時も喋る時も、この土台がないと「なんか分かりにくい」の原因が特定できない。</p>
+    </div>
+
+    <!-- 文の5要素 -->
+    <details open>
+      <summary>文の5要素 — 日本語の骨格</summary>
+      <div class="toggle-content">
+        <p>日本語の文は基本5つの要素で成り立つ。台本を書く時、この5つのどれが欠けてるか/多すぎるかを見れば「伝わらない原因」が秒で特定できる。</p>
+        <table class="sched-table" style="margin:12px 0;">
+          <tr><th style="width:16%">要素</th><th style="width:24%">役割</th><th>例</th><th>台本で意識すること</th></tr>
+          <tr><td><span class="hl" style="font-weight:700;">主語</span></td><td>「誰が/何が」</td><td>僕が / 視聴者が / この方法が</td><td>話し言葉では省略されやすい。省略していいのは「聞き手が迷わない時」だけ</td></tr>
+          <tr><td><span class="hl3" style="font-weight:700;">述語</span></td><td>「どうする/どうだ」</td><td>変わります / ヤバいです / やってください</td><td>文の最後に来る。ここが弱いと文全体がボヤける。動詞で終わらせると力が出る</td></tr>
+          <tr><td><span class="hl5" style="font-weight:700;">目的語</span></td><td>「何を/誰を」</td><td>サムネを / 登録者を / この習慣を</td><td>「何の話をしてるか」が明確になる。抜けると聞き手が迷子になる</td></tr>
+          <tr><td><span class="hl4" style="font-weight:700;">修飾語</span></td><td>「どんな/どのように」</td><td>圧倒的に / たった3日で / 毎日</td><td>具体性・インパクトを足す役割。ただし多すぎると文がゴチャる</td></tr>
+          <tr><td><span class="hl6" style="font-weight:700;">接続語</span></td><td>文と文を繋ぐ</td><td>だから / でも / つまり / 例えば</td><td>次の文への「予告」。聞き手の脳に準備させる最重要パーツ</td></tr>
+        </table>
+        <div class="quote">台本チェック：一文読んで「誰が」「何を」「どうした」が3秒で分かるか？ 分からないなら要素が欠けてるか、多すぎる。</div>
+      </div>
+    </details>
+
+    <!-- 主語と述語の距離 -->
+    <details open>
+      <summary>主語と述語の距離 — 近いほど伝わる</summary>
+      <div class="toggle-content">
+        <p>日本語は主語が最初、述語が最後に来る。この<span class="hl">距離が遠いほど聞き手の脳に負荷がかかる</span>。台本では一文を短く切って距離を詰める。</p>
+        <div class="ex">
+          <div class="ex-label">距離の比較</div>
+          <p class="ex-ng">NG（遠い）：「僕が、去年の12月に始めた、YouTubeのチャンネルで、最初は全然伸びなかったんですけど、ある方法を試したら、2ヶ月で登録者が1万人を超えました」</p>
+          <p>→ 「僕が」から「超えました」まで遠すぎて途中で迷子になる</p>
+          <p class="ex-ok">OK（近い）：「僕、去年の12月にYouTube始めたんですよ。最初は全然伸びなかった。でも、ある方法を試したら2ヶ月で1万人超えました」</p>
+          <p>→ 3文に分割。各文で主語と述語が近い</p>
+        </div>
+        <div class="quote">目安：一文20〜30文字。最長でも40文字。それ以上は分割する。</div>
+      </div>
+    </details>
+
+    <!-- 書き言葉と話し言葉 -->
+    <details open>
+      <summary>書き言葉 vs 話し言葉 — 台本は「話し言葉」で書く</summary>
+      <div class="toggle-content">
+        <p>台本は文章ではなく<span class="hl3">「喋る台詞」</span>。書き言葉で書くと演者が読んでる感が出て視聴者が離脱する。</p>
+        <table class="sched-table" style="margin:12px 0;">
+          <tr><th style="width:40%">書き言葉（NG）</th><th style="width:40%">話し言葉（OK）</th><th>ポイント</th></tr>
+          <tr><td>〜ということが重要である</td><td>〜が超大事なんですよ</td><td>語尾を口語に</td></tr>
+          <tr><td>〜を実施する必要がある</td><td>〜をやらなきゃダメ</td><td>漢語→和語</td></tr>
+          <tr><td>しかしながら</td><td>でもね</td><td>接続詞も口語</td></tr>
+          <tr><td>〜に関して申し上げますと</td><td>〜の話なんですけど</td><td>丁寧すぎ=距離感</td></tr>
+          <tr><td>〜である一方で</td><td>〜なんだけど、逆にね</td><td>硬い表現を崩す</td></tr>
+          <tr><td>検討した結果</td><td>考えてみたら</td><td>簡単な動詞に置換</td></tr>
+          <tr><td>非常に効果的です</td><td>めちゃくちゃ効くんですよ</td><td>強調も口語で</td></tr>
+        </table>
+        <div class="quote">チェック法：書いた台本を声に出して読む。「こんなこと普段言わないな」と感じた箇所は全部書き直す。最低3回音読。</div>
+      </div>
+    </details>
+
+    <!-- 接続詞 -->
+    <details open>
+      <summary>接続詞マスターリスト — 文の流れを制御する</summary>
+      <div class="toggle-content">
+        <p>接続詞は<span class="hl">聞き手の脳に「次に何が来るか」を予告する</span>パーツ。適切に使うと聞き手のストレスが激減する。逆に接続詞がないと「この話どこに向かってるの？」になって離脱する。</p>
+        <table class="sched-table" style="margin:12px 0;">
+          <tr><th>種類</th><th>接続詞</th><th>聞き手の脳の反応</th><th>台本での使いどころ</th></tr>
+          <tr><td><span class="hl5" style="font-weight:600;">順接</span></td><td>だから / なので / そうすると</td><td>「次は結論だな」と準備する</td><td>原因→結果を繋ぐ。説得パート</td></tr>
+          <tr><td><span class="hl3" style="font-weight:600;">逆接</span></td><td>でも / ただ / とはいえ</td><td>「逆のことが来るぞ」と注意が上がる</td><td>常識を壊す時。フックに最適</td></tr>
+          <tr><td><span class="hl4" style="font-weight:600;">添加</span></td><td>しかも / さらに / それに</td><td>「まだあるのか」と期待が積まれる</td><td>メリットを畳みかける時</td></tr>
+          <tr><td><span class="hl" style="font-weight:600;">転換</span></td><td>で、ここからが本題なんですけど / ちなみに</td><td>「話が変わるな」とリセットされる</td><td>セクションの切り替え</td></tr>
+          <tr><td><span class="hl6" style="font-weight:600;">例示</span></td><td>例えば / 具体的に言うと</td><td>「具体が来るぞ」と理解の準備</td><td>抽象→具体の変換点</td></tr>
+          <tr><td><span style="color:#648cdc;font-weight:600;">要約</span></td><td>つまり / 要するに / 一言で言うと</td><td>「まとめが来るぞ」と整理モード</td><td>複雑な説明の後に置く</td></tr>
+          <tr><td><span style="color:#ff6b9d;font-weight:600;">選択</span></td><td>もしくは / あるいは / じゃなかったら</td><td>「選択肢があるのか」と能動モード</td><td>視聴者に考えさせたい時</td></tr>
+        </table>
+        <div class="quote gold">最重要：「でもね」「だからこそ」「つまり何が言いたいかっていうと」— この3つを自然に使えるだけで台本の伝達力が2倍になる。逆接で注意を引き、順接で納得させ、要約で記憶に残す。</div>
+      </div>
+    </details>
+
+    <!-- 文のリズム -->
+    <details open>
+      <summary>文のリズム — 長短の波を作る</summary>
+      <div class="toggle-content">
+        <p>同じ長さの文が続くと<span class="hl3">単調=眠い=離脱</span>。意図的に長い文と短い文を交互に混ぜる。</p>
+        <div class="ex">
+          <div class="ex-label">リズムの比較</div>
+          <p class="ex-ng">NG（全部同じ長さ）：「サムネは大事です。タイトルも大事です。冒頭も大事です。全部大事です。」→ 退屈</p>
+          <p class="ex-ok">OK（長短の波）：「サムネが全てを決めます。なぜか。視聴者が動画をクリックするかどうか、判断にかかる時間はたった0.2秒だからです。0.2秒。一瞬です。」→ リズムがある</p>
+        </div>
+        <p><span class="hl">テクニック：</span></p>
+        <p>・<span class="hl4">体言止め</span>（名詞で終わる）：「大事なのは、タイミング。」→ 余韻が残る</p>
+        <p>・<span class="hl4">一語文</span>：「無理です。」「嘘です。」→ インパクト</p>
+        <p>・<span class="hl4">繰り返し</span>：「これ、マジで大事です。マジで。」→ 強調</p>
+        <p>・<span class="hl4">問いかけ</span>：「で、どうするか？」→ 聞き手の脳を能動化</p>
+        <div class="quote">目安：3文に1回はリズムを変える。長文→短文→問いかけ→長文の波を意識。</div>
+      </div>
+    </details>
+
+    <!-- 論理構成パターン -->
+    <details open>
+      <summary>論理構成パターン — 「分かりやすい」の正体</summary>
+      <div class="toggle-content">
+        <p>「分かりやすい」と「分かりにくい」の差は<span class="hl5">情報の並べ順</span>だけ。同じ内容でも順番を変えるだけで伝達力が激変する。</p>
+        <table class="sched-table" style="margin:12px 0;">
+          <tr><th style="width:18%">パターン</th><th style="width:30%">構造</th><th>使いどころ</th><th>台本での例</th></tr>
+          <tr><td><span class="hl" style="font-weight:700;">PREP法</span></td><td>結論→理由→具体例→結論</td><td>ノウハウ説明。最も汎用的</td><td>「結論、サムネが一番大事です。なぜなら〜。例えば〜。だからサムネに全力を注いでください」</td></tr>
+          <tr><td><span class="hl3" style="font-weight:700;">SDS法</span></td><td>概要→詳細→まとめ</td><td>複雑な内容を説明する時</td><td>「今日は3つのポイントを話します。1つ目は〜。2つ目は〜。3つ目は〜。まとめると〜」</td></tr>
+          <tr><td><span class="hl4" style="font-weight:700;">DESC法</span></td><td>描写→説明→提案→結果</td><td>問題解決系。視聴者の悩みに答える時</td><td>「こんな状況ありませんか？→実はこれ〇〇が原因です→こうしてみてください→そうすると〜」</td></tr>
+          <tr><td><span class="hl5" style="font-weight:700;">ホールパート法</span></td><td>全体像→各部分→全体に戻る</td><td>体系的に教える時</td><td>「YouTube運営は6ステップです。まず全体像。→各ステップ詳細→改めて全体の流れ」</td></tr>
+        </table>
+        <div class="quote">迷ったらPREP。「結論から言うと〜」で始められるかどうかで台本の伝達力が決まる。</div>
+      </div>
+    </details>
+
+    <!-- 助詞の使い分け -->
+    <details open>
+      <summary>助詞の使い分け — 「は」と「が」だけで印象が変わる</summary>
+      <div class="toggle-content">
+        <p>助詞は小さいけど文のニュアンスを激変させる。特に「は」と「が」の使い分けは台本の説得力に直結する。</p>
+        <table class="sched-table" style="margin:12px 0;">
+          <tr><th style="width:14%">助詞</th><th>ニュアンス</th><th>例</th></tr>
+          <tr><td><span class="hl" style="font-weight:700;">〜は</span></td><td>テーマの提示。「〜について言えば」</td><td>「サムネ<span class="hl">は</span>大事です」→ サムネの話をしますよ、という前置き</td></tr>
+          <tr><td><span class="hl3" style="font-weight:700;">〜が</span></td><td>新情報・強調。「他でもなく〜」</td><td>「サムネ<span class="hl3">が</span>大事です」→ サムネこそが大事（他じゃない）</td></tr>
+          <tr><td><span class="hl4" style="font-weight:700;">〜も</span></td><td>追加。「〜に加えて」</td><td>「タイトル<span class="hl4">も</span>大事です」→ サムネだけじゃなくタイトルも</td></tr>
+          <tr><td><span class="hl5" style="font-weight:700;">〜こそ</span></td><td>最強の強調</td><td>「これ<span class="hl5">こそ</span>が本質です」→ 他の全部を差し置いてこれ</td></tr>
+          <tr><td><span class="hl6" style="font-weight:700;">〜って</span></td><td>カジュアルな話題提示</td><td>「サムネ<span class="hl6">って</span>マジで大事で」→ 話し言葉として自然</td></tr>
+        </table>
+        <div class="quote">台本で「は」ばかり使うと平坦になる。強調したい箇所は「が」「こそ」に変える。カジュアルにしたい時は「って」を使う。</div>
+      </div>
+    </details>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ========================================== -->
+  <!-- 2. 8 ELEMENTS (旧02→03に繰り上げ) -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">04</span><span class="section-title">演者の発話に必要な8つの要素</span><span class="section-line"></span></div>
+
+    <details>
+      <summary style="color:#ff4444;"><span class="tag-sm tag red">1</span> フック — 最初の3〜15秒で感情を発火させる</summary>
+      <div class="toggle-content">
+        <p><span class="hl3">目的：</span>視聴者の脳が「見るか離脱するか」を判断する最初の瞬間。ここで感情が動かなければ即離脱。</p>
+        <p><span class="hl">フックの5種類：</span></p>
+        <p>1. <span style="color:#ff4444;font-weight:500;">恐怖</span>：「〇〇してる人、今すぐやめてください」</p>
+        <p>2. <span style="color:var(--accent);font-weight:500;">好奇心</span>：「なぜ〇〇な人ほど△△なのか、知ってますか？」</p>
+        <p>3. <span style="color:var(--accent5);font-weight:500;">共感</span>：「〇〇で悩んでる人、めちゃくちゃ多いと思います」</p>
+        <p>4. <span style="color:var(--accent3);font-weight:500;">怒り</span>：「〇〇業界の闇、もう黙ってられません」</p>
+        <p>5. <span style="color:var(--accent4);font-weight:500;">希望</span>：「たった1つの方法で、人生が変わりました」</p>
+        <div class="ex">
+          <div class="ex-label">NG vs OK</div>
+          <p class="ex-ng">NG：「今日は〇〇について話します」→ 感情が動かない。離脱。</p>
+          <p class="ex-ok">OK：「登録者300人で辞めようと思ってた僕が、ある法則に気づいて2ヶ月で1万人を超えた話をします」→ 好奇心＋希望が発火。</p>
+        </div>
+        <p>ギャップの提示（常識 vs 真実）と自分ごと化（「これ、俺のことだ」と思わせる）を組み合わせると最強。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary style="color:#ffa500;"><span class="tag-sm tag orange">2</span> ストーリー — 最後まで見る理由をつくる骨格</summary>
+      <div class="toggle-content">
+        <p>台本の構造テンプレート（セクション3）で詳しく展開。ここでは4つの基本パターンだけ。</p>
+        <p>1. <span style="font-weight:500;">問題→解決</span>：ハウツー・ノウハウ系</p>
+        <p>2. <span style="font-weight:500;">Before→After</span>：変化・成長系</p>
+        <p>3. <span style="font-weight:500;">発見の旅</span>：検証・リサーチ系</p>
+        <p>4. <span style="font-weight:500;">対比構造</span>：比較・ランキング系</p>
+        <p>ストーリーの目的は「次の10秒を見る理由」を常に視聴者に与えること。目的から逆算して設計する。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary style="color:#ffd700;"><span class="tag-sm tag gold">3</span> 感情設計 — 感情曲線のコントロール</summary>
+      <div class="toggle-content">
+        <p>視聴者の感情を意図的に動かす。平坦＝離脱。上下の振幅が大きいほど「面白い」と感じる。</p>
+        <p><span class="hl4">基本の感情曲線：</span></p>
+        <p>共感（入口）→ 緊張（問題提起）→ 驚き（転換点）→ 納得（解決）→ 希望（締め）</p>
+        <div class="ex">
+          <div class="ex-label">具体的な設計</div>
+          <p>0:00-0:15 <span style="color:#ffd700;">共感</span>：「こんな経験ありませんか？」</p>
+          <p>0:15-2:00 <span style="color:#ff4444;">緊張</span>：「実はこのまま放置するとヤバいです」</p>
+          <p>2:00-2:30 <span style="color:var(--accent);">驚き</span>：「でも、原因はたった1つでした」</p>
+          <p>2:30-8:00 <span style="color:var(--accent5);">納得</span>：「具体的な解決策はこの3ステップ」</p>
+          <p>8:00-10:00 <span style="color:var(--accent4);">希望</span>：「これを実践すれば、3ヶ月後にはこうなります」</p>
+        </div>
+        <p>鍛え方：伸びてる動画を見ながら30秒ごとに感情の高低を1〜10でスコアリング → グラフ化 → 高い点と低い点で何が起きてるかメモ</p>
+      </div>
+    </details>
+
+    <details>
+      <summary style="color:#00c896;"><span class="tag-sm tag green">4</span> 具体性 — 脳に映像が浮かぶか（Taiga最大の課題）</summary>
+      <div class="toggle-content">
+        <p>千原ジュニアの核心「<span class="hl5">自分の頭に浮かんでいる映像と、ほぼ同じ映像を聞いてる人に浮かべさせるかどうか</span>」。まなとの指摘「具体の解像度が甘い」。全ドメインが一致。</p>
+        <p><span class="hl5">ルール：</span>「すごい」「めっちゃ」「大事」「良い」「ヤバい」は全て禁止。必ず映像が浮かぶ具体に置き換える。</p>
+        <div class="ex">
+          <div class="ex-label">置き換え例</div>
+          <p class="ex-ng">NG：「この方法、マジでヤバい」</p>
+          <p class="ex-ok">OK：「この方法で、3日目に再生回数が10倍になった」</p>
+          <p class="ex-ng">NG：「めっちゃ大事なこと言います」</p>
+          <p class="ex-ok">OK：「これ知らないと月10万円損します」</p>
+          <p class="ex-ng">NG：「なんか良い感じになった」</p>
+          <p class="ex-ok">OK：「朝起きて鏡見た時に『あれ、顔変わった？』って思う」</p>
+        </div>
+        <p>登場人物・場所・状況を省略しない。「誰が」「どこで」「何を」「どうした」を全部入れると映像が浮かぶ。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary style="color:#00b4dc;"><span class="tag-sm tag blue">5</span> 笑い — ドーパミンを発火させる構造</summary>
+      <div class="toggle-content">
+        <p>ボケの構造（セクション5）で詳しく展開。基本構造だけここに。</p>
+        <p><span class="hl">基本式：</span>期待の設定（フリ）→ 期待の裏切り（ズラし）→ 着地（ツッコミ or 回収）</p>
+        <p>6パターン：ギャップ / 誇張 / 共感あるある / 自虐 / 天丼（繰り返し）/ フリ→回収</p>
+        <div class="ex">
+          <div class="ex-label">YouTube台本での笑いの入れ方</div>
+          <p>ノウハウ動画でも、1〜2分に1回は「クスッ」とさせるポイントを意図的に入れる。</p>
+          <p>例：「サムネの文字は3語以内にしてください。僕は最初15語入れてました。もはや小説です」（自虐＋誇張）</p>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary style="color:#648cdc;"><span class="tag-sm" style="background:rgba(100,140,220,0.15);color:#648cdc;border:1px solid rgba(100,140,220,0.3);">6</span> 信頼 — 実績 &times; 弱み &times; 一貫性</summary>
+      <div class="toggle-content">
+        <p><span style="color:#648cdc;font-weight:500;">実績だけ＝嫌味</span>に聞こえる。<span style="color:#648cdc;font-weight:500;">弱みだけ＝頼りない</span>。両方見せて初めて信頼。</p>
+        <div class="ex">
+          <div class="ex-label">組み合わせ例</div>
+          <p class="ex-ng">NG（実績だけ）：「僕は登録者10万人のチャンネルを3つ運営してます」→ すごいけど嫌味</p>
+          <p class="ex-ng">NG（弱みだけ）：「僕、最初は全然ダメだったんですよ〜」→ 親近感はあるけど信用できない</p>
+          <p class="ex-ok">OK（両方）：「僕は今でこそ10万人のチャンネルを運営してますけど、最初の半年は登録者300人で、正直辞めようと思ってました」→ 信頼</p>
+        </div>
+        <p>一貫性＝過去の動画と今の動画で言ってることが矛盾してないか。ブレると一気に信頼が崩れる。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary style="color:#c084fc;"><span class="tag-sm tag purple">7</span> CTA — 自然な流れでそうしたくなる設計</summary>
+      <div class="toggle-content">
+        <p>「チャンネル登録お願いします！」は最弱のCTA。命令じゃなくて<span class="hl6">「そうしたくなる流れ」</span>を作る。</p>
+        <div class="ex">
+          <div class="ex-label">レベル別CTA</div>
+          <p><span style="color:var(--text-dim);">レベル1（弱）：</span>「チャンネル登録お願いします」→ ただの命令</p>
+          <p><span class="hl">レベル2（中）：</span>「この続きが気になる人は、次の動画で詳しく解説するのでチャンネル登録しておいてください」→ 理由付き</p>
+          <p><span class="hl5">レベル3（強）：</span>「実はこのテクニック、もう1つ上のレベルがあります。でもこの動画で話すと長くなりすぎるので、次回の動画で。見逃したくない人は登録しておくと通知が届きます」→ 好奇心＋損失回避</p>
+        </div>
+        <p>CTAは動画の最後だけじゃなく、中盤の「ここまで面白かったら高評価お願いします」も効果的。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary style="color:#b4b4b4;"><span class="tag-sm" style="background:rgba(180,180,180,0.15);color:#b4b4b4;border:1px solid rgba(180,180,180,0.3);">8</span> リズム — 情報密度 &times; テンポ &times; 緩急</summary>
+      <div class="toggle-content">
+        <p>密度高すぎ＝疲れて離脱。低すぎ＝退屈で離脱。<span class="hl">緩急が命。</span></p>
+        <p><span style="font-weight:500;">緩のパート：</span>雑談・エピソード・笑い → 脳を休ませる</p>
+        <p><span style="font-weight:500;">急のパート：</span>核心のノウハウ・データ・衝撃の事実 → 脳を集中させる</p>
+        <div class="ex">
+          <div class="ex-label">リズムの設計例（10分動画）</div>
+          <p>0:00-0:15 <span style="color:#ff4444;">急</span>（フック）→ 0:15-1:00 <span style="color:var(--accent5);">緩</span>（自己紹介・エピソード）→ 1:00-3:00 <span style="color:#ff4444;">急</span>（問題提起・データ）→ 3:00-3:30 <span style="color:var(--accent5);">緩</span>（笑い・ブレイク）→ 3:30-7:00 <span style="color:#ff4444;">急</span>（解決策）→ 7:00-7:30 <span style="color:var(--accent5);">緩</span>（まとめ・感想）→ 7:30-10:00 <span style="color:#ff4444;">急</span>（CTA・次回予告）</p>
+        </div>
+        <p>千原ジュニアの「間」もここに入る。間を入れることでリズムに緩急が生まれ、次の言葉のインパクトが増す。</p>
+      </div>
+    </details>
+
+    <div class="panel" style="margin-top:16px;">
+      <div class="panel-label">INFLUENCE FORMULA</div>
+      <div class="formula">影響力 = 感情フック &times; 論理構造 &times; 具体的行動指示</div>
+      <div class="grid-3" style="margin-top:12px;">
+        <div style="text-align:center;"><span class="hl3">感情フック＝0</span><br><span style="font-size:11px;color:var(--text-dim);">正しいけど刺さらない。スルー。</span></div>
+        <div style="text-align:center;"><span class="hl">論理構造＝0</span><br><span style="font-size:11px;color:var(--text-dim);">感動するけど何すれば？</span></div>
+        <div style="text-align:center;"><span class="hl5">具体的行動指示＝0</span><br><span style="font-size:11px;color:var(--text-dim);">わかったけど動けない。</span></div>
+      </div>
+      <p style="margin-top:12px;text-align:center;font-size:12px;color:var(--text-dim);">Taigaは論理構造（計算力128.80）が最強。感情フックと具体的行動指示が課題。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 3.台本チェックシート -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">04</span><span class="section-title">台本チェックシート</span><span class="section-line"></span></div>
+
+    <div class="panel gold">
+      <div class="panel-label">8-ELEMENT CHECKLIST</div>
+      <h3>台本を書いた後に毎回確認</h3>
+      <div class="grid-2" style="margin-top:12px;">
+        <div>
+          <p>&#9744; <span class="hl4">フック：</span>最初の15秒で何の感情を起動させてる？</p>
+          <p>&#9744; <span class="hl4">ストーリー：</span>どのパターンを使ってる？全体の骨格は？</p>
+          <p>&#9744; <span class="hl4">感情曲線：</span>どこで上げてどこで下げてる？平坦になってない？</p>
+          <p>&#9744; <span class="hl4">具体性：</span>「すごい」「めっちゃ」が残ってない？全部映像浮かぶ？</p>
+        </div>
+        <div>
+          <p>&#9744; <span class="hl4">笑い：</span>どこでドーパミンを出させてる？ボケの構造は？</p>
+          <p>&#9744; <span class="hl4">信頼：</span>実績と弱みの両方見せてる？</p>
+          <p>&#9744; <span class="hl4">CTA：</span>視聴者に何をさせたい？自然な流れになってる？</p>
+          <p>&#9744; <span class="hl4">リズム：</span>緩急ある？密度は適切？</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">SCRIPT STRUCTURES (gengo domain)</div>
+      <h3>台本の構造テンプレート <span style="font-size:12px;font-weight:300;color:var(--text-dim);">— クリックで展開</span></h3>
+
+      <details>
+        <summary><span class="tag-sm tag blue">構造1</span> PAS構造 — 問題提起 → 煽り → 解決策</summary>
+        <div class="toggle-content">
+          <p><span class="hl">P = Problem（問題提起）</span><br>視聴者が抱えている痛み・課題を明確にする。「こんなことで困ってませんか？」</p>
+          <p><span class="hl3">A = Agitation（煽り）</span><br>その問題を放置するとどうなるかを具体的に描写して危機感を煽る。「このまま放っておくと、3ヶ月後にはこうなります」</p>
+          <p><span class="hl5">S = Solution（解決策）</span><br>解決策を提示する。「実はこれ、たった1つのことで解決できます」</p>
+          <div class="ex">
+            <div class="ex-label">YOUTUBE台本の具体例</div>
+            <p><span class="hl">P：</span>「YouTube始めて3ヶ月、再生回数が100回超えない人、めちゃくちゃ多いと思います」</p>
+            <p><span class="hl3">A：</span>「このまま同じやり方を続けると、半年後も同じ100回です。なぜなら、YouTubeのアルゴリズムは最初の48時間の反応で動画の寿命を決めるから」</p>
+            <p><span class="hl5">S：</span>「でも、サムネとタイトルのたった2つを変えるだけで、同じ動画でもCTRが3倍になります。今日はその具体的な方法を教えます」</p>
+          </div>
+          <p><span class="tag-sm tag gold">使い所</span> ハウツー系・ノウハウ系・課題解決系に最強。視聴者の「痛み」が明確な時に使う。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="tag-sm tag green">構造2</span> PREP構造 — 結論 → 理由 → 具体例 → 結論</summary>
+        <div class="toggle-content">
+          <p><span class="hl5">P = Point（結論）</span><br>最初に結論を言い切る。「今日一番伝えたいのは、〇〇です」</p>
+          <p><span class="hl">R = Reason（理由）</span><br>なぜその結論なのか、理由を述べる。「なぜなら、〇〇だからです」</p>
+          <p><span class="hl4">E = Example（具体例）</span><br>具体例で証明する。数字・エピソード・事例。「実際に、〇〇さんはこれで△△になりました」</p>
+          <p><span class="hl5">P = Point（結論繰り返し）</span><br>最後にもう一度結論。「だからこそ、〇〇が大事なんです」</p>
+          <div class="ex">
+            <div class="ex-label">YOUTUBE台本の具体例</div>
+            <p><span class="hl5">P：</span>「サムネは文字を3語以内にしてください」</p>
+            <p><span class="hl">R：</span>「なぜなら、人間の脳がスマホの小さい画面で一瞬で認識できる文字数は3語が限界だから」</p>
+            <p><span class="hl4">E：</span>「実際にうちのチャンネルでテストしたら、文字5語のサムネはCTR 4.2%。3語に変えたら7.8%に跳ね上がりました」</p>
+            <p><span class="hl5">P：</span>「だからサムネの文字は3語以内。これだけで再生回数が変わります」</p>
+          </div>
+          <p><span class="tag-sm tag gold">使い所</span> 説得力が必要な時。データ・事例で裏付けたい時。論理的な視聴者向け。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="tag-sm tag purple">構造3</span> ループ構造 — 問い → 答え → 新しい問い → 答え</summary>
+        <div class="toggle-content">
+          <p>1つの問いに答えたら、その答えから新しい問いが生まれる。これを繰り返すことで<span class="hl6">視聴者が「次は何？」と自然に見続ける</span>。</p>
+          <div class="ex">
+            <div class="ex-label">YOUTUBE台本の具体例</div>
+            <p>「なぜこの動画は100万回再生されたのか？」→「サムネが異常にクリックされたから」</p>
+            <p>→「じゃあなぜこのサムネはクリックされるのか？」→「人間の脳が反応する3つの要素が全部入ってるから」</p>
+            <p>→「その3つの要素って何？」→「1つ目は〇〇、2つ目は...」</p>
+          </div>
+          <p><span class="tag-sm tag gold">使い所</span> リサーチ系・深掘り系・謎解き系。視聴維持率を最大化したい時に最強。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="tag-sm tag orange">構造4</span> Before → After構造 — 変化のストーリー</summary>
+        <div class="toggle-content">
+          <p><span class="hl3">Before</span>：ダメだった状態を具体的に描写。視聴者が「俺もこれだ」と共感。</p>
+          <p><span class="hl4">転換点</span>：何がきっかけで変わったのかを明確に。</p>
+          <p><span class="hl5">After</span>：変わった後の具体的な状態。数字 or 映像で示す。</p>
+          <div class="ex">
+            <div class="ex-label">YOUTUBE台本の具体例</div>
+            <p><span class="hl3">Before：</span>「半年前、僕のチャンネルは登録者300人。毎日投稿しても再生回数は50回。正直、辞めようと思ってました」</p>
+            <p><span class="hl4">転換：</span>「そんな時、あるサムネの法則に気づいたんです」</p>
+            <p><span class="hl5">After：</span>「それから2ヶ月で登録者が1万人を超えました。今では1本の動画で10万回再生が当たり前になっています」</p>
+          </div>
+          <p><span class="tag-sm tag gold">使い所</span> 実体験系・成長ストーリー系。演者のキャラを立てたい時。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="tag-sm tag blue">構造5</span> 対比構造 — A vs B → 真実</summary>
+        <div class="toggle-content">
+          <p>2つの選択肢やパターンを比較して、最終的に「実はこっちが正解」と結論づける。</p>
+          <div class="ex">
+            <div class="ex-label">YOUTUBE台本の具体例</div>
+            <p>「毎日投稿 vs 週1投稿、どっちが伸びるか。結論から言うと、ほとんどの人にとって週1が正解です」</p>
+            <p>「毎日投稿派の根拠は〇〇。でも実際のデータを見ると...」</p>
+            <p>「週1投稿派が勝つ理由は、1本あたりの質が上がるから。実際にAチャンネルとBチャンネルを比較すると...」</p>
+          </div>
+          <p><span class="tag-sm tag gold">使い所</span> 比較系・ランキング系・「どっちがいい？」系。議論を生みたい時。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="tag-sm tag green">構造6</span> ジュニア構造 — フリ → 積み上げ → カラクリバラし → 落ち</summary>
+        <div class="toggle-content">
+          <p>千原ジュニアの話術から抽出した構造。エピソードトーク・ストーリー系に最強。</p>
+          <p><span class="hl5">フリ</span>：状況設定。聞き手に「普通の話だな」と思わせる。</p>
+          <p><span class="hl">積み上げ</span>：具体的な描写を積み重ねて映像を転送する。登場人物・場所・行動を省略しない。</p>
+          <p><span class="hl4">カラクリバラし</span>：「実はこうだった」を最後に持ってくる。先に言ったら笑いにならない。</p>
+          <p><span class="hl3">落ち</span>：カラクリが明かされた瞬間の衝撃 or 笑い。</p>
+          <div class="ex">
+            <div class="ex-label">ジュニアの実例（千と千尋のエピソード）</div>
+            <p><span class="hl5">フリ：</span>「友人の家でテレビ見てたら千と千尋が流れてて」</p>
+            <p><span class="hl">積み上げ：</span>「地上波で流れてるなーと。CM入ったら冬季は山口が運転してて、ピエール瀧が便座に座ってて、渡部が掃除してて...」</p>
+            <p><span class="hl4">カラクリ：</span>「実はこれ、数年前に録画したDVDだった」</p>
+            <p><span class="hl3">落ち：</span>映像のズレが一気に解消 → 笑い</p>
+          </div>
+          <p><span class="tag-sm tag gold">使い所</span> エピソードトーク・密着系・実体験系。「映像の転送精度」が命。</p>
+        </div>
+      </details>
+
+      <p style="margin-top:16px;font-size:12px;color:var(--text-dim);">文章ルール：1文40字以内 / 音読チェック必須 / アウトライン→台本の2段階 / 1動画1メッセージ</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 4. 8色ハイライト -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">05</span><span class="section-title">8色ハイライト分解法</span><span class="section-line"></span></div>
+
+    <div class="panel">
+      <div class="panel-label">COLOR LEGEND</div>
+      <h3>伸びてる動画を8色で塗る</h3>
+      <div class="color-legend">
+        <div class="color-item"><div class="color-dot" style="background:#ff4444;"></div>フック</div>
+        <div class="color-item"><div class="color-dot" style="background:#ffa500;"></div>ストーリー転換</div>
+        <div class="color-item"><div class="color-dot" style="background:#ffd700;"></div>感情ポイント</div>
+        <div class="color-item"><div class="color-dot" style="background:#00c896;"></div>具体（数字・映像描写）</div>
+        <div class="color-item"><div class="color-dot" style="background:#00b4dc;"></div>ボケ・笑い</div>
+        <div class="color-item"><div class="color-dot" style="background:#648cdc;"></div>信頼（実績・弱み開示）</div>
+        <div class="color-item"><div class="color-dot" style="background:#c084fc;"></div>CTA</div>
+        <div class="color-item"><div class="color-dot" style="background:#888;"></div>リズム変化（間・テンポ）</div>
+      </div>
+      <p style="margin-top:12px;">1. 伸びてる動画を1本選ぶ → 2. YouTube字幕で文字起こし → 3. 8色でハイライト → 4. <span class="hl">「何色が多いか」「何色が抜けてるか」を1行でメモ</span></p>
+      <p>週3本。3D認知（56.3）が最も活きる訓練。塗った後のパターン認識で「伸びてる動画の法則」が勝手に見える。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 5. BOKE STRUCTURE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">06</span><span class="section-title">ボケの構造パターン</span><span class="section-line"></span></div>
+
+    <div class="panel">
+      <div class="panel-label">BOKE FORMULA</div>
+      <div class="formula">ボケ = 期待の設定（フリ）&rarr; 期待の裏切り（ズラし）&rarr; 着地（ツッコミ / 回収）</div>
+      <div class="grid-3" style="margin-top:16px;">
+        <div style="padding:12px;background:rgba(0,180,220,0.04);border:1px solid rgba(0,180,220,0.1);border-radius:6px;">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:4px;">ギャップ</div>
+          <p style="font-size:11px;color:var(--text-dim);">真面目な文脈→急にふざける</p>
+        </div>
+        <div style="padding:12px;background:rgba(255,107,74,0.04);border:1px solid rgba(255,107,74,0.1);border-radius:6px;">
+          <div style="font-weight:700;color:var(--accent3);margin-bottom:4px;">誇張</div>
+          <p style="font-size:11px;color:var(--text-dim);">事実を10倍に膨らませる</p>
+        </div>
+        <div style="padding:12px;background:rgba(0,200,150,0.04);border:1px solid rgba(0,200,150,0.1);border-radius:6px;">
+          <div style="font-weight:700;color:var(--accent5);margin-bottom:4px;">共感あるある</div>
+          <p style="font-size:11px;color:var(--text-dim);">「わかるわ〜」を具体で描写</p>
+        </div>
+        <div style="padding:12px;background:rgba(192,132,252,0.04);border:1px solid rgba(192,132,252,0.1);border-radius:6px;">
+          <div style="font-weight:700;color:var(--accent6);margin-bottom:4px;">自虐</div>
+          <p style="font-size:11px;color:var(--text-dim);">自分を下げて親近感</p>
+        </div>
+        <div style="padding:12px;background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.1);border-radius:6px;">
+          <div style="font-weight:700;color:var(--accent4);margin-bottom:4px;">天丼（繰り返し）</div>
+          <p style="font-size:11px;color:var(--text-dim);">同じボケを3回。3回目で回収</p>
+        </div>
+        <div style="padding:12px;background:rgba(100,140,220,0.04);border:1px solid rgba(100,140,220,0.1);border-radius:6px;">
+          <div style="font-weight:700;color:#648cdc;margin-bottom:4px;">フリ→回収</div>
+          <p style="font-size:11px;color:var(--text-dim);">冒頭で振った伏線を後半で回収</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;font-size:12px;color:var(--text-dim);">週1回、笑った箇所を3つピックアップして「フリ→ズラし→着地→パターン分類」で分解。月12個 → 3ヶ月で36個のパターン辞書が完成。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ========================================== -->
+  <!-- 6. NEURAL PATHWAY TRAINING -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">07</span><span class="section-title">脳の神経を繋ぐ4レベル</span><span class="section-line"></span></div>
+
+    <div class="grid-4">
+      <div class="panel" style="text-align:center;">
+        <div class="panel-label">LEVEL 1</div>
+        <h3 style="font-size:16px;">観察</h3>
+        <p style="font-size:12px;">8色分解<br>感情曲線グラフ<br>「無意識に8要素が見える目」</p>
+      </div>
+      <div class="panel green" style="text-align:center;">
+        <div class="panel-label">LEVEL 2</div>
+        <h3 style="font-size:16px;">変換</h3>
+        <p style="font-size:12px;">パターン辞書<br>具体変換ドリル<br>「自分の台本に転用できる」</p>
+      </div>
+      <div class="panel gold" style="text-align:center;">
+        <div class="panel-label">LEVEL 3</div>
+        <h3 style="font-size:16px;">出力</h3>
+        <p style="font-size:12px;">60秒台本<br>語彙トレーニング<br>「8要素が入った台本が書ける」</p>
+      </div>
+      <div class="panel purple" style="text-align:center;">
+        <div class="panel-label">LEVEL 4</div>
+        <h3 style="font-size:16px;">統合</h3>
+        <p style="font-size:12px;">自分の動画の分解<br>まなと添削の構造化<br>「身勝手の極意」</p>
+      </div>
+    </div>
+
+    <div class="formula" style="margin-top:16px;">体知識 = &Sigma;（仮説 &times; 実行 &times; 結果一致）</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ========================================== -->
+  <!-- 7. DAILY ROUTINE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">08</span><span class="section-title">毎日のルーティン（28分）</span><span class="section-line"></span></div>
+
+    <div class="timeline-v">
+      <div class="step">
+        <div class="step-num">STEP 1 / 5MIN</div>
+        <h4>具体変換ドリル</h4>
+        <p>「すごい」「ヤバい」「大事」「良い」「面白い」から1つ選ぶ → その日の体験から映像が浮かぶ具体3つに変換。1日3変換 &times; 30日 = 90個。</p>
+      </div>
+      <div class="step" style="border-color:rgba(255,215,0,0.2);">
+        <div class="step-num" style="color:var(--accent4);">STEP 2 / 10MIN</div>
+        <h4>60秒台本</h4>
+        <p>テーマを1つ決める → 60秒で話せる台本を書く → 8要素チェックシートで確認 → 声に出して読んで録音 → 聞き返す。テーマは何でもOK。8要素を入れる訓練。</p>
+      </div>
+      <div class="step" style="border-color:rgba(192,132,252,0.2);">
+        <div class="step-num" style="color:var(--accent6);">STEP 3 / 10MIN</div>
+        <h4>語彙トレーニング</h4>
+        <p>その日気になった言葉を3つ選ぶ（自分で選ぶ。師匠が選ぶのではない） → 「友達に説明するように」口頭で説明 → AIに投げて3軸（意味の正確さ / 日本語の正しさ / 粒度の適切さ）でFB → 完璧に説明できるまで同じ語を繰り返す。次に行かない。1文40字以内。</p>
+      </div>
+      <div class="step" style="border-color:rgba(0,200,150,0.2);">
+        <div class="step-num" style="color:var(--accent5);">STEP 4 / 3MIN</div>
+        <h4>AI壁打ち</h4>
+        <p>60秒台本 or 語彙のFBをAI師匠に投げる。「この台本、8要素のどこが弱い？」これだけ。翌日の台本に反映。振り返りの強制装置。</p>
+      </div>
+    </div>
+
+    <div class="panel green">
+      <div class="panel-label">VOCABULARY TRAINING RULES (gengo domain)</div>
+      <h3>語彙トレーニングの3軸評価</h3>
+      <div class="grid-3">
+        <div style="text-align:center;padding:12px;">
+          <div style="font-size:14px;font-weight:700;color:var(--accent5);">意味の正確さ</div>
+          <p style="font-size:11px;color:var(--text-dim);">辞書的な意味とズレていないか</p>
+        </div>
+        <div style="text-align:center;padding:12px;">
+          <div style="font-size:14px;font-weight:700;color:var(--accent);">日本語の正しさ</div>
+          <p style="font-size:11px;color:var(--text-dim);">文法・助詞・表現の誤り</p>
+        </div>
+        <div style="text-align:center;padding:12px;">
+          <div style="font-size:14px;font-weight:700;color:var(--accent4);">粒度の適切さ</div>
+          <p style="font-size:11px;color:var(--text-dim);">抽象すぎ / 具体すぎのバランス</p>
+        </div>
+      </div>
+      <div class="quote green">語彙の引き出しが増える → 具体変換ドリルの質が上がる → 60秒台本の具体性が上がる → 仕事の台本が変わる。全部が連鎖する。</div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 8. WEEKLY ROUTINE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">09</span><span class="section-title">週間ルーティン</span><span class="section-line"></span></div>
+
+    <div class="panel">
+      <table class="sched-table">
+        <tr><th>曜日</th><th>毎日ルーティン</th><th>追加トレーニング</th><th>合計</th></tr>
+        <tr>
+          <td style="font-weight:700;color:var(--accent);">月</td>
+          <td>具体変換(5) + 60秒台本(10) + 語彙(10) + AI(3)</td>
+          <td><span class="tag blue">8色分解 30分</span></td>
+          <td class="time">58分</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--accent);">火</td>
+          <td>具体変換(5) + 60秒台本(10) + 語彙(10) + AI(3)</td>
+          <td>—</td>
+          <td class="time">28分</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--accent);">水</td>
+          <td>具体変換(5) + 60秒台本(10) + 語彙(10) + AI(3)</td>
+          <td><span class="tag blue">8色分解 30分</span> <span class="tag gold">感情曲線 15分</span></td>
+          <td class="time">73分</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--accent);">木</td>
+          <td>具体変換(5) + 60秒台本(10) + 語彙(10) + AI(3)</td>
+          <td>—</td>
+          <td class="time">28分</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--accent);">金</td>
+          <td>具体変換(5) + 60秒台本(10) + 語彙(10) + AI(3)</td>
+          <td><span class="tag blue">8色分解 30分</span> <span class="tag gold">感情曲線 15分</span></td>
+          <td class="time">73分</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--accent3);">土</td>
+          <td>具体変換(5) + 60秒台本(10) + 語彙(10) + AI(3)</td>
+          <td><span class="tag purple">ボケ構造分解 30分</span> <span class="tag green">生言葉ストック 20分</span></td>
+          <td class="time">78分</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--text-dim);">日</td>
+          <td style="color:var(--text-dim);">OFF or 映画構造分解（月1）</td>
+          <td><span class="tag orange">月1: 映画分解 120分</span></td>
+          <td class="time">0〜120分</td>
+        </tr>
+      </table>
+
+      <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center;">
+        <div style="padding:12px;background:rgba(0,180,220,0.05);border-radius:6px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:var(--accent);">28分</div>
+          <div style="font-size:11px;color:var(--text-dim);">毎日の最低ライン</div>
+        </div>
+        <div style="padding:12px;background:rgba(255,215,0,0.05);border-radius:6px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:var(--accent4);">約5.5h</div>
+          <div style="font-size:11px;color:var(--text-dim);">週間合計</div>
+        </div>
+        <div style="padding:12px;background:rgba(0,200,150,0.05);border-radius:6px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:var(--accent5);">約24h</div>
+          <div style="font-size:11px;color:var(--text-dim);">月間合計</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 9. CONCRETE DRILL EXAMPLES -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">10</span><span class="section-title">具体変換ドリルの実例</span><span class="section-line"></span></div>
+
+    <div class="grid-2">
+      <div class="panel orange">
+        <div class="panel-label">NG: BEFORE</div>
+        <h3 style="color:var(--accent3);">抽象のまま</h3>
+        <p>「この方法、マジでヤバい」</p>
+        <p>「すごい結果が出た」</p>
+        <p>「めっちゃ大事なこと」</p>
+        <p>「なんか良い感じになった」</p>
+        <p>「このラーメンうまかった」</p>
+      </div>
+      <div class="panel green">
+        <div class="panel-label">OK: AFTER</div>
+        <h3 style="color:var(--accent5);">脳に映像が浮かぶ</h3>
+        <p>「この方法で、3日目に再生回数が10倍になった」</p>
+        <p>「朝起きて通知見たら登録者が500人増えてた」</p>
+        <p>「これ知らないと月10万円損する」</p>
+        <p>「朝起きて鏡見た時に『あれ、顔変わった？』って思う」</p>
+        <p>「一口目で鶏の脂が唇にぬるっと触れて脳が止まった」</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 10. VIEWER LANGUAGE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">11</span><span class="section-title">視聴者の生言葉ストック</span><span class="section-line"></span></div>
+
+    <div class="panel">
+      <div class="panel-label">WEEKLY STOCK / 10 WORDS</div>
+      <h3>ターゲットが実際に使ってる言葉を集める</h3>
+      <p>場所：コメント欄 / X / 知恵袋 / 5ch / 関連ブログ</p>
+      <p>集めるもの：<span class="hl">実際に使ってる言葉・リアルな悩みの言い方・共感する表現・具体的な疑問</span></p>
+
+      <div style="margin-top:16px;padding:16px;background:rgba(0,180,220,0.03);border:1px solid rgba(0,180,220,0.1);border-radius:6px;">
+        <table class="sched-table">
+          <tr><th>生の言葉</th><th>どこで拾った</th><th>どの感情</th><th>台本での使い方</th></tr>
+          <tr><td>「やっと見つけた」</td><td>コメント欄</td><td>安堵</td><td>冒頭フックで使える</td></tr>
+          <tr><td>「こういうの待ってた」</td><td>X</td><td>期待</td><td>CTA前に入れると効く</td></tr>
+          <tr><td>「誰も教えてくれなかった」</td><td>知恵袋</td><td>怒り×発見</td><td>タイトル・フックに最強</td></tr>
+        </table>
+      </div>
+
+      <div class="quote" style="margin-top:16px;">自分の言葉じゃなくて、視聴者の言葉で台本を書く。これが「具体の解像度」の最後のピース。</div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 11. JUNIOR METHOD -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">12</span><span class="section-title">千原ジュニアの話術 — 6つの原則</span><span class="section-line"></span></div>
+
+    <div class="summary-box">
+      <div class="hero-label" style="margin-bottom:16px;">CORE PRINCIPLE</div>
+      <h2>「自分の頭に浮かんでいる映像と、<br>ほぼ同じ映像を聞いてる人に浮かべさせるかどうか」</h2>
+      <p>千原ジュニアが「面白く話すために一番大事なこと」として挙げた核心。<br>これはTaigaの最大のボトルネック「具体の解像度」と完全に同じことを言っている。</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel orange">
+        <div class="panel-label">PRINCIPLE 1 / 映像の転送精度</div>
+        <h3>頭の中の映像を相手の頭に転送する</h3>
+        <p>話が面白いかどうかは、<span class="hl3">自分が見ている映像と同じ映像を聞き手に浮かべさせられるか</span>で決まる。</p>
+        <p>登場人物・場所・状況を明確にしないと映像がぼやける。「誰が誰に何を言ったのか」を省略しない。</p>
+        <div style="margin-top:12px;padding:12px;background:rgba(255,107,74,0.05);border-radius:6px;">
+          <p style="font-size:12px;margin:0;"><span class="hl3">NG：</span>「ラーメン屋の店主がケンカしだして『表出ろ』って」→ 誰と？どこで？映像が浮かない</p>
+          <p style="font-size:12px;margin:4px 0 0;"><span class="hl5">OK：</span>「ラーメン屋の店主と客がケンカしだして、店主が『表出ろ』って言い出した。ラーメン屋の店主なのか客なのかわからない状況」→ 映像が浮かぶ</p>
+        </div>
+      </div>
+
+      <div class="panel gold">
+        <div class="panel-label">PRINCIPLE 2 / 情報の出し順</div>
+        <h3>カラクリは最後にバラす</h3>
+        <p><span class="hl4">オチを先に言ったら笑いにならない。</span>同じエピソードでも出す順番で全く違う反応になる。</p>
+        <div style="margin-top:12px;padding:12px;background:rgba(255,215,0,0.05);border-radius:6px;">
+          <p style="font-size:12px;margin:0;"><span class="hl3">NG順：</span>「実はDVDだった。地上波だと思ってたけど」→ 先にネタバレ。笑いにならない</p>
+          <p style="font-size:12px;margin:4px 0 0;"><span class="hl5">OK順：</span>「地上波で流れてるなーと思ってた。CM入ったら冬季は山口が運転してて、ピエール瀧が便座に座ってて…あれ？」→ 最後に「実はDVDだった」でドカン</p>
+        </div>
+        <p style="margin-top:12px;"><span class="hl4">構成 = フリ → 積み上げ → カラクリのバラし → 落ち</span></p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">PRINCIPLE 3 / スケール合わせ</div>
+        <h3>話の大きさを場に合わせる</h3>
+        <p>ワンメーターのタクシーで中学時代まで遡る話をしだすと、<span class="hl">着く前にオチまで行けない</span>。</p>
+        <p>5分の場なら5分で完結する話を。1分なら1分で。<span class="hl">のっぺり（全部同じ密度）はダメ。</span></p>
+        <p>→ YouTube台本でも同じ。10分動画に30分分の情報を詰め込むと視聴者が離脱する。逆にスカスカだと退屈。<span class="hl">尺と情報量のバランス。</span></p>
+      </div>
+
+      <div class="panel green">
+        <div class="panel-label">PRINCIPLE 4 / 遊びの余白</div>
+        <h3>完成しすぎた話は冷める</h3>
+        <p><span class="hl5">きっちり完成し過ぎた話をされても「ってなる」</span>。</p>
+        <p>あえて「その場でやってる感じ」を残す。種を撒いておいて、回収できたらラッキーくらいの余白。無駄を全部そぎ落とすのが正解とは限らない。</p>
+        <p>→ YouTube台本でも、<span class="hl5">台本感が出すぎると視聴者が冷める</span>。「ライブ感」「素の感じ」を意図的に残す設計が必要。</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel purple">
+        <div class="panel-label">PRINCIPLE 5 / ライトワード</div>
+        <h3>パンチラインを必ず入れる</h3>
+        <p>長い前振りの割に<span class="hl6">パンチライン（決め台詞）がないのはもったいない</span>。</p>
+        <p>聞き手が「これが来た！」と思える一言。マトリックスの例え：「すべらない話の準備で上げてすぐ、そんなつまずくか？」</p>
+        <p>→ YouTube台本では、<span class="hl6">各セクションに最低1つ「聞き手が覚えて帰るフレーズ」</span>を入れる。</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-label">PRINCIPLE 6 / 間とリズム</div>
+        <h3>松本人志の凄さ＝「間」</h3>
+        <p>ジュニアが「話術が凄い」として挙げた松本人志の要素は内容じゃなくて<span class="hl">「間」「リズム」「息継ぎ」</span>。</p>
+        <p>同じ言葉でも、間の取り方で笑いの量が全く変わる。政治家が上手いのもリズムと間。</p>
+        <p>→ 60秒台本の音読で<span class="hl">「間」を意識的に入れる練習</span>を追加。録音して聞き返した時に「ここ、間が足りない」を自分でチェック。</p>
+      </div>
+    </div>
+
+    <div class="panel gold">
+      <div class="panel-label">INTEGRATION WITH 8 ELEMENTS</div>
+      <h3>ジュニアの6原則 &times; 8要素の接続</h3>
+      <table class="sched-table">
+        <tr><th>ジュニアの原則</th><th>対応する8要素</th><th>鍛え方</th></tr>
+        <tr><td>映像の転送精度</td><td><span class="hl5">具体性</span></td><td>具体変換ドリル。「映像が浮かぶか？」を毎回チェック</td></tr>
+        <tr><td>カラクリは最後にバラす</td><td><span class="hl4">ストーリー構造</span></td><td>60秒台本でオチの位置を意図的に設計</td></tr>
+        <tr><td>スケール合わせ</td><td><span style="color:#b4b4b4;">リズム</span></td><td>60秒台本で「尺に合った情報量」を毎回検証</td></tr>
+        <tr><td>遊びの余白</td><td><span style="color:#b4b4b4;">リズム</span> + <span style="color:#00b4dc;">笑い</span></td><td>台本に「種撒き」を意図的に1つ入れる</td></tr>
+        <tr><td>ライトワード</td><td><span style="color:#ff4444;">フック</span> + <span style="color:#c084fc;">CTA</span></td><td>各セクションに「覚えて帰るフレーズ」を必ず1つ</td></tr>
+        <tr><td>間とリズム</td><td><span style="color:#b4b4b4;">リズム</span></td><td>60秒台本の音読で「間」を意識的に入れて録音→聞き返し</td></tr>
+      </table>
+    </div>
+
+    <div class="quote gold" style="text-align:center;font-size:16px;">ジュニアの核心「映像の転送精度」= まなとの指摘「具体の解像度」= 4ドメインの一致「具体が全ての鍵」<br>全部同じことを言っている。</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ========================================== -->
+  <!-- 12. DAILY DRILL UPDATE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">13</span><span class="section-title">毎日のルーティン更新 — ジュニア原則を統合</span><span class="section-line"></span></div>
+
+    <div class="panel">
+      <div class="panel-label">UPDATED DAILY ROUTINE / 33MIN</div>
+      <h3>60秒台本に「映像転送チェック」と「間」を追加</h3>
+      <div class="timeline-v">
+        <div class="step">
+          <div class="step-num">STEP 1 / 5MIN</div>
+          <h4>具体変換ドリル</h4>
+          <p>「すごい」を映像が浮かぶ具体3つに変換。<span style="color:var(--accent3);">「聞き手の頭に映像が浮かぶか？」がチェック基準</span>（ジュニア原則1）</p>
+        </div>
+        <div class="step" style="border-color:rgba(255,215,0,0.2);">
+          <div class="step-num" style="color:var(--accent4);">STEP 2 / 13MIN</div>
+          <h4>60秒台本（ジュニア原則統合版）</h4>
+          <p>書く(5分) → 8要素チェック(2分) → <span style="color:var(--accent4);font-weight:700;">追加チェック：</span>映像転送OK？ / オチの位置は最後？ / パンチラインある？ / 遊びの余白ある？(2分) → 音読録音＋<span style="color:var(--accent4);font-weight:700;">間を意識的に入れる</span>(2分) → 聞き返し(2分)</p>
+        </div>
+        <div class="step" style="border-color:rgba(192,132,252,0.2);">
+          <div class="step-num" style="color:var(--accent6);">STEP 3 / 10MIN</div>
+          <h4>語彙トレーニング</h4>
+          <p>3語選ぶ → 口頭説明 → AI壁打ちで3軸FB → 完璧まで繰り返す。1文40字以内。</p>
+        </div>
+        <div class="step" style="border-color:rgba(0,200,150,0.2);">
+          <div class="step-num" style="color:var(--accent5);">STEP 4 / 5MIN</div>
+          <h4>AI壁打ち（拡張版）</h4>
+          <p>「この台本、8要素のどこが弱い？映像は浮かぶ？オチの位置は？パンチラインは？」</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ========================================== -->
+  <!-- 13. TIMELINE -->
+  <!-- ========================================== -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">14</span><span class="section-title">神経が繋がるまでのタイムライン</span><span class="section-line"></span></div>
+
+    <div class="panel">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:0;">
+        <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.03);"><span class="tag blue">1〜2週目</span></div>
+        <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.03);">8色分解が「作業」。意識的にやってる段階。語彙トレーニングが地味にキツい。</div>
+
+        <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.03);"><span class="tag green">3〜4週目</span></div>
+        <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.03);">動画を見てる時に<span class="hl5">「あ、ここフックだ」が勝手に見え始める</span>。語彙の引き出しが増え始める。</div>
+
+        <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.03);"><span class="tag gold">2ヶ月目</span></div>
+        <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.03);">60秒台本で<span class="hl4">8要素を意識しなくても入る</span>ようになる。具体変換が自然になる。</div>
+
+        <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.03);"><span class="tag purple">3ヶ月目</span></div>
+        <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.03);">仕事の台本で<span class="hl6">「すごい」が自然に消えて具体が出る</span>。ボケのパターン辞書が36個に。</div>
+
+        <div style="padding:16px 20px;"><span class="tag orange">6ヶ月目</span></div>
+        <div style="padding:16px 20px;">伸びてる動画を見た瞬間に<span class="hl3">8要素が透けて見える</span>。語彙が540語増。<span class="hl3">身勝手の極意の入口。</span></div>
+      </div>
+    </div>
+
+    <div class="summary-box">
+      <div class="formula" style="font-size:16px;">毎日28分 &times; 180日 = 84時間のΣ蓄積</div>
+      <p style="margin-top:12px;">84時間で「考えなくても出る」回路が配線される。<br>語彙：3語/日 &times; 180日 = <span style="color:var(--accent4);font-weight:700;">540語</span>の引き出し追加。<br>具体変換：3変換/日 &times; 180日 = <span style="color:var(--accent5);font-weight:700;">540個</span>の具体表現がストック。<br>60秒台本：180本。ボケパターン：72個。感情曲線：48本。8色分解：72本。</p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- FOOTER -->
+  <!-- ========================================== -->
+  <div style="text-align:center;padding:40px 0;font-size:10px;color:var(--text-dim);font-family:'Orbitron',sans-serif;letter-spacing:3px;">
+    LANGUAGE &times; YOUTUBE INTEGRATED TRAINING SYSTEM<br>
+    8 ELEMENTS + VOCABULARY + STRUCTURE + EXPRESSION<br>
+    DESIGNED FOR TAIGA'S COGNITIVE PROFILE (3D:56.3 / CALC:128.8 / DICT:23.9)<br>
+    GENERATED BY AI SHISHOU SYSTEM &mdash; 2026.04.05
+  </div>
+
+</div>
+</body>
+</html>

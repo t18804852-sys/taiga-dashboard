@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>みさをch 音設計ガイド</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0a;--card:#111;--border:#1a1a1a;
+  --text:#ccc;--dim:#666;--bright:#eee;
+  --accent:#2d7d9a;--accent2:#2a9d6a;--warn:#9a6d2d;--pink:#9a2d5a;
+}
+html,body{min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.6}
+
+.header{padding:32px 28px 20px;border-bottom:1px solid var(--border)}
+.header h1{font-size:22px;font-weight:900;color:var(--bright);letter-spacing:1px}
+.header .sub{font-size:11px;color:var(--dim);margin-top:4px}
+.core-box{margin-top:14px;padding:12px 16px;background:#0d1f1a;border-left:3px solid var(--accent2);border-radius:0 4px 4px 0;font-size:12px;color:var(--accent2);line-height:1.8}
+.core-box strong{color:#3dbf8a}
+
+.section{padding:24px 28px;border-bottom:1px solid var(--border)}
+.sec-title{font-size:16px;font-weight:700;color:var(--accent);margin-bottom:16px;padding-bottom:6px;border-bottom:1px solid #1a2a30}
+.sec-sub{font-size:13px;font-weight:700;color:var(--bright);margin:18px 0 8px}
+.sec-sub:first-of-type{margin-top:0}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:14px}
+.card:hover{border-color:#252525}
+.card h3{font-size:13px;font-weight:700;color:var(--bright);margin-bottom:6px}
+.card p{font-size:12px;line-height:1.7;color:var(--text)}
+.card .why{font-size:11px;color:var(--dim);margin-top:6px;font-style:italic}
+
+.tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;margin:0 4px 4px 0}
+.tag-green{background:#0d1f1a;color:var(--accent2);border:1px solid #1a3a2a}
+.tag-blue{background:#0d1a1f;color:var(--accent);border:1px solid #1a2a3a}
+.tag-pink{background:#1f0d1a;color:#9a2d7d;border:1px solid #3a1a2a}
+.tag-gold{background:#1f1a0d;color:var(--warn);border:1px solid #3a2a1a}
+
+table{width:100%;border-collapse:collapse;font-size:11.5px;margin:10px 0}
+th{background:#141414;color:var(--accent);font-weight:600;padding:8px 10px;text-align:left;border:1px solid var(--border)}
+td{padding:8px 10px;border:1px solid var(--border);color:var(--text);line-height:1.5;vertical-align:top}
+tr:hover td{background:#0f0f0f}
+
+.callout{padding:10px 14px;background:#0d1f1a;border-left:3px solid var(--accent2);border-radius:0 4px 4px 0;font-size:12px;color:var(--accent2);line-height:1.7;margin:12px 0}
+.callout-warn{background:#1f1a0d;border-left-color:var(--warn);color:var(--warn)}
+.callout-pink{background:#1f0d15;border-left-color:var(--pink);color:#c44a7a}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:800px){.grid2,.grid3{grid-template-columns:1fr}}
+
+.insight-box{background:#0a1015;border:1px solid #1a2a35;border-radius:8px;padding:16px 20px;margin:16px 0}
+.insight-box h4{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.insight-box p{font-size:12px;line-height:1.8}
+
+.vs-row{display:flex;gap:0;margin:12px 0}
+.vs-card{flex:1;padding:14px 16px;border:1px solid var(--border)}
+.vs-card:first-child{border-radius:8px 0 0 8px;background:#1a0d0d}
+.vs-card:last-child{border-radius:0 8px 8px 0;background:#0d1a0d}
+.vs-card h4{font-size:12px;font-weight:700;margin-bottom:6px}
+.vs-card:first-child h4{color:#c44a4a}
+.vs-card:last-child h4{color:#4ac48a}
+.vs-card p{font-size:11px;line-height:1.6}
+.vs-mid{display:flex;align-items:center;padding:0 8px;font-size:11px;color:var(--dim);background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+
+.scene-card{background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:14px;overflow:hidden}
+.scene-header{padding:10px 16px;background:#0d0d0d;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.scene-header h4{font-size:12px;font-weight:700;color:var(--bright)}
+.scene-body{padding:14px 16px}
+.scene-body table{margin:0}
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>みさをch 音設計ガイド</h1>
+  <div class="sub">25-44歳女性 × 在宅ワーク × 「隣にいる賢いお姉ちゃん」に最適化したBGM/SE/テロップ設計</div>
+  <div class="core-box">
+    <strong>設計思想:</strong> みさをchの音は<strong>「カフェで隣の席の先輩が話してくれてる」</strong>空気を作る。<br>
+    テレビ的なバラエティ演出ではなく、<strong>安心感×等身大×ちょっとだけおしゃれ</strong>。<br>
+    ターゲットは「情報を取りに来てる」のではなく「自分でもできそうと思いに来てる」。音がその背中を押す。
+  </div>
+</div>
+
+<!-- ===== SECTION 1: ターゲットの音心理 ===== -->
+<div class="section">
+  <div class="sec-title">TARGET — この層が「音」に求めているもの</div>
+
+  <div class="sec-sub">ペルソナの聴覚心理</div>
+  <table>
+    <tr><th style="width:120px">属性</th><th>25-44歳女性。主婦・育児中・社会復帰したい。在宅で稼ぎたい</th></tr>
+    <tr><td>視聴環境</td><td><strong>イヤホン片耳 or スマホスピーカー</strong>。家事しながら、子どもが昼寝中、寝かしつけ後のベッドの中。「ながら視聴」が前提</td></tr>
+    <tr><td>心理状態</td><td>不安(やれるかな) × 期待(変わりたい) × 疲れ(今日も1日終わった)。感情のベースラインが低い状態で再生ボタンを押す</td></tr>
+    <tr><td>音への感度</td><td>BGMを意識的に聴いていないが、<strong>「居心地の良さ」は無意識に判定</strong>している。不快な音には敏感（子育てで神経が研ぎ澄まされている）</td></tr>
+    <tr><td>拒否反応</td><td>①うるさい音（子どもが起きる）②煽る音（YouTuber的なSE連打）③冷たい音（ビジネス感が強すぎる）</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>核心インサイト:</strong> この層にとって動画の「音」は<strong>「この場所は安全か」の判定装置</strong>。
+    内容を聴く前に、BGMの質感で「ここは自分の居場所かどうか」を0.5秒で判断している。
+    正解は「おしゃれなカフェのBGM」の距離感。主張しないけど、いい空気を作っている音。
+  </div>
+
+  <div class="sec-sub">ターゲットの欲求と音の対応</div>
+  <table>
+    <tr><th>欲求層</th><th>欲求の内容</th><th>音がやるべきこと</th></tr>
+    <tr><td>表層</td><td>具体的なやり方を知りたい</td><td>邪魔しない。情報の邪魔をしないBGM音量と質感</td></tr>
+    <tr><td>中層</td><td>「自分にもできそう」と思いたい</td><td>親しみ。カフェ的な温かみのある音で敷居を下げる</td></tr>
+    <tr><td>深層</td><td>孤独な戦いを認めてほしい</td><td>寄り添い。感情が動くシーンでBGMが静かに支える</td></tr>
+    <tr><td>最深層</td><td>変われる自分を信じたい</td><td>高揚。ラストやCTA前で「未来が見える」音を一瞬だけ</td></tr>
+  </table>
+</div>
+
+<!-- ===== SECTION 2: BGM設計 ===== -->
+<div class="section">
+  <div class="sec-title">BGM — 「空気」を設計する</div>
+
+  <div class="sec-sub">絶対ルール: やってはいけないこと</div>
+  <div class="vs-row">
+    <div class="vs-card">
+      <h4>NG: バラエティ型</h4>
+      <p>
+        ・派手なシンセ、EDM的なドロップ<br>
+        ・テンション高いギターリフ<br>
+        ・SE連打で「ドドン！」「ジャーン！」<br>
+        ・BPM150以上の高速テンポ<br><br>
+        → ターゲットにとって「うるさい」「自分の場所じゃない」
+      </p>
+    </div>
+    <div class="vs-mid">vs</div>
+    <div class="vs-card">
+      <h4>OK: カフェ・ライフスタイル型</h4>
+      <p>
+        ・アコースティックギター、ピアノ、ウクレレ<br>
+        ・Lo-Fi的なドラムループ（柔らかいキック）<br>
+        ・マリンバ、グロッケンシュピール（木琴系の温かみ）<br>
+        ・BPM 80〜120のゆったりテンポ<br><br>
+        → 「おしゃれで、でも頑張りすぎてない」空気
+      </p>
+    </div>
+  </div>
+
+  <div class="sec-sub">BGMの音色パレット</div>
+  <table>
+    <tr><th style="width:120px">楽器/音色</th><th>心理効果</th><th>使う場面</th></tr>
+    <tr>
+      <td><strong>アコースティックギター</strong></td>
+      <td>温かみ、親しみ、等身大感。「友達が弾いてくれてる」距離感。木の振動＝自然＝安心</td>
+      <td>メインBGMの基盤。トーク中の定番</td>
+    </tr>
+    <tr>
+      <td><strong>ピアノ（軽め）</strong></td>
+      <td>知性、清潔感、信頼。ただし重厚なクラシックピアノではなく「カフェのBGM」的な軽さ</td>
+      <td>解説パート、ノウハウ説明、落ち着いたシーン</td>
+    </tr>
+    <tr>
+      <td><strong>ウクレレ</strong></td>
+      <td>カジュアル、軽やか、「大丈夫だよ」感。ハワイ＝リゾート＝脱力の連想</td>
+      <td>オープニング、明るい話題、成功体験の報告</td>
+    </tr>
+    <tr>
+      <td><strong>マリンバ/グロッケン</strong></td>
+      <td>木の温もり、やわらかいアクセント。子ども番組の連想があり、母親層に無意識の安心感</td>
+      <td>ポイント解説のアクセント、場面転換</td>
+    </tr>
+    <tr>
+      <td><strong>Lo-Fiドラム</strong></td>
+      <td>ビート感はあるが攻撃性ゼロ。「作業用BGM」の文化的記憶。集中を助ける</td>
+      <td>手順解説、リスト系コンテンツ</td>
+    </tr>
+    <tr>
+      <td><strong>ストリングス（薄く）</strong></td>
+      <td>感情の深み、映画的な「物語感」。ただし前に出すぎると「大げさ」になるので極薄で</td>
+      <td>みさをの過去話、感情が動くシーン、ラスト</td>
+    </tr>
+    <tr>
+      <td><strong>シンセパッド（暖色系）</strong></td>
+      <td>空間を埋める「空気」。Lo-Fiやチルホップ的な浮遊感。未来感をほんのり</td>
+      <td>ビジョンを語るシーン、CTA前の高揚</td>
+    </tr>
+  </table>
+
+  <div class="sec-sub">BPMの設計</div>
+  <table>
+    <tr><th style="width:100px">BPM帯</th><th>心理効果</th><th>使う場面</th><th>比率目安</th></tr>
+    <tr><td><strong>70〜90</strong></td><td>リラックス、内省、寄り添い。心拍数より遅い→「落ち着いていい」のシグナル</td><td>感情的な話、過去の苦労話、落ちサビ的パート</td><td>20%</td></tr>
+    <tr><td><strong>90〜110</strong></td><td>自然体、会話のリズム。日常の歩行速度と近い→最も「普通」に感じる</td><td>メイントーク、ノウハウ解説、日常パート</td><td>50%</td></tr>
+    <tr><td><strong>110〜125</strong></td><td>軽い高揚、前向き。「ちょっとワクワクする」程度。まだ日常の範囲内</td><td>成功体験、ビジョン、CTA前、エンディング</td><td>25%</td></tr>
+    <tr><td><strong>125〜140</strong></td><td>明確な高揚。使いすぎるとターゲットの「日常感」から外れる</td><td>ここぞの1シーンだけ。最大の盛り上がりポイント</td><td>5%</td></tr>
+  </table>
+
+  <div class="callout-warn callout">
+    <strong>BPMの核心:</strong> みさをchのBGMは<strong>基本90〜110BPM</strong>で生活する。
+    Mrs. GREEN APPLEの主戦場（130〜170）とは真逆。
+    ターゲットの視聴環境（疲れた夜、家事のながら）を考えると、心拍数を上げるのではなく<strong>「今のペースでいい」</strong>と伝える速度が正解。
+  </div>
+
+  <div class="sec-sub">コード進行の傾向</div>
+  <div class="grid2">
+    <div class="card">
+      <h3>推奨: ダイアトニック系の穏やかな進行</h3>
+      <p>
+        <strong>I → V → VIm → IV</strong>（ポップバラード定番）<br>
+        <strong>I → IV → V → IV</strong>（牧歌的・安心感）<br>
+        <strong>IVmaj7 → IIIm7 → VIm7 → I</strong>（Lo-Fi/チルホップ系）<br><br>
+        メジャーキー基本。解決感のある進行。「着地する」安心感を優先。
+      </p>
+    </div>
+    <div class="card">
+      <h3>避けるべき: テンション過多・未解決系</h3>
+      <p>
+        ・dim、aug系の不安定コード多用<br>
+        ・転調の連続（Mrs.的な展開力はこのチャンネルには過剰）<br>
+        ・マイナーキー主体（暗すぎる）<br><br>
+        ターゲットは「安心」を求めて来ている。音楽的な冒険は不要。
+      </p>
+    </div>
+  </div>
+
+  <div class="sec-sub">参考アーティスト/プレイリスト</div>
+  <table>
+    <tr><th>参考</th><th>取り入れるポイント</th><th>注意点</th></tr>
+    <tr><td><strong>トクマルシューゴ</strong></td><td>アコースティック×実験の絶妙なバランス。温かいのにどこか新鮮</td><td>実験的すぎる曲は避ける。BGM的な曲を参照</td></tr>
+    <tr><td><strong>ハナレグミ</strong></td><td>脱力ボーカル、等身大感。「頑張らなくていい」の空気</td><td>声はBGMに入らないが、楽器アレンジの温度感を参照</td></tr>
+    <tr><td><strong>Norah Jones</strong></td><td>ジャズ×ポップの「大人の落ち着き」。ピアノの距離感が最適</td><td>ジャズ感が強すぎると「おしゃれすぎ」になる</td></tr>
+    <tr><td><strong>Jack Johnson</strong></td><td>アコギ×ゆるさ＝「ビーチのカフェ」。脱力の極み</td><td>夏感が強すぎない程度に</td></tr>
+    <tr><td><strong>Lo-Fi Hip Hop系</strong><br>(Chillhop, Lofi Girl)</td><td>作業用BGMの文化的記憶。ターゲット層に「あの感じ」で通じる</td><td>ヒップホップ色を抑えめに。ビートは柔らかく</td></tr>
+    <tr><td><strong>Carla Bruni</strong></td><td>フレンチポップの「おしゃれだけど日常」感。ギターの指弾きの温かみ</td><td>フランス語である必要はなく、楽器の質感を参照</td></tr>
+    <tr><td><strong>原田知世「音楽と私」期</strong></td><td>透明感×日常×大人の女性。ターゲット世代のど真ん中の空気</td><td>ノスタルジーに寄りすぎない</td></tr>
+  </table>
+</div>
+
+<!-- ===== SECTION 3: SE設計 ===== -->
+<div class="section">
+  <div class="sec-title">SE（効果音）— 「句読点」を設計する</div>
+
+  <div class="callout">
+    <strong>SEの役割:</strong> みさをchのSEは「ドドン！」ではなく<strong>「、」と「。」</strong>。
+    文章の句読点のように、情報の区切りと強調を担う。存在感は最小限。気づかないけど、ないと読みにくい。
+  </div>
+
+  <div class="sec-sub">SE音色パレット</div>
+  <table>
+    <tr><th style="width:130px">SE種別</th><th>推奨音色</th><th>心理効果</th><th>使う場面</th></tr>
+    <tr>
+      <td><strong>ポイント強調</strong></td>
+      <td>マリンバの単音「コン」/ 木琴系の柔らかいアタック</td>
+      <td>注意を引くが攻撃性ゼロ。木の音＝自然＝安心</td>
+      <td>重要ポイントの表示、テロップ出し</td>
+    </tr>
+    <tr>
+      <td><strong>場面転換</strong></td>
+      <td>ウインドチャイム（短め）/ シンセの柔らかいスウィープ</td>
+      <td>「次に進みます」の合図。風の音＝空気の切り替え</td>
+      <td>セクション変更、話題の切り替え</td>
+    </tr>
+    <tr>
+      <td><strong>リスト/ステップ</strong></td>
+      <td>指パッチン / ポップな「ポン」音（低め）</td>
+      <td>リズミカルに情報を区切る。テンポ感を出す</td>
+      <td>「1つ目は〜」「2つ目は〜」の番号振り</td>
+    </tr>
+    <tr>
+      <td><strong>成功/達成</strong></td>
+      <td>グロッケンの上行フレーズ（ド→ミ→ソ）/ キラキラ系（控えめ）</td>
+      <td>小さな達成感。派手にしない。「できたね」の距離感</td>
+      <td>成果報告、ステップ完了、ビフォーアフター</td>
+    </tr>
+    <tr>
+      <td><strong>注意/重要</strong></td>
+      <td>ベルの単音「チーン」/ ピアノの単音（高め）</td>
+      <td>「ここ大事」を静かに伝える。叫ばない強調</td>
+      <td>「ここだけは覚えて」的なポイント</td>
+    </tr>
+    <tr>
+      <td><strong>ユーモア/オチ</strong></td>
+      <td>カズー / 木魚的な「ポクッ」/ ウクレレの単音</td>
+      <td>ツッコミ感を出すが脱力系。笑いを強要しない</td>
+      <td>みさをの自虐、失敗談、軽いオチ</td>
+    </tr>
+    <tr>
+      <td><strong>感情</strong></td>
+      <td>SEではなくBGMの変化で表現。あえてSEを入れない</td>
+      <td>感動シーンにSEを入れると「演出してる感」が出て逆効果</td>
+      <td>過去の苦労話、涙が出るシーン</td>
+    </tr>
+  </table>
+
+  <div class="vs-row">
+    <div class="vs-card">
+      <h4>NG: こういうSEは使わない</h4>
+      <p>
+        ・「ドドン！」「ジャジャーン！」（太鼓系、金管系）<br>
+        ・ホイッスル、クラクション<br>
+        ・8bit/ゲーム音（ターゲットの文化圏外）<br>
+        ・不協和音系の「ブーッ」（不正解音）<br>
+        ・笑い声SE（テレビバラエティ感）<br><br>
+        → これらは「YouTuber的」であり、みさをchの「隣のお姉ちゃん」感を破壊する
+      </p>
+    </div>
+    <div class="vs-mid">vs</div>
+    <div class="vs-card">
+      <h4>OK: この系統で揃える</h4>
+      <p>
+        ・木系（マリンバ、木琴、木魚）<br>
+        ・金属系でも柔らかいもの（チャイム、ベル、グロッケン）<br>
+        ・生活音系（指パッチン、ページめくり）<br>
+        ・自然音（風、水滴 — ごく短く）<br>
+        ・シンセでも暖色系（パッド的な「フワ」音）<br><br>
+        → 全て<strong>「手触り」がある音</strong>。デジタルではなくアナログの温もり
+      </p>
+    </div>
+  </div>
+
+  <div class="sec-sub">SE量の設計</div>
+  <div class="callout-warn callout">
+    <strong>SE量の法則:</strong> みさをchのSE密度は<strong>1分あたり2〜4回</strong>が上限。<br>
+    バラエティ系YouTuberは1分あたり10〜15回入れるが、これは真逆。<br>
+    SE量が少ない＝テロップ量が少ない＝「映像作品寄り」の格が出る。<br>
+    みさをchの目指す「信頼できるお姉ちゃん」はバラエティではなく<strong>ライフスタイル</strong>の文法。
+  </div>
+</div>
+
+<!-- ===== SECTION 4: テロップ×音の連動 ===== -->
+<div class="section">
+  <div class="sec-title">TELOP × SOUND — テロップと音の連動設計</div>
+
+  <div class="sec-sub">みさをchに最適なテロップタイプ</div>
+  <p style="font-size:12px;color:var(--dim);margin-bottom:12px">（テロップ心理効果10分類からの選定。詳細は output/youtube_telop_psychology.html）</p>
+
+  <table>
+    <tr><th>テロップタイプ</th><th>使用比率</th><th>みさをchでの機能</th><th>連動するSE</th></tr>
+    <tr>
+      <td><strong>③ やわらか（丸ゴシック×パステル）</strong></td>
+      <td>50%</td>
+      <td>メインテロップ。「お姉ちゃんが話してる」感。チャンネルの人格の基盤</td>
+      <td>マリンバ「コン」or SE無し。テロップだけで十分</td>
+    </tr>
+    <tr>
+      <td><strong>⑦ 解説（中太ゴシック×白×半透明背景）</strong></td>
+      <td>25%</td>
+      <td>ノウハウの要点。「ここ覚えて」の信頼感。ニュース的な文法を借用</td>
+      <td>ベル「チーン」or ピアノ単音</td>
+    </tr>
+    <tr>
+      <td><strong>⑤ 本音（手書きフォント×アースカラー）</strong></td>
+      <td>15%</td>
+      <td>みさをの心の声。過去の苦労、本音。「編集者の人格」として機能</td>
+      <td>SE無し。BGMが静かに支える</td>
+    </tr>
+    <tr>
+      <td><strong>⑨ ささやき（細丸ゴシック×グレー×括弧）</strong></td>
+      <td>10%</td>
+      <td>小声の補足、ちょっとした自虐。親密さと共犯感を作る</td>
+      <td>木魚「ポクッ」or 無音</td>
+    </tr>
+  </table>
+
+  <div class="callout">
+    <strong>テロップの選定理由:</strong> 4タイプに絞っている。<br>
+    ①衝撃(赤フチ白)、②ツッコミ(黄色)、⑥煽り(ビビッド)、⑧ポップ(青フチ) は<strong>全て不採用</strong>。<br>
+    これらは「バラエティの文法」であり、みさをchの「ライフスタイルの文法」と衝突する。<br>
+    テロップの種類を絞ることでチャンネルの「人格」が明確になり、「何者かわからない」リスクを回避する。
+  </div>
+</div>
+
+<!-- ===== SECTION 5: シーン別音設計 ===== -->
+<div class="section">
+  <div class="sec-title">SCENE MAP — シーン別の音設計</div>
+
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="tag tag-green">SCENE 1</span>
+      <h4>オープニング（0:00〜0:30）</h4>
+    </div>
+    <div class="scene-body">
+      <table>
+        <tr><th style="width:80px">BGM</th><td>ウクレレ or アコギの軽いリフ。BPM100〜110。メジャーキー。明るいが落ち着いてる</td></tr>
+        <tr><th>SE</th><td>チャンネルロゴ表示時にマリンバの短いフレーズ（ド→ミ→ソ的な3音）のみ</td></tr>
+        <tr><th>テロップ</th><td>③やわらか。「今日は〇〇について話すよ」</td></tr>
+        <tr><th>設計意図</th><td>「安全な場所ですよ」を0.5秒で伝える。ターゲットの不安（やれるかな）を音で解除する最初の関門</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="tag tag-blue">SCENE 2</span>
+      <h4>ノウハウ解説パート</h4>
+    </div>
+    <div class="scene-body">
+      <table>
+        <tr><th style="width:80px">BGM</th><td>ピアノ＋Lo-Fiドラム。BPM90〜100。音量は声の30%以下。完全に「空気」に徹する</td></tr>
+        <tr><th>SE</th><td>ステップ切替時にマリンバ「コン」。重要ポイントにベル「チーン」。それ以外は無し</td></tr>
+        <tr><th>テロップ</th><td>⑦解説（半透明背景）でポイント表示。③やわらかで補足</td></tr>
+        <tr><th>設計意図</th><td>情報の認知負荷を下げる。BGMは「集中を助ける白色雑音」として機能。SEは句読点</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="tag tag-pink">SCENE 3</span>
+      <h4>みさをの体験談/ストーリーパート</h4>
+    </div>
+    <div class="scene-body">
+      <table>
+        <tr><th style="width:80px">BGM</th><td>ピアノ弾き語り系。BPM 70〜85。マイナーキー or メジャー7th系の切ない響き。薄いストリングス</td></tr>
+        <tr><th>SE</th><td><strong>一切なし</strong>。SEを入れると「演出してる」感が出て嘘くさくなる。声とBGMだけで勝負</td></tr>
+        <tr><th>テロップ</th><td>⑤本音（手書き×アースカラー）。⑨ささやき（グレー括弧）で心の声</td></tr>
+        <tr><th>設計意図</th><td>「クリスマスに娘にプレゼント買えなかった」のような話。ここが視聴者との感情的絆を作る場面。音は邪魔せず静かに支える</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="tag tag-gold">SCENE 4</span>
+      <h4>CTA前〜エンディング</h4>
+    </div>
+    <div class="scene-body">
+      <table>
+        <tr><th style="width:80px">BGM</th><td>アコギ＋薄いシンセパッド。BPM110〜120。ここだけ少しテンポを上げる。メジャーキー。未来感</td></tr>
+        <tr><th>SE</th><td>グロッケンの上行フレーズ（1回だけ）。「ここから変われる」の音</td></tr>
+        <tr><th>テロップ</th><td>③やわらか＋⑦解説。LINE登録のCTAは⑦解説テロップで信頼感を出す</td></tr>
+        <tr><th>設計意図</th><td>動画全体の「日常感」から一段だけ上げる。「あなたにもできる」の高揚を、BGMのテンポアップで設計する。ただし煽らない。背中をそっと押す程度</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="tag tag-green">SCENE 5</span>
+      <h4>密着系/ゴシップ系コンテンツ（在宅ワーク主婦の1日など）</h4>
+    </div>
+    <div class="scene-body">
+      <table>
+        <tr><th style="width:80px">BGM</th><td>Lo-Fi Hip Hop系。BPM 85〜95。チルなビート。作業映像との親和性が最高</td></tr>
+        <tr><th>SE</th><td>生活音をSE代わりに（キーボードのタイプ音、コーヒーを淹れる音、通知音）。リアリティの演出</td></tr>
+        <tr><th>テロップ</th><td>③やわらか主体。収入金額など数字は⑦解説テロップ</td></tr>
+        <tr><th>設計意図</th><td>ゴシップ本能を「おしゃれな覗き見」に変換する。Lo-Fiの「作業用BGM」の文化的記憶がターゲットの「在宅ワーク」と直結</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 6: 音量バランス ===== -->
+<div class="section">
+  <div class="sec-title">MIX — 音量バランスの設計</div>
+
+  <table>
+    <tr><th style="width:100px">要素</th><th>音量目安</th><th>理由</th></tr>
+    <tr><td><strong>みさをの声</strong></td><td>100%（基準）</td><td>全ての中心。声が埋もれたら全てが崩壊する。コンプレッサーで音量を均一化</td></tr>
+    <tr><td><strong>BGM</strong></td><td>声の<strong>20〜30%</strong></td><td>「聞こえるけど意識しない」が正解。カフェのBGMと同じ距離感</td></tr>
+    <tr><td><strong>SE</strong></td><td>声の<strong>40〜50%</strong></td><td>BGMより少し大きく。「気づく」が「驚かない」ライン</td></tr>
+    <tr><td><strong>BGM（感情シーン）</strong></td><td>声の<strong>40〜50%</strong></td><td>ストーリーパートではBGMの存在感を少し上げて感情を支える</td></tr>
+    <tr><td><strong>BGM（CTA時）</strong></td><td>声の<strong>15〜20%</strong></td><td>CTAは「声を聴く」場面。BGMはさらに引いてメッセージを前に出す</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>片耳イヤホン問題:</strong> ターゲットの多くが片耳イヤホンで視聴する。<br>
+    パンニング（左右の振り分け）は最小限に。ステレオ感より<strong>モノラルでも成立する音像</strong>を優先。<br>
+    BGMは中央寄りにミックスし、SE もセンター配置。
+  </div>
+</div>
+
+<!-- ===== SECTION 7: まとめ ===== -->
+<div class="section" style="border-bottom:none;padding-bottom:40px">
+  <div class="sec-title">SUMMARY — みさをchの音の哲学</div>
+
+  <div class="insight-box">
+    <h4>Mrs. GREEN APPLEとの根本的な違い</h4>
+    <p>
+      Mrs.の音は「カタルシス」を設計する。静→動の落差で感情を爆発させ、涙や高揚を引き出す。<br>
+      みさをchの音は「安心感」を設計する。落差を作らず、<strong>一定の温度で包み続ける</strong>。<br><br>
+      Mrs.＝「感情のジェットコースター」<br>
+      みさを＝「温かいブランケット」<br><br>
+      どちらも「肯定」を届けているが、方法が真逆。<br>
+      Mrs.は「苦しみを認めた上でそれでも前に進め」。<br>
+      みさをは<strong>「苦しいよね、ここに座って、一緒にやろう」</strong>。<br><br>
+      この違いがそのまま音設計の全てに反映される。
+    </p>
+  </div>
+
+  <div class="grid3">
+    <div class="card">
+      <h3>BGMの一言</h3>
+      <p>「カフェで流れてて邪魔にならない音」。アコギ×ピアノ×Lo-Fi。BPM90〜110。メジャーキー。空気を作るが主張しない。</p>
+    </div>
+    <div class="card">
+      <h3>SEの一言</h3>
+      <p>「句読点」。木と鈴の音。1分に2〜4回。存在感は最小限。感情シーンはSEゼロ。</p>
+    </div>
+    <div class="card">
+      <h3>テロップの一言</h3>
+      <p>③やわらか＋⑦解説＋⑤本音＋⑨ささやきの4種のみ。赤・黄・ビビッドは一切使わない。</p>
+    </div>
+  </div>
+
+  <div class="callout-warn callout" style="margin-top:16px">
+    <strong>最終原則:</strong> みさをchの音に迷った時は「これ、みさをが自分の部屋で友達に話してる時に流れてて違和感ないか？」で判定する。<br>
+    違和感があるなら、それは「YouTuber」の音であって「みさを」の音ではない。
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taigaの設計図 — 生まれ持った特性の全統合</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f0f0f;--card:#272727;--card2:#1a1a1a;--hover:#3a3a3a;
+    --red:#ff0000;--blue:#3ea6ff;--gold:#f0b429;
+    --txt:#f1f1f1;--sub:#aaaaaa;--faint:#717171;
+    --chip-bg:#ffffff1a;--chip-active:#f1f1f1;--chip-active-txt:#0f0f0f;
+    --border:rgba(255,255,255,.1);--track:rgba(255,255,255,.1);
+    --purple:#b388ff;--green:#81c784;--red2:#ef5350;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font-family:'Roboto','Noto Sans JP',sans-serif;line-height:1.9}
+
+  /* ===== TOPBAR ===== */
+  .topbar{position:sticky;top:0;z-index:100;background:var(--card2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;height:56px;gap:16px}
+  .topbar-logo{display:flex;align-items:center;gap:2px;flex-shrink:0}
+  .topbar-logo svg{width:30px;height:22px}
+  .topbar-logo span{font-size:16px;font-weight:700;letter-spacing:-.5px}
+  .topbar-search{flex:1;max-width:540px;margin:0 auto;display:flex;align-items:center}
+  .topbar-search input{width:100%;padding:8px 16px;background:var(--bg);border:1px solid var(--border);border-radius:20px 0 0 20px;color:var(--txt);font-size:14px;outline:none}
+  .topbar-search button{padding:8px 20px;background:var(--hover);border:1px solid var(--border);border-left:none;border-radius:0 20px 20px 0;color:var(--sub);cursor:pointer;font-size:16px}
+  .topbar-avatar{width:32px;height:32px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;margin-left:auto}
+
+  /* ===== CHIPS ===== */
+  .chips{display:flex;gap:8px;padding:12px 20px;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--bg)}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{padding:6px 16px;border-radius:8px;font-size:13px;font-weight:500;background:var(--chip-bg);color:var(--txt);white-space:nowrap;cursor:pointer;transition:background .2s}
+  .chip:hover{background:var(--hover)}
+  .chip.active{background:var(--chip-active);color:var(--chip-active-txt)}
+
+  .c{max-width:900px;margin:0 auto;padding:20px 20px 60px}
+
+  .hero{text-align:center;padding:60px 20px 40px;position:relative}
+  .hero-symbol{font-size:clamp(50px,10vw,80px);margin-bottom:10px;opacity:0.08}
+  .hero h1{font-size:clamp(20px,4vw,30px);font-weight:900;letter-spacing:.1em;margin-bottom:10px}
+  .hero-sub{font-size:13px;color:var(--sub);font-weight:300}
+
+  /* ===== SECTION ===== */
+  .sec{margin:44px 0}
+  .sh{margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+  .sh .icon{color:var(--red);font-size:18px;flex-shrink:0}
+  .sn{font-size:10px;letter-spacing:4px;color:var(--faint);margin-bottom:4px}
+  .st{font-size:15px;font-weight:700;letter-spacing:.04em}
+
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  @media(max-width:700px){.g2,.g3{grid-template-columns:1fr}}
+
+  .card{padding:20px;background:var(--card);border:1px solid transparent;border-radius:12px;transition:background .2s}
+  .card:hover{background:var(--hover)}
+  .card h3{font-size:14px;font-weight:700;margin-bottom:8px}
+  .card h4{font-size:13px;font-weight:600;margin-bottom:6px}
+  .card p,.card li{font-size:13px;color:var(--sub);font-weight:300;line-height:1.9}
+  .card ul{list-style:none;padding:0}
+  .card ul li{padding:3px 0 3px 14px;position:relative}
+  .card ul li::before{content:'';position:absolute;left:0;top:11px;width:4px;height:4px;border-radius:1px}
+
+  /* ===== LAYER CARDS ===== */
+  .layer{padding:24px;background:var(--card);border:1px solid transparent;border-radius:12px;margin-bottom:14px;border-left:3px solid;position:relative;overflow:hidden;transition:background .2s}
+  .layer:hover{background:var(--hover)}
+  .layer::before{content:attr(data-label);position:absolute;top:12px;right:16px;font-size:10px;letter-spacing:3px;opacity:0.15;color:var(--faint)}
+  .layer h3{font-size:16px;font-weight:700;margin-bottom:4px}
+  .layer .layer-sub{font-size:12px;color:var(--sub);margin-bottom:12px;font-weight:300}
+  .layer .elements{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .layer .el{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:500}
+  .layer .desc{font-size:13px;color:var(--sub);font-weight:300;line-height:2}
+  .layer .manifest{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.8;font-weight:400}
+
+  /* ===== STAR TABLE ===== */
+  .star-table{width:100%;border-collapse:separate;border-spacing:0 4px}
+  .star-table td{padding:10px 14px;font-size:13px;background:var(--card);vertical-align:top}
+  .star-table td:first-child{font-weight:600;color:var(--txt);width:100px;border-radius:12px 0 0 12px}
+  .star-table td:nth-child(2){color:var(--gold);width:140px}
+  .star-table td:last-child{color:var(--sub);font-weight:300;border-radius:0 12px 12px 0;line-height:1.8}
+
+  /* ===== ANIMAL ROW ===== */
+  .animal-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}
+  @media(max-width:700px){.animal-row{grid-template-columns:1fr}}
+  .animal{padding:18px;background:var(--card);border-radius:12px;text-align:center;border-top:3px solid}
+  .animal:hover{background:var(--hover)}
+  .animal-icon{font-size:28px;margin-bottom:6px}
+  .animal-name{font-size:14px;font-weight:700;margin-bottom:4px}
+  .animal-role{font-size:10px;letter-spacing:2px;color:var(--faint);margin-bottom:8px}
+  .animal p{font-size:12px;color:var(--sub);font-weight:300;line-height:1.8}
+
+  /* ===== COGNITIVE BARS ===== */
+  .cog-bar{margin:6px 0;display:flex;align-items:center;gap:10px}
+  .cog-label{font-size:12px;width:72px;text-align:right;color:var(--sub);flex-shrink:0}
+  .cog-track{flex:1;height:6px;background:var(--track);border-radius:3px;overflow:hidden}
+  .cog-fill{height:100%;border-radius:3px;transition:width 1s}
+  .cog-val{font-size:12px;width:45px;font-weight:600}
+
+  /* ===== TENSION ===== */
+  .tension{padding:28px;background:var(--card);border:1px solid transparent;border-radius:12px;text-align:center;margin:20px 0}
+  .tension-vs{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin:16px 0}
+  .tension-side{padding:14px 20px;border-radius:12px;font-size:14px;font-weight:600;min-width:140px}
+  .tension-x{font-size:20px;color:var(--faint)}
+
+  /* ===== SPIRITUAL ===== */
+  .spirit-card{padding:18px;background:var(--card);border-radius:12px;border-left:3px solid var(--purple);margin-bottom:10px;transition:background .2s}
+  .spirit-card:hover{background:var(--hover)}
+  .spirit-card .spirit-label{font-size:10px;letter-spacing:3px;color:var(--purple);margin-bottom:4px}
+  .spirit-card p{font-size:13px;color:var(--sub);font-weight:300;line-height:2}
+  .spirit-card strong{color:var(--purple);font-weight:500}
+
+  /* ===== BLUEPRINT ===== */
+  .blueprint{padding:28px;background:var(--card);border:1px solid rgba(240,180,41,.15);border-radius:12px;margin:20px 0}
+  .blueprint-title{font-size:11px;letter-spacing:4px;color:var(--gold);margin-bottom:16px;text-align:center}
+  .bp-row{display:flex;align-items:center;gap:12px;margin:8px 0;flex-wrap:wrap}
+  .bp-tag{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600}
+  .bp-arrow{color:var(--faint);font-size:14px}
+  .bp-desc{font-size:12px;color:var(--sub);font-weight:300}
+
+  .footer{text-align:center;padding:60px 20px}
+  .footer .quote{font-size:14px;color:var(--gold);font-weight:400;line-height:2.4;margin-bottom:20px}
+  .footer .note{font-size:12px;color:var(--faint);line-height:2}
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <svg viewBox="0 0 90 66"><rect x="0" y="0" width="90" height="66" rx="16" fill="#ff0000"/><polygon points="36,16 36,50 66,33" fill="#fff"/></svg>
+    <span>BLUEPRINT</span>
+  </div>
+  <div class="topbar-search">
+    <input type="text" placeholder="Search...">
+    <button>&#x1F50D;</button>
+  </div>
+  <div class="topbar-avatar">T</div>
+</div>
+
+<!-- CHIPS -->
+<div class="chips">
+  <div class="chip active">All</div>
+  <div class="chip">Core Architecture</div>
+  <div class="chip">Stars</div>
+  <div class="chip">Animals</div>
+  <div class="chip">Cognitive</div>
+  <div class="chip">Spiritual</div>
+  <div class="chip">Integration</div>
+</div>
+
+<div class="hero">
+  <div class="hero-symbol">&#x1F409;</div>
+  <h1>Taigaの設計図</h1>
+  <p class="hero-sub">占術 x 霊視 x 科学測定 x 人生経験 -- 生まれ持った特性の全統合</p>
+</div>
+
+<div class="c">
+
+<!-- 三層構造 -->
+<div class="sec">
+  <div class="sh">
+    <div class="icon">&#9654;</div>
+    <div><div class="sn">CORE ARCHITECTURE</div><div class="st">Taigaの三層構造</div></div>
+  </div>
+
+  <div class="layer" style="border-left-color:var(--gold)" data-label="SURFACE">
+    <h3 style="color:var(--gold)">表層 -- 世の中に見せている顔</h3>
+    <div class="layer-sub">人が最初に受け取るTaigaの印象</div>
+    <div class="elements">
+      <div class="el" style="background:rgba(240,180,41,.1);color:var(--gold)">ライオン</div>
+      <div class="el" style="background:rgba(240,180,41,.1);color:var(--gold)">ENTJ-A</div>
+      <div class="el" style="background:rgba(240,180,41,.1);color:var(--gold)">支配者外向</div>
+      <div class="el" style="background:rgba(240,180,41,.1);color:var(--gold)">牽牛星</div>
+    </div>
+    <div class="desc">堂々としたリーダー。決断力と競争心。「この人についていきたい」と思わせる存在感。完璧主義で名誉を重んじる。ちゃんとしていたい。</div>
+    <div class="manifest" style="background:rgba(240,180,41,.07);color:var(--gold)">現れ方：チームを率いる。数字で判断する。基準を妥協しない。「そこまでやるか」の人。</div>
+  </div>
+
+  <div class="layer" style="border-left-color:var(--blue)" data-label="MIDDLE">
+    <h3 style="color:var(--blue)">中層 -- 実際に動いているOS</h3>
+    <div class="layer-sub">本質的な思考パターンと行動原理</div>
+    <div class="elements">
+      <div class="el" style="background:rgba(62,166,255,.1);color:var(--blue)">龍高星（中心星）</div>
+      <div class="el" style="background:rgba(62,166,255,.1);color:var(--blue)">狼（本質）</div>
+      <div class="el" style="background:rgba(62,166,255,.1);color:var(--blue)">虎（決断）</div>
+      <div class="el" style="background:rgba(62,166,255,.1);color:var(--blue)">3D認知 56.3</div>
+    </div>
+    <div class="desc">孤高の探求者。新しい領域を切り開く。全体を立体的に俯瞰する目。型にはまらない。一匹狼。自分のやり方がある。安定を嫌い、未知に飛び込む。決める時は冷徹で合理的。</div>
+    <div class="manifest" style="background:rgba(62,166,255,.07);color:var(--blue)">現れ方：新規チャンネル立ち上げ。6ドメイン並行。「初め頑張る→結果出た→次」のパターン。群れない。</div>
+  </div>
+
+  <div class="layer" style="border-left-color:var(--green)" data-label="DEEP">
+    <h3 style="color:var(--green)">深層 -- 魂が本当に求めているもの</h3>
+    <div class="layer-sub">表には出さないが、充足の源泉</div>
+    <div class="elements">
+      <div class="el" style="background:rgba(129,199,132,.1);color:var(--green)">石門星</div>
+      <div class="el" style="background:rgba(129,199,132,.1);color:var(--green)">玉堂星</div>
+      <div class="el" style="background:rgba(129,199,132,.1);color:var(--green)">禄存星</div>
+      <div class="el" style="background:rgba(129,199,132,.1);color:var(--green)">霊視インサイト</div>
+    </div>
+    <div class="desc">慈悲。献身。天然の魅力。「人が楽しんでるのを横から見守る」のが本当の幸せ。師匠から学び、次の世代に伝える。信頼できる少数からの承認で満たされる。表には出さないが、人を想う力がある。</div>
+    <div class="manifest" style="background:rgba(129,199,132,.07);color:var(--green)">現れ方：まなとくんへの承認欲求の深さ。チーム目標「嬉し泣き」。脱力してる時の自然な魅力。「人生に現れる人には全て学びがある」。</div>
+  </div>
+</div>
+
+<!-- 算命学 五星 -->
+<div class="sec">
+  <div class="sh">
+    <div class="icon">&#9654;</div>
+    <div><div class="sn">STARS -- 算命学 / 四柱推命</div><div class="st">配られたカード</div></div>
+  </div>
+
+  <table class="star-table">
+    <tr><td>龍高星</td><td>中心星</td><td>探求と創造。型を壊して新しいものを作る。放浪の星。安定を嫌い未知に飛び込む。人生の使命 = 企画・開発、人をアイデアで驚かせること</td></tr>
+    <tr><td>石門星</td><td>慈悲の星</td><td>真面目で保守的で慈悲深い。人を集める力。でも表に出さない。内側に秘めた思いやり</td></tr>
+    <tr><td>牽牛星</td><td>名誉の星</td><td>几帳面、完璧主義、名誉を重んじる。認知バイアス25点「高い基準で自分を厳しく評価」の根源</td></tr>
+    <tr><td>玉堂星</td><td>師弟の星</td><td>献身的、論理的、信頼できる。師匠から学び次の世代に伝える。まなとくん→Taiga→チームのライン</td></tr>
+    <tr><td>禄存星</td><td>魅力の星</td><td>明るい、思慮深い、天然で面白い。脱力してる時に出る自然な人たらし。金運もある</td></tr>
+  </table>
+</div>
+
+<!-- 動物占い -->
+<div class="sec">
+  <div class="sh">
+    <div class="icon">&#9654;</div>
+    <div><div class="sn">ANIMALS -- 動物占い 3キャラ</div><div class="st">3つの顔</div></div>
+  </div>
+
+  <div class="animal-row">
+    <div class="animal" style="border-top-color:var(--gold)">
+      <div class="animal-icon">&#x1F981;</div>
+      <div class="animal-name" style="color:var(--gold)">ライオン</div>
+      <div class="animal-role">SURFACE -- 表面</div>
+      <p>リーダーシップ。完璧主義。威厳。人に見せてる顔。「強くてちゃんとしてる俺」</p>
+    </div>
+    <div class="animal" style="border-top-color:var(--blue)">
+      <div class="animal-icon">&#x1F43A;</div>
+      <div class="animal-name" style="color:var(--blue)">狼</div>
+      <div class="animal-role">TRUE NATURE -- 本質</div>
+      <p>独立。独創性。非順応的。一匹狼。群れたくない。自分のやり方がある。孤独を好む</p>
+    </div>
+    <div class="animal" style="border-top-color:var(--red)">
+      <div class="animal-icon">&#x1F42F;</div>
+      <div class="animal-name" style="color:var(--red2)">虎</div>
+      <div class="animal-role">DECISION -- 決断時</div>
+      <p>実践的。合理的。目標志向。決める時は冷徹。感情で判断しない。速い</p>
+    </div>
+  </div>
+</div>
+
+<!-- 認知機能 -->
+<div class="sec">
+  <div class="sh">
+    <div class="icon">&#9654;</div>
+    <div><div class="sn">COGNITIVE -- 科学的測定</div><div class="st">脳の設計図</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <h4>認知機能テスト（平均100）</h4>
+    <div style="margin-top:12px">
+      <div class="cog-bar"><div class="cog-label">計算力</div><div class="cog-track"><div class="cog-fill" style="width:92%;background:var(--gold)"></div></div><div class="cog-val" style="color:var(--gold)">128.8</div></div>
+      <div class="cog-bar"><div class="cog-label">抑制力</div><div class="cog-track"><div class="cog-fill" style="width:76%;background:var(--blue)"></div></div><div class="cog-val" style="color:var(--blue)">107.2</div></div>
+      <div class="cog-bar"><div class="cog-label">言語力</div><div class="cog-track"><div class="cog-fill" style="width:75%;background:var(--blue)"></div></div><div class="cog-val" style="color:var(--blue)">106.8</div></div>
+      <div class="cog-bar"><div class="cog-label">処理速度</div><div class="cog-track"><div class="cog-fill" style="width:70%;background:var(--sub)"></div></div><div class="cog-val" style="color:var(--sub)">100.7</div></div>
+      <div class="cog-bar"><div class="cog-label">注意力</div><div class="cog-track"><div class="cog-fill" style="width:64%;background:var(--sub)"></div></div><div class="cog-val" style="color:var(--faint)">93.5</div></div>
+      <div class="cog-bar"><div class="cog-label">空間認知</div><div class="cog-track"><div class="cog-fill" style="width:58%;background:var(--sub)"></div></div><div class="cog-val" style="color:var(--faint)">87.2</div></div>
+      <div class="cog-bar"><div class="cog-label">記憶力</div><div class="cog-track"><div class="cog-fill" style="width:46%;background:var(--red)"></div></div><div class="cog-val" style="color:var(--red2)">76.3</div></div>
+    </div>
+    <p style="margin-top:12px;font-size:12px;color:var(--sub)">計算力が異常に高く、記憶力が異常に低い。数字は一瞬で掴めるが情報は覚えてられない。だから「攻略本」が必要。</p>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <h4>認知特性テスト</h4>
+    <div style="margin-top:12px">
+      <div class="cog-bar"><div class="cog-label">3D</div><div class="cog-track"><div class="cog-fill" style="width:94%;background:var(--gold)"></div></div><div class="cog-val" style="color:var(--gold)">56.3</div></div>
+      <div class="cog-bar"><div class="cog-label">カメラ</div><div class="cog-track"><div class="cog-fill" style="width:82%;background:var(--blue)"></div></div><div class="cog-val" style="color:var(--blue)">49.4</div></div>
+      <div class="cog-bar"><div class="cog-label">ファンタジー</div><div class="cog-track"><div class="cog-fill" style="width:69%;background:var(--sub)"></div></div><div class="cog-val" style="color:var(--sub)">41.6</div></div>
+      <div class="cog-bar"><div class="cog-label">辞書</div><div class="cog-track"><div class="cog-fill" style="width:40%;background:var(--red)"></div></div><div class="cog-val" style="color:var(--red2)">23.9</div></div>
+      <div class="cog-bar"><div class="cog-label">ラジオ</div><div class="cog-track"><div class="cog-fill" style="width:37%;background:var(--red)"></div></div><div class="cog-val" style="color:var(--red2)">21.9</div></div>
+    </div>
+    <p style="margin-top:12px;font-size:12px;color:var(--sub)">見える人間。聞く人間ではない。テキストだけの情報は脳に入らない。映像・図解・3Dで初めて理解する。</p>
+  </div>
+
+  <div class="card">
+    <h4>認知バイアス（総合99点 -- 健全な範囲）</h4>
+    <div style="margin-top:12px">
+      <div class="cog-bar"><div class="cog-label">認知</div><div class="cog-track"><div class="cog-fill" style="width:100%;background:var(--gold)"></div></div><div class="cog-val" style="color:var(--gold)">25</div></div>
+      <div class="cog-bar"><div class="cog-label">感情</div><div class="cog-track"><div class="cog-fill" style="width:88%;background:var(--gold)"></div></div><div class="cog-val" style="color:var(--gold)">22</div></div>
+      <div class="cog-bar"><div class="cog-label">社会</div><div class="cog-track"><div class="cog-fill" style="width:84%;background:var(--blue)"></div></div><div class="cog-val" style="color:var(--blue)">21</div></div>
+      <div class="cog-bar"><div class="cog-label">行動</div><div class="cog-track"><div class="cog-fill" style="width:68%;background:var(--sub)"></div></div><div class="cog-val" style="color:var(--sub)">17</div></div>
+      <div class="cog-bar"><div class="cog-label">道徳</div><div class="cog-track"><div class="cog-fill" style="width:56%;background:var(--green)"></div></div><div class="cog-val" style="color:var(--green)">14</div></div>
+    </div>
+    <p style="margin-top:12px;font-size:12px;color:var(--sub)">
+      <strong style="color:var(--gold)">認知25</strong> = 高い基準で自分を厳しく評価。完璧主義。<br>
+      <strong style="color:var(--gold)">感情22</strong> = ネガティブ感情を理性で抑制。蓄積すると爆発。<br>
+      <strong style="color:var(--blue)">社会21</strong> = 他者の期待への感度が高い。空気を読みすぎて消耗。<br>
+      <strong style="color:var(--green)">道徳14</strong> = 柔軟でオープン。既存ルールに「なぜ？」と問える。
+    </p>
+  </div>
+</div>
+
+<!-- 霊視 -->
+<div class="sec">
+  <div class="sh">
+    <div class="icon">&#9654;</div>
+    <div><div class="sn">SPIRITUAL -- 霊視インサイト</div><div class="st">魂の設計</div></div>
+  </div>
+
+  <div class="spirit-card">
+    <div class="spirit-label">LIFE PHILOSOPHY</div>
+    <p><strong>人生に現れる人には全て学びがある</strong></p>
+  </div>
+  <div class="spirit-card">
+    <div class="spirit-label">CORE TENSION</div>
+    <p><strong>合理性・冷たさ vs 感情・創造性のテンション</strong><br>表層の虎（冷徹な合理性）と深層の石門星（慈悲）が生涯ぶつかり続ける。これがTaigaの人生を貫くコアの葛藤。</p>
+  </div>
+  <div class="spirit-card">
+    <div class="spirit-label">IDEAL SUCCESS</div>
+    <p><strong>イベントをオーケストレーションして、他の人が楽しんでいるのを横から見守る形</strong><br>自分が前に出て活躍するのではない。みんなが最高のパフォーマンスを出している場を設計し、それを横から見て泣いている。これが魂が求めている成功の形。</p>
+  </div>
+  <div class="spirit-card">
+    <div class="spirit-label">FULFILLMENT</div>
+    <p><strong>大勢からの承認ではなく、信頼できる少数からの承認で深い充足を得る</strong><br>まなとくんに「成長したな」と言われたい。チームと最高の景色を見て泣きたい。100万人のフォロワーではなく、5人の戦友。</p>
+  </div>
+  <div class="spirit-card">
+    <div class="spirit-label">SENSITIVITY</div>
+    <p><strong>他者のネガティブ反応に敏感</strong><br>支配者に見えるが実は繊細。精神的安定のためにパーソナルスペースが必要。狼の本質。</p>
+  </div>
+</div>
+
+<!-- コアの葛藤 -->
+<div class="sec">
+  <div class="sh">
+    <div class="icon">&#9654;</div>
+    <div><div class="sn">CORE TENSION</div><div class="st">生涯の葛藤 -- これを統合するのがこの遊び</div></div>
+  </div>
+
+  <div class="tension">
+    <div style="font-size:11px;letter-spacing:3px;color:var(--faint);margin-bottom:12px">THE GAME OF LIFE</div>
+    <div class="tension-vs">
+      <div class="tension-side" style="background:rgba(239,83,80,.1);color:var(--red2)">力<br><span style="font-size:10px;font-weight:300">有能感・コントロール・証明</span></div>
+      <div class="tension-x">&#x21C4;</div>
+      <div class="tension-side" style="background:rgba(129,199,132,.1);color:var(--green)">愛<br><span style="font-size:10px;font-weight:300">慈悲・脱力・信頼</span></div>
+    </div>
+    <p style="font-size:13px;color:var(--sub);font-weight:300;line-height:2;margin-top:16px">
+      表層は戦士。深層は農夫。<br>
+      力で鍛え上げた剣を、愛で包んで、人を活かすために使う。<br>
+      どちらかを捨てるのではない。<strong style="color:var(--txt)">両方を統合する</strong>。<br>
+      これがTaigaの運命 = 「力を愛に変換する遊び」。
+    </p>
+  </div>
+</div>
+
+<!-- 設計図の統合 -->
+<div class="sec">
+  <div class="sh">
+    <div class="icon">&#9654;</div>
+    <div><div class="sn">INTEGRATION</div><div class="st">全統合 -- 魂の設計図</div></div>
+  </div>
+
+  <div class="blueprint">
+    <div class="blueprint-title">DESTINY BLUEPRINT</div>
+
+    <div class="bp-row">
+      <div class="bp-tag" style="background:rgba(240,180,41,.1);color:var(--gold)">龍高星の探求力</div>
+      <div class="bp-arrow">→</div>
+      <div class="bp-desc">誰もやってない領域を見つけて切り開く</div>
+    </div>
+    <div class="bp-row">
+      <div class="bp-tag" style="background:rgba(239,83,80,.1);color:var(--red2)">虎の合理性 x 計算力128</div>
+      <div class="bp-arrow">→</div>
+      <div class="bp-desc">数字で即断して、全力で投資する</div>
+    </div>
+    <div class="bp-row">
+      <div class="bp-tag" style="background:rgba(62,166,255,.1);color:var(--blue)">3D俯瞰 x ENTJ</div>
+      <div class="bp-arrow">→</div>
+      <div class="bp-desc">チームが勝てるフォーメーションを設計する</div>
+    </div>
+    <div class="bp-row">
+      <div class="bp-tag" style="background:rgba(129,199,132,.1);color:var(--green)">玉堂星の師弟</div>
+      <div class="bp-arrow">→</div>
+      <div class="bp-desc">まなとくんから学んだことをチームに伝える</div>
+    </div>
+    <div class="bp-row">
+      <div class="bp-tag" style="background:rgba(129,199,132,.1);color:var(--green)">石門星の慈悲</div>
+      <div class="bp-arrow">→</div>
+      <div class="bp-desc">人の全てを愛して、目を向けるのは目標と時間だけ</div>
+    </div>
+    <div class="bp-row">
+      <div class="bp-tag" style="background:rgba(179,136,255,.1);color:var(--purple)">禄存星の天然</div>
+      <div class="bp-arrow">→</div>
+      <div class="bp-desc">脱力してる時に出る自然な魅力で人が集まる</div>
+    </div>
+    <div class="bp-row">
+      <div class="bp-tag" style="background:rgba(240,180,41,.1);color:var(--gold)">牽牛星の完璧主義</div>
+      <div class="bp-arrow">→</div>
+      <div class="bp-desc">「そこまでやるか」の基準をチームの文化にする</div>
+    </div>
+
+    <div style="margin-top:20px;text-align:center">
+      <div style="font-size:11px;color:var(--faint);margin-bottom:8px">ALL CONVERGE TO</div>
+      <div style="font-size:16px;font-weight:700;color:var(--gold);line-height:1.8">
+        イベントをオーケストレーションして<br>
+        他の人が楽しんでいるのを<br>
+        横から見守って、泣いている
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  <div class="quote">
+    最強の力を持った上で、その力を人のために使い、次の世代に伝える<br>
+    剣聖が剣を抜かずにいられる境地<br>
+    力がないから抜かないんじゃない<br>
+    力があるから抜かなくていい
+  </div>
+  <div class="note">
+    表層は戦士。深層は農夫。<br>
+    この二つを統合する生涯の遊び。
+  </div>
+</div>
+
+</body>
+</html>

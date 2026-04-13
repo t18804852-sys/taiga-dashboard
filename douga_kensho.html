@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>動画制作 検証シート</title>
+<style>
+  :root {
+    --bg: #0F1923; --card: #1A2733; --card2: #223344;
+    --text: #E8ECF1; --text2: #8A9BB0; --border: #2D3F50;
+    --accent1: #FF6B6B; --accent2: #FF8E53; --accent3: #FFC947;
+    --accent4: #4ECB71; --accent5: #36B5FF; --accent6: #7C6BFF;
+    --accent7: #C56BFF; --accent8: #FF6BB5;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Hiragino Sans','Noto Sans JP',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+  .container { max-width:1400px; margin:0 auto; padding:20px 16px; }
+
+  /* Header */
+  .header { text-align:center; padding:32px 0 16px; }
+  .header h1 { font-size:1.8rem; font-weight:800; background:linear-gradient(135deg,#FF6B6B,#36B5FF,#7C6BFF); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .header p { color:var(--text2); font-size:.85rem; margin-top:4px; }
+
+  /* Section */
+  .section { margin-bottom:32px; }
+  .section-title { font-size:1.15rem; font-weight:700; margin-bottom:14px; padding-left:12px; display:flex; align-items:center; gap:10px; }
+  .section-title .badge { display:inline-flex; align-items:center; justify-content:center; min-width:28px; height:28px; border-radius:8px; font-size:.75rem; font-weight:800; color:#fff; padding:0 6px; }
+
+  /* Meta Grid */
+  .meta-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; }
+  .meta-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+  .meta-card label { display:block; font-size:.75rem; font-weight:700; color:var(--text2); margin-bottom:4px; text-transform:uppercase; letter-spacing:.5px; }
+  .meta-card .hint { font-size:.72rem; color:var(--text2); opacity:.7; margin-bottom:6px; }
+  .meta-card textarea, .meta-card input { width:100%; background:var(--card2); border:1px solid var(--border); border-radius:6px; padding:8px 10px; color:var(--text); font-size:.85rem; font-family:inherit; resize:vertical; }
+  .meta-card textarea { min-height:48px; }
+  .meta-card input { height:36px; }
+
+  /* Main Table */
+  .sheet-wrapper { overflow-x:auto; margin-bottom:8px; }
+  .sheet { width:100%; border-collapse:separate; border-spacing:0; }
+  .sheet th, .sheet td { border:1px solid var(--border); padding:10px 12px; vertical-align:top; font-size:.82rem; }
+  .sheet th { background:var(--card2); font-weight:700; position:sticky; top:0; z-index:2; white-space:nowrap; }
+  .sheet th.col-label { min-width:120px; text-align:center; }
+  .sheet th.row-label { min-width:140px; background:var(--card); text-align:left; position:sticky; left:0; z-index:3; }
+  .sheet td.row-header { background:var(--card); font-weight:700; font-size:.8rem; position:sticky; left:0; z-index:1; min-width:140px; }
+  .sheet td.row-header .sub { font-weight:400; color:var(--text2); font-size:.72rem; display:block; margin-top:2px; }
+  .sheet td textarea { width:100%; min-width:200px; min-height:60px; background:transparent; border:1px solid rgba(255,255,255,.08); border-radius:4px; padding:6px 8px; color:var(--text); font-size:.8rem; font-family:inherit; resize:vertical; }
+  .sheet td textarea:focus { border-color:var(--accent5); outline:none; }
+  .sheet td .checklist { list-style:none; }
+  .sheet td .checklist li { font-size:.75rem; color:var(--text2); padding:2px 0; display:flex; align-items:flex-start; gap:4px; }
+  .sheet td .checklist li::before { content:'□'; flex-shrink:0; }
+
+  /* Color coding for column headers */
+  .col-thumb { background:var(--accent5) !important; color:#fff; }
+  .col-title { background:var(--accent6) !important; color:#fff; }
+  .col-opening { background:var(--accent4) !important; color:#fff; }
+  .col-structure { background:var(--accent2) !important; color:#fff; }
+  .col-script { background:var(--accent1) !important; color:#fff; }
+  .col-cta { background:var(--accent7) !important; color:#fff; }
+  .col-result { background:var(--accent8) !important; color:#fff; }
+
+  /* Checklist section */
+  .checklist-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px; }
+  .check-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; }
+  .check-card h4 { font-size:.9rem; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+  .check-card h4 .dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .check-card ul { list-style:none; }
+  .check-card li { font-size:.8rem; padding:4px 0; display:flex; align-items:flex-start; gap:6px; cursor:pointer; }
+  .check-card li input[type=checkbox] { margin-top:3px; accent-color:var(--accent4); }
+
+  /* Analysis section */
+  .analysis-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+  .kpi-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; text-align:center; }
+  .kpi-card label { display:block; font-size:.72rem; font-weight:700; color:var(--text2); margin-bottom:6px; }
+  .kpi-card input { width:100%; background:var(--card2); border:1px solid var(--border); border-radius:6px; padding:8px; color:var(--accent3); font-size:1.2rem; font-weight:700; text-align:center; font-family:inherit; }
+  .kpi-card .benchmark { font-size:.7rem; color:var(--text2); margin-top:4px; }
+
+  /* Learning section */
+  .learning-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:18px; }
+  .learning-card h4 { font-size:.9rem; font-weight:700; margin-bottom:10px; }
+  .learning-card textarea { width:100%; min-height:80px; background:var(--card2); border:1px solid var(--border); border-radius:6px; padding:10px; color:var(--text); font-size:.82rem; font-family:inherit; resize:vertical; }
+  .learning-card label { display:block; font-size:.75rem; font-weight:600; color:var(--text2); margin:12px 0 4px; }
+
+  /* Utility */
+  .note-box { background:rgba(255,199,71,.08); border:1px solid rgba(255,199,71,.2); border-radius:8px; padding:12px 16px; font-size:.8rem; color:var(--accent3); margin-bottom:20px; }
+  .separator { border:none; border-top:2px solid var(--border); margin:40px 0; }
+
+  @media print {
+    body { background:#fff; color:#000; }
+    .sheet td textarea { border:1px solid #ccc; }
+  }
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>動画制作 検証シート</h1>
+  <p>YouTube運営ワークフロー（8フェーズ）× サムネフレームワーク（6フェーズ）× 視聴者ジャーニー 完全対応</p>
+</div>
+
+<div class="note-box">
+  原則：サムネ → タイトル → 冒頭 → 構成 → 台本 → CTA の順番で埋める。左から右へ。<br>
+  各セルには「仮説（こうする理由）」と「具体（実際のアウトプット）」を書く。投稿後に「結果」「学び」を追記する。
+</div>
+
+<!-- ===== SECTION 0: 企画概要 ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="badge" style="background:var(--accent2)">0</span>
+    企画概要（Phase 4：動画企画設計）
+  </div>
+  <div class="meta-grid">
+    <div class="meta-card">
+      <label>動画タイトル（仮）</label>
+      <input type="text" placeholder="例：在宅で月60万稼ぐ方法">
+    </div>
+    <div class="meta-card">
+      <label>投稿日 / 動画No.</label>
+      <input type="text" placeholder="2026-04-XX / #XX">
+    </div>
+    <div class="meta-card">
+      <label>企画カテゴリ</label>
+      <div class="hint">グルーピング機能でカテゴリ平均と比較するため</div>
+      <input type="text" placeholder="例：ノウハウ系 / ドキュメンタリー / 時事解説">
+    </div>
+    <div class="meta-card">
+      <label>動画のゴール / 目的</label>
+      <div class="hint">「誰に」届けたいか、「誰に」届けたくないか</div>
+      <textarea placeholder="例：副業未経験の25-34歳男性に「自分にもできそう」と思わせてLINE登録させる"></textarea>
+    </div>
+    <div class="meta-card">
+      <label>ターゲットペルソナ</label>
+      <div class="hint">#003ペルソナシート連動。年齢・性別・職業・趣味・痛み</div>
+      <textarea placeholder="28歳 / 男性 / 会社員 / 手取り25万 / 副業やりたいけど何から始めればいいかわからない"></textarea>
+    </div>
+    <div class="meta-card">
+      <label>必要性×緊急性×信頼性の位置づけ</label>
+      <div class="hint">3本セットの中でこの動画はどの役割か</div>
+      <input type="text" placeholder="例：ポジティブな動機付け（1本目）">
+    </div>
+    <div class="meta-card">
+      <label>発見経路の想定</label>
+      <div class="hint">検索型 / 発見型（おすすめ）/ 関連型 で設計方針が変わる</div>
+      <input type="text" placeholder="例：ブラウジング（おすすめ）メイン">
+    </div>
+    <div class="meta-card">
+      <label>チャンネルの武器 / ストーリーライン</label>
+      <div class="hint">落差の大きいストーリー＝最強。弱者表現でギャップを作る</div>
+      <textarea placeholder="例：元手取り11万の工場勤務→月収60万フリーランス"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 1: メイン検証テーブル ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="badge" style="background:var(--accent5)">1</span>
+    制作変数 × 検証マトリクス
+  </div>
+
+  <div class="sheet-wrapper">
+  <table class="sheet">
+    <thead>
+      <tr>
+        <th class="row-label"></th>
+        <th class="col-label col-thumb">サムネイル<br><small>Phase 5 / #015</small></th>
+        <th class="col-label col-title">タイトル<br><small>Phase 5</small></th>
+        <th class="col-label col-opening">冒頭 0-30秒<br><small>Phase 6</small></th>
+        <th class="col-label col-structure">構成<br><small>Phase 6</small></th>
+        <th class="col-label col-script">本編台本<br><small>Phase 6</small></th>
+        <th class="col-label col-cta">CTA<br><small>Phase 7</small></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- Row: 仮説 -->
+      <tr>
+        <td class="row-header">
+          仮説 / 狙い
+          <span class="sub">なぜこの設計にしたか</span>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>4軸（インパクト・具体・ベネフィット・好奇心）</li>
+            <li>Z構図の左上＝最強要素</li>
+            <li>チャンネルの勝ちパターンとの整合</li>
+          </ul>
+          <textarea placeholder="仮説：ドヤ顔＋金額ワード＋断定形が当チャンネルの勝ちパターン。左上に「月収60万」を配置..."></textarea>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>サムネとの意図的なずらし</li>
+            <li>VSEO キーワード</li>
+            <li>業界用語ではなく一般語</li>
+          </ul>
+          <textarea placeholder="仮説：サムネが金額訴求なので、タイトルでは「方法」の好奇心を引く方向に..."></textarea>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>複数ペルソナが「自分の話だ」と感じるか</li>
+            <li>2つの見どころを提示</li>
+            <li>サムネの期待値を満たす内容か</li>
+          </ul>
+          <textarea placeholder="仮説：3パターンのペルソナに刺さるフックを配置。「時給1000円以下の方」「副業で月5万の方」..."></textarea>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>全体のストーリーライン</li>
+            <li>教科書型 or ドキュメンタリー型</li>
+            <li>情報量とテンポの設計</li>
+          </ul>
+          <textarea placeholder="仮説：問題提起→具体的手法3つ→成功事例→まとめの王道構成で..."></textarea>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>機能的価値（有益情報）が入っているか</li>
+            <li>感情的価値（モチベUP）が入っているか</li>
+            <li>気づきのプレゼントがあるか</li>
+          </ul>
+          <textarea placeholder="仮説：ノウハウ7割＋マインドセット3割。Vlog映像にアフレコで仕事の話を重ねる..."></textarea>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>誘導先（LINE / 概要欄 / 次動画）</li>
+            <li>文言の設計</li>
+            <li>タイミング（本編後 / 途中）</li>
+          </ul>
+          <textarea placeholder="仮説：CTA変数が2倍になれば再生数半分でもOK。LINE登録で無料教材をフックに..."></textarea>
+        </td>
+      </tr>
+
+      <!-- Row: 必要要素 -->
+      <tr>
+        <td class="row-header">
+          必要要素
+          <span class="sub">フレームワークから導いた要件</span>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>コピー（14文字目安・断定/疑問）</li>
+            <li>表情（勝ちパターン準拠）</li>
+            <li>配色（4色以内・テーマカラー統一）</li>
+            <li>フォント（ゴシック・大きく）</li>
+            <li>再現性の演出（弱いスペック表記）</li>
+            <li>結末を悟らせない</li>
+            <li>好奇心要素（矛盾/暴露/数字ギャップ/否定/ボタンの掛け違い）</li>
+          </ul>
+          <textarea placeholder="具体の要素をメモ..."></textarea>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>メインキーワード（VidIQ Ave Views 10万↑）</li>
+            <li>サブキーワード</li>
+            <li>サムネとのセット感</li>
+            <li>一般層に伝わる言葉遣い</li>
+          </ul>
+          <textarea placeholder="具体の要素をメモ..."></textarea>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>フック（視線を止める一言）</li>
+            <li>ペルソナ複数呼びかけ</li>
+            <li>2つの見どころ提示</li>
+            <li>宣伝セリフNG（画像LINE誘導はOK）</li>
+          </ul>
+          <textarea placeholder="具体の要素をメモ..."></textarea>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>起承転結 or 問題→解決→行動</li>
+            <li>各パートの目的と尺の配分</li>
+            <li>場面転換のタイミング</li>
+            <li>BGMの切り替えポイント</li>
+          </ul>
+          <textarea placeholder="具体の要素をメモ..."></textarea>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>気づきのプレゼント（新しい視点）</li>
+            <li>具体的な数字・事例</li>
+            <li>Vlog×ノウハウのバランス</li>
+            <li>教育メッセージは最後にさらっと</li>
+            <li>宣伝パート冒頭NG</li>
+          </ul>
+          <textarea placeholder="具体の要素をメモ..."></textarea>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>弱いスペックの成功事例（最低保証）</li>
+            <li>強い成功事例（夢・アッパー）</li>
+            <li>具体的な行動指示（URL・QR等）</li>
+            <li>コンバージョンのフック（無料教材等）</li>
+          </ul>
+          <textarea placeholder="具体の要素をメモ..."></textarea>
+        </td>
+      </tr>
+
+      <!-- Row: 参考元 -->
+      <tr>
+        <td class="row-header">
+          参考元
+          <span class="sub">競合・自チャンネルの当たり動画</span>
+        </td>
+        <td><textarea placeholder="参考サムネURL / チャンネル名 / 再生数&#10;何が勝ちパターンか（7つの観点で分析）"></textarea></td>
+        <td><textarea placeholder="参考タイトル / 競合の伸びてるタイトル表現"></textarea></td>
+        <td><textarea placeholder="参考動画の冒頭構成 / 維持率が高い冒頭の共通点"></textarea></td>
+        <td><textarea placeholder="参考にした台本構成 / AI構造解析した元動画"></textarea></td>
+        <td><textarea placeholder="参考台本10本（MDフォルダ格納先）/ 構成・癖・ストーリーの分析結果"></textarea></td>
+        <td><textarea placeholder="参考CTAの文言・配置 / CV率が高いパターン"></textarea></td>
+      </tr>
+
+      <!-- Row: アウトプット -->
+      <tr>
+        <td class="row-header">
+          アウトプット
+          <span class="sub">実際に作ったもの</span>
+        </td>
+        <td>
+          <textarea placeholder="サムネA案：[画像URL or 説明]&#10;サムネB案：[画像URL or 説明]&#10;サムネC案：[画像URL or 説明]&#10;&#10;ABテスト設定：A vs B"></textarea>
+        </td>
+        <td><textarea placeholder="最終タイトル：&#10;&#10;候補1：&#10;候補2：&#10;候補3："></textarea></td>
+        <td><textarea placeholder="冒頭セリフ（30秒分）：&#10;&#10;フック：&#10;ペルソナ呼びかけ：&#10;見どころ提示："></textarea></td>
+        <td><textarea placeholder="構成タイムライン：&#10;00:00-00:30 冒頭フック&#10;00:30-02:00 問題提起&#10;02:00-08:00 本編&#10;08:00-09:00 まとめ&#10;09:00-09:30 CTA"></textarea></td>
+        <td><textarea placeholder="台本全文の格納先：&#10;&#10;主なメッセージ：&#10;使った事例：&#10;撮影メモ："></textarea></td>
+        <td><textarea placeholder="CTA文言：&#10;誘導先URL：&#10;フック（無料教材など）：&#10;配置タイミング："></textarea></td>
+      </tr>
+
+      <!-- Row: 撮影・編集メモ -->
+      <tr>
+        <td class="row-header">
+          撮影・編集メモ
+          <span class="sub">Phase 6 技術面</span>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>スマホ実機で暗い部屋確認</li>
+            <li>グラデーション不使用</li>
+            <li>デザイナーへの発注指示</li>
+          </ul>
+          <textarea placeholder="デザイナー：&#10;単価：&#10;パターン数："></textarea>
+        </td>
+        <td><textarea placeholder="タグ設定：&#10;説明文キーワード："></textarea></td>
+        <td><textarea placeholder="冒頭の不要パート（挨拶等）カット済みか：&#10;LINE誘導画像の冒頭挿入："></textarea></td>
+        <td>
+          <ul class="checklist">
+            <li>BGM選定（ジャンル×感情/BPM/映像占有率）</li>
+            <li>トーク動画→音数少ない曲</li>
+            <li>場面転換でBGM切り替え</li>
+          </ul>
+          <textarea placeholder="BGM曲名/BPM：&#10;カラグレ設定：&#10;テロップスタイル："></textarea>
+        </td>
+        <td>
+          <ul class="checklist">
+            <li>カメラ：iPhone / 露出-0.7 / WB・ISOオート</li>
+            <li>音声：有線マイク推奨</li>
+            <li>1回の撮影で4-6本目標</li>
+          </ul>
+          <textarea placeholder="撮影場所：&#10;撮影本数：&#10;機材メモ："></textarea>
+        </td>
+        <td><textarea placeholder="CTA画面の編集指示：&#10;テロップ・URL表示タイミング："></textarea></td>
+      </tr>
+
+      <!-- Row: ショート動画展開 -->
+      <tr>
+        <td class="row-header">
+          ショート展開
+          <span class="sub">Phase 7 ハイブリッド運用</span>
+        </td>
+        <td colspan="6">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px;">
+            <div>
+              <label style="font-size:.72rem; color:var(--text2); font-weight:700;">切り抜きポイント</label>
+              <textarea placeholder="ロングのどのシーンを切り抜くか：&#10;&#10;冒頭2秒のフック："></textarea>
+            </div>
+            <div>
+              <label style="font-size:.72rem; color:var(--text2); font-weight:700;">投稿スケジュール</label>
+              <textarea placeholder="1日1-3本 / 投稿タイミング：&#10;ロング投稿日との関係："></textarea>
+            </div>
+            <div>
+              <label style="font-size:.72rem; color:var(--text2); font-weight:700;">ロングへの誘導設計</label>
+              <textarea placeholder="SEO狙いショート→おすすめ→ロング&#10;目標誘導率（0.6-1.6%目安）："></textarea>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<hr class="separator">
+
+<!-- ===== SECTION 2: 投稿前チェックリスト ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="badge" style="background:var(--accent4)">2</span>
+    投稿前チェックリスト
+  </div>
+
+  <div class="checklist-grid">
+    <div class="check-card">
+      <h4><span class="dot" style="background:var(--accent5)"></span>サムネイル（#015準拠）</h4>
+      <ul>
+        <li><input type="checkbox"> 誰に届けたいか / 届けたくないか明確</li>
+        <li><input type="checkbox"> 競合・自チャンネルの当たり/外れを分析済み</li>
+        <li><input type="checkbox"> 差を生む変数を言語化できている</li>
+        <li><input type="checkbox"> 4軸（インパクト・具体・ベネフィット・好奇心）全部入り</li>
+        <li><input type="checkbox"> Z構図の左上に最強要素</li>
+        <li><input type="checkbox"> コピーが一般層に伝わる言葉</li>
+        <li><input type="checkbox"> サムネとタイトルの文言を意図的にずらし</li>
+        <li><input type="checkbox"> 結末を悟らせていない</li>
+        <li><input type="checkbox"> 弱いスペック・再現性の演出あり</li>
+        <li><input type="checkbox"> 表情がチャンネルの勝ちパターンと一致</li>
+        <li><input type="checkbox"> 配色4色以内・テーマカラー統一</li>
+        <li><input type="checkbox"> フォント大きく・ゴシック・グラデなし</li>
+        <li><input type="checkbox"> スマホ実機・暗い部屋で視認性確認</li>
+        <li><input type="checkbox"> 2-3パターン用意してABテスト設定</li>
+      </ul>
+    </div>
+    <div class="check-card">
+      <h4><span class="dot" style="background:var(--accent6)"></span>タイトル</h4>
+      <ul>
+        <li><input type="checkbox"> メインキーワードのAve Views 10万↑</li>
+        <li><input type="checkbox"> サムネとセットで「続きが気になる」設計</li>
+        <li><input type="checkbox"> 業界用語NG・一般語で書いている</li>
+        <li><input type="checkbox"> VSEO設定（タグ・説明文）完了</li>
+      </ul>
+    </div>
+    <div class="check-card">
+      <h4><span class="dot" style="background:var(--accent4)"></span>冒頭 0-30秒</h4>
+      <ul>
+        <li><input type="checkbox"> 複数ペルソナが「自分の話だ」と感じる</li>
+        <li><input type="checkbox"> 2つの見どころを提示</li>
+        <li><input type="checkbox"> 宣伝セリフを冒頭に入れていない</li>
+        <li><input type="checkbox"> LINE誘導画像はさりげなく挿入（任意）</li>
+        <li><input type="checkbox"> サムネの期待値を冒頭で満たしている</li>
+        <li><input type="checkbox"> 不要な挨拶・前置きをカット済み</li>
+      </ul>
+    </div>
+    <div class="check-card">
+      <h4><span class="dot" style="background:var(--accent2)"></span>構成・台本</h4>
+      <ul>
+        <li><input type="checkbox"> 機能的価値（有益情報）が入っている</li>
+        <li><input type="checkbox"> 感情的価値（モチベUP）が入っている</li>
+        <li><input type="checkbox"> 「気づきのプレゼント」が含まれている</li>
+        <li><input type="checkbox"> コンセプトから外れた内容が混入していない</li>
+        <li><input type="checkbox"> スクール宣伝パートが冒頭にない</li>
+        <li><input type="checkbox"> 教育メッセージは最後にさらっと</li>
+      </ul>
+    </div>
+    <div class="check-card">
+      <h4><span class="dot" style="background:var(--accent1)"></span>撮影・編集</h4>
+      <ul>
+        <li><input type="checkbox"> カメラ設定：WB/ISO/明るさ全てオート</li>
+        <li><input type="checkbox"> 露出やや暗め（-0.7）で後からカラグレ</li>
+        <li><input type="checkbox"> 場面転換はカットを分けて撮影</li>
+        <li><input type="checkbox"> 音声：有線マイク使用</li>
+        <li><input type="checkbox"> BGM：トーク動画は音数少ない曲</li>
+        <li><input type="checkbox"> テロップ：シネマティック（文字間200/細フォント/境界線なし）</li>
+      </ul>
+    </div>
+    <div class="check-card">
+      <h4><span class="dot" style="background:var(--accent7)"></span>CTA・投稿設定</h4>
+      <ul>
+        <li><input type="checkbox"> CTA文言が明確（具体的な行動指示）</li>
+        <li><input type="checkbox"> 弱いスペック＋強い成功事例の両方を提示</li>
+        <li><input type="checkbox"> 投稿曜日・時間を設定</li>
+        <li><input type="checkbox"> ショート動画の切り抜きポイントを決定</li>
+        <li><input type="checkbox"> X（Twitter）連携投稿の文面を準備</li>
+        <li><input type="checkbox"> 流入元と流入先の属性が一致している</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="separator">
+
+<!-- ===== SECTION 3: 投稿後KPI ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="badge" style="background:var(--accent8)">3</span>
+    投稿後 分析（Phase 8：分析・改善）
+  </div>
+
+  <div class="note-box">
+    投稿後15分：CTR 7%以下→サムネ即差替え / 7-10%→30分様子見。1週間後にフル分析。<br>
+    必ずアナリティクスの「詳細モード」（PC版右上）を使用。トラフィックソースごとに分解して確認。
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="analysis-grid" style="margin-bottom:16px;">
+    <div class="kpi-card">
+      <label>CTR（クリック率）</label>
+      <input type="text" placeholder="--.--%">
+      <div class="benchmark">15分後 / 24h後 / 7日後</div>
+    </div>
+    <div class="kpi-card">
+      <label>平均視聴時間</label>
+      <input type="text" placeholder="--:--">
+      <div class="benchmark">カテゴリ平均と比較</div>
+    </div>
+    <div class="kpi-card">
+      <label>平均再生率</label>
+      <input type="text" placeholder="--.--%">
+      <div class="benchmark">相対的維持率の山/谷を確認</div>
+    </div>
+    <div class="kpi-card">
+      <label>インプレッション数</label>
+      <input type="text" placeholder="---,---">
+      <div class="benchmark">7日 / 28日</div>
+    </div>
+    <div class="kpi-card">
+      <label>再生回数</label>
+      <input type="text" placeholder="---,---">
+      <div class="benchmark">7日 / 28日</div>
+    </div>
+    <div class="kpi-card">
+      <label>CTA転換率</label>
+      <input type="text" placeholder="--.--%">
+      <div class="benchmark">LINE登録数 / 再生回数</div>
+    </div>
+  </div>
+
+  <!-- Traffic Source Breakdown -->
+  <div style="margin-bottom:16px;">
+    <div class="learning-card">
+      <h4>トラフィックソース分解</h4>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-top:10px;">
+        <div>
+          <label style="font-size:.72rem; color:var(--text2); font-weight:700;">YouTube検索</label>
+          <input type="text" placeholder="CTR: / 再生:" style="width:100%; background:var(--card2); border:1px solid var(--border); border-radius:4px; padding:6px 8px; color:var(--text); font-size:.8rem;">
+        </div>
+        <div>
+          <label style="font-size:.72rem; color:var(--text2); font-weight:700;">ブラウジング</label>
+          <input type="text" placeholder="CTR: / 再生:" style="width:100%; background:var(--card2); border:1px solid var(--border); border-radius:4px; padding:6px 8px; color:var(--text); font-size:.8rem;">
+        </div>
+        <div>
+          <label style="font-size:.72rem; color:var(--text2); font-weight:700;">関連動画</label>
+          <input type="text" placeholder="CTR: / 再生:" style="width:100%; background:var(--card2); border:1px solid var(--border); border-radius:4px; padding:6px 8px; color:var(--text); font-size:.8rem;">
+        </div>
+        <div>
+          <label style="font-size:.72rem; color:var(--text2); font-weight:700;">登録チャンネルフィード</label>
+          <input type="text" placeholder="CTR: / 再生:" style="width:100%; background:var(--card2); border:1px solid var(--border); border-radius:4px; padding:6px 8px; color:var(--text); font-size:.8rem;">
+        </div>
+        <div>
+          <label style="font-size:.72rem; color:var(--text2); font-weight:700;">外部（X等）</label>
+          <input type="text" placeholder="CTR: / 再生:" style="width:100%; background:var(--card2); border:1px solid var(--border); border-radius:4px; padding:6px 8px; color:var(--text); font-size:.8rem;">
+        </div>
+        <div>
+          <label style="font-size:.72rem; color:var(--text2); font-weight:700;">ショート→ロング誘導</label>
+          <input type="text" placeholder="誘導数: / 誘導率:" style="width:100%; background:var(--card2); border:1px solid var(--border); border-radius:4px; padding:6px 8px; color:var(--text); font-size:.8rem;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audience -->
+  <div style="margin-bottom:16px;">
+    <div class="learning-card">
+      <h4>視聴者属性（ターゲットとの一致度チェック）</h4>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:10px;">
+        <div>
+          <label>年齢層の分布</label>
+          <textarea placeholder="25-34歳: XX%&#10;35-44歳: XX%&#10;→ターゲットと一致しているか"></textarea>
+        </div>
+        <div>
+          <label>性別の分布</label>
+          <textarea placeholder="男性: XX%&#10;女性: XX%&#10;→ターゲットと一致しているか"></textarea>
+        </div>
+        <div>
+          <label>新規 vs リピーター</label>
+          <textarea placeholder="新規: XX%&#10;リピーター: XX%&#10;→ファン化が進んでいるか"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AB Test Result -->
+  <div style="margin-bottom:16px;">
+    <div class="learning-card">
+      <h4>サムネABテスト結果</h4>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:10px;">
+        <div>
+          <label>A案の結果</label>
+          <textarea placeholder="CTR: XX%&#10;インプ: XXX&#10;特徴："></textarea>
+        </div>
+        <div>
+          <label>B案の結果</label>
+          <textarea placeholder="CTR: XX%&#10;インプ: XXX&#10;特徴："></textarea>
+        </div>
+        <div>
+          <label>なぜ勝った/負けたか</label>
+          <textarea placeholder="勝因の言語化→勝ちパターンDBに追加："></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Retention Analysis -->
+  <div style="margin-bottom:16px;">
+    <div class="learning-card">
+      <h4>相対的視聴者維持率の分析（PC版のみ）</h4>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+        <div>
+          <label>山（維持されたポイント）</label>
+          <textarea placeholder="XX:XX - 理由：&#10;XX:XX - 理由：&#10;→ストックして次回再現"></textarea>
+        </div>
+        <div>
+          <label>谷（離脱したポイント）</label>
+          <textarea placeholder="XX:XX - 原因：&#10;XX:XX - 原因：&#10;→次回改善ポイント"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="separator">
+
+<!-- ===== SECTION 4: 学び・次回への改善 ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="badge" style="background:var(--accent3)">4</span>
+    学び・次回への改善（PDCA蓄積）
+  </div>
+
+  <div class="note-box">
+    「CTRが低かった場合に仮説を立て次回以降に活かすこと。この地味な作業の蓄積が莫大な資産を作る」（#009）
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px;">
+    <div class="learning-card">
+      <h4>サムネ・タイトルの学び</h4>
+      <textarea placeholder="何が効いた / 何が効かなかった：&#10;&#10;勝ちパターンの更新：&#10;&#10;次回試したい仮説："></textarea>
+    </div>
+    <div class="learning-card">
+      <h4>冒頭・構成の学び</h4>
+      <textarea placeholder="維持率が高かった/低かった部分：&#10;&#10;フックの効果：&#10;&#10;次回試したい構成："></textarea>
+    </div>
+    <div class="learning-card">
+      <h4>台本・内容の学び</h4>
+      <textarea placeholder="視聴者の反応（コメント・高評価）：&#10;&#10;気づきのプレゼントは機能したか：&#10;&#10;次回の改善点："></textarea>
+    </div>
+    <div class="learning-card">
+      <h4>CTA・コンバージョンの学び</h4>
+      <textarea placeholder="CTA転換率：&#10;&#10;文言の効果：&#10;&#10;CTA変数を2倍にするには何を変えるか："></textarea>
+    </div>
+    <div class="learning-card">
+      <h4>カテゴリ平均との比較</h4>
+      <textarea placeholder="このカテゴリの平均CTR：&#10;この動画のCTR：&#10;乖離の原因：&#10;&#10;※グルーピング機能で確認"></textarea>
+    </div>
+    <div class="learning-card">
+      <h4>次回アクションアイテム</h4>
+      <textarea placeholder="1. &#10;2. &#10;3. &#10;&#10;次の動画で検証する仮説："></textarea>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// Toggle phase details
+document.querySelectorAll('.phase-inner').forEach(el => {
+  el.addEventListener('click', () => {
+    el.querySelector('.phase-body')?.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>

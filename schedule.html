@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>みさをch スケジュール</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a0a;
+    color: #e0e0e0;
+    padding: 32px;
+    min-height: 100vh;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .page-date {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 28px;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #1a1a2e;
+  }
+
+  .tab {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .tab:hover { color: #888; }
+  .tab.active { color: #fff; border-bottom-color: #3B82F6; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Urgent list */
+  .urgent-section h2 {
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  /* Video grid */
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 20px;
+    align-items: start;
+  }
+
+  /* Video cards */
+  .video-card {
+    background: #0d0d0d;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .video-header {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .video-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .video-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .video-dates {
+    font-size: 13px;
+    color: #666;
+  }
+
+  .video-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .progress-bar {
+    width: 120px;
+    height: 6px;
+    background: #1a1a2e;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3B82F6, #10B981);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  .progress-count {
+    font-size: 12px;
+    color: #666;
+    font-weight: 600;
+    min-width: 50px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #888;
+  }
+
+  /* Table */
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .phase-divider {
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #444;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: #0a0a0a;
+  }
+
+  .step-row {
+    transition: background 0.15s, opacity 0.3s;
+  }
+
+  .step-row:hover {
+    background: #111;
+  }
+
+  .step-row td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #141414;
+    vertical-align: middle;
+  }
+
+  .step-row.done {
+    opacity: 0.35;
+  }
+
+  .step-row.done .step-label {
+    text-decoration: line-through;
+    color: #444;
+  }
+
+  .step-row.done .deadline .date {
+    color: #444 !important;
+  }
+
+  /* Checkbox */
+  .check-cell { width: 40px; }
+
+  .check-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .check-container input { display: none; }
+
+  .checkmark {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #333;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .check-container input:checked + .checkmark {
+    background: #10B981;
+    border-color: #10B981;
+  }
+
+  .check-container input:checked + .checkmark::after {
+    content: '✓';
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .check-container:hover .checkmark {
+    border-color: #555;
+  }
+
+  .step-name { font-weight: 500; white-space: nowrap; }
+
+  .assignee-badge {
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .deadline { white-space: nowrap; }
+
+  .deadline .date {
+    font-weight: 600;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .deadline .weekday {
+    color: #666;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+
+  .step-row.overdue:not(.done) .deadline .date { color: #EF4444; }
+  .step-row.today:not(.done) .deadline .date { color: #FBBF24; }
+  .step-row.soon:not(.done) .deadline .date { color: #FB923C; }
+
+  tr[data-phase="shooting"]:not(.done) {
+    background: #1a1a2e !important;
+  }
+  tr[data-phase="shooting"]:not(.done) .step-name {
+    color: #818CF8;
+    font-weight: 700;
+  }
+
+  @media (max-width: 768px) {
+    body { padding: 16px; }
+    .video-progress { margin-left: 0; width: 100%; }
+    .progress-bar { flex: 1; }
+    .header-meta { flex-direction: column; gap: 8px; }
+  }
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+
+<h1>みさをch スケジュール</h1>
+<p class="page-date">2026/4/6(月) 時点</p>
+
+<div class="legend">
+    <div class="legend-item"><span style="color:#EF4444">●</span> 期限超過</div>
+    <div class="legend-item"><span style="color:#FBBF24">●</span> 今日</div>
+    <div class="legend-item"><span style="color:#FB923C">●</span> 2日以内</div>
+    <div class="legend-item"><span style="color:#555">●</span> 予定</div>
+    <div class="legend-item"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640;font-size:12px">たいが</span></div>
+    <div class="legend-item"><span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140;font-size:12px">出水</span></div>
+    <div class="legend-item"><span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40;font-size:12px">かいと</span></div>
+</div>
+
+<div class="tabs">
+    <div class="tab active" onclick="switchTab('urgent')">期限順</div>
+    <div class="tab" onclick="switchTab('videos')">動画別</div>
+</div>
+
+<div class="tab-content active" id="tab-urgent">
+    <div class="urgent-section">
+        <table class="schedule-table">
+        <tbody>
+            
+        <tr class="step-row overdue" id="ur-v0-0" data-gid="v0-0">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">企画サムネタイトル</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/3</span>
+                <span class="weekday">(金)</span>
+            </td>
+        </tr>
+        <tr class="step-row overdue" id="ur-v0-1" data-gid="v0-1">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">構成制作</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/3</span>
+                <span class="weekday">(金)</span>
+            </td>
+        </tr>
+        <tr class="step-row overdue" id="ur-v0-2" data-gid="v0-2">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">台本制作</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/4</span>
+                <span class="weekday">(土)</span>
+            </td>
+        </tr>
+        <tr class="step-row today" id="ur-v0-3" data-gid="v0-3">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">台本完成</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/6</span>
+                <span class="weekday">(月)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-4" data-gid="v0-4">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">撮影</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/9</span>
+                <span class="weekday">(木)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-5" data-gid="v0-5">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">編集依頼・サムネ依頼</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/9</span>
+                <span class="weekday">(木)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-6" data-gid="v0-6">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">編集初稿提出</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span></td>
+            <td class="deadline">
+                <span class="date">4/21</span>
+                <span class="weekday">(火)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-12" data-gid="v0-12">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">サムネ初稿</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span></td>
+            <td class="deadline">
+                <span class="date">4/21</span>
+                <span class="weekday">(火)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-13" data-gid="v0-13">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">サムネ修正指示</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/21</span>
+                <span class="weekday">(火)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-7" data-gid="v0-7">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">編集修正依頼</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/22</span>
+                <span class="weekday">(水)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-8" data-gid="v0-8">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">編集修正提出</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span></td>
+            <td class="deadline">
+                <span class="date">4/22</span>
+                <span class="weekday">(水)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-9" data-gid="v0-9">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">編集修正依頼2</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/22</span>
+                <span class="weekday">(水)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-14" data-gid="v0-14">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">サムネ修正稿</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span></td>
+            <td class="deadline">
+                <span class="date">4/22</span>
+                <span class="weekday">(水)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-15" data-gid="v0-15">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">サムネ修正指示2</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/22</span>
+                <span class="weekday">(水)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-10" data-gid="v0-10">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">編集最終稿提出</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span></td>
+            <td class="deadline">
+                <span class="date">4/23</span>
+                <span class="weekday">(木)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-11" data-gid="v0-11">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">動画完成</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/23</span>
+                <span class="weekday">(木)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-16" data-gid="v0-16">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">サムネ納品</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span></td>
+            <td class="deadline">
+                <span class="date">4/23</span>
+                <span class="weekday">(木)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-17" data-gid="v0-17">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">アップロード処理</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/23</span>
+                <span class="weekday">(木)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v0-18" data-gid="v0-18">
+            <td class="vid-badge"><span style="background:#818CF820;color:#818CF8;border:1px solid #818CF840;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-8</span></td>
+            <td class="step-name"><span class="step-label">投稿日</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/24</span>
+                <span class="weekday">(金)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-0" data-gid="v1-0">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">編集初稿提出</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span></td>
+            <td class="deadline">
+                <span class="date">4/28</span>
+                <span class="weekday">(火)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-6" data-gid="v1-6">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">サムネ初稿</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span></td>
+            <td class="deadline">
+                <span class="date">4/28</span>
+                <span class="weekday">(火)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-7" data-gid="v1-7">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">サムネ修正指示</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/28</span>
+                <span class="weekday">(火)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-1" data-gid="v1-1">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">編集修正依頼</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/29</span>
+                <span class="weekday">(水)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-2" data-gid="v1-2">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">編集修正提出</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span></td>
+            <td class="deadline">
+                <span class="date">4/29</span>
+                <span class="weekday">(水)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-3" data-gid="v1-3">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">編集修正依頼2</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/29</span>
+                <span class="weekday">(水)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-8" data-gid="v1-8">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">サムネ修正稿</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span></td>
+            <td class="deadline">
+                <span class="date">4/29</span>
+                <span class="weekday">(水)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-9" data-gid="v1-9">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">サムネ修正指示2</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/29</span>
+                <span class="weekday">(水)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-4" data-gid="v1-4">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">編集最終稿提出</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span></td>
+            <td class="deadline">
+                <span class="date">4/30</span>
+                <span class="weekday">(木)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-5" data-gid="v1-5">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">動画完成</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/30</span>
+                <span class="weekday">(木)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-10" data-gid="v1-10">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">サムネ納品</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span></td>
+            <td class="deadline">
+                <span class="date">4/30</span>
+                <span class="weekday">(木)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-11" data-gid="v1-11">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">アップロード処理</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">4/30</span>
+                <span class="weekday">(木)</span>
+            </td>
+        </tr>
+        <tr class="step-row upcoming" id="ur-v1-12" data-gid="v1-12">
+            <td class="vid-badge"><span style="background:#F472B620;color:#F472B6;border:1px solid #F472B640;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:600">28-9</span></td>
+            <td class="step-name"><span class="step-label">投稿日</span></td>
+            <td class="assignee"><span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span></td>
+            <td class="deadline">
+                <span class="date">5/1</span>
+                <span class="weekday">(金)</span>
+            </td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="tab-content" id="tab-videos">
+    <div class="video-grid">
+    
+        <div class="video-card" id="card-28-8">
+            <div class="video-header" style="border-left:4px solid #818CF8">
+                <div class="video-header-top">
+                    <div class="video-title">28-8</div>
+                    <div class="video-progress">
+                        <div class="progress-bar"><div class="progress-fill" id="pf-28-8" style="width:0%"></div></div>
+                        <span class="progress-count" id="pt-28-8">0/19</span>
+                    </div>
+                </div>
+                <div class="video-dates">
+                    撮影 4/9(木) → 投稿 4/24(金)
+                </div>
+            </div>
+            <table class="schedule-table">
+            <tbody>
+                <tr><td colspan="4" class="phase-divider">── 撮影前 ──</td></tr>
+                
+            <tr class="step-row overdue" id="row-v0-0" data-phase="pre">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-0','28-8')" id="cb-v0-0">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">企画サムネタイトル</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/3</span>
+                    <span class="weekday">(金)</span>
+                </td>
+            
+            <tr class="step-row overdue" id="row-v0-1" data-phase="pre">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-1','28-8')" id="cb-v0-1">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">構成制作</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/3</span>
+                    <span class="weekday">(金)</span>
+                </td>
+            
+            <tr class="step-row overdue" id="row-v0-2" data-phase="pre">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-2','28-8')" id="cb-v0-2">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">台本制作</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/4</span>
+                    <span class="weekday">(土)</span>
+                </td>
+            
+            <tr class="step-row today" id="row-v0-3" data-phase="pre">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-3','28-8')" id="cb-v0-3">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">台本完成</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/6</span>
+                    <span class="weekday">(月)</span>
+                </td>
+            
+                <tr><td colspan="4" class="phase-divider">── 撮影 ──</td></tr>
+                
+            <tr class="step-row upcoming" id="row-v0-4" data-phase="shooting">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-4','28-8')" id="cb-v0-4">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">撮影</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/9</span>
+                    <span class="weekday">(木)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-5" data-phase="shooting">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-5','28-8')" id="cb-v0-5">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">編集依頼・サムネ依頼</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/9</span>
+                    <span class="weekday">(木)</span>
+                </td>
+            
+                <tr><td colspan="4" class="phase-divider">── 撮影後 ──</td></tr>
+                
+            <tr class="step-row upcoming" id="row-v0-6" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-6','28-8')" id="cb-v0-6">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">編集初稿提出</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/21</span>
+                    <span class="weekday">(火)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-7" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-7','28-8')" id="cb-v0-7">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">編集修正依頼</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/22</span>
+                    <span class="weekday">(水)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-8" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-8','28-8')" id="cb-v0-8">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">編集修正提出</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/22</span>
+                    <span class="weekday">(水)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-9" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-9','28-8')" id="cb-v0-9">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">編集修正依頼2</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/22</span>
+                    <span class="weekday">(水)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-10" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-10','28-8')" id="cb-v0-10">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">編集最終稿提出</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/23</span>
+                    <span class="weekday">(木)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-11" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-11','28-8')" id="cb-v0-11">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">動画完成</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/23</span>
+                    <span class="weekday">(木)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-12" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-12','28-8')" id="cb-v0-12">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">サムネ初稿</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/21</span>
+                    <span class="weekday">(火)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-13" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-13','28-8')" id="cb-v0-13">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">サムネ修正指示</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/21</span>
+                    <span class="weekday">(火)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-14" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-14','28-8')" id="cb-v0-14">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">サムネ修正稿</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/22</span>
+                    <span class="weekday">(水)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-15" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-15','28-8')" id="cb-v0-15">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">サムネ修正指示2</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/22</span>
+                    <span class="weekday">(水)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-16" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-16','28-8')" id="cb-v0-16">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">サムネ納品</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/23</span>
+                    <span class="weekday">(木)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-17" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-17','28-8')" id="cb-v0-17">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">アップロード処理</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/23</span>
+                    <span class="weekday">(木)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v0-18" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v0-18','28-8')" id="cb-v0-18">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">投稿日</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/24</span>
+                    <span class="weekday">(金)</span>
+                </td>
+            
+            </tbody>
+            </table>
+        </div>
+        <div class="video-card" id="card-28-9">
+            <div class="video-header" style="border-left:4px solid #F472B6">
+                <div class="video-header-top">
+                    <div class="video-title">28-9</div>
+                    <div class="video-progress">
+                        <div class="progress-bar"><div class="progress-fill" id="pf-28-9" style="width:0%"></div></div>
+                        <span class="progress-count" id="pt-28-9">0/13</span>
+                    </div>
+                </div>
+                <div class="video-dates">
+                    撮影 未定 → 投稿 5/1(金)
+                </div>
+            </div>
+            <table class="schedule-table">
+            <tbody>
+                <tr><td colspan="4" class="phase-divider">── 撮影前 ──</td></tr>
+                
+                <tr><td colspan="4" class="phase-divider">── 撮影 ──</td></tr>
+                
+                <tr><td colspan="4" class="phase-divider">── 撮影後 ──</td></tr>
+                
+            <tr class="step-row upcoming" id="row-v1-0" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-0','28-9')" id="cb-v1-0">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">編集初稿提出</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/28</span>
+                    <span class="weekday">(火)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-1" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-1','28-9')" id="cb-v1-1">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">編集修正依頼</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/29</span>
+                    <span class="weekday">(水)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-2" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-2','28-9')" id="cb-v1-2">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">編集修正提出</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/29</span>
+                    <span class="weekday">(水)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-3" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-3','28-9')" id="cb-v1-3">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">編集修正依頼2</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/29</span>
+                    <span class="weekday">(水)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-4" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-4','28-9')" id="cb-v1-4">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">編集最終稿提出</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#10B98120;color:#10B981;border:1px solid #10B98140">出水</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/30</span>
+                    <span class="weekday">(木)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-5" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-5','28-9')" id="cb-v1-5">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">動画完成</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/30</span>
+                    <span class="weekday">(木)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-6" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-6','28-9')" id="cb-v1-6">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">サムネ初稿</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/28</span>
+                    <span class="weekday">(火)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-7" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-7','28-9')" id="cb-v1-7">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">サムネ修正指示</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/28</span>
+                    <span class="weekday">(火)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-8" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-8','28-9')" id="cb-v1-8">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">サムネ修正稿</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/29</span>
+                    <span class="weekday">(水)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-9" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-9','28-9')" id="cb-v1-9">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">サムネ修正指示2</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/29</span>
+                    <span class="weekday">(水)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-10" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-10','28-9')" id="cb-v1-10">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">サムネ納品</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#F59E0B20;color:#F59E0B;border:1px solid #F59E0B40">かいと</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/30</span>
+                    <span class="weekday">(木)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-11" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-11','28-9')" id="cb-v1-11">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">アップロード処理</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">4/30</span>
+                    <span class="weekday">(木)</span>
+                </td>
+            
+            <tr class="step-row upcoming" id="row-v1-12" data-phase="post">
+                <td class="check-cell">
+                    <label class="check-container">
+                        <input type="checkbox" onchange="toggleStep('v1-12','28-9')" id="cb-v1-12">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td class="step-name"><span class="step-label">投稿日</span></td>
+                <td class="assignee">
+                    <span class="assignee-badge" style="background:#3B82F620;color:#3B82F6;border:1px solid #3B82F640">たいが</span>
+                </td>
+                <td class="deadline">
+                    <span class="date">5/1</span>
+                    <span class="weekday">(金)</span>
+                </td>
+            
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+const VIDEO_TOTALS = {"28-8": 19, "28-9": 13};
+
+function loadState() {
+    try { return JSON.parse(localStorage.getItem('misawo_all')) || {}; }
+    catch { return {}; }
+}
+
+function saveState(s) {
+    localStorage.setItem('misawo_all', JSON.stringify(s));
+}
+
+function updateProgress() {
+    const state = loadState();
+    for (const [vid, total] of Object.entries(VIDEO_TOTALS)) {
+        let done = 0;
+        for (const [key, val] of Object.entries(state)) {
+            if (val && key.startsWith('v')) {
+                // count done for this video
+                const row = document.getElementById('row-' + key);
+                if (row && row.closest('#card-' + vid)) done++;
+            }
+        }
+        const pct = Math.round((done / total) * 100);
+        const pf = document.getElementById('pf-' + vid);
+        const pt = document.getElementById('pt-' + vid);
+        if (pf) pf.style.width = pct + '%';
+        if (pt) pt.textContent = done + '/' + total + ' (' + pct + '%)';
+    }
+}
+
+function toggleStep(gid, vid) {
+    const cb = document.getElementById('cb-' + gid);
+    const row = document.getElementById('row-' + gid);
+    const ur = document.getElementById('ur-' + gid);
+    const state = loadState();
+
+    state[gid] = cb.checked;
+    saveState(state);
+
+    if (cb.checked) {
+        row.classList.add('done');
+        if (ur) ur.style.display = 'none';
+    } else {
+        row.classList.remove('done');
+        if (ur) ur.style.display = '';
+    }
+    updateProgress();
+}
+
+function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelector('.tab-content#tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+}
+
+// init
+(function() {
+    const state = loadState();
+    for (const [gid, checked] of Object.entries(state)) {
+        if (!checked) continue;
+        const cb = document.getElementById('cb-' + gid);
+        const row = document.getElementById('row-' + gid);
+        const ur = document.getElementById('ur-' + gid);
+        if (cb) { cb.checked = true; }
+        if (row) { row.classList.add('done'); }
+        if (ur) { ur.style.display = 'none'; }
+    }
+    updateProgress();
+})();
+</script>
+
+</body>
+</html>

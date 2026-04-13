@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我武者羅 — プライドを脱いだ者が最速で吸収する</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap');
+
+  :root {
+    --bg: #0a0f0d;
+    --panel: rgba(14, 28, 20, 0.85);
+    --panel-border: rgba(0, 200, 150, 0.15);
+    --accent: #00c896;
+    --accent2: #00a0ff;
+    --accent3: #ff6b4a;
+    --accent4: #ffd700;
+    --accent5: #c77dff;
+    --text: #c8ddd4;
+    --text-dim: #5a7a6a;
+    --text-bright: #e8fff4;
+    --glow: rgba(0, 200, 150, 0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(0, 200, 150, 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(0, 160, 255, 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(255, 107, 74, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 200, 150, 0.008) 2px,
+      rgba(0, 200, 150, 0.008) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    text-align: center;
+    padding: 80px 0 60px;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255, 107, 74, 0.06) 0%, rgba(0, 200, 150, 0.03) 40%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse 5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+    50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+  }
+
+  .hero-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--accent3);
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--text-bright);
+    letter-spacing: 16px;
+    margin-bottom: 12px;
+    position: relative;
+    text-shadow: 0 0 40px rgba(255, 107, 74, 0.15);
+  }
+
+  .hero .sub {
+    font-size: 15px;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    font-weight: 400;
+  }
+
+  .hero .date {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 24px;
+    letter-spacing: 3px;
+    opacity: 0.5;
+  }
+
+  /* ── Section ── */
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  .section-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    color: var(--accent);
+    opacity: 0.5;
+    min-width: 30px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 2px;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--panel-border), transparent);
+  }
+
+  /* ── Panel ── */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 28px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--accent), transparent);
+    opacity: 0.5;
+  }
+
+  .panel.fire::before { background: linear-gradient(180deg, var(--accent3), transparent); }
+  .panel.blue::before { background: linear-gradient(180deg, var(--accent2), transparent); }
+  .panel.gold::before { background: linear-gradient(180deg, var(--accent4), transparent); }
+  .panel.purple::before { background: linear-gradient(180deg, var(--accent5), transparent); }
+
+  .panel-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.7;
+  }
+
+  .panel.fire .panel-label { color: var(--accent3); }
+  .panel.blue .panel-label { color: var(--accent2); }
+  .panel.gold .panel-label { color: var(--accent4); }
+  .panel.purple .panel-label { color: var(--accent5); }
+
+  .panel h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .panel p {
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 2;
+  }
+
+  .panel p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ── Highlight text ── */
+  .hl { color: var(--accent); font-weight: 500; }
+  .hl-fire { color: var(--accent3); font-weight: 500; }
+  .hl-blue { color: var(--accent2); font-weight: 500; }
+  .hl-gold { color: var(--accent4); font-weight: 500; }
+  .hl-purple { color: var(--accent5); font-weight: 500; }
+  .hl-bright { color: var(--text-bright); font-weight: 700; }
+
+  /* ── Flow diagram ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 32px 0;
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    background: rgba(0, 200, 150, 0.06);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    text-align: center;
+    min-width: 140px;
+    position: relative;
+  }
+
+  .flow-step .step-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    opacity: 0.6;
+  }
+
+  .flow-step .step-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+
+  .flow-step .step-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .flow-arrow {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    color: var(--accent);
+    opacity: 0.4;
+    padding: 0 8px;
+  }
+
+  @media (max-width: 768px) {
+    .flow { flex-direction: column; gap: 0; }
+    .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
+    .hero h1 { font-size: 40px; letter-spacing: 8px; }
+  }
+
+  /* ── Equation block ── */
+  .equation {
+    background: rgba(0, 200, 150, 0.04);
+    border: 1px solid rgba(0, 200, 150, 0.12);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 20px 0;
+    font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    line-height: 2.2;
+    text-align: center;
+  }
+
+  .equation .eq-line {
+    margin-bottom: 4px;
+  }
+
+  .equation .eq-label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0;
+    display: block;
+    margin-top: 8px;
+  }
+
+  /* ── Comparison block ── */
+  .versus {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: start;
+    margin: 20px 0;
+  }
+
+  .versus-side {
+    background: rgba(0, 200, 150, 0.03);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .versus-side.bad { border-color: rgba(255, 107, 74, 0.2); }
+  .versus-side.good { border-color: rgba(0, 200, 150, 0.25); }
+
+  .versus-side .vs-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+
+  .versus-side.bad .vs-label { color: var(--accent3); }
+  .versus-side.good .vs-label { color: var(--accent); }
+
+  .versus-side p {
+    font-size: 13px;
+    line-height: 1.9;
+  }
+
+  .versus-divider {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    color: var(--text-dim);
+    align-self: center;
+    opacity: 0.4;
+  }
+
+  @media (max-width: 768px) {
+    .versus { grid-template-columns: 1fr; }
+    .versus-divider { text-align: center; }
+  }
+
+  /* ── Quote block ── */
+  .quote-block {
+    border-left: 2px solid var(--accent3);
+    padding: 16px 24px;
+    margin: 20px 0;
+    background: rgba(255, 107, 74, 0.03);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .quote-block p {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-bright);
+    line-height: 2;
+    font-style: italic;
+  }
+
+  .quote-block .quote-src {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-style: normal;
+    margin-top: 8px;
+  }
+
+  /* ── Caution block ── */
+  .caution {
+    background: rgba(255, 215, 0, 0.04);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    position: relative;
+  }
+
+  .caution::before {
+    content: '⚠';
+    position: absolute;
+    top: 16px; left: 20px;
+    font-size: 16px;
+    opacity: 0.6;
+  }
+
+  .caution .caution-body {
+    padding-left: 28px;
+  }
+
+  .caution p {
+    font-size: 13px;
+    color: var(--accent4);
+    line-height: 1.9;
+  }
+
+  /* ── Final banner ── */
+  .final-banner {
+    text-align: center;
+    padding: 60px 20px;
+    margin-top: 40px;
+    position: relative;
+  }
+
+  .final-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent3), transparent);
+  }
+
+  .final-banner h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+    line-height: 1.8;
+  }
+
+  .final-banner .final-sub {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 2;
+  }
+
+  .final-banner .final-eq {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    color: var(--accent3);
+    letter-spacing: 2px;
+    margin-top: 24px;
+    opacity: 0.8;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══ HERO ═══ -->
+  <div class="hero">
+    <div class="hero-label">PRINCIPLE</div>
+    <h1>我武者羅</h1>
+    <div class="sub">プライドを脱いだ者が最速で吸収する</div>
+    <div class="date">2026.04.13 — TAIGA KONDO</div>
+  </div>
+
+  <!-- ═══ 01: 原理 ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">原理</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel fire">
+      <div class="panel-label">CORE PRINCIPLE</div>
+      <h3>プライドを捨てた人間が、一番強い。</h3>
+      <p>
+        これは精神論じゃない。<span class="hl-bright">構造の話</span>。
+      </p>
+      <p>
+        プライド＝<span class="hl-fire">有能感の鎧</span>を着てる状態では、入ってくる情報にフィルターがかかる。
+        「これは知ってる」「俺の方がわかってる」「認めたら負け」——
+        このフィルターが<span class="hl-fire">学習速度を殺す</span>。
+      </p>
+      <p>
+        鎧を脱いだ人間は、全方位から情報が入る。
+        同じ時間を過ごしても、<span class="hl">吸収量が桁違い</span>になる。
+      </p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">EVIDENCE</div>
+      <h3>Taigaの実証データ</h3>
+      <p>
+        過去にプライドを捨てられた瞬間は全て同じ構造を持ってる。
+        <span class="hl-bright">環境が変わって「一番下」になった時</span>。
+        守るべき有能感がゼロだから、鎧を着る理由がない。
+      </p>
+      <p>
+        まなとくんとの出会いがまさにそう。YouTube運用において完全な初心者だったから、素直に全部受け取れた。
+        <span class="hl">憑依できた</span>。そして<span class="hl">最速で伸びた</span>。
+      </p>
+      <p>
+        「人格じゃなくて機能に話してくれる」が刺さったのも、有能感が攻撃されないから受け取れたということ。
+      </p>
+    </div>
+
+    <div class="quote-block">
+      <p>我武者羅とは、意図的に「一番下」の状態を作り出すこと。<br>環境が変わるのを待つんじゃなく、今いる場所で鎧を脱ぐ選択をすること。</p>
+    </div>
+  </div>
+
+  <!-- ═══ 02: なぜ鎧を着てしまうのか ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">なぜ鎧を着てしまうのか</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel blue">
+      <div class="panel-label">ROOT CAUSE</div>
+      <h3>プライドの正体＝暗黒期に戻らないための生存装置</h3>
+      <p>
+        高校でスタメン取れない→有能感ゼロ→昼夜逆転→何がしたいかわからない。
+        あの空白が大きすぎて、<span class="hl-blue">「負けたらあの自分に戻る」</span>という恐怖が鎧を着せ続けてる。
+      </p>
+      <p>
+        有能感で世界を測る→同じ基準が自分に返る→失敗が許されない→鎧が外せない。
+        <span class="hl-bright">外を裁く目と、自分を縛る鎧は同じもの</span>。
+      </p>
+    </div>
+
+    <div class="equation">
+      <div class="eq-line">有能感で人を裁く → 同じ基準が自分に返る → 弱さを隠す</div>
+      <div class="eq-line">→ 完成品病 → 1人で抱える → 成長が止まる</div>
+      <span class="eq-label">= 外への攻撃性と内への自罰は同じ回路</span>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">INSIGHT — 2026.04.05</div>
+      <p>
+        <span class="hl-bright">「これが愛なのか、俺は有能感で人を見て、自分にもその攻撃性が帰ってきてたんだな」</span>
+      </p>
+      <p>
+        ——この気づきが出た時点で、Taigaはすでに鎧の外側に立ってる。
+        構造が見えてるということは、構造に支配されていないということ。
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══ 03: 4段の回路 ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">我武者羅の回路 — 4段プロセス</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-num">STEP 01</div>
+        <div class="step-title">仲良くなる</div>
+        <div class="step-desc">安全地帯をつくる</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">STEP 02</div>
+        <div class="step-title">プライドを捨てる</div>
+        <div class="step-desc">鎧を意識的に脱ぐ</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">STEP 03</div>
+        <div class="step-title">聞いて教わる</div>
+        <div class="step-desc">わからんを武器にする</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">STEP 04</div>
+        <div class="step-title">徹底的に真似する</div>
+        <div class="step-desc">判断構造を取る</div>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="panel">
+      <div class="panel-label">STEP 01 — 仲良くなる</div>
+      <h3>安全地帯がなければ鎧は脱げない</h3>
+      <p>
+        Taigaの有能感OSは「安全じゃない相手」に対しては鎧を絶対に脱がない。
+        まなとくんに鎧を脱げたのは、<span class="hl">「人格じゃなく機能に話してくれる」関係性</span>があったから。
+        有能感を攻撃されない信頼がベースにあって初めて、次のステップが可能になる。
+      </p>
+      <p>
+        仲良くなる＝媚びることじゃない。<span class="hl-bright">「この人の前では失敗しても大丈夫だ」</span>と体が判断する関係を作ること。
+      </p>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="panel fire">
+      <div class="panel-label">STEP 02 — プライドを捨てる</div>
+      <h3>「この領域では一番下や」と自分で宣言する</h3>
+      <p>
+        関係性ができた上で、<span class="hl-fire">「この人から学ぶ」と腹を括る</span>。
+        ここで有能感の鎧を意識的に外す。
+      </p>
+      <p>
+        環境に外してもらうんじゃなく、<span class="hl-bright">自分で外す</span>。
+        これがまなとくんに対して自然にできてたことを、意図的にやるということ。
+      </p>
+      <p>
+        脱げない時は「あ、今鎧着てるな」とラベルを貼るだけでいい。
+        認識した時点で、鎧は半分外れてる。
+      </p>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="panel blue">
+      <div class="panel-label">STEP 03 — わからんことを聞いて教えてもらう</div>
+      <h3>「わからん」は恥じゃなく、攻略本のページを開く行為</h3>
+      <p>
+        有能感が最も痛む瞬間。でも仲良くなってプライドを外した後なら、
+        「わからん」は<span class="hl-blue">攻略本を見てるだけ</span>の感覚に変わる。
+      </p>
+      <p>
+        まなとくんに<span class="hl-bright">「なんで今そう判断した？」</span>と聞けてたのと同じ。
+        特に「しなかった」こと（不作為）に構造がある。
+        「なんであえて黙ってたん？」「なんでそっち選んだ？」——この問いが攻略本に書き込まれる。
+      </p>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="panel gold">
+      <div class="panel-label">STEP 04 — 徹底的に真似する</div>
+      <h3>行動コピーじゃない。判断構造を取る。</h3>
+      <p>
+        OSが違う人間の行動をそのままコピーしても機能しない。
+        <span class="hl-gold">「なぜそうしたか」の因果を分解して、自分のOSに再構築する</span>。
+      </p>
+      <p>
+        <span class="hl-bright">憑依 → 分解 → 再構築</span>。まなとくんで確立した学習法を、あらゆる相手に展開する。
+        真似＝力不足の証明じゃない。真似＝攻略本を参照してるだけ。
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══ 04: なぜ最強なのか ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">なぜこれが「一番強い」のか</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel fire">
+      <div class="panel-label">STRUCTURAL PROOF</div>
+      <h3>脱力と我武者羅は同じコインの裏表</h3>
+      <p>
+        <span class="hl">脱力</span>＝余計な力が入ってない状態＝流れが見える＝最適な判断ができる。
+      </p>
+      <p>
+        <span class="hl-fire">我武者羅</span>＝守るものがない状態＝フィルターがない＝最速で吸収できる。
+      </p>
+      <p>
+        力んでる状態＝プライドを守ってる状態＝視野が狭い＝勘が鈍い＝成長が遅い。
+        <span class="hl-bright">全部繋がってる</span>。
+      </p>
+    </div>
+
+    <div class="versus">
+      <div class="versus-side bad">
+        <div class="vs-label">PRIDE ON — 鎧装着</div>
+        <p>
+          情報にフィルター<br>
+          「知ってる」で閉じる<br>
+          失敗＝存在の危機<br>
+          1人で抱える<br>
+          成長速度 ×0.3
+        </p>
+      </div>
+      <div class="versus-divider">VS</div>
+      <div class="versus-side good">
+        <div class="vs-label">PRIDE OFF — 我武者羅</div>
+        <p>
+          全方位から吸収<br>
+          「教えて」で開く<br>
+          失敗＝攻略本の1ページ<br>
+          仲間と一緒に伸びる<br>
+          成長速度 ×3.0
+        </p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">PARADOX</div>
+      <h3>プライドを捨てた方が、プライドが満たされるものを手に入れる</h3>
+      <p>
+        まなとくんとの関係で起きたことを分解すると——
+        プライドなく飛び込んだ → 全吸収 → 憑依学習が機能 → 最速で伸びた → 結果が出た → 信頼が積み上がった。
+      </p>
+      <p>
+        <span class="hl-bright">鎧を脱いだ方が、結果的に鎧が要らない状態を手に入れる</span>。
+        これが逆説であり、原理。
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══ 05: 展開条件 ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">全方位への展開</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="panel purple">
+      <div class="panel-label">EXPANSION</div>
+      <h3>「上」だけじゃなく「横」と「下」にも回路を開く</h3>
+      <p>
+        まなとくんは明確に格上だったから自然に開いた。
+        本当のテストは、<span class="hl-purple">自分が「上」だと無意識にカテゴライズしてる相手</span>。
+      </p>
+      <p>
+        チームメンバーが良い判断をした時、「なんでそう判断した？」と同じ目で聞けるか。
+        聞けた時、有能感が<span class="hl-fire">チクっ</span>としないか。
+        チクっとしても「あ、鎧着ようとしてるな」とラベル貼って、そのまま構造を取りにいけるか。
+      </p>
+      <p>
+        <span class="hl-bright">誰からでも学べる状態</span>——これが我武者羅の完成形であり、キーガン第5の実装の一つ。
+      </p>
+    </div>
+
+    <div class="caution">
+      <div class="caution-body">
+        <p>
+          <span class="hl-gold">「我武者羅でいる俺かっけえ」は罠。</span><br>
+          プライドを捨てた自分に新しいプライドが宿る。<br>
+          「俺は誰からでも学べる側の人間」——これが出た瞬間、鎧が復活してる。<br>
+          意識してやってるうちはまだ途中。考えなくても鎧が外れてる状態が完成形。<br>
+          <span class="hl-gold">身勝手の極意と同じ。</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 06: 数式 ═══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">構造式</span>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="equation">
+      <div class="eq-line">我武者羅 = 脱力の攻撃形態</div>
+      <div class="eq-line">= プライド OFF × 全方位吸収 × 憑依→分解→再構築</div>
+      <span class="eq-label">守るものがゼロの人間が、最も速く強くなる</span>
+    </div>
+
+    <div class="equation">
+      <div class="eq-line">成長速度 = 吸収量 × 再構築精度</div>
+      <div class="eq-line">吸収量 = 接触情報 × (1 - プライドフィルター)</div>
+      <div class="eq-line">プライドフィルター → 0 の時、吸収量 → MAX</div>
+      <span class="eq-label">フィルターを外す唯一の方法 = 鎧が要らないと体で知ること</span>
+    </div>
+
+    <div class="equation">
+      <div class="eq-line">仲良くなる → プライドを捨てる → 聞く → 真似する</div>
+      <div class="eq-line">= 安全地帯 → 鎧OFF → 攻略本OPEN → OS再構築</div>
+      <span class="eq-label">まなと体験の汎用化 = あらゆる相手に同じ回路を展開する</span>
+    </div>
+  </div>
+
+  <!-- ═══ FINAL ═══ -->
+  <div class="final-banner">
+    <h2>守るものを捨てた人間だけが、<br>全てを吸収できる。</h2>
+    <div class="final-sub">
+      「プライドを捨てる」んじゃない。<br>
+      プライドが要らなくなる体験を積む。<br>
+      捨てようとするほど握りしめる。<br>
+      要らなくなったら勝手に手から落ちる。<br>
+      それが脱力。
+    </div>
+    <div class="final-eq">GAMUSYARA = DATSURYOKU × ATTACK MODE</div>
+  </div>
+
+</div>
+
+</body>
+</html>

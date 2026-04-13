@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0.1% THINKING OS v2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+:root {
+  --bg:#0a0f14;--s1:#111a22;--s2:#162029;--s3:#1a2733;
+  --ac:#00e5c8;--ac2:#00b8d4;--ac3:#0097a7;
+  --gold:#ffd54f;--red:#ff5252;--org:#ff9800;--purple:#b388ff;
+  --t:#e0e8ef;--td:#7a8e9f;--tw:#ffffff;
+  --brd:rgba(0,229,200,.15);--glow:rgba(0,229,200,.3);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--t);line-height:1.7;overflow-x:hidden;}
+.wrap{max-width:820px;margin:0 auto;padding:16px 14px 80px;}
+
+/* --- NAV --- */
+.nav{position:sticky;top:0;z-index:50;background:rgba(10,15,20,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--brd);padding:8px 0;margin-bottom:24px;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;}
+.nav a{display:inline-block;font-size:10px;color:var(--td);text-decoration:none;padding:4px 10px;border:1px solid transparent;border-radius:16px;letter-spacing:.5px;transition:.2s;}
+.nav a:hover,.nav a:focus{color:var(--ac);border-color:var(--brd);}
+
+/* --- HEADER --- */
+.hdr{text-align:center;padding:32px 0 24px;border-bottom:1px solid var(--brd);margin-bottom:32px;}
+.hdr-label{font-size:9px;letter-spacing:6px;color:var(--ac);text-transform:uppercase;margin-bottom:6px;}
+.hdr h1{font-size:26px;font-weight:900;color:var(--tw);letter-spacing:2px;}
+.hdr-sub{font-size:12px;color:var(--td);margin-top:4px;}
+.hdr-tags{margin-top:12px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+.hdr-tags span{font-size:10px;padding:3px 10px;border-radius:16px;border:1px solid var(--brd);}
+.tag-m{border-color:var(--ac)!important;color:var(--ac);}
+.tag-y{border-color:var(--gold)!important;color:var(--gold);}
+.tag-t{color:var(--td);}
+
+/* --- NORTH STAR --- */
+.ns{background:linear-gradient(135deg,rgba(0,229,200,.07),rgba(0,184,212,.03));border:1px solid var(--brd);border-radius:12px;padding:20px;text-align:center;margin-bottom:32px;position:relative;}
+.ns::before{content:'N';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--ac);color:var(--bg);font-weight:900;font-size:13px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.ns p{font-size:15px;font-weight:500;color:var(--tw);}
+.ns small{font-size:10px;color:var(--td);display:block;margin-top:6px;}
+
+/* --- SECTION --- */
+.sec{margin-bottom:36px;}
+.sec-t{font-size:10px;letter-spacing:4px;color:var(--ac);font-weight:700;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:8px;}
+.sec-num{background:var(--ac);color:var(--bg);font-size:9px;padding:2px 7px;border-radius:4px;font-weight:900;}
+
+/* --- CARD --- */
+.card{background:var(--s1);border:1px solid var(--brd);border-radius:10px;padding:20px;margin-bottom:12px;position:relative;overflow:hidden;}
+.card:hover{border-color:rgba(0,229,200,.3);}
+.card-h{font-size:15px;font-weight:700;color:var(--tw);margin-bottom:8px;}
+.card-sub{font-size:10px;color:var(--td);letter-spacing:1px;margin-bottom:8px;}
+.card p,.card li{font-size:12px;line-height:1.8;}
+.card ul{padding-left:16px;}
+.card li{margin-bottom:4px;}
+
+/* --- RULE CARD --- */
+.rule{display:flex;gap:12px;align-items:flex-start;background:var(--s1);border:1px solid var(--brd);border-radius:10px;padding:16px;margin-bottom:8px;}
+.rule-n{font-size:20px;font-weight:900;color:rgba(0,229,200,.2);flex-shrink:0;width:32px;text-align:center;}
+.rule-body{flex:1;}
+.rule-title{font-size:13px;font-weight:700;color:var(--tw);margin-bottom:4px;}
+.rule-desc{font-size:11px;color:var(--td);line-height:1.7;}
+
+/* --- BRAIN MODEL --- */
+.brain-model{background:var(--s2);border:1px solid var(--brd);border-radius:12px;padding:20px;margin-bottom:16px;}
+.brain-layer{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;margin-bottom:6px;border:1px solid transparent;transition:.2s;}
+.brain-layer:hover{border-color:var(--brd);background:var(--s1);}
+.bl-tag{font-size:9px;font-weight:900;padding:2px 8px;border-radius:4px;flex-shrink:0;min-width:28px;text-align:center;}
+.bl-env{background:rgba(179,136,255,.15);color:var(--purple);}
+.bl-l1{background:rgba(0,229,200,.12);color:var(--ac);}
+.bl-l2{background:rgba(0,229,200,.12);color:var(--ac);}
+.bl-l3{background:rgba(255,213,79,.12);color:var(--gold);}
+.bl-l4{background:rgba(255,152,0,.12);color:var(--org);}
+.bl-l5{background:rgba(255,82,82,.12);color:var(--red);}
+.bl-l6{background:rgba(0,151,167,.12);color:var(--ac3);}
+.bl-l0{background:rgba(122,142,159,.12);color:var(--td);}
+.bl-emo{background:rgba(255,82,82,.08);color:var(--red);border:1px dashed rgba(255,82,82,.3);}
+.bl-name{font-size:12px;font-weight:500;color:var(--t);}
+.bl-desc{font-size:10px;color:var(--td);margin-left:auto;}
+.brain-note{font-size:10px;color:var(--td);background:var(--s1);padding:10px;border-radius:6px;margin-top:8px;line-height:1.7;border-left:2px solid var(--ac3);}
+.brain-note strong{color:var(--t);}
+
+/* --- COMPARE TABLE --- */
+.cmp{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:11px;}
+.cmp th{background:var(--s2);color:var(--td);font-weight:700;padding:8px 10px;text-align:left;border-bottom:1px solid var(--brd);font-size:10px;letter-spacing:1px;}
+.cmp td{padding:8px 10px;border-bottom:1px solid rgba(0,229,200,.06);vertical-align:top;line-height:1.6;}
+.cmp tr:hover td{background:rgba(0,229,200,.03);}
+.cmp .col-l{color:var(--td);width:60px;}
+.cmp .col-m{color:var(--ac);}
+.cmp .col-t{color:var(--org);}
+.cmp .col-g{color:var(--red);font-weight:700;}
+
+/* --- ROOT TREE --- */
+.root-tree{background:var(--s1);border:1px solid var(--brd);border-radius:10px;padding:16px;margin-bottom:10px;}
+.rt-problem{font-size:13px;font-weight:700;color:var(--org);margin-bottom:6px;}
+.rt-chain{font-size:11px;color:var(--td);line-height:1.8;padding-left:12px;border-left:2px solid rgba(255,152,0,.2);}
+.rt-chain strong{color:var(--t);}
+.rt-root{font-size:11px;color:var(--red);font-weight:700;margin-top:4px;}
+
+/* --- PITFALL --- */
+.pit{display:flex;gap:12px;background:var(--s1);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:8px;align-items:flex-start;}
+.pit-n{font-size:16px;font-weight:900;color:rgba(255,82,82,.3);flex-shrink:0;width:24px;}
+.pit-body{flex:1;}
+.pit-title{font-size:12px;font-weight:700;color:var(--tw);margin-bottom:3px;}
+.pit-trigger{font-size:10px;color:var(--td);}
+.pit-override{font-size:10px;color:var(--ac);margin-top:4px;padding:4px 8px;background:rgba(0,229,200,.06);border-radius:4px;display:inline-block;}
+
+/* --- REWRITE --- */
+.rw{background:var(--s1);border:1px solid var(--brd);border-radius:10px;padding:14px 16px;margin-bottom:8px;}
+.rw-n{font-size:9px;color:var(--ac);font-weight:700;margin-bottom:4px;}
+.rw-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;}
+.rw-old{color:var(--td);text-decoration:line-through;}
+.rw-arr{color:var(--ac);font-weight:900;}
+.rw-new{color:var(--ac);font-weight:700;}
+.rw-why{font-size:10px;color:var(--td);margin-top:6px;line-height:1.7;}
+
+/* --- ROUTE --- */
+.route{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+@media(max-width:500px){.route{grid-template-columns:1fr;}}
+.route-card{background:var(--s1);border:1px solid var(--brd);border-radius:10px;padding:14px;}
+.route-title{font-size:12px;font-weight:700;color:var(--tw);margin-bottom:4px;}
+.route-how{font-size:10px;color:var(--td);line-height:1.7;}
+.route-speed{font-size:9px;margin-top:6px;display:inline-block;padding:2px 8px;border-radius:4px;}
+.spd-fast{background:rgba(0,229,200,.1);color:var(--ac);}
+.spd-mid{background:rgba(255,213,79,.1);color:var(--gold);}
+.spd-slow{background:rgba(255,152,0,.1);color:var(--org);}
+
+/* --- SCENARIO --- */
+.scn{background:var(--s1);border:1px solid var(--brd);border-radius:10px;padding:14px 16px;margin-bottom:8px;}
+.scn-if{font-size:11px;color:var(--org);font-weight:700;margin-bottom:4px;}
+.scn-then{font-size:12px;color:var(--ac);font-weight:500;margin-bottom:4px;}
+.scn-why{font-size:10px;color:var(--td);}
+
+/* --- BOOT --- */
+.boot{display:flex;gap:12px;margin-bottom:10px;align-items:flex-start;}
+.boot-t{font-size:9px;color:var(--ac);font-weight:700;width:44px;flex-shrink:0;text-align:right;padding-top:4px;}
+.boot-line{width:2px;background:var(--brd);flex-shrink:0;min-height:44px;position:relative;}
+.boot-line::before{content:'';position:absolute;top:4px;left:-3px;width:8px;height:8px;border-radius:50%;background:var(--ac);}
+.boot-c{background:var(--s1);border:1px solid var(--brd);border-radius:8px;padding:10px 14px;flex:1;}
+.boot-act{font-size:12px;font-weight:500;color:var(--tw);}
+.boot-w{font-size:10px;color:var(--td);}
+
+/* --- ANTI --- */
+.anti{background:rgba(255,82,82,.04);border:1px solid rgba(255,82,82,.2);border-radius:12px;padding:20px;margin-bottom:32px;}
+.anti-label{font-size:10px;letter-spacing:4px;color:var(--red);font-weight:700;margin-bottom:8px;}
+.anti-title{font-size:18px;font-weight:900;color:var(--red);margin-bottom:10px;}
+.anti-body{font-size:11px;color:var(--td);line-height:1.8;}
+.anti-body strong{color:var(--t);}
+.anti-fix{background:rgba(0,229,200,.06);border:1px solid var(--brd);border-radius:8px;padding:10px;font-size:12px;color:var(--ac);font-weight:500;margin-top:10px;}
+
+/* --- ENDPOINT --- */
+.end{text-align:center;padding:32px 16px;border-top:1px solid var(--brd);}
+.end-f{font-size:20px;font-weight:900;color:var(--tw);}
+.end-f .op{color:var(--ac);}
+.end-f .eq{color:var(--gold);}
+.end-d{font-size:12px;color:var(--td);max-width:480px;margin:10px auto 0;line-height:1.8;}
+.end-box{margin-top:16px;font-size:11px;color:var(--td);background:var(--s1);border:1px solid var(--brd);border-radius:8px;padding:14px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.8;text-align:left;}
+.end-box strong{color:var(--ac);}
+
+@media(max-width:500px){
+  .wrap{padding:10px 8px 60px;}
+  .hdr h1{font-size:20px;}
+  .cmp{font-size:10px;}
+  .cmp th,.cmp td{padding:6px 6px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- NAV -->
+<nav class="nav">
+<a href="#game">GAME RULES</a>
+<a href="#win">WHAT WINS</a>
+<a href="#model">BRAIN MODEL</a>
+<a href="#manato">MANATO</a>
+<a href="#taiga">TAIGA NOW</a>
+<a href="#delta">DELTA</a>
+<a href="#roots">ROOT CAUSE</a>
+<a href="#pits">PITFALLS</a>
+<a href="#pin">CENTER PIN</a>
+<a href="#routes">4 ROUTES</a>
+<a href="#scenes">SCENARIOS</a>
+<a href="#boot">BOOT</a>
+</nav>
+
+<!-- HEADER -->
+<header class="hdr">
+<div class="hdr-label">REVERSE-ENGINEERED FROM THE TOP</div>
+<h1>0.1% THINKING OS <span style="font-size:12px;color:var(--td)">v2</span></h1>
+<div class="hdr-sub">ゲームルール → 必要能力 → 脳モデル → 差分 → センターピン → 介入 → 行動</div>
+<div class="hdr-tags">
+<span class="tag-m">MANATO OS 105</span>
+<span class="tag-y">YUTORIKUN 6 RULES</span>
+<span class="tag-t">COGNITIVE SCIENCE</span>
+</div>
+</header>
+
+<!-- NORTH STAR -->
+<div class="ns">
+<p>みんなでNetflix超えて最高の景色見て嬉し泣きする</p>
+<small>LIFE VISION: クリエイティブで日本を守る</small>
+</div>
+
+<!-- ==================== 01: GAME RULES ==================== -->
+<div class="sec" id="game">
+<div class="sec-t"><span class="sec-num">01</span>GAME RULES -- 資本主義 × YouTube 0.1% のルール</div>
+
+<div class="card">
+<div class="card-h">資本主義ゲームの基本ルール</div>
+<div class="card-sub">SOURCE: MANATO 105 + YUTORIKUN CARD THEORY</div>
+</div>
+
+<div class="rule"><div class="rule-n">1</div><div class="rule-body"><div class="rule-title">時間 = 最強の複利資産</div><div class="rule-desc">23歳の1時間は35歳の1時間より複利が長い。時間→金は最悪の交換レート。時間→スキル×人脈×信用が最適解。</div></div></div>
+
+<div class="rule"><div class="rule-n">2</div><div class="rule-body"><div class="rule-title">判断精度 > 努力量</div><div class="rule-desc">同じ努力でもタイミングで100倍違う。何をやるかより「いつ・何を選ぶか」が勝敗を決める。カード交換の判断精度がゲームの本質。</div></div></div>
+
+<div class="rule"><div class="rule-n">3</div><div class="rule-body"><div class="rule-title">スピード = 弱者の唯一の武器</div><div class="rule-desc">資本力・ブランド力で勝てないなら速さで勝て。3時間で終わることを1週間かけるな。遅れは複利で効く。</div></div></div>
+
+<div class="rule"><div class="rule-n">4</div><div class="rule-body"><div class="rule-title">死なない > 勝つ</div><div class="rule-desc">KPIは倒産させないこと。勝とうとするから負ける。負けないようにするから勝てる。守りに徹してリスクヘッジし続ければ自然に伸びる。</div></div></div>
+
+<div class="rule"><div class="rule-n">5</div><div class="rule-body"><div class="rule-title">人 = スケールする唯一の変数</div><div class="rule-desc">事業成長 = 優秀なメンバーの数に比例。80点5人より200点1人。採用と育成が最上位の経営課題。</div></div></div>
+
+<div class="rule"><div class="rule-n">6</div><div class="rule-body"><div class="rule-title">複利が全てを支配する</div><div class="rule-desc">信頼は複利で増える。違和感は複利で悪化する。遅延は複利で損失になる。1日の行動が3年後の状態を決める。</div></div></div>
+
+<div class="rule"><div class="rule-n">7</div><div class="rule-body"><div class="rule-title">市場には時計がある</div><div class="rule-desc">2-3年で覇者が決まる。椅子取りゲーム。みんなが動いてない時にフルスロットルで先手を打った者が楽に勝つ。</div></div></div>
+
+<div class="card" style="border-color:var(--gold);">
+<div class="card-h" style="color:var(--gold);">YouTube 0.1% の追加ルール</div>
+</div>
+
+<div class="rule"><div class="rule-n">8</div><div class="rule-body"><div class="rule-title">質 = 視聴者の現実であって作り手のエゴじゃない</div><div class="rule-desc">サムネ分析で3秒以上見るのは無意味。瞬間の直感が視聴者の現実。市場のリテラシーレベルとの粒度ズレが伸びない唯一の原因。</div></div></div>
+
+<div class="rule"><div class="rule-n">9</div><div class="rule-body"><div class="rule-title">試行回数 × フィードバック速度 = 成長速度</div><div class="rule-desc">完璧1本 < 70点10本。身体性ノウハウ = Σ(仮説 × 実行 × 結果照合)。テキストなぞりは蓄積ゼロ。</div></div></div>
+
+<div class="rule"><div class="rule-n">10</div><div class="rule-body"><div class="rule-title">個の力を極限まで鍛える一択</div><div class="rule-desc">コンサルするより自分でぶち伸ばした方が100倍利益出る。YouTube力だけSSSの人間になる。職人として突き抜ける。</div></div></div>
+</div>
+
+<!-- ==================== 02: WHAT WINS ==================== -->
+<div class="sec" id="win">
+<div class="sec-t"><span class="sec-num">02</span>WHAT WINS -- このゲームで勝つのに必要な能力</div>
+
+<div class="rule"><div class="rule-n">A</div><div class="rule-body"><div class="rule-title">即実行力</div><div class="rule-desc">思いついた瞬間に終わらせる。バッファを置かない。手元のボールは今投げる。</div></div></div>
+<div class="rule"><div class="rule-n">B</div><div class="rule-body"><div class="rule-title">市場認知力</div><div class="rule-desc">数字・損失・相手の受信側が見える認知フィルター。自分じゃなく市場を見てる。</div></div></div>
+<div class="rule"><div class="rule-n">C</div><div class="rule-body"><div class="rule-title">判断精度</div><div class="rule-desc">レバレッジ計算 × 複利計算で選ぶ。有能に見えるかじゃなく、何倍になるかで選ぶ。</div></div></div>
+<div class="rule"><div class="rule-n">D</div><div class="rule-body"><div class="rule-title">守りの設計力</div><div class="rule-desc">攻撃×防御をペアで打つ。最高と最悪を同時に想定。死なない仕組みを先に作る。</div></div></div>
+<div class="rule"><div class="rule-n">E</div><div class="rule-body"><div class="rule-title">チームレバレッジ</div><div class="rule-desc">委譲・育成・ボールを手放す力。仲間に流すほど自分も速くなる構造。</div></div></div>
+<div class="rule"><div class="rule-n">F</div><div class="rule-body"><div class="rule-title">試行回数の多さ</div><div class="rule-desc">完璧1本よりデータが取れる10本。仮説→実行→照合のサイクル速度。</div></div></div>
+<div class="rule"><div class="rule-n">G</div><div class="rule-body"><div class="rule-title">思考トレース学習</div><div class="rule-desc">行動じゃなく判断構造を取る。失敗=データ。差分記録。毎晩の棚卸し。</div></div></div>
+</div>
+
+<!-- ==================== 03: BRAIN MODEL ==================== -->
+<div class="sec" id="model">
+<div class="sec-t"><span class="sec-num">03</span>BRAIN MODEL -- 修正版・認知科学ベース</div>
+
+<div class="brain-model">
+<div class="brain-layer"><span class="bl-tag bl-env">ENV</span><span class="bl-name">環境（外部入力）</span><span class="bl-desc">見えるもの・触れる人・場所</span></div>
+<div style="text-align:center;color:var(--td);font-size:10px;padding:2px 0;">▼ ▲</div>
+<div class="brain-layer"><span class="bl-tag bl-l1">L1</span><span class="bl-name">認知フィルター</span><span class="bl-desc">世界の何が「見える」か</span></div>
+<div style="text-align:center;color:var(--td);font-size:10px;padding:2px 0;">▼ ▲</div>
+<div class="brain-layer"><span class="bl-tag bl-l2">L2</span><span class="bl-name">価値観・信念</span><span class="bl-desc">何が「正しい/大事」か</span></div>
+<div style="text-align:center;color:var(--td);font-size:10px;padding:2px 0;">▼ ▲</div>
+<div class="brain-layer"><span class="bl-tag bl-l3">L3</span><span class="bl-name">欲求構造</span><span class="bl-desc">何を「欲しい」と感じるか</span></div>
+<div style="text-align:center;color:var(--td);font-size:10px;padding:2px 0;">▼ ▲</div>
+<div class="brain-layer"><span class="bl-tag bl-l4">L4</span><span class="bl-name">判断回路</span><span class="bl-desc">どうやって「選ぶ」か</span></div>
+<div style="text-align:center;color:var(--td);font-size:10px;padding:2px 0;">▼ ▲</div>
+<div class="brain-layer"><span class="bl-tag bl-l5">L5</span><span class="bl-name">行動パターン</span><span class="bl-desc">実際に何を「やる」か</span></div>
+<div style="text-align:center;color:var(--td);font-size:10px;padding:2px 0;">▼ ▲</div>
+<div class="brain-layer"><span class="bl-tag bl-l6">L6</span><span class="bl-name">学習回路</span><span class="bl-desc">経験から何を「取る」か</span></div>
+<div style="text-align:center;color:var(--td);font-size:10px;padding:6px 0;">── ── ──</div>
+<div class="brain-layer" style="border:1px dashed rgba(255,82,82,.2);"><span class="bl-tag bl-emo">EMO</span><span class="bl-name">感情（並列システム）</span><span class="bl-desc">全層に同時に影響する</span></div>
+<div style="text-align:center;color:var(--td);font-size:10px;padding:6px 0;">── ── ──</div>
+<div class="brain-layer" style="background:var(--s1);"><span class="bl-tag bl-l0">L0</span><span class="bl-name">無意識 / 自動処理</span><span class="bl-desc">L1-L6が反復で沈殿した層</span></div>
+</div>
+
+<div class="brain-note">
+<strong>3つの科学的修正:</strong><br>
+① 全矢印は双方向。行動(L5)が信念(L2)を変える（認知的不協和）。欲求(L3)が認知(L1)を歪める（動機づけ推論）<br>
+② 感情は独立した層じゃなく全層に並走する並列システム。感情なしでは判断できない（ソマティック・マーカー仮説）<br>
+③ L0（無意識）が行動の95%を担当。L1-L6は意識的処理（System 2）。反復でL0に書き込まれて初めて「回路」になる<br><br>
+<strong>介入の4ルート:</strong> 信念書き換え(L2) / 環境設計(ENV) / 行動先行(L5→L2) / 感情体験(EMO→全層)
+</div>
+</div>
+
+<!-- ==================== 04: MANATO'S BRAIN ==================== -->
+<div class="sec" id="manato">
+<div class="sec-t"><span class="sec-num">04</span>MANATO'S BRAIN -- 6層マッピング</div>
+
+<div class="card"><div class="card-sub" style="color:var(--ac);">L1 認知フィルター -- 何が見えてるか</div>
+<ul>
+<li><strong>数字</strong>が見える — 着金、再生数、利益率、遅延日数。感覚じゃなく数値で世界を処理</li>
+<li><strong>相手の受信側</strong>が見える — 自分が言ったことじゃなく、相手がどう理解したか</li>
+<li><strong>3秒の直感</strong>が見える — 視聴者の時間軸で判断。分析者の時間軸で見ない</li>
+<li><strong>損失</strong>が見える — チャンスじゃなくて「やらなかった場合の損失」が先に見える</li>
+<li>見えてないもの: <strong>自分が有能かどうか</strong>（この変数がフィルターに存在しない）</li>
+</ul></div>
+
+<div class="card"><div class="card-sub" style="color:var(--ac);">L2 価値観・信念 -- 何を正しいと思ってるか</div>
+<ul>
+<li>仕事 = 最高に楽しいゲーム（ドーパミン中毒）</li>
+<li>遅れ = 複利で効く損失（1日 → 3年後1ヶ月）</li>
+<li>自分 = 代替可能（低く見積もった方が伸びる）</li>
+<li>負け = 情報 + 燃料（「負けてる感覚を味わえるの幸せ」）</li>
+<li>最強かどうか = 他者が言うこと。俺が決めることじゃない</li>
+<li>完璧 < 速さ（3時間で終わることを1週間かけるな）</li>
+<li>忙しさ ≠ 成果（充実感を持つな。成果だけで測れ）</li>
+<li>やりたい!の8割 = 逃避（やるべきことから逃げてる）</li>
+</ul></div>
+
+<div class="card"><div class="card-sub" style="color:var(--gold);">L3 欲求構造 -- 何が欲しいか</div>
+<ul>
+<li>第1位: <strong>問題解決のドーパミン</strong>（仮説→検証→結果のサイクル中毒）</li>
+<li>第2位: 仲間の成長（「報酬が上がるのが嬉しすぎる」）</li>
+<li>第3位: お金（みんなで楽しいことするため。証明のためじゃない）</li>
+<li>有能感: <strong>低い</strong>。「代替可能」がデフォルト → だから逆に努力できる</li>
+</ul></div>
+
+<div class="card"><div class="card-sub" style="color:var(--org);">L4 判断回路 -- どうやって選ぶか</div>
+<ul>
+<li><strong>複利計算</strong> → 今やらないと損がデカい → 今やる</li>
+<li><strong>レバレッジ計算</strong> → このアクション何倍になるか → 高倍率から実行</li>
+<li><strong>攻撃×防御ペア</strong> → 最高と最悪を同時に打つ</li>
+<li><strong>圧縮</strong> → 「やるだけじゃん」まで問題を1変数に縮める</li>
+<li><strong>競合視点</strong> → 相手がされたら嫌なことを先にやる</li>
+</ul></div>
+
+<div class="card"><div class="card-sub" style="color:var(--red);">L5 行動パターン -- 実際に何やるか</div>
+<ul>
+<li>思いついた瞬間に終わらせる（バッファゼロ）</li>
+<li>ボールを即座に投げる（握らない = チーム全体の速度UP）</li>
+<li>最悪を先に潰す（問題は予測して事前に消す）</li>
+<li>仲間に投資する（コアメンバーから潤す）</li>
+<li>納期より前に完了する（前倒し = 快感として処理）</li>
+</ul></div>
+
+<div class="card"><div class="card-sub" style="color:var(--ac3);">L6 学習回路 -- 経験から何を取るか</div>
+<ul>
+<li>「なぜそう<strong>判断</strong>したか？」を取る（行動トレースじゃなく思考トレース）</li>
+<li>過去の成功パターンを毎回疑う（「過去の経験だけでやると当たらない」）</li>
+<li>市場を1日8時間見続ける（インプット量が異常）</li>
+<li>毎晩「限界まで使い切ったか？他にやれることは？」と棚卸し</li>
+<li>失敗 = データとして蓄積（恐怖として蓄積しない）</li>
+</ul></div>
+
+<div class="brain-note">
+<strong>まなとの脳の統一原理:</strong> 全6層が「仕事 = 最高に楽しいゲーム」という1つのOS設定の上で動いている。ゲームだから速くクリアしたい(SPEED)。ゲームだからゲームオーバーになりたくない(DEFENSE)。ゲームだからみんなで一緒にプレイしたい(TEAM)。この1つの認知書き換えが105原則全ての起動スイッチ。
+</div>
+</div>
+
+<!-- ==================== 05: TAIGA NOW ==================== -->
+<div class="sec" id="taiga">
+<div class="sec-t"><span class="sec-num">05</span>TAIGA'S BRAIN (CURRENT) -- 6層マッピング</div>
+
+<div class="card"><div class="card-sub" style="color:var(--ac);">L1 認知フィルター</div>
+<ul>
+<li><strong>自分が有能か</strong>が見えてる — 他者と自分の比較が常に走ってる</li>
+<li><strong>もっと良い方法</strong>が見えてる — 最適解を探し続ける（龍高星）</li>
+<li><strong>面白そうなもの</strong>が見えてる — 新しい謎・知識に引っ張られる</li>
+<li>見えてないもの: 市場の数字、チームの状態、損失の複利計算</li>
+</ul></div>
+
+<div class="card"><div class="card-sub" style="color:var(--ac);">L2 価値観・信念</div>
+<ul>
+<li>仕事 = 有能感の証明</li>
+<li>不完全 = 無能の証拠（だから完璧にしたい）</li>
+<li>負け = 俺には何もない（暗黒期の根）</li>
+<li>俺がやった方が早い（コントロール欲）</li>
+<li>知ってる = できてる（攻略本読んだ = クリアした の錯覚）</li>
+<li>約束は破っても許される（無意識の許可制）</li>
+</ul></div>
+
+<div class="card"><div class="card-sub" style="color:var(--gold);">L3 欲求構造</div>
+<ul>
+<li>第1位: コントロール(10) — 状況を支配したい</li>
+<li>第2位: 有能感(9) — 自分が「できる」と感じたい</li>
+<li>第3位: 承認(7)、自由(7)</li>
+<li>ドーパミン源: 女、スマホ、新しい知識（仕事の仮説検証じゃない）</li>
+</ul></div>
+
+<div class="card"><div class="card-sub" style="color:var(--org);">L4 判断回路</div>
+<ul>
+<li>「有能に見えるか」で選ぶ → 失敗リスクのあるものを避ける</li>
+<li>「もっと良い方法があるかも」で止まる → 探求が実行の代替品に</li>
+<li>比較で判断 → 他人より上か下か</li>
+<li>短期で判断 → 今すぐ結果が見えるものを選ぶ</li>
+</ul></div>
+
+<div class="card"><div class="card-sub" style="color:var(--red);">L5 行動パターン</div>
+<ul>
+<li>遅い（完璧を求めて手が止まる）</li>
+<li>握る（ボールを離さない。コントロール欲）</li>
+<li>言い訳する（有能感を守るための防衛行動）</li>
+<li>試行回数が少ない（1回を大事にしすぎる）</li>
+<li>小手先に走る（短期的に成果出そうなものに飛びつく）</li>
+</ul></div>
+
+<div class="card"><div class="card-sub" style="color:var(--ac3);">L6 学習回路</div>
+<ul>
+<li>知識を大量に集める（攻略本は超読む）</li>
+<li>でもゲームプレイが少ない → 身体性ノウハウが蓄積しない</li>
+<li>差分記録が弱い（やって終わり。振り返りが浅い）</li>
+<li>失敗 = 恐怖として蓄積（データとして蓄積しない）</li>
+</ul></div>
+
+<div class="brain-note" style="border-left-color:var(--org);">
+<strong>Hardware制約（変えられない）:</strong>
+戊/従旺格/+8 | 龍高星(探求) | 食神(平和主義) | 正財(積み上げの公正評価) | 金0(手放せない) | 計算128.8 | 記憶76.3 | 3D認知56.3 | 辞書23.9
+</div>
+</div>
+
+<!-- ==================== 06: DELTA ==================== -->
+<div class="sec" id="delta">
+<div class="sec-t"><span class="sec-num">06</span>DELTA MAP -- 各層の差分</div>
+
+<table class="cmp">
+<tr><th class="col-l">LAYER</th><th class="col-m">MANATO</th><th class="col-t">TAIGA NOW</th><th class="col-g">GAP</th></tr>
+<tr><td class="col-l">L1 認知</td><td class="col-m">数字・損失・相手が見える</td><td class="col-t">自分・比較・面白いものが見える</td><td class="col-g">見てるものが違う</td></tr>
+<tr><td class="col-l">L2 信念</td><td class="col-m">仕事=ゲーム 速さ>完璧 自分=代替可能</td><td class="col-t">仕事=証明 完璧>速さ 俺がやった方が早い</td><td class="col-g">信念が逆</td></tr>
+<tr><td class="col-l">L3 欲求</td><td class="col-m">問題解決ドーパミン</td><td class="col-t">有能感+コントロール</td><td class="col-g">報酬源が違う</td></tr>
+<tr><td class="col-l">L4 判断</td><td class="col-m">複利×レバレッジで選ぶ</td><td class="col-t">有能に見えるかで選ぶ</td><td class="col-g">判断基準が違う</td></tr>
+<tr><td class="col-l">L5 行動</td><td class="col-m">即実行 即手放し</td><td class="col-t">遅い 握る</td><td class="col-g">速度と方向が逆</td></tr>
+<tr><td class="col-l">L6 学習</td><td class="col-m">思考を取る 失敗=データ</td><td class="col-t">知識を取る 失敗=恐怖</td><td class="col-g">取るものが違う</td></tr>
+</table>
+</div>
+
+<!-- ==================== 07: ROOT CAUSE ==================== -->
+<div class="sec" id="roots">
+<div class="sec-t"><span class="sec-num">07</span>ROOT CAUSE TREE -- 問題 → 根源の追跡</div>
+
+<div class="root-tree">
+<div class="rt-problem">スピードが遅い</div>
+<div class="rt-chain">← 完璧主義（もっと良い方法があるかも）<br>← <strong>L2: 不完全 = 無能の証拠</strong><br>← <strong>L3: 有能感(9)</strong> が判断を支配してる</div>
+<div class="rt-root">ROOT: 失敗すると有能感が傷つくから、完璧になるまで出せない</div>
+</div>
+
+<div class="root-tree">
+<div class="rt-problem">言い訳する</div>
+<div class="rt-chain">← できない自分を認められない<br>← <strong>L2: 仕事 = 有能感の証明</strong>（できない = 価値がない）<br>← <strong>L3: 有能感(9)</strong></div>
+<div class="rt-root">ROOT: 「できない」を認めると自己価値が崩壊するから、言い訳で守る</div>
+</div>
+
+<div class="root-tree">
+<div class="rt-problem">試行回数が少ない</div>
+<div class="rt-chain">← 1回を完璧にしたい<br>← <strong>L2: 不完全 = 無能</strong> + <strong>L4: 失敗リスク回避</strong><br>← <strong>L3: 有能感(9)</strong></div>
+<div class="rt-root">ROOT: 試行 = 失敗の可能性 = 有能感リスク。リスクを取れない</div>
+</div>
+
+<div class="root-tree">
+<div class="rt-problem">短期的思考 → 小手先</div>
+<div class="rt-chain">← 今すぐ結果が欲しい<br>← <strong>L3: 有能感の即時充足欲</strong><br>← <strong>L4: 複利計算が走ってない</strong>（短期ROIで判断）</div>
+<div class="rt-root">ROOT: 有能感を今すぐ確認したいから、長期投資より短期成果に飛びつく</div>
+</div>
+
+<div class="root-tree">
+<div class="rt-problem">握って離さない</div>
+<div class="rt-chain">← 俺がやった方が早い / コントロールしたい<br>← <strong>L2: 手放す = 負け</strong> + <strong>L3: コントロール(10)</strong><br>← <strong>金0</strong>（命式レベルの制約）</div>
+<div class="rt-root">ROOT: 手放す = 有能感+コントロールの同時喪失。ダブルの恐怖</div>
+</div>
+
+<div class="brain-note" style="border-left-color:var(--red);">
+<strong>全問題の収束点:</strong> 6つの問題は全て L2(価値観) と L3(欲求) に収束する。L3(欲求)は変えられない（ハードウェア）。<strong>L2(価値観・信念)がセンターピン。</strong>ここを書き換えれば下流が全部変わる。さらに L5(行動)→L2 の逆流ルートと、ENV(環境)→L1 の外部入力ルートも同時に使える。
+</div>
+</div>
+
+<!-- ==================== 08: PITFALLS ==================== -->
+<div class="sec" id="pits">
+<div class="sec-t"><span class="sec-num">08</span>PREDICTABLE PITFALLS -- 確実にハマる落とし穴</div>
+
+<div class="pit"><div class="pit-n">1</div><div class="pit-body">
+<div class="pit-title">「知ってる」で満足して実行しない</div>
+<div class="pit-trigger">TRIGGER: 新しい知識を得た瞬間 | ROOT: L6 知識を取る ≠ 身体性ノウハウ</div>
+<div class="pit-override">OVERRIDE: 「やった回数だけが本物」。知った直後に1回やれ</div>
+</div></div>
+
+<div class="pit"><div class="pit-n">2</div><div class="pit-body">
+<div class="pit-title">1本を完璧にして数をこなせない</div>
+<div class="pit-trigger">TRIGGER: 制作に入った瞬間 | ROOT: L2 不完全=無能</div>
+<div class="pit-override">OVERRIDE: 「70点で出す。データが取れる。完璧は3年後の仕事」</div>
+</div></div>
+
+<div class="pit"><div class="pit-n">3</div><div class="pit-body">
+<div class="pit-title">Manatoとの差分で凹む → 手が止まる</div>
+<div class="pit-trigger">TRIGGER: 添削比較した瞬間 | ROOT: L1 比較が見える × L3 有能感</div>
+<div class="pit-override">OVERRIDE: 「差分 = 伸びしろマップ。凹むんじゃなくて攻略すべきエリアが見えた」</div>
+</div></div>
+
+<div class="pit"><div class="pit-n">4</div><div class="pit-body">
+<div class="pit-title">短期で結果出ないとやり方を変える</div>
+<div class="pit-trigger">TRIGGER: 2-3週間成果なし | ROOT: L3 即時有能感欲 × L4 短期判断</div>
+<div class="pit-override">OVERRIDE: 「複利は最初見えない。まなとも最初の数ヶ月は丁寧にサポートしろと言ってる」</div>
+</div></div>
+
+<div class="pit"><div class="pit-n">5</div><div class="pit-body">
+<div class="pit-title">1人でやった方が早いと委譲しない</div>
+<div class="pit-trigger">TRIGGER: チームメンバーのミス | ROOT: L3 コントロール(10) × 金0</div>
+<div class="pit-override">OVERRIDE: 「俺が持ってる時間 = チーム全体が止まってる時間」</div>
+</div></div>
+
+<div class="pit"><div class="pit-n">6</div><div class="pit-body">
+<div class="pit-title">冷笑モードで本気から逃げる</div>
+<div class="pit-trigger">TRIGGER: 有能感が傷ついた直後 | ROOT: L3 有能感防衛</div>
+<div class="pit-override">OVERRIDE: 「冷笑 = そっちに行きたいサイン。逃げてる方向の逆が正解」</div>
+</div></div>
+
+<div class="pit"><div class="pit-n">7</div><div class="pit-body">
+<div class="pit-title">面白い新しいことに飛びつく</div>
+<div class="pit-trigger">TRIGGER: 新ドメインの情報 | ROOT: L1 面白いものが見える(龍高星) × L4 レバレッジ計算なし</div>
+<div class="pit-override">OVERRIDE: 「やりたい!の8割は逃避。今のセンターピンから離れてないか？」</div>
+</div></div>
+
+<div class="pit"><div class="pit-n">8</div><div class="pit-body">
+<div class="pit-title">守りなしで攻めだけで突っ込む</div>
+<div class="pit-trigger">TRIGGER: 調子いい時 | ROOT: L2 勝ちたい > 死なない</div>
+<div class="pit-override">OVERRIDE: 「攻めの裏に守りはあるか？ペアで打て」</div>
+</div></div>
+</div>
+
+<!-- ==================== 09: CENTER PIN ==================== -->
+<div class="sec" id="pin">
+<div class="sec-t"><span class="sec-num">09</span>CENTER PIN -- Layer 2 信念の書き換え</div>
+
+<div class="rw">
+<div class="rw-n">CENTER PIN #1 — 全問題の根源</div>
+<div class="rw-row"><span class="rw-old">仕事 = 有能感の証明</span><span class="rw-arr">&rarr;</span><span class="rw-new">仕事 = 最高に楽しい攻略ゲーム</span></div>
+<div class="rw-why">これ1つで全てが連鎖的に変わる。ゲームだから速くやりたい / 負けても面白い / 仲間と一緒にクリアしたい / 失敗はデータ。まなとの105原則の全ての起動スイッチがこの1つ。</div>
+</div>
+
+<div class="rw">
+<div class="rw-n">REWRITE #2</div>
+<div class="rw-row"><span class="rw-old">不完全 = 無能の証拠</span><span class="rw-arr">&rarr;</span><span class="rw-new">不完全 = 次の仮説のデータポイント</span></div>
+<div class="rw-why">不完全な出力を出すことでデータが取れる。データがあるから次の仮説が立つ。完璧にしてから出すのはデータなしで次のステージに行こうとしてるのと同じ。</div>
+</div>
+
+<div class="rw">
+<div class="rw-n">REWRITE #3</div>
+<div class="rw-row"><span class="rw-old">負け = 俺には何もない</span><span class="rw-arr">&rarr;</span><span class="rw-new">負け = 伸びしろの発見 = 燃料</span></div>
+<div class="rw-why">まなと:「逆境楽しい！負けてる感覚を味わえるの幸せ」。負けは恐怖じゃなく情報。伸びしろが見えたということ。キーガン第5の認知。</div>
+</div>
+
+<div class="rw">
+<div class="rw-n">REWRITE #4</div>
+<div class="rw-row"><span class="rw-old">俺がやった方が早い</span><span class="rw-arr">&rarr;</span><span class="rw-new">俺が持つとチーム全体が遅くなる</span></div>
+<div class="rw-why">自分の速さ = 個人最適。チームの速さ = 全体最適。ボールを握ってる間、他の全員が待ってる。手放す = チーム全体の加速。金0を論理で補完する。</div>
+</div>
+
+<div class="rw">
+<div class="rw-n">REWRITE #5</div>
+<div class="rw-row"><span class="rw-old">知ってる = できてる</span><span class="rw-arr">&rarr;</span><span class="rw-new">やった回数だけが本物</span></div>
+<div class="rw-why">身体性ノウハウ = Σ(仮説 × 実行 × 結果照合)。テキストなぞりは蓄積ゼロ。攻略本を読んだだけではポケモンはクリアできない。</div>
+</div>
+
+<div class="rw">
+<div class="rw-n">REWRITE #6</div>
+<div class="rw-row"><span class="rw-old">約束は破っても許される</span><span class="rw-arr">&rarr;</span><span class="rw-new">約束 = 命。覚悟が覇気を生む</span></div>
+<div class="rw-why">まなと:「自分との約束は死ぬ気で守る」。侍の哲学と同構造。約束を守り続ける人間からは言葉に覇気が出る。不義理5回のパターンを断つ。</div>
+</div>
+</div>
+
+<!-- ==================== 10: 4 ROUTES ==================== -->
+<div class="sec" id="routes">
+<div class="sec-t"><span class="sec-num">10</span>4 INTERVENTION ROUTES -- 書き換えの4つの介入経路</div>
+
+<div class="route">
+<div class="route-card" style="border-color:var(--ac);">
+<div class="route-title" style="color:var(--ac);">① 信念書き換え（L2直接）</div>
+<div class="route-how">上の6つのREWRITEを論理で理解し、毎日読んで意識に刷り込む。CBT的アプローチ。</div>
+<div class="route-how" style="margin-top:4px;"><strong>実装:</strong> このHTMLを毎朝開く。手の3行(N/M?/力み×)。</div>
+<span class="route-speed spd-mid">速さ: 中 / 持続: 中（感情体験がないと戻りやすい）</span>
+</div>
+<div class="route-card" style="border-color:var(--purple);">
+<div class="route-title" style="color:var(--purple);">② 環境設計（ENV→L1）</div>
+<div class="route-how">見えるもの・触れる人・場所を変えて、認知フィルターを強制的に書き換える。</div>
+<div class="route-how" style="margin-top:4px;"><strong>実装:</strong> Loom23本をスマホに。まなとの近くにいる時間を増やす。数字ダッシュボードを常時表示。</div>
+<span class="route-speed spd-fast">速さ: 速い / 持続: 高（環境が維持されれば持続）</span>
+</div>
+<div class="route-card" style="border-color:var(--org);">
+<div class="route-title" style="color:var(--org);">③ 行動先行（L5→L2逆流）</div>
+<div class="route-how">信念が変わる前に行動を変える。行動が認知的不協和を生み、信念が後からついてくる。</div>
+<div class="route-how" style="margin-top:4px;"><strong>実装:</strong> 毎日1本の添削シミュレーション。70点で出す。即Loom送信。やる→信念が変わるの順。</div>
+<span class="route-speed spd-fast">速さ: 速い / 持続: 中（行動をやめると戻る）</span>
+</div>
+<div class="route-card" style="border-color:var(--red);">
+<div class="route-title" style="color:var(--red);">④ 感情体験（EMO→全層）</div>
+<div class="route-how">強烈な感情体験が一発で全層を書き換える。トラウマ(負)も覚醒(正)もこのルート。</div>
+<div class="route-how" style="margin-top:4px;"><strong>実装:</strong> Loom3周法で身体感覚レベルで吸収。まなとと直接対話して衝撃を受ける。実際に結果を出す体験。</div>
+<span class="route-speed spd-fast">速さ: 最速 / 持続: 最高（感情記憶は消えにくい）</span>
+</div>
+</div>
+
+<div class="brain-note">
+<strong>最強は4つの同時起動。</strong> 手の3行(①信念) + Loomフォルダ(②環境) + 毎日の添削シミュレーション(③行動) + Loom3周法(④感情) = 4ルート全カバー。
+</div>
+</div>
+
+<!-- ==================== 11: SCENARIOS ==================== -->
+<div class="sec" id="scenes">
+<div class="sec-t"><span class="sec-num">11</span>SCENARIO PROTOCOLS -- 具体シーン別「IF → THEN」</div>
+
+<div class="scn">
+<div class="scn-if">IF: 台本/サムネを作ってて「もっと良くできるかも」で手が止まった</div>
+<div class="scn-then">THEN: 「70点で出す。データが取れる」と唱えて3分以内に提出する</div>
+<div class="scn-why">L2書き換え: 不完全=無能 → 不完全=データ。まなと: 3時間で終わることを1週間かけるな。</div>
+</div>
+
+<div class="scn">
+<div class="scn-if">IF: 他のクリエイターの結果を見て比較モードに入った</div>
+<div class="scn-then">THEN: 「差分=攻略すべきエリアが見えた」と変換して、具体的に何が違うか1つ書き出す</div>
+<div class="scn-why">L1書き換え: 比較(恐怖) → 差分分析(データ)。感情の極性を反転させる。</div>
+</div>
+
+<div class="scn">
+<div class="scn-if">IF: 新しい面白そうなことを見つけて飛びつきたくなった</div>
+<div class="scn-then">THEN: 「やりたい!の8割は逃避」と唱えて、今のセンターピンに戻る</div>
+<div class="scn-why">まなとの原則#057。龍高星のフィルタ(面白いものが見える)にゆとりくんの引き算フィルタをかける。</div>
+</div>
+
+<div class="scn">
+<div class="scn-if">IF: チームメンバーにタスクを任せるか自分でやるか迷った</div>
+<div class="scn-then">THEN: 「俺が持ってる時間=チーム全体が止まってる時間」と計算して投げる</div>
+<div class="scn-why">L2書き換え: 手放す=負け → 手放す=チーム加速。まなと: ボールを持つな。</div>
+</div>
+
+<div class="scn">
+<div class="scn-if">IF: 2-3週間頑張ったのに数字が動かなくて「やり方変えようかな」と思った</div>
+<div class="scn-then">THEN: 複利計算を回す。「今見えてないだけ。3ヶ月後に効く」。方法を変えるな、量を増やせ</div>
+<div class="scn-why">L4書き換え: 短期ROI → 複利計算。ルール6: 複利は最初見えない。</div>
+</div>
+
+<div class="scn">
+<div class="scn-if">IF: 有能感が傷ついて冷笑モード or 「こんなん意味あるか」が出た</div>
+<div class="scn-then">THEN: 「冷笑=そっちに行きたいサイン」。力み×チェック。肩を落として深呼吸</div>
+<div class="scn-why">EMOルート: 身体から感情を変える。冷笑の裏にある「本気でいたい」を認める。</div>
+</div>
+
+<div class="scn">
+<div class="scn-if">IF: 攻略本(知識)を読んで「分かった」と満足した</div>
+<div class="scn-then">THEN: その場で1回実行する。「やった回数だけが本物」</div>
+<div class="scn-why">L6書き換え: 知識取得 → 実行+照合。身体性ノウハウ = Σ(仮説×実行×結果照合)。</div>
+</div>
+
+<div class="scn">
+<div class="scn-if">IF: 言い訳が口から出そうになった</div>
+<div class="scn-then">THEN: 「俺の何の設計が甘かった？」に変換する。自責だが有能感を傷つけない</div>
+<div class="scn-why">「設計ミス」フレーム = ゲームの攻略法が間違ってただけ。自分がダメなんじゃない。だから自責できる。</div>
+</div>
+
+<div class="scn">
+<div class="scn-if">IF: 調子いい時に守りのことを考えてない自分に気づいた</div>
+<div class="scn-then">THEN: 「この攻めの裏に守りはあるか？」を問う。最悪シナリオを1つ書き出す</div>
+<div class="scn-why">まなとのペア回路。ルール4: 死なない > 勝つ。好調時こそ次の種を仕込め。</div>
+</div>
+</div>
+
+<!-- ==================== 12: DAILY BOOT ==================== -->
+<div class="sec" id="boot">
+<div class="sec-t"><span class="sec-num">12</span>DAILY BOOT SEQUENCE</div>
+
+<div class="boot">
+<div class="boot-t">起床</div><div class="boot-line"></div>
+<div class="boot-c"><div class="boot-act">手の「N」を見る</div><div class="boot-w">北極星を思い出す。なぜやってるかを確認。</div></div>
+</div>
+<div class="boot">
+<div class="boot-t">30秒</div><div class="boot-line"></div>
+<div class="boot-c"><div class="boot-act">「今日のゲームの目標は？」</div><div class="boot-w">仕事=ゲームの信念を起動。有能感の証明モードを阻止。</div></div>
+</div>
+<div class="boot">
+<div class="boot-t">1分</div><div class="boot-line"></div>
+<div class="boot-c"><div class="boot-act">力み×チェック（肩・呼吸・眉間）</div><div class="boot-w">旧OSの残骸が身体に出てないか確認。</div></div>
+</div>
+<div class="boot">
+<div class="boot-t">作業前</div><div class="boot-line"></div>
+<div class="boot-c"><div class="boot-act">「M? 何感じた？」 → 直感 → 分解 → 判断</div><div class="boot-w">まなとの思考プロセスをトレース起動。</div></div>
+</div>
+<div class="boot">
+<div class="boot-t">寝る前</div><div class="boot-line"></div>
+<div class="boot-c"><div class="boot-act">「限界まで使い切ったか？他にやれることは？」</div><div class="boot-w">まなとの毎晩の呪文。一生リールを巻いてる感覚。</div></div>
+</div>
+</div>
+
+<!-- ANTI-PATTERN -->
+<div class="anti">
+<div class="anti-label">ANTI-PATTERN</div>
+<div class="anti-title">力み×</div>
+<div class="anti-body">
+<strong>兆候:</strong> 肩が上がる / 呼吸が浅い / 「証明したい」が頭にある / 比較してる / 冷笑してる / 1人でやろうとしてる<br>
+<strong>正体:</strong> 旧OS「仕事=有能感の証明」が起動している<br>
+<strong>科学:</strong> フロー状態 = 自意識の消失。力み = 自意識の過剰。主語が「仕事」から「俺」に切り替わった瞬間。
+</div>
+<div class="anti-fix">対処: 脱力。ゲームに戻れ。「これポケモンだったら何する？」</div>
+</div>
+
+<!-- ENDPOINT -->
+<div class="end">
+<div class="end-f">狂気 <span class="op">&times;</span> 脱力 <span class="eq">=</span> 身勝手の極意</div>
+<div class="end-d">内側は常に燃えている。でも出力は涼しい顔で出てくる。<br>考えなくても構造が見える。止められない。でも力んでない。</div>
+<div class="end-box">
+<strong>L0への書き込み完了状態:</strong><br>
+7つの回路が意識的処理(L1-L6)から無意識(L0)に沈殿した状態。反復によってミエリン鞘が太くなり、信号伝達が100倍速くなった状態。イチローがスイングを「考えてない」のと同じ。まなとが直感で判断できるのは、105原則が全てL0に入ってるから。<br><br>
+<strong>密度の方程式:</strong><br>
+密度 = (痛み &times; 内省 &times; 手放し) / 器のサイズ<br>
+格は狙わない。密度が閾値を超えたら勝手に出てくる。
+</div>
+</div>
+
+</div>
+</body>
+</html>

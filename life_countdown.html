@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIFE COUNTDOWN — 残り何日？</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:#060808;
+    color:#d4cbc4;
+    font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;
+    font-size:12.5px;
+    line-height:1.7;
+    min-height:100vh;
+    background-image:
+      radial-gradient(ellipse at 10% 0%,rgba(196,30,58,.06) 0%,transparent 50%),
+      radial-gradient(ellipse at 90% 100%,rgba(80,160,200,.05) 0%,transparent 50%);
+  }
+  ::selection{background:rgba(196,30,58,.4);color:#fff}
+  .container{max-width:880px;margin:0 auto;padding:24px 16px 60px}
+
+  /* ===== HEADER ===== */
+  .header{text-align:center;padding:48px 24px 40px;position:relative;margin-bottom:32px}
+  .header::before{
+    content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:100px;height:3px;background:linear-gradient(90deg,transparent,#c41e3a,transparent);
+  }
+  .header-tag{font-size:10px;letter-spacing:6px;color:#c41e3a;margin-bottom:8px}
+  .header h1{font-size:28px;font-weight:800;color:#e8ddd4;letter-spacing:3px;margin-bottom:6px}
+  .header .sub{font-size:12px;color:#8a7e74;letter-spacing:2px;margin-bottom:20px}
+
+  /* Live clock */
+  .live-clock{
+    display:inline-block;
+    background:linear-gradient(135deg,rgba(196,30,58,.08),rgba(80,160,200,.05));
+    border:1px solid rgba(196,30,58,.2);border-radius:4px;
+    padding:10px 24px;font-size:13px;color:#c9b896;letter-spacing:1px;
+  }
+  .live-clock .date{font-weight:700;color:#e8ddd4}
+  .live-clock .time{color:#c41e3a;font-weight:700;font-variant-numeric:tabular-nums}
+
+  /* ===== PHILOSOPHY BANNER ===== */
+  .philosophy{
+    background:linear-gradient(135deg,rgba(26,16,16,.95),rgba(18,12,12,.95));
+    border:1px solid rgba(196,30,58,.2);border-left:3px solid #c41e3a;
+    padding:18px 22px;margin-bottom:28px;
+  }
+  .philosophy-label{font-size:10px;letter-spacing:4px;color:#c41e3a;margin-bottom:8px}
+  .philosophy-text{font-size:13.5px;color:#c9b896;line-height:1.9}
+
+  /* ===== DIVIDER ===== */
+  .divider{text-align:center;padding:24px 0 18px;position:relative}
+  .divider::before{
+    content:'';position:absolute;top:50%;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(196,30,58,.2),transparent);
+  }
+  .divider span{
+    position:relative;background:#060808;padding:0 16px;
+    font-size:10px;letter-spacing:5px;color:#c41e3a;text-transform:uppercase;
+  }
+
+  /* ===== COUNTDOWN CARD ===== */
+  .countdown{
+    display:grid;grid-template-columns:120px 1fr;gap:0;
+    background:linear-gradient(135deg,#0e0c0c,#161212);
+    border:1px solid rgba(196,30,58,.12);border-radius:4px;
+    margin-bottom:16px;overflow:hidden;position:relative;
+  }
+  .countdown::before{
+    content:'';position:absolute;top:0;left:0;bottom:0;width:3px;
+  }
+  .countdown.urgent::before{background:#c41e3a}
+  .countdown.mid::before{background:#d4a017}
+  .countdown.long::before{background:rgba(80,160,200,.6)}
+  .countdown.passed::before{background:#c41e3a;box-shadow:0 0 12px rgba(196,30,58,.4)}
+  .countdown.passed{border-color:rgba(196,30,58,.3)}
+
+  .cd-left{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:20px 12px;border-right:1px solid rgba(255,255,255,.04);
+    position:relative;
+  }
+  .cd-days{
+    font-size:36px;font-weight:800;line-height:1;margin-bottom:2px;
+    font-variant-numeric:tabular-nums;
+  }
+  .countdown.urgent .cd-days{color:#c41e3a}
+  .countdown.mid .cd-days{color:#d4a017}
+  .countdown.long .cd-days{color:#7ec8e3}
+  .countdown.passed .cd-days{color:#c41e3a;text-shadow:0 0 20px rgba(196,30,58,.4)}
+  .cd-unit{font-size:10px;letter-spacing:3px;color:#6a6058}
+  .cd-deadline{font-size:10px;color:#4a4440;margin-top:4px}
+
+  .cd-right{padding:16px 20px}
+  .cd-scope{font-size:10px;letter-spacing:3px;color:#c41e3a;margin-bottom:4px}
+  .countdown.mid .cd-scope{color:#d4a017}
+  .countdown.long .cd-scope{color:#7ec8e3}
+  .cd-title{font-size:15px;font-weight:700;color:#e8ddd4;margin-bottom:8px;letter-spacing:.5px}
+
+  .cd-goals{margin:0;padding:0;list-style:none}
+  .cd-goals li{
+    padding:4px 0 4px 14px;position:relative;font-size:12px;color:#b0a898;
+  }
+  .cd-goals li::before{
+    content:'';position:absolute;left:0;top:10px;
+    width:6px;height:6px;border-radius:50%;
+  }
+  .countdown.urgent .cd-goals li::before{background:rgba(196,30,58,.4)}
+  .countdown.mid .cd-goals li::before{background:rgba(212,160,23,.4)}
+  .countdown.long .cd-goals li::before{background:rgba(80,160,200,.3)}
+  .countdown.passed .cd-goals li::before{background:rgba(196,30,58,.6)}
+
+  .cd-goals .num{color:#d4a017;font-weight:700}
+  .cd-goals .red{color:#c41e3a;font-weight:700}
+  .cd-goals .hl{color:#e8ddd4;font-weight:600}
+
+  /* ===== PASSED ALERT ===== */
+  .passed-alert{
+    display:inline-block;background:rgba(196,30,58,.15);border:1px solid rgba(196,30,58,.3);
+    border-radius:3px;padding:2px 8px;font-size:10px;color:#c41e3a;
+    letter-spacing:1px;font-weight:600;margin-bottom:6px;
+  }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-wrap{margin:10px 0 4px;position:relative}
+  .progress-bar{
+    height:4px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden;
+  }
+  .progress-fill{height:100%;border-radius:2px;transition:width .3s}
+  .countdown.urgent .progress-fill{background:linear-gradient(90deg,#c41e3a,rgba(196,30,58,.4))}
+  .countdown.mid .progress-fill{background:linear-gradient(90deg,#d4a017,rgba(212,160,23,.4))}
+  .countdown.long .progress-fill{background:linear-gradient(90deg,#7ec8e3,rgba(80,160,200,.3))}
+  .countdown.passed .progress-fill{background:#c41e3a;width:100%!important}
+  .progress-label{
+    font-size:10px;color:#4a4440;margin-top:2px;text-align:right;
+  }
+
+  /* ===== VALUES GRID ===== */
+  .values-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;
+  }
+  .value-item{
+    background:rgba(196,30,58,.04);border:1px solid rgba(196,30,58,.1);
+    border-radius:3px;padding:10px 14px;
+  }
+  .value-num{font-size:10px;color:#c41e3a;font-weight:700;margin-bottom:2px}
+  .value-text{font-size:11.5px;color:#b0a898;line-height:1.6}
+
+  /* ===== CORE ===== */
+  .core{
+    text-align:center;padding:28px 24px;margin:24px 0;
+    background:linear-gradient(135deg,rgba(196,30,58,.06),rgba(80,160,200,.03));
+    border:1px solid rgba(196,30,58,.2);border-radius:4px;position:relative;
+  }
+  .core::before,.core::after{
+    content:'';position:absolute;left:50%;transform:translateX(-50%);
+    width:60px;height:2px;background:linear-gradient(90deg,transparent,#c41e3a,transparent);
+  }
+  .core::before{top:0}.core::after{bottom:0}
+  .core-text{font-size:16px;font-weight:800;color:#e8ddd4;letter-spacing:2px;line-height:1.8}
+  .core-sub{font-size:11px;color:#6a6058;margin-top:6px}
+
+  /* ===== HIGHLIGHTS ===== */
+  .hl{color:#d4a017;font-weight:600}
+  .red{color:#c41e3a;font-weight:600}
+  .blue{color:#7ec8e3;font-weight:600}
+  .dim{color:#6a6058}
+
+  @media(max-width:600px){
+    .countdown{grid-template-columns:90px 1fr}
+    .cd-days{font-size:28px}
+    .values-grid{grid-template-columns:1fr}
+  }
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ==================== HEADER ==================== -->
+<div class="header">
+  <div class="header-tag">LIFE COUNTDOWN — DAYS LEFT</div>
+  <h1>残り何日？</h1>
+  <div class="sub">目標は数字。日数はリアル。毎日領土が増えてるか？</div>
+  <div class="live-clock">
+    <span class="date" id="currentDate">2026/04/07</span>&ensp;
+    <span class="time" id="currentTime">--:--:--</span>
+  </div>
+</div>
+
+<!-- ==================== PHILOSOPHY ==================== -->
+<div class="philosophy">
+  <div class="philosophy-label">PERSONAL PHILOSOPHY</div>
+  <div class="philosophy-text">
+    限られた時の中で、群れを死なせないために、最大幸福のために、<br>
+    目標を夢を、現実世界でなにがなんでも実現する。<br>
+    解釈は自由なのだから、<strong style="color:#e8ddd4">笑顔で行く</strong>。<br>
+    ONE FOR ALLで行動し、ALL FOR ONEに常に感謝する。
+  </div>
+</div>
+
+<div class="philosophy">
+  <div class="philosophy-label">STATE GOAL</div>
+  <div class="philosophy-text">
+    <strong style="color:#c41e3a">世界一、目標だけに向き合えている、徹底している状態</strong><br>
+    結果出す <span class="dim">×</span> いいやつ
+  </div>
+</div>
+
+<!-- ==================== MID TERM (< 1 YEAR) ==================== -->
+<div class="divider"><span>MID TERM — THIS YEAR</span></div>
+
+<div class="countdown mid">
+  <div class="cd-left">
+    <div class="cd-days" id="year-end-days">268</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2026/12/31</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">2026 — 年間目標</div>
+    <div class="cd-title">俺もYTチームも日本一になる</div>
+    <ul class="cd-goals">
+      <li><span class="hl">俺</span>：月商 <span class="num">3000万</span></li>
+      <li><span class="hl">個人</span>：年 <span class="num">3億</span> / YouTubeクリエイティブ統括</li>
+      <li><span class="hl">個人組織</span>：年商 <span class="num">3億</span></li>
+      <li><span class="hl">YTチーム</span>：年 <span class="num">40億</span></li>
+      <li><span class="hl">OPT-IN</span>：年商 <span class="num">60-70億</span></li>
+      <li><span class="red">井上尚弥と話す</span></li>
+      <li>売り上げ、インパクトベースで客観基準で<span class="hl">日本一</span>と言われる</li>
+    </ul>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" style="width:27%"></div></div>
+      <div class="progress-label">年間経過 27% — 残り268日</div>
+    </div>
+  </div>
+</div>
+
+<div class="countdown mid">
+  <div class="cd-left">
+    <div class="cd-days" id="year-end-numbers">268</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2026/12/31</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">2026 — チャンネル数値目標</div>
+    <div class="cd-title">フル稼働ポートフォリオ</div>
+    <ul class="cd-goals">
+      <li>みさを：<span class="num">2000万</span> / 登録者<span class="num">10万</span> / 在宅ワーク領域<span class="red">1位</span></li>
+      <li>リョータ：<span class="num">2000万</span></li>
+      <li>デカメディア：<span class="num">1億</span></li>
+      <li>英語：<span class="num">5000万</span></li>
+      <li>飛行機①：<span class="num">1億</span></li>
+      <li>飛行機②：<span class="num">1億</span></li>
+      <li class="dim" style="margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.04)">運営中：さき（10万登録）/ たくむ / あき / 毎日中国語 / カナさん</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== LIFE DOMAINS ==================== -->
+<div class="divider"><span>LIFE DOMAINS — ALL FRONTS</span></div>
+
+<!-- 体 -->
+<div class="countdown urgent">
+  <div class="cd-left">
+    <div class="cd-days" id="karada-p1-days">54</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2026/05/31</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">BODY — PHASE 1</div>
+    <div class="cd-title">体重63kg以下 / 体脂肪20%以下</div>
+    <ul class="cd-goals">
+      <li>週4トレーニング</li>
+      <li><span class="num">1700-1800kcal</span>/日、タンパク質<span class="num">130g+</span></li>
+      <li>睡眠<span class="num">7h</span>、水<span class="num">2L+</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="countdown mid">
+  <div class="cd-left">
+    <div class="cd-days" id="karada-p2-days">146</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2026/08/31</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">BODY — COMPLETE</div>
+    <div class="cd-title">体脂肪15%以下 — 体完成</div>
+    <ul class="cd-goals">
+      <li>中間：<span class="num">体脂肪18%</span>（6月中旬）</li>
+      <li>本質は有能感の確認。3歳の胸筋への憧れが根。<span class="hl">これは自分のためにやる</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- モテ -->
+<div class="countdown urgent">
+  <div class="cd-left">
+    <div class="cd-days" id="mote-p1-days">54</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2026/05/31</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">MOTE — PHASE 1</div>
+    <div class="cd-title">外見完成 + アプリ開始</div>
+    <ul class="cd-goals">
+      <li>眉・髪・服・スキンケア完成</li>
+      <li>写真<span class="num">10枚</span>撮影</li>
+    </ul>
+  </div>
+</div>
+
+<div class="countdown mid">
+  <div class="cd-left">
+    <div class="cd-days" id="mote-p2-days">146</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2026/08/31</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">MOTE — PHASE 2</div>
+    <div class="cd-title">月10アポ安定</div>
+    <ul class="cd-goals">
+      <li>好きな女に自信持ってアプローチできる状態（<span class="num">11月</span>）</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 言語化 -->
+<div class="countdown urgent">
+  <div class="cd-left">
+    <div class="cd-days" id="gengo-p1-days">85</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2026/06/30</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">GENGO — LANGUAGE</div>
+    <div class="cd-title">まなとレビュー「具体OK」</div>
+    <ul class="cd-goals">
+      <li>新語彙：日<span class="num">2語</span></li>
+      <li>声出し練習：<span class="num">30分/日</span></li>
+      <li>毎日：具体変換ドリル(5分)→60秒台本(10分)→語彙トレ(10分)</li>
+      <li>目標：語彙<span class="num">120語</span>、まなと指摘<span class="num">1箇所以下</span>（8月）</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 成長 -->
+<div class="countdown urgent">
+  <div class="cd-left">
+    <div class="cd-days" id="growth-p1-days">85</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2026/06/30</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">GROWTH — KEGAN</div>
+    <div class="cd-title">委譲70% / Stage3の判断8割（9月）</div>
+    <ul class="cd-goals">
+      <li>毎日<span class="num">15分</span>振り返り</li>
+      <li>有能感が痛む場面で「意志力で突破」→「<span class="hl">そもそも痛まない</span>」へ</li>
+      <li>聞く→聞いても減らなかった→体が学ぶ</li>
+      <li>謝る→謝っても壊れなかった→体が学ぶ</li>
+      <li>負ける→負けても「俺」は消えなかった→体が学ぶ</li>
+    </ul>
+  </div>
+</div>
+
+<div class="countdown mid">
+  <div class="cd-left">
+    <div class="cd-days" id="growth-natural-days">358</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2027/03/31</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">GROWTH — ULTIMATE STATE</div>
+    <div class="cd-title">身���手の極意 — 自然体</div>
+    <ul class="cd-goals">
+      <li><span class="hl">キーガン第5安定</span>：「勝つことに意味あるのか」を問い直した上で「それでも勝つ側を選ぶ」</li>
+      <li>考えなくても企画が出る、構造が見える状態</li>
+      <li>丸が大きくなる：脱力×攻略本の守備範囲を全領域に</li>
+    </ul>
+  </div>
+</div>
+
+<!-- YouTube -->
+<div class="countdown urgent">
+  <div class="cd-left">
+    <div class="cd-days" id="yt-3ch-days">85</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2026/06/30</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">YOUTUBE — OPERATION</div>
+    <div class="cd-title">3ch運営体制</div>
+    <ul class="cd-goals">
+      <li>みさをch KPI：CTR <span class="num">5-6%</span>、再生 <span class="num">1万超え/本</span>、CTA <span class="num">0.8%</span>、月<span class="num">4本</span></li>
+      <li>年内：みさをch登録者<span class="num">10万</span>、在宅ワーク領域<span class="red">1位</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- いぶき -->
+<div class="countdown mid" style="border-color:rgba(212,160,23,.15)">
+  <div class="cd-left">
+    <div class="cd-days" style="color:#d4a017;font-size:22px">ONGOING</div>
+    <div class="cd-unit" style="font-size:9px">NO DEADLINE</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope" style="color:#d4a017">RELATIONSHIP — IBUKI</div>
+    <div class="cd-title">力を愛に変換する</div>
+    <ul class="cd-goals">
+      <li>いぶき = 無条件の安全基地。<span class="hl">維持し続ける</span></li>
+      <li>まなと = 判断を外す、いぶき = <span class="hl">力を愛に変換する</span>。両方必要</li>
+      <li>有能感で裁かない。外への裁き＝内への自罰</li>
+      <li>ENFP×禄存星×2の溢れる愛情を、<span class="red">受け取れる自分</span>でいる</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 仕組み化 -->
+<div class="countdown mid">
+  <div class="cd-left">
+    <div class="cd-days" id="shikumi-days">358</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2027/03/31</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">SYSTEM — AUTOMATION</div>
+    <div class="cd-title">自分は判断だけ、数字が勝手に上がる状態</div>
+    <ul class="cd-goals">
+      <li>ideation <span class="num">70%委譲</span>（6月中間）</li>
+      <li>勝ちパターン特定→横展開</li>
+      <li>仕組みが回って<span class="hl">週15時間労働</span></li>
+      <li>空いた時間で飛び級のチート策を考え抜く</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ドメイン連動 -->
+<div class="countdown mid" style="border-color:rgba(80,160,200,.15)">
+  <div class="cd-left">
+    <div class="cd-days" style="color:#7ec8e3;font-size:22px">COMBO</div>
+    <div class="cd-unit" style="font-size:9px">ALL DOMAINS</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope" style="color:#7ec8e3">INTEGRATION — SYNERGY</div>
+    <div class="cd-title">1つ伸びると全部伸びる状態</div>
+    <ul class="cd-goals">
+      <li>体が仕上がる→自信UP→モテ→有能感→仕事の出力UP</li>
+      <li>言語化が上がる→台本の質→売上→余裕→人間関係</li>
+      <li>成長（キーガン）→脱力→クリエイティブの質→全領域</li>
+      <li><span class="hl">毎日15分振り返り</span>でドメイン間の連動を楽しむ</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== SHORT-MID (1 YEAR) ==================== -->
+<div class="divider"><span>SHORT-MID — 1 YEAR</span></div>
+
+<div class="countdown mid">
+  <div class="cd-left">
+    <div class="cd-days" id="one-year-days">358</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2027/03/31</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">1 YEAR — 短中期目標</div>
+    <div class="cd-title">年20億 × クリエイティブ統括</div>
+    <ul class="cd-goals">
+      <li><span class="red">俺</span>：月 <span class="num">300万</span></li>
+      <li><span class="hl">個人</span>：年 <span class="num">20億</span> / YouTubeクリエイティブ統括</li>
+      <li><span class="hl">個人組織</span>：年商 <span class="num">3億</span></li>
+      <li><span class="hl">YTチーム</span>：年 <span class="num">70億</span></li>
+      <li><span class="hl">OPT-IN</span>：年商 <span class="num">130億</span></li>
+      <li><span class="red">井上尚弥と話す</span></li>
+    </ul>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" style="width:2%"></div></div>
+      <div class="progress-label">残り358日</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MANATO超え (2 YEAR) ==================== -->
+<div class="divider"><span>PERSONAL MILESTONE — 2 YEARS</span></div>
+
+<div class="countdown mid" style="border-color:rgba(212,160,23,.2)">
+  <div class="cd-left">
+    <div class="cd-days" id="manato-days" style="color:#d4a017">724</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2028/04/01</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope" style="color:#d4a017">PERSONAL — 2 YEAR MILESTONE</div>
+    <div class="cd-title">まなとくんを超える</div>
+    <ul class="cd-goals">
+      <li>YouTube能力・人間性の<span class="hl">完全吸収</span>は前提。その先の<span class="red">超越</span></li>
+      <li>まなとくんも成長し続ける → 追いつくだけじゃ足りない。<span class="hl">成長速度で上回る</span></li>
+      <li>判断構造・クリエイティブ統括力・メタ認知の全領域でTier S</li>
+      <li>「人格じゃなくて機能に話してくれた」人を、<span class="red">機能で超える</span></li>
+    </ul>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" style="width:0%;background:linear-gradient(90deg,#d4a017,rgba(212,160,23,.3))"></div></div>
+      <div class="progress-label">残り724日 — 向こうも成長する。速度で勝て。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LONG TERM (3 YEAR) ==================== -->
+<div class="divider"><span>LONG TERM — 3 YEARS</span></div>
+
+<div class="countdown long">
+  <div class="cd-left">
+    <div class="cd-days" id="three-year-days">1089</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2029/03/31</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope">3 YEAR — 中期ビジョン</div>
+    <div class="cd-title">100億 × 全員の夢が叶っている状態</div>
+    <ul class="cd-goals">
+      <li><span class="hl">個人</span>：仕事・YouTube・格闘・女・人間性、OPT-IN基準値で<span class="red">Tier S</span></li>
+      <li><span class="hl">ALL</span>：初めからついてきてくれている人の<span class="red">全員の夢や目標が叶っている</span></li>
+      <li><span class="hl">YTチーム</span>：日本にいる鬼強い奴ら全員いて、もう負けるはずのない状態。強さと楽しさを兼ね備えている</li>
+      <li><span class="hl">OPT-IN</span>：<span class="num">100億</span>純利益<span class="num">60億</span>の巨大スクールカンパニーグループ</li>
+      <li>同業を全員ロールアップ吸収合併。<span class="red">仲間になるか敵になって潰されるかを選ばせる</span></li>
+      <li>「メディアでモノを売る会社」への転換</li>
+    </ul>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="progress-label">残り1089日 — 約3年</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ULTIMATE (10 YEAR) ==================== -->
+<div class="divider"><span>ULTIMATE — 10 YEARS</span></div>
+
+<div class="countdown long" style="border-color:rgba(212,160,23,.2)">
+  <div class="cd-left">
+    <div class="cd-days" id="netflix-days" style="color:#d4a017;font-size:30px">2095</div>
+    <div class="cd-unit">DAYS</div>
+    <div class="cd-deadline">2032/01/01</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-scope" style="color:#d4a017">ULTIMATE VISION — 6 YEAR</div>
+    <div class="cd-title" style="font-size:17px">Netflix超え</div>
+    <ul class="cd-goals">
+      <li><span class="red">みんなでNetflix超えて最高の景色見て嬉し泣きする</span></li>
+      <li>YouTube ネイティブのメディア帝国 → Netflix Japan 売上規模（<span class="num">2500億+</span>）到達</li>
+      <li>100億（2029）→ ロールアップ加速 → メディア×EC×属人メディア量産の複合モデル</li>
+      <li>年平均成長率 <span class="num">50%+</span> × ロールアップ = 前例のないYouTubeネイティブ帝国</li>
+      <li><span class="hl">成果 × 愛の両立</span>。全員の夢が叶い、日本のクリエイティブを守っている状態</li>
+    </ul>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" style="width:0%;background:linear-gradient(90deg,#d4a017,rgba(212,160,23,.3))"></div></div>
+      <div class="progress-label">残り約6年 — 今日の1日が複利で効く</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== VALUES ==================== -->
+<div class="divider"><span>VALUES — OPERATING SYSTEM</span></div>
+
+<div class="philosophy">
+  <div class="philosophy-label">OPT-IN MISSION</div>
+  <div class="philosophy-text">
+    目の前の人のプラスのために精一杯尽力し、<strong style="color:#e8ddd4">日本に幸せの連鎖を作る</strong>
+  </div>
+</div>
+
+<div class="philosophy">
+  <div class="philosophy-label">YOUTUBE TEAM MISSION</div>
+  <div class="philosophy-text">
+    <strong style="color:#e8ddd4">日本最強のYouTubeプロ集団を作る</strong><br>
+    <span class="dim">最強の定義 = 売上 × 実行スピード × 主体性が最大化されている</span>
+  </div>
+</div>
+
+<div style="margin-top:16px">
+  <div style="font-size:10px;letter-spacing:4px;color:#c41e3a;margin-bottom:10px">PERSONAL VALUE — 20 PRINCIPLES</div>
+  <div class="values-grid">
+    <div class="value-item"><div class="value-num">01</div><div class="value-text">絶対利益と勝利への執着</div></div>
+    <div class="value-item"><div class="value-num">02</div><div class="value-text">中庸とバランスのペースメーカー</div></div>
+    <div class="value-item"><div class="value-num">03</div><div class="value-text">短期の勝ちを長期の資産へ</div></div>
+    <div class="value-item"><div class="value-num">04</div><div class="value-text">機能的ギバーとしての合理性</div></div>
+    <div class="value-item"><div class="value-num">05</div><div class="value-text">スピードは質を凌駕する</div></div>
+    <div class="value-item"><div class="value-num">06</div><div class="value-text">全体像（森）からの逆算</div></div>
+    <div class="value-item"><div class="value-num">07</div><div class="value-text">A=B=Cの論理的連鎖</div></div>
+    <div class="value-item"><div class="value-num">08</div><div class="value-text">3通り以上の仮説立案</div></div>
+    <div class="value-item"><div class="value-num">09</div><div class="value-text">直感とロジックの統合</div></div>
+    <div class="value-item"><div class="value-num">10</div><div class="value-text">自他ともに認めるサプライズの創造</div></div>
+    <div class="value-item"><div class="value-num">11</div><div class="value-text">「正解」よりも「実験」</div></div>
+    <div class="value-item"><div class="value-num">12</div><div class="value-text">単独行動による聖域の保持</div></div>
+    <div class="value-item"><div class="value-num">13</div><div class="value-text">思考の強制停止とフラット化</div></div>
+    <div class="value-item"><div class="value-num">14</div><div class="value-text">美しさと強さと速さの完遂</div></div>
+    <div class="value-item"><div class="value-num">15</div><div class="value-text">完全自責によるOSアップデート</div></div>
+    <div class="value-item"><div class="value-num">16</div><div class="value-text">不純物のない「本音」の対話</div></div>
+    <div class="value-item"><div class="value-num">17</div><div class="value-text">負荷としての「出会い」を歓迎する</div></div>
+    <div class="value-item"><div class="value-num">18</div><div class="value-text">共振しないドライな理解</div></div>
+    <div class="value-item"><div class="value-num">19</div><div class="value-text">誰からも学ぶ謙虚な探求</div></div>
+    <div class="value-item"><div class="value-num">20</div><div class="value-text">未経験への挑戦（体験主義）</div></div>
+  </div>
+</div>
+
+<!-- ==================== まなとなら ==================== -->
+<div class="divider"><span>PERSPECTIVE SHIFT</span></div>
+
+<div class="philosophy" style="border-left-color:#d4a017">
+  <div class="philosophy-label" style="color:#d4a017">MANATO FILTER</div>
+  <div class="philosophy-text">
+    <strong style="color:#d4a017">「YouTubeで月10億稼いでいるまなとなら淡々と何を実行してるか？」</strong>
+    <div style="margin-top:10px;padding-top:8px;border-top:1px solid rgba(212,160,23,.1);font-size:12px;color:#b0a898;line-height:2">
+      1. レベル高いクリエイターと会う<br>
+      2. 出会う人全員の脳みそをインプット（コンテンツはマスト）<br>
+      3. 業務 <span class="red">200%</span> のアウトプット作る<br>
+      4. 納期死守、早巻き
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LIFE VISION ==================== -->
+<div class="divider"><span>LIFE VISION — NORTH STAR</span></div>
+
+<div class="philosophy" style="border-left-color:#d4a017;text-align:center">
+  <div class="philosophy-label" style="color:#d4a017;letter-spacing:6px">LIFE MISSION</div>
+  <div class="philosophy-text" style="font-size:16px;font-weight:700;color:#e8ddd4">
+    クリエイティブで日本を守る
+  </div>
+  <div style="margin-top:10px;font-size:12px;color:#8a7e74;line-height:1.9">
+    YouTube最強集団を作る → Netflix超える → 日本のクリエイター全員を束ねる<br>
+    → GDP1位・核なしで日本を守る → 文化で世界を制圧<br>
+    <span style="color:#c9b896">人生かけれる。全欲求が自然に満たされる構造。</span>
+  </div>
+  <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(212,160,23,.1);font-size:13px;color:#c9b896;font-style:italic">
+    「イベントをオーケストレーションして、<br>
+    みんなが楽しんでいるのを横から見守って泣いている」<br>
+    <span style="font-style:normal;font-size:11px;color:#6a6058">——これがリーダーシップの到達形</span>
+  </div>
+</div>
+
+<!-- ==================== CORE ==================== -->
+<div class="core">
+  <div class="core-text">
+    <span style="color:#d4a017">2095日</span>でNetflix超え。<br>
+    <span style="color:#c41e3a">1089日</span>で100億。<br>
+    <span style="color:#7ec8e3">268日</span>で日本一。<br>
+    <strong>今日</strong>は、その1日。<br>
+    <span class="dim" style="font-size:13px">毎日領土が増えてるか？減ってたら発狂しろ。</span>
+  </div>
+</div>
+
+</div>
+
+<script>
+// Live clock
+function updateClock(){
+  const now=new Date();
+  const y=now.getFullYear();
+  const m=String(now.getMonth()+1).padStart(2,'0');
+  const d=String(now.getDate()).padStart(2,'0');
+  const h=String(now.getHours()).padStart(2,'0');
+  const mi=String(now.getMinutes()).padStart(2,'0');
+  const s=String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('currentDate').textContent=`${y}/${m}/${d}`;
+  document.getElementById('currentTime').textContent=`${h}:${mi}:${s}`;
+
+  // Update all countdowns
+  const today=new Date(y,now.getMonth(),now.getDate());
+
+  const deadlines={
+    'year-end-days':new Date(2026,11,31),
+    'year-end-numbers':new Date(2026,11,31),
+    'one-year-days':new Date(2027,2,31),
+    'karada-p1-days':new Date(2026,4,31),
+    'karada-p2-days':new Date(2026,7,31),
+    'mote-p1-days':new Date(2026,4,31),
+    'mote-p2-days':new Date(2026,7,31),
+    'gengo-p1-days':new Date(2026,5,30),
+    'growth-p1-days':new Date(2026,5,30),
+    'growth-natural-days':new Date(2027,2,31),
+    'yt-3ch-days':new Date(2026,5,30),
+    'shikumi-days':new Date(2027,2,31),
+    'manato-days':new Date(2028,3,1),
+    'three-year-days':new Date(2029,2,31),
+    'netflix-days':new Date(2032,0,1),
+  };
+
+  for(const[id,deadline]of Object.entries(deadlines)){
+    const el=document.getElementById(id);
+    if(el){
+      const diff=Math.ceil((deadline-today)/(1000*60*60*24));
+      el.textContent=diff>0?diff:diff;
+    }
+  }
+}
+updateClock();
+setInterval(updateClock,1000);
+</script>
+</body>
+</html>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>孫子の兵法 — 完全解説</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:#0a0808;
+    color:#d4cbc4;
+    font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;
+    font-size:12.5px;
+    line-height:1.7;
+    min-height:100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 0%,rgba(196,30,58,.06) 0%,transparent 60%),
+      radial-gradient(ellipse at 80% 100%,rgba(212,160,23,.04) 0%,transparent 50%),
+      linear-gradient(180deg,#0a0808 0%,#0d0a0a 50%,#0a0808 100%);
+  }
+  ::selection{background:rgba(196,30,58,.35);color:#fff}
+
+  .container{max-width:820px;margin:0 auto;padding:24px 16px 48px}
+
+  /* ===== HEADER ===== */
+  .header{
+    text-align:center;
+    padding:56px 24px 48px;
+    position:relative;
+    border-bottom:1px solid rgba(196,30,58,.25);
+    margin-bottom:32px;
+  }
+  .header::before{
+    content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:80px;height:3px;background:linear-gradient(90deg,transparent,#c41e3a,transparent);
+  }
+  .header-kanji{
+    font-size:11px;letter-spacing:6px;color:#c41e3a;text-transform:uppercase;
+    margin-bottom:12px;opacity:.8;
+  }
+  .header h1{
+    font-size:28px;font-weight:800;color:#e8ddd4;
+    letter-spacing:3px;margin-bottom:6px;
+  }
+  .header .subtitle{
+    font-size:13px;color:#8a7e74;letter-spacing:2px;margin-bottom:28px;
+  }
+  .header-quote{
+    background:linear-gradient(135deg,rgba(26,20,20,.9),rgba(18,14,14,.9));
+    border:1px solid rgba(196,30,58,.2);
+    border-left:3px solid #c41e3a;
+    padding:16px 20px;
+    max-width:640px;margin:0 auto;
+    font-size:13.5px;line-height:1.8;color:#c9b896;
+    position:relative;
+  }
+  .header-quote::before{
+    content:'\300C';position:absolute;top:6px;left:8px;font-size:20px;color:rgba(196,30,58,.3);
+  }
+
+  /* ===== CHAPTER CARDS ===== */
+  .chapter{
+    background:linear-gradient(135deg,#120e0e 0%,#1a1414 100%);
+    border:1px solid rgba(196,30,58,.12);
+    border-left:3px solid #c41e3a;
+    border-radius:4px;
+    padding:24px 24px 20px;
+    margin-bottom:20px;
+    position:relative;
+  }
+  .chapter::before{
+    content:'';position:absolute;top:0;right:0;
+    width:120px;height:120px;
+    background:radial-gradient(circle at top right,rgba(196,30,58,.03),transparent 70%);
+    pointer-events:none;
+  }
+
+  .chapter-num{
+    font-size:10px;letter-spacing:3px;color:#c41e3a;opacity:.7;
+    margin-bottom:4px;text-transform:uppercase;
+  }
+  .chapter-title{
+    font-size:17px;font-weight:700;color:#e8ddd4;
+    margin-bottom:4px;letter-spacing:1px;
+  }
+  .chapter-sub{
+    font-size:11.5px;color:#8a7e74;margin-bottom:16px;
+    padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.05);
+  }
+
+  /* Section headers within cards */
+  .section-head{
+    font-size:12.5px;font-weight:700;color:#d4a017;
+    margin:16px 0 8px;letter-spacing:.5px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .section-head::before{
+    content:'';width:10px;height:1px;background:#d4a017;flex-shrink:0;
+  }
+
+  /* ===== TABLES ===== */
+  table{
+    width:100%;border-collapse:collapse;margin:8px 0 12px;
+    font-size:11.5px;
+  }
+  th{
+    background:rgba(196,30,58,.1);color:#d4a017;
+    text-align:left;padding:6px 10px;font-weight:600;
+    border-bottom:1px solid rgba(196,30,58,.2);
+    font-size:11px;letter-spacing:.5px;
+  }
+  td{
+    padding:6px 10px;
+    border-bottom:1px solid rgba(255,255,255,.04);
+    vertical-align:top;
+  }
+  tr:hover td{background:rgba(196,30,58,.03)}
+
+  /* ===== LISTS ===== */
+  ul,ol{margin:6px 0 10px 16px}
+  li{margin-bottom:3px}
+  li strong{color:#c9b896}
+
+  /* Numbered items */
+  .num-list{list-style:none;margin-left:0;counter-reset:item}
+  .num-list li{counter-increment:item;padding-left:22px;position:relative}
+  .num-list li::before{
+    content:counter(item);position:absolute;left:0;top:1px;
+    width:16px;height:16px;border-radius:2px;
+    background:rgba(196,30,58,.15);color:#c41e3a;
+    font-size:10px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* ===== QUOTE CALLOUTS (Scroll/Brushstroke style) ===== */
+  .quote-box{
+    background:linear-gradient(135deg,rgba(212,160,23,.06),rgba(139,69,19,.04));
+    border:1px solid rgba(212,160,23,.15);
+    border-left:3px solid #d4a017;
+    padding:12px 16px;
+    margin:10px 0 14px;
+    position:relative;
+    font-size:12.5px;
+    color:#c9b896;
+  }
+  .quote-box::before{
+    content:'';position:absolute;top:-1px;left:-3px;right:0;height:2px;
+    background:linear-gradient(90deg,#d4a017,transparent 60%);
+  }
+  .quote-box::after{
+    content:'';position:absolute;bottom:-1px;left:-3px;right:0;height:1px;
+    background:linear-gradient(90deg,rgba(212,160,23,.3),transparent 40%);
+  }
+  .quote-box .quote-text{
+    font-style:italic;line-height:1.8;
+  }
+  .quote-box .quote-meaning{
+    margin-top:6px;font-style:normal;font-size:11.5px;color:#8a7e74;
+    padding-top:6px;border-top:1px solid rgba(212,160,23,.1);
+  }
+
+  /* ===== SPECIAL: War tactics list ===== */
+  .tactics-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;
+    margin:8px 0 12px;font-size:11.5px;
+  }
+  .tactic-item{
+    padding:3px 0 3px 14px;position:relative;
+  }
+  .tactic-item::before{
+    content:'';position:absolute;left:0;top:9px;
+    width:6px;height:6px;
+    background:#c41e3a;
+    clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+  }
+
+  /* ===== PRIORITY BLOCKS ===== */
+  .priority{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:6px 0;margin:3px 0;
+  }
+  .priority-rank{
+    flex-shrink:0;width:24px;height:24px;
+    border:1px solid rgba(196,30,58,.3);border-radius:2px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:700;color:#c41e3a;
+    background:rgba(196,30,58,.08);
+  }
+  .priority-rank.gold{border-color:rgba(212,160,23,.3);color:#d4a017;background:rgba(212,160,23,.08)}
+  .priority-rank.dim{border-color:rgba(255,255,255,.1);color:#666;background:rgba(255,255,255,.03)}
+
+  /* ===== HIGHLIGHT TEXT ===== */
+  .hl{color:#d4a017;font-weight:600}
+  .red{color:#c41e3a;font-weight:600}
+  .dim{color:#6a6058}
+
+  /* ===== CORE INSIGHT BOX ===== */
+  .core-box{
+    background:rgba(196,30,58,.06);
+    border:1px solid rgba(196,30,58,.15);
+    padding:10px 14px;
+    margin:12px 0 4px;
+    border-radius:3px;
+    font-size:12px;
+  }
+  .core-box .label{
+    font-size:10px;letter-spacing:2px;color:#c41e3a;
+    font-weight:700;margin-bottom:4px;
+  }
+
+  /* ===== FUULINKAZAN SPECIAL ===== */
+  .furin{
+    display:grid;grid-template-columns:1fr 1fr;gap:6px;
+    margin:10px 0 14px;
+  }
+  .furin-item{
+    background:rgba(18,14,14,.8);
+    border:1px solid rgba(212,160,23,.12);
+    padding:8px 12px;
+    font-size:11.5px;
+  }
+  .furin-item .furin-kanji{
+    font-size:16px;font-weight:800;color:#d4a017;
+    margin-right:6px;float:left;line-height:1.4;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer{
+    text-align:center;padding:40px 0 20px;
+    border-top:1px solid rgba(196,30,58,.15);
+    margin-top:16px;
+  }
+  .footer p{font-size:11px;color:#5a524a;letter-spacing:1px}
+  .footer .bar{
+    width:40px;height:2px;margin:12px auto;
+    background:linear-gradient(90deg,transparent,#c41e3a,transparent);
+  }
+
+  /* ===== FIVE DANGERS GRID ===== */
+  .danger-grid{margin:8px 0 12px}
+  .danger-item{
+    display:flex;align-items:flex-start;gap:8px;
+    padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03);
+    font-size:11.5px;
+  }
+  .danger-num{
+    flex-shrink:0;color:#c41e3a;font-weight:700;font-size:11px;
+    width:16px;text-align:center;
+  }
+  .danger-name{color:#d4a017;font-weight:600;margin-right:4px}
+
+  /* Responsive */
+  @media(max-width:600px){
+    .container{padding:16px 10px 32px}
+    .chapter{padding:16px 14px}
+    .tactics-grid,.furin{grid-template-columns:1fr}
+    .header h1{font-size:22px}
+  }
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ==================== HEADER ==================== -->
+<div class="header">
+  <div class="header-kanji">THE ART OF WAR</div>
+  <h1>孫子の兵法 — 完全解説</h1>
+  <div class="subtitle">二千五百年の戦略知、全十三篇</div>
+  <div class="header-quote">
+    百戦百勝は善の善なるものに非ず。<br>
+    戦わずして人の兵を屈するは善の善なるものなり。
+  </div>
+</div>
+
+<!-- ==================== 帝王学：冒頭訓示 ==================== -->
+<div class="chapter" style="border-left-color:#d4a017;background:linear-gradient(135deg,#0f0d08 0%,#1a1610 100%);">
+  <div class="chapter-num" style="color:#d4a017;">帝王学 — 大前提</div>
+  <div class="chapter-title">ビジネスは戦争、今は戦時中</div>
+  <div class="chapter-sub">全ての兵法を読む前に、この前提を刻め</div>
+  <p style="margin:12px 0 0;line-height:1.9;">
+    ビジネスは会社（国）毎の利益（領土）の奪い合いである。自国の国力を上げるために出来ることは全部やる。虎視眈々と機会を狙い時には強かに手段を選ばずに行動する。<br><br>
+    <span class="red">「もし競合にこの施策を先手を打たれたら負けるかも」</span>という常に緊張感を持ち圧倒的に勝つための戦略を考える。誇張抜きで<span class="hl">生きるか死ぬか</span>だと思うこと。<br><br>
+    毎日領土が増えているのか、減っているのかの感覚を持ち、減ってたら発狂する。増えてる時は慢心せずに常に貪欲に。完全に制圧するためにオーバーキルな選択肢も水面下で着実に敷いておく。
+  </p>
+</div>
+
+<!-- ==================== 第1篇：計篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第一篇</div>
+  <div class="chapter-title">計篇（始計）</div>
+  <div class="chapter-sub">戦う前に勝負は決まる</div>
+
+  <div class="section-head">五事 — 勝敗を決める5要素</div>
+  <table>
+    <tr><th style="width:50px">要素</th><th style="width:100px">意味</th><th>具体</th></tr>
+    <tr><td class="hl">道</td><td>大義・理念</td><td>民と君主が同じ方向を向いているか。死をも恐れず、生をも惜しまない一体感</td></tr>
+    <tr><td class="hl">天</td><td>タイミング・時勢</td><td>陰陽・寒暑・季節の移り変わり。現代なら市場トレンド、時代の流れ</td></tr>
+    <tr><td class="hl">地</td><td>環境・地形</td><td>遠近・険易・広狭・死生。現代なら市場環境、競合状況、プラットフォーム特性</td></tr>
+    <tr><td class="hl">将</td><td>リーダーの資質</td><td>智（知恵）・信（信頼）・仁（思いやり）・勇（勇気）・厳（厳しさ）の5徳</td></tr>
+    <tr><td class="hl">法</td><td>組織・制度</td><td>軍の編成、階級制度、兵站管理。現代なら組織体制、ルール、オペレーション</td></tr>
+  </table>
+
+  <div class="section-head">七計 — 7つの比較軸</div>
+  <p style="margin-bottom:6px;font-size:11.5px;color:#8a7e74">敵と味方をこの7項目で比較し、勝算を冷静に測る</p>
+  <ol class="num-list">
+    <li>どちらの君主に<strong>大義</strong>があるか（道）</li>
+    <li>どちらの将軍が<strong>有能</strong>か（将）</li>
+    <li>どちらが<strong>天の利・地の利</strong>を得ているか（天地）</li>
+    <li>どちらの<strong>軍律</strong>が厳格に守られているか（法）</li>
+    <li>どちらの軍が<strong>強い</strong>か（兵力）</li>
+    <li>どちらの兵士が<strong>訓練</strong>されているか（練度）</li>
+    <li>どちらの<strong>賞罰</strong>が明確か（信賞必罰）</li>
+  </ol>
+
+  <div class="section-head">兵は詭道なり — 戦いの本質は欺き</div>
+  <div class="tactics-grid">
+    <div class="tactic-item">能力があっても「ない」ように見せる</div>
+    <div class="tactic-item">使うつもりでも「使わない」ように見せる</div>
+    <div class="tactic-item">近くにいても「遠くにいる」と思わせる</div>
+    <div class="tactic-item">遠くにいても「近くにいる」と思わせる</div>
+    <div class="tactic-item">利益で誘い出す</div>
+    <div class="tactic-item">混乱させて奪う</div>
+    <div class="tactic-item">充実していれば備える</div>
+    <div class="tactic-item">強ければ避ける</div>
+    <div class="tactic-item">怒らせてかき乱す</div>
+    <div class="tactic-item">卑下して驕らせる</div>
+    <div class="tactic-item">安逸なら疲弊させる</div>
+    <div class="tactic-item">親密なら離間させる</div>
+  </div>
+
+  <div class="core-box">
+    <div class="label">核心</div>
+    <span class="red">「算多きは勝ち、算少なきは敗る」</span> — 計算（準備）の量が勝敗を決める。戦場に出る前に勝負はついている。
+  </div>
+</div>
+
+<!-- ==================== 第2篇：作戦篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第二篇</div>
+  <div class="chapter-title">作戦篇</div>
+  <div class="chapter-sub">長期戦は国を滅ぼす</div>
+
+  <div class="quote-box">
+    <div class="quote-text">兵は拙速を聞くも、未だ巧久を睹ざるなり</div>
+    <div class="quote-meaning">下手でも速い勝利はある。巧みだが長引く勝利は歴史上存在しない</div>
+  </div>
+
+  <div class="section-head">長期戦のコスト</div>
+  <ul>
+    <li>戦争が長期化すると：兵が疲弊 → 士気低下 → 国力消耗 → 他国が侵攻</li>
+    <li>10万の軍を動かすのに<strong>1日1000金</strong>。長期戦はコストで死ぬ</li>
+  </ul>
+
+  <div class="section-head">因糧於敵 — 敵の資源を奪え</div>
+  <ul>
+    <li>自国から補給を運ぶのは莫大なコスト。<strong>敵地で現地調達</strong>すれば負担ゼロ</li>
+    <li>敵の食糧1鍾（約120kg）を奪う = 自国から運ぶ<strong>20鍾に相当</strong></li>
+    <li>敵の兵士を捕虜にしたら<strong>厚遇して自軍に編入</strong> → 敵を弱め、自軍を強める</li>
+  </ul>
+
+  <div class="section-head">具体例</div>
+  <ul>
+    <li>敵の武器・兵器・馬車を鹵獲 → 自軍の旗に付け替えてそのまま使う</li>
+    <li>捕虜を罰するな。養って使え。<span class="hl">「勝敵して強を益す」</span> = 敵に勝って自軍が強くなる</li>
+  </ul>
+</div>
+
+<!-- ==================== 第3篇：謀攻篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第三篇</div>
+  <div class="chapter-title">謀攻篇</div>
+  <div class="chapter-sub">戦わずして勝つのが最上</div>
+
+  <div class="section-head">攻撃の優先順位（上策→下策）</div>
+  <div class="priority"><div class="priority-rank gold">1</div><div><strong class="hl">伐謀</strong> — 敵の戦略・計画を事前に潰す。最上。戦わずに勝つ</div></div>
+  <div class="priority"><div class="priority-rank gold">2</div><div><strong class="hl">伐交</strong> — 敵の同盟関係を崩す。外交で孤立させる</div></div>
+  <div class="priority"><div class="priority-rank">3</div><div><strong>伐兵</strong> — 軍事力で直接攻撃する</div></div>
+  <div class="priority"><div class="priority-rank dim">4</div><div><strong style="color:#6a6058">攻城</strong> — 城を攻める。最下。3ヶ月の準備、兵の1/3が死ぬ</div></div>
+
+  <div class="section-head">全を持って勝つ</div>
+  <ul>
+    <li>国を<strong>全うして</strong>勝つのが上、国を<strong>破って</strong>勝つのが次</li>
+    <li>軍を全うして勝つのが上、軍を破って勝つのが次</li>
+    <li>敵を壊滅させるのではなく、<span class="red">「戦う気を失わせる」</span>のが真の勝利</li>
+  </ul>
+
+  <div class="quote-box">
+    <div class="quote-text">彼を知り己を知れば百戦殆うからず</div>
+    <div class="quote-meaning">
+      彼を知り己を知れば → 百戦しても危うくない<br>
+      彼を知らず己を知れば → 勝ったり負けたり（五分五分）<br>
+      彼を知らず己も知らなければ → 必ず負ける
+    </div>
+  </div>
+
+  <div class="section-head">用兵の法（兵力差による戦い方）</div>
+  <table>
+    <tr><th>兵力比</th><th>戦略</th></tr>
+    <tr><td class="hl">10倍</td><td>包囲する</td></tr>
+    <tr><td class="hl">5倍</td><td>正面攻撃する</td></tr>
+    <tr><td class="hl">2倍</td><td>分断する</td></tr>
+    <tr><td>同等</td><td>工夫して戦う</td></tr>
+    <tr><td class="dim">少ない</td><td>逃げる</td></tr>
+    <tr><td class="dim">勝てない</td><td>避ける — 小が大に意地を張れば、大の捕虜になるだけ</td></tr>
+  </table>
+</div>
+
+<!-- ==================== 第4篇：軍形篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第四篇</div>
+  <div class="chapter-title">軍形篇</div>
+  <div class="chapter-sub">まず負けない態勢を作る</div>
+
+  <div class="section-head">不敗の原則</div>
+  <div class="quote-box">
+    <div class="quote-text">勝つべからざるは己に在り、勝つべきは敵に在り</div>
+    <div class="quote-meaning">
+      負けないようにするのは<strong>自分の努力</strong>でできる。<br>
+      勝てるかどうかは<strong>相手の隙</strong>次第。<br>
+      → まず「絶対に負けない態勢」を整え、敵が隙を見せるのを待つ。
+    </div>
+  </div>
+
+  <div class="section-head">善く戦う者は</div>
+  <ul>
+    <li><span class="hl">「善く戦う者は、勝ち易きに勝つ者なり」</span> — 名将は派手な勝利を収めない。「勝って当然」の状況を作ってから勝つ。だから智謀もなく、勇名もない。しかし勝つ</li>
+    <li><span class="hl">「善く戦う者は、不敗の地に立ちて、敵の敗を失わざるなり」</span> — 負けない位置に立ち、敵のミスを見逃さない</li>
+  </ul>
+
+  <div class="core-box">
+    <div class="label">核心</div>
+    <span class="red">勝兵は先ず勝ちて而る後に戦いを求め、敗兵は先ず戦いて而る後に勝を求む</span><br>
+    勝つ軍は「勝つ条件を整えてから」戦いを始める。負ける軍は「とりあえず戦ってから」なんとかしようとする。
+  </div>
+</div>
+
+<!-- ==================== 第5篇：兵勢篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第五篇</div>
+  <div class="chapter-title">兵勢篇</div>
+  <div class="chapter-sub">勢いで圧倒する</div>
+
+  <div class="section-head">正と奇</div>
+  <div class="quote-box">
+    <div class="quote-text">凡そ戦いは、正を以って合し、奇を以って勝つ</div>
+    <div class="quote-meaning">正（正攻法）で正面からぶつかり、奇（意外な手）で決定打を与える。正と奇の組み合わせは無限。「奇正の変は、窮むべからざるなり」</div>
+  </div>
+
+  <div class="section-head">勢いの原理</div>
+  <ul>
+    <li><span class="hl">「善く戦う者は、之を勢に求めて、人に責めず」</span> — 個人の能力に頼るな。仕組み（勢い）で勝て</li>
+    <li>丸い石を千仞の山から転がす → 誰がやっても同じ結果。これが<strong>「勢い」</strong></li>
+    <li>木や石は安定した場所では止まり、不安定な場所では動く → <strong>勢いを作る環境を設計せよ</strong></li>
+  </ul>
+
+  <div class="section-head">節と勢</div>
+  <ul>
+    <li><strong>勢い</strong> = 弩（クロスボウ）を引き絞った状態</li>
+    <li><strong>節（タイミング）</strong> = 引き金を引く瞬間</li>
+    <li>勢いを溜めて、<span class="red">最高のタイミングで一気に放つ</span></li>
+  </ul>
+</div>
+
+<!-- ==================== 第6篇：虚実篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第六篇</div>
+  <div class="chapter-title">虚実篇</div>
+  <div class="chapter-sub">相手の弱点を突く</div>
+
+  <div class="section-head">先手を取れ</div>
+  <div class="quote-box">
+    <div class="quote-text">先に戦地に処りて敵を待つ者は佚し、後に戦地に処りて戦いに趨く者は労す</div>
+    <div class="quote-meaning">先に到着した方が余裕があり、後から来た方は疲弊する。自分が主導権を握る。相手に振り回されるな。</div>
+  </div>
+
+  <div class="section-head">虚を撃て</div>
+  <ul>
+    <li><span class="hl">「兵の形は水に象る」</span> — 水は高きを避けて低きに流れる。軍も敵の強い所（実）を避け、弱い所（虚）を攻める</li>
+    <li>攻め上手は敵に<strong>どこを守ればいいか分からなくさせる</strong></li>
+    <li>守り上手は敵に<strong>どこを攻めればいいか分からなくさせる</strong></li>
+  </ul>
+
+  <div class="section-head">形を隠せ</div>
+  <ul>
+    <li>自分の形を隠し、敵の形を暴く</li>
+    <li><span class="hl">「形兵の極は、無形に至る」</span> — 最高の形は「形がない」こと。形がなければ、敵のスパイが見ても何も分からない</li>
+  </ul>
+
+  <div class="core-box">
+    <div class="label">水の戦略</div>
+    水は地形に応じて流れを変える。軍も敵の態勢に応じて変化させる。<br>
+    <span class="red">「兵に常勢なく、水に常形なし」</span> — 固定の形はない。敵の変化に応じて勝つ者、これを神という。
+  </div>
+</div>
+
+<!-- ==================== 第7篇：軍争篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第七篇</div>
+  <div class="chapter-title">軍争篇</div>
+  <div class="chapter-sub">主導権の奪い合い</div>
+
+  <div class="section-head">迂直の計</div>
+  <ul>
+    <li>遠回りを近道に変える。不利を有利に変える</li>
+    <li>敵を利で誘い出し、わざと遅れて出発し、先に到着する</li>
+  </ul>
+
+  <div class="section-head">風林火山（孫子の原文）</div>
+  <div class="furin">
+    <div class="furin-item"><span class="furin-kanji">風</span>其の疾きこと風の如く — 移動は風のように速く</div>
+    <div class="furin-item"><span class="furin-kanji">林</span>其の徐かなること林の如く — 待つ時は林のように静かに</div>
+    <div class="furin-item"><span class="furin-kanji">火</span>侵掠すること火の如く — 攻める時は火のように激しく</div>
+    <div class="furin-item"><span class="furin-kanji">山</span>動かざること山の如し — 守る時は山のように動かず</div>
+    <div class="furin-item"><span class="furin-kanji">陰</span>知り難きこと陰の如く — 意図は闇のように隠し</div>
+    <div class="furin-item"><span class="furin-kanji">雷</span>動くこと雷霆の如し — 動く時は雷のように一瞬で</div>
+  </div>
+
+  <div class="section-head">気の理論</div>
+  <div class="quote-box">
+    <div class="quote-text">朝の気は鋭く、昼の気は惰り、暮の気は帰る</div>
+    <div class="quote-meaning">朝（士気が高い時）は避け、昼〜夕（士気が下がった時）に攻める。治を以って乱を待ち、静を以って譁を待つ — 整然と待ち、敵が乱れた時に打つ。</div>
+  </div>
+</div>
+
+<!-- ==================== 第8篇：九変篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第八篇</div>
+  <div class="chapter-title">九変篇</div>
+  <div class="chapter-sub">臨機応変</div>
+
+  <div class="section-head">5つの「〜するな」</div>
+  <ol class="num-list">
+    <li><strong>圮地</strong>では陣を張るな（地形が悪い場所に留まるな）</li>
+    <li><strong>衢地</strong>では外交しろ（交通の要衝では同盟を結べ）</li>
+    <li><strong>絶地</strong>では留まるな（孤立する場所に居座るな）</li>
+    <li><strong>囲地</strong>では策を練れ（包囲されたら知恵で切り抜けろ）</li>
+    <li><strong>死地</strong>では戦え（逃げ場がないなら全力で戦え）</li>
+  </ol>
+
+  <div class="section-head">利害の表裏</div>
+  <div class="quote-box">
+    <div class="quote-text">智者の慮は、必ず利害を雑う</div>
+    <div class="quote-meaning">
+      有利な状況に潜む<strong>危険</strong>を見る → 過信しない<br>
+      不利な状況に潜む<strong>好機</strong>を見る → 絶望しない<br>
+      常に両面を見ることが知将の条件
+    </div>
+  </div>
+
+  <div class="section-head">将に五危あり — リーダーの5つの弱点</div>
+  <div class="danger-grid">
+    <div class="danger-item"><div class="danger-num">1</div><div><span class="danger-name">必死</span>死を覚悟しすぎ → 殺される</div></div>
+    <div class="danger-item"><div class="danger-num">2</div><div><span class="danger-name">必生</span>生に執着しすぎ → 捕虜にされる</div></div>
+    <div class="danger-item"><div class="danger-num">3</div><div><span class="danger-name">忿速</span>怒りやすい → 挑発に乗って判断を誤る</div></div>
+    <div class="danger-item"><div class="danger-num">4</div><div><span class="danger-name">廉潔</span>清廉すぎる → 侮辱されて冷静さを失う</div></div>
+    <div class="danger-item"><div class="danger-num">5</div><div><span class="danger-name">愛民</span>民を愛しすぎる → 守ろうとして疲弊する</div></div>
+  </div>
+</div>
+
+<!-- ==================== 第9篇：行軍篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第九篇</div>
+  <div class="chapter-title">行軍篇</div>
+  <div class="chapter-sub">観察と読み</div>
+
+  <div class="section-head">地形別の布陣</div>
+  <ul>
+    <li><strong>山</strong>では高い場所を取れ。谷を背にするな</li>
+    <li><strong>川</strong>を渡った敵は半渡りの時に撃て（全員渡り切る前に）</li>
+    <li><strong>湿地</strong>は速やかに通過しろ。留まるな</li>
+    <li><strong>平地</strong>では右背に高地を置け</li>
+  </ul>
+
+  <div class="section-head">敵の意図を読む兆候</div>
+  <table>
+    <tr><th>兆候</th><th>読み</th></tr>
+    <tr><td>近くにいるのに静かな敵</td><td>地形の険しさを頼みにしている</td></tr>
+    <tr><td>遠くにいるのに挑発する敵</td><td>こちらを引き出したい</td></tr>
+    <tr><td>木が揺れている</td><td>敵が来ている</td></tr>
+    <tr><td>草の中に多くの障害物</td><td>疑わせようとしている</td></tr>
+    <tr><td>鳥が飛び立つ</td><td>伏兵がいる</td></tr>
+    <tr><td>獣が驚いて走る</td><td>奇襲が来る</td></tr>
+    <tr><td>土煙が高く鋭い</td><td>戦車が来ている</td></tr>
+    <tr><td>土煙が低く広い</td><td>歩兵が来ている</td></tr>
+    <tr><td>使者が丁寧で準備を急ぐ</td><td>進撃してくる</td></tr>
+    <tr><td>使者が強気で進撃の構え</td><td>撤退する（ハッタリ）</td></tr>
+    <tr><td>兵士が杖にもたれて立つ</td><td>飢えている</td></tr>
+    <tr><td>水汲みが先に飲んでいる</td><td>渇いている</td></tr>
+    <tr><td>夜に呼び合っている</td><td>恐れている</td></tr>
+  </table>
+</div>
+
+<!-- ==================== 第10篇：地形篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第十篇</div>
+  <div class="chapter-title">地形篇</div>
+  <div class="chapter-sub">環境を読む</div>
+
+  <div class="section-head">6つの地形</div>
+  <table>
+    <tr><th>地形</th><th>特徴</th><th>戦略</th></tr>
+    <tr><td class="hl">通</td><td>双方が行き来できる開けた地</td><td>先に高地の陽当たりの良い場所を取れ</td></tr>
+    <tr><td class="hl">挂</td><td>行きやすいが戻りにくい</td><td>敵に備えがなければ進め。備えがあれば行くな</td></tr>
+    <tr><td class="hl">支</td><td>双方不利な膠着地</td><td>敵が誘っても出るな。退いて敵を引き出せ</td></tr>
+    <tr><td class="hl">隘</td><td>狭い道</td><td>先に占拠して敵を待て。敵が先なら入るな</td></tr>
+    <tr><td class="hl">険</td><td>険しい高地</td><td>先に高い陽当たりの良い場所を取って待て</td></tr>
+    <tr><td class="hl">遠</td><td>遠距離で勢力が拮抗</td><td>戦いを仕掛けても不利。戦うな</td></tr>
+  </table>
+
+  <div class="section-head">敗北の6パターン（将の責任）</div>
+  <div class="danger-grid">
+    <div class="danger-item"><div class="danger-num">1</div><div><span class="danger-name">走</span>兵力1対10で無理に攻める → 逃走</div></div>
+    <div class="danger-item"><div class="danger-num">2</div><div><span class="danger-name">弛</span>兵が強いのに将が弱い → 規律崩壊</div></div>
+    <div class="danger-item"><div class="danger-num">3</div><div><span class="danger-name">陥</span>将が強いのに兵が弱い → 全滅</div></div>
+    <div class="danger-item"><div class="danger-num">4</div><div><span class="danger-name">崩</span>上級将校が怒って勝手に戦う → 組織崩壊</div></div>
+    <div class="danger-item"><div class="danger-num">5</div><div><span class="danger-name">乱</span>将が弱腰で規律がない → 混乱</div></div>
+    <div class="danger-item"><div class="danger-num">6</div><div><span class="danger-name">北</span>敵を見誤って少数で多数に当たる → 大敗</div></div>
+  </div>
+
+  <div class="core-box">
+    <div class="label">核心</div>
+    <span class="red">「地形は兵の助けなり。敵を料りて勝を制し、険阨遠近を計るは、上将の道なり」</span>
+  </div>
+</div>
+
+<!-- ==================== 第11篇：九地篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第十一篇</div>
+  <div class="chapter-title">九地篇</div>
+  <div class="chapter-sub">9つの戦場</div>
+
+  <div class="section-head">9つの地の種類と戦略</div>
+  <table>
+    <tr><th>地</th><th>状況</th><th>戦略</th></tr>
+    <tr><td class="hl">散地</td><td>自国内で戦う</td><td>戦うな（兵が逃げやすい）</td></tr>
+    <tr><td class="hl">軽地</td><td>敵国に少し入った</td><td>止まるな（退路が近く士気が不安定）</td></tr>
+    <tr><td class="hl">争地</td><td>先に取った方が有利</td><td>攻めるな（無理に攻めず先に布陣）</td></tr>
+    <tr><td class="hl">交地</td><td>四方に通じる場所</td><td>守りを固めろ</td></tr>
+    <tr><td class="hl">衢地</td><td>諸国に接する要衝</td><td>外交しろ（同盟を結べ）</td></tr>
+    <tr><td class="hl">重地</td><td>敵国深くに入った</td><td>掠奪しろ（現地で補給を確保）</td></tr>
+    <tr><td class="hl">圮地</td><td>山林・険路・沼沢</td><td>速やかに通過しろ</td></tr>
+    <tr><td class="hl">囲地</td><td>入口が狭く退路も狭い</td><td>策を練って脱出しろ</td></tr>
+    <tr><td class="red">死地</td><td>速やかに戦わないと全滅</td><td>全力で戦え</td></tr>
+  </table>
+
+  <div class="section-head">死地に陥れて然る後に生く</div>
+  <ul>
+    <li>退路を断たれた兵士は<strong>死に物狂い</strong>で戦う</li>
+    <li>だからわざと兵を死地に置くことで<strong>最大の力</strong>を引き出す</li>
+  </ul>
+
+  <div class="quote-box">
+    <div class="quote-text">呉越同舟</div>
+    <div class="quote-meaning">呉と越は敵同士だが、同じ船に乗って嵐に遭えば助け合う。共通の危機が人を団結させる。</div>
+  </div>
+
+  <div class="core-box">
+    <div class="label">核心</div>
+    <span class="red">始めは処女の如く、後は脱兎の如く</span> — 最初は処女のようにおとなしく控えめにして敵に油断させる。一旦動いたら脱兎のように速く、敵が対応できないうちに決着をつける。
+  </div>
+</div>
+
+<!-- ==================== 第12篇：火攻篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第十二篇</div>
+  <div class="chapter-title">火攻篇</div>
+  <div class="chapter-sub">特殊攻撃と感情の制御</div>
+
+  <div class="section-head">火攻めの5つの対象</div>
+  <ol class="num-list">
+    <li><strong class="hl">火人</strong> — 敵の兵営を焼く</li>
+    <li><strong class="hl">火積</strong> — 敵の物資・食糧を焼く</li>
+    <li><strong class="hl">火輜</strong> — 敵の輸送車両を焼く</li>
+    <li><strong class="hl">火庫</strong> — 敵の倉庫を焼く</li>
+    <li><strong class="hl">火隊</strong> — 敵の補給路を焼く</li>
+  </ol>
+
+  <div class="section-head">火攻めの5つの変化（状況対応）</div>
+  <ol class="num-list">
+    <li>敵の内部から火が出たら → 外から速攻で<strong>呼応する</strong></li>
+    <li>火が出ても敵が静かなら → <strong>待て。攻めるな</strong>（罠の可能性）</li>
+    <li>火勢が最大になったら → 追撃可能なら追撃、不可能なら<strong>止まれ</strong></li>
+    <li>外から火をかけられるなら → 内部の協力者を<strong>待つ必要はない</strong></li>
+    <li><strong>風上から</strong>火をかけろ → 風下から攻めるな</li>
+  </ol>
+
+  <div class="section-head">最重要メッセージ — 感情で判断するな</div>
+  <div class="quote-box">
+    <div class="quote-text">主は怒りを以って師を興すべからず、将は慍りを以って戦いを致すべからず</div>
+    <div class="quote-meaning">君主は怒りで戦争を始めるな。将軍は腹立ちで戦闘を始めるな。</div>
+  </div>
+  <div class="quote-box">
+    <div class="quote-text">怒りは復た喜ぶべきも、慍りは復た悦ぶべきも、亡国は復た存すべからず、死者は復た生くべからず</div>
+    <div class="quote-meaning">怒りはいずれ収まる。しかし滅んだ国は戻らない。死んだ人は生き返らない。</div>
+  </div>
+
+  <div class="core-box">
+    <div class="label">核心</div>
+    <span class="red">利に合えば動き、利に合わざれば止まる</span> — 全ての判断基準は「利があるかどうか」。感情ではない。
+  </div>
+</div>
+
+<!-- ==================== 第13篇：用間篇 ==================== -->
+<div class="chapter">
+  <div class="chapter-num">第十三篇</div>
+  <div class="chapter-title">用間篇</div>
+  <div class="chapter-sub">情報戦が最も重要</div>
+
+  <div class="section-head">なぜスパイが必要か</div>
+  <ul>
+    <li>10万の軍を動かして何年も戦う → <strong>莫大なコスト</strong></li>
+    <li>たった100金をケチってスパイを使わないのは<span class="red">「不仁の極み」</span></li>
+  </ul>
+  <div class="quote-box">
+    <div class="quote-text">明君・賢将が動いて人に勝ち、成功が衆に出づる所以は、先知なり</div>
+    <div class="quote-meaning">事前に情報を持っている者が勝つ</div>
+  </div>
+
+  <div class="section-head">五間 — 5種類のスパイ</div>
+  <table>
+    <tr><th>種類</th><th>方法</th><th>特徴</th></tr>
+    <tr><td class="hl">因間</td><td>敵国の現地住民を使う</td><td>土地の情報、民心の状態を知る</td></tr>
+    <tr><td class="hl">内間</td><td>敵の役人・官吏を買収する</td><td>敵の内部情報、政策、弱点を知る</td></tr>
+    <tr><td class="red">反間</td><td>敵のスパイを寝返らせる</td><td>最も重要。敵に偽情報を流せる</td></tr>
+    <tr><td class="hl">死間</td><td>偽情報を持たせて敵に潜入</td><td>発覚したら殺される（使い捨て）</td></tr>
+    <tr><td class="hl">生間</td><td>潜入して情報を持ち帰る</td><td>最も優秀な人材が必要</td></tr>
+  </table>
+
+  <div class="section-head">反間こそが最重要</div>
+  <ul>
+    <li>敵のスパイを見つけたら、<strong>殺すな</strong>。金と厚遇で寝返らせろ</li>
+    <li>反間から得た情報で、因間・内間を運用できる</li>
+    <li>反間から偽情報を敵に流し、死間の効果を最大化できる</li>
+    <li><span class="red">全ての情報活動の起点は反間にある</span></li>
+  </ul>
+
+  <div class="core-box">
+    <div class="label">核心</div>
+    <span class="red">「三軍の事、間より親しきはなく、賞は間より厚きはなく、事は間より密なるはなし」</span><br>
+    軍において、スパイより信頼すべき者はなく、スパイより厚く報いるべき者はなく、スパイより秘密にすべきことはない。
+  </div>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<div class="footer">
+  <div class="bar"></div>
+  <p>孫子の兵法 全十三篇 — 完全解説</p>
+  <p style="margin-top:6px;color:#3a3430">Generated for Taiga</p>
+</div>
+
+</div>
+</body>
+</html>

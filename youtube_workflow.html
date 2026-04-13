@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube運営 完全ワークフロー</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a0a;
+    color: #d0d0d0;
+    padding: 16px;
+    min-height: 100vh;
+    line-height: 1.5;
+    font-size: 13px;
+  }
+
+  /* ── Header ── */
+  .page-header {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .page-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .page-header .subtitle {
+    font-size: 12px;
+    color: #555;
+    margin-top: 4px;
+  }
+
+  /* ── Progress Bar ── */
+  .progress-wrapper {
+    background: #111;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border: 1px solid #1a1a2e;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 6px;
+  }
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    background: #1a1a2e;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2196F3, #00BFA5);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── Phase Card ── */
+  .phase-card {
+    background: #0d0d0d;
+    border-radius: 10px;
+    border-left: 4px solid #333;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .phase-card .phase-header {
+    padding: 12px 16px 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .phase-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .phase-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .phase-progress {
+    margin-left: auto;
+    font-size: 11px;
+    color: #666;
+    white-space: nowrap;
+  }
+  .phase-body {
+    padding: 0 16px 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 8px;
+  }
+
+  /* ── Border colors per phase ── */
+  .phase-mindset { border-left-color: #7C4DFF; }
+  .phase-mindset .phase-number { background: #7C4DFF; }
+
+  .phase-1 { border-left-color: #2196F3; }
+  .phase-1 .phase-number { background: #2196F3; }
+
+  .phase-2 { border-left-color: #00BFA5; }
+  .phase-2 .phase-number { background: #00BFA5; }
+
+  .phase-3 { border-left-color: #FFB300; }
+  .phase-3 .phase-number { background: #FFB300; }
+
+  .phase-4 { border-left-color: #FF7043; }
+  .phase-4 .phase-number { background: #FF7043; }
+
+  .phase-5 { border-left-color: #AB47BC; }
+  .phase-5 .phase-number { background: #AB47BC; }
+
+  .phase-6 { border-left-color: #26A69A; }
+  .phase-6 .phase-number { background: #26A69A; }
+
+  /* ── Content blocks ── */
+  .content-block {
+    background: #111;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 0;
+  }
+
+  .block-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .block-title .icon {
+    font-size: 14px;
+  }
+
+  /* ── Ordered / Unordered lists ── */
+  .content-list {
+    list-style: none;
+    padding: 0;
+  }
+  .content-list li {
+    position: relative;
+    padding: 3px 0 3px 16px;
+    font-size: 12px;
+    color: #c0c0c0;
+    line-height: 1.5;
+  }
+  .content-list li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 10px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #444;
+  }
+
+  .numbered-list {
+    list-style: none;
+    padding: 0;
+    counter-reset: step;
+  }
+  .numbered-list li {
+    position: relative;
+    padding: 3px 0 3px 24px;
+    font-size: 12px;
+    color: #c0c0c0;
+    line-height: 1.5;
+    counter-increment: step;
+  }
+  .numbered-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    background: #1a1a2e;
+    color: #888;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Highlight text ── */
+  .highlight {
+    color: #4FC3F7;
+    font-weight: 600;
+  }
+  .highlight-green {
+    color: #69F0AE;
+    font-weight: 600;
+  }
+  .highlight-amber {
+    color: #FFD54F;
+    font-weight: 600;
+  }
+  .highlight-red {
+    color: #FF8A80;
+    font-weight: 600;
+  }
+
+  /* ── Key point callout ── */
+  .callout {
+    background: #0d1117;
+    border-left: 3px solid #4FC3F7;
+    border-radius: 3px;
+    padding: 6px 10px;
+    margin: 4px 0;
+    font-size: 12px;
+    color: #b0bec5;
+  }
+
+  /* ── Checklist ── */
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid #1a1a1a;
+    font-size: 12px;
+    color: #c0c0c0;
+    transition: opacity 0.3s;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li.checked {
+    text-decoration: line-through;
+    opacity: 0.35;
+  }
+  .checklist input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    border: 2px solid #444;
+    border-radius: 3px;
+    background: transparent;
+    cursor: pointer;
+    margin-top: 1px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .checklist input[type="checkbox"]:checked {
+    background: #00BFA5;
+    border-color: #00BFA5;
+  }
+  .checklist input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 0px;
+    width: 5px;
+    height: 9px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  /* ── Mindset items ── */
+  .mindset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 6px;
+  }
+  .mindset-item {
+    background: #111;
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .mindset-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    background: #7C4DFF;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .mindset-text {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #c0c0c0;
+  }
+  .mindset-text strong {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* ── Tools section ── */
+  .tools-card {
+    background: #0d0d0d;
+    border-radius: 10px;
+    border: 1px solid #1a1a2e;
+    padding: 14px 16px;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
+  }
+  .tools-card h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    grid-column: 1 / -1;
+  }
+  .tool-group {
+    margin-bottom: 0;
+  }
+  .tool-group-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .tool-tag {
+    display: inline-block;
+    background: #1a1a2e;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 11px;
+    color: #b0bec5;
+    margin: 2px 3px 2px 0;
+  }
+
+  /* ── Inline table ── */
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4px 0;
+    font-size: 12px;
+  }
+  .mini-table th {
+    text-align: left;
+    padding: 5px 8px;
+    background: #0d0d0d;
+    color: #888;
+    font-weight: 600;
+    border-bottom: 1px solid #1a1a2e;
+  }
+  .mini-table td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #111;
+    color: #c0c0c0;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    body { padding: 10px; }
+    .page-header h1 { font-size: 18px; }
+    .phase-header { flex-wrap: wrap; }
+    .phase-title { font-size: 14px; }
+    .phase-body { padding: 0 10px 10px; grid-template-columns: 1fr; }
+    .content-block { padding: 8px 10px; }
+    .mindset-grid { grid-template-columns: 1fr; }
+  }
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<div class="page-header">
+  <h1>YouTube運営 完全ワークフロー</h1>
+  <div class="subtitle">2026-04-06 updated</div>
+</div>
+
+<!-- ══════════ PROGRESS BAR ══════════ -->
+<div class="progress-wrapper">
+  <div class="progress-label">
+    <span>全体進捗</span>
+    <span id="progressText">0 / 0</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  マインドセット（前提）                        -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="phase-card phase-mindset">
+  <div class="phase-header">
+    <div class="phase-number">M</div>
+    <div class="phase-title">マインドセット（前提）</div>
+  </div>
+  <div class="phase-body" style="display:block">
+    <div class="mindset-grid">
+    <div class="mindset-item">
+      <div class="mindset-num">1</div>
+      <div class="mindset-text"><strong>常にYouTubeを見続ける。</strong>1日8時間競合の動画やアナリティクスを見続けるのが大前提。</div>
+    </div>
+    <div class="mindset-item">
+      <div class="mindset-num">2</div>
+      <div class="mindset-text"><strong>常にWhyを深堀り続け自分の頭で考える。</strong>浅い分析では伸びない。なぜ？を何回も深ぼると人の感情にたどり着く。</div>
+    </div>
+    <div class="mindset-item">
+      <div class="mindset-num">3</div>
+      <div class="mindset-text"><strong>徹底的な視聴者目線を持つ。</strong>ペルソナと同じ人を1人用意して地道に聞いていくのが大正解。</div>
+    </div>
+    <div class="mindset-item">
+      <div class="mindset-num">4</div>
+      <div class="mindset-text"><strong>YouTubeの目的 = 通りすがりの人をファンにすること</strong> = 視聴者の感情を揺らすこと。</div>
+    </div>
+    <div class="mindset-item">
+      <div class="mindset-num">5</div>
+      <div class="mindset-text"><strong>サムネ → タイトル → 冒頭 → 台本の順で設計。</strong>入口から設計し、中身を後から合わせる。</div>
+    </div>
+    <div class="mindset-item">
+      <div class="mindset-num">6</div>
+      <div class="mindset-text"><strong>数字で判断し感覚を疑う。</strong>感覚で仮説 → 数字で検証 → 言語化して蓄積。</div>
+    </div>
+    <div class="mindset-item">
+      <div class="mindset-num">7</div>
+      <div class="mindset-text"><strong>ベースのクオリティ x 継続。</strong>ホームランより毎打席ヒット。</div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  Phase 1: リサーチ                             -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="phase-card phase-1">
+  <div class="phase-header">
+    <div class="phase-number">1</div>
+    <div class="phase-title">リサーチ（企画・サムネタイトル）</div>
+    <div class="phase-progress" id="phase1-progress"></div>
+  </div>
+  <div class="phase-body">
+
+    <!-- 企画リサーチ手順 -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F50D;</span> 企画リサーチ手順</div>
+      <ol class="numbered-list">
+        <li><span class="highlight">再生回数 &gt; チャンネル登録者</span>の動画を10個ほどリサーチ（投稿日時が最近であればあるほど良い）</li>
+        <li>競合チャンネルで伸びてる動画と伸びてない動画の違いを<span class="highlight">「企画サムネタイトル」と「中身」の2軸</span>で分析</li>
+        <li>なぜ伸びているかを<span class="highlight">最小単位の複数の軸</span>で分析（企画・タイトル・サムネ文言・台本構成・内容・演者ビジュアル・抑揚・リズム・背景・音質・画質・画角・編集テンポ）</li>
+        <li>コメント欄やコメントへのいいねから<span class="highlight">視聴者が求めていたこと</span>を分析</li>
+        <li>伸びる要素を組み込んだサムネ案・タイトル案を決める（必ず<span class="highlight-amber">サムネ → タイトル → 台本構成 → 内容</span>の順）</li>
+      </ol>
+    </div>
+
+    <!-- 市場調査 -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4CA;</span> 市場調査</div>
+      <ul class="content-list">
+        <li><span class="highlight">キーワード検索ボリューム調査</span>（Googleトレンド / YouTube検索サジェスト / VidIQ）</li>
+        <li>競合TOP5〜10の<span class="highlight">登録者・平均再生数・投稿頻度</span>を一覧化</li>
+        <li>マーケットの天井見積もり（特化ジャンルTOPの登録者数 = 天井の目安）</li>
+        <li>トレンドの方向性判断（<span class="highlight-red">縮小トレンド → 実力を20%上げないと現状維持すら不可</span>）</li>
+      </ul>
+    </div>
+
+    <!-- 大前提 -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4A1;</span> 企画の原則</div>
+      <div class="callout">YouTubeにオリジナリティは不要。答えはYouTube市場にある。<span class="highlight">「抽象 ⇔ 具体」</span>で企画を捻出する。</div>
+      <div class="callout">企画の判断基準：<span class="highlight-amber">「サムネが想像できるか」</span></div>
+    </div>
+
+    <!-- ペルソナ -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F464;</span> ペルソナ作成</div>
+      <ul class="content-list">
+        <li>層 / 名前 / 性別 / 年齢 / 家族構成 / 仕事 / 年収</li>
+        <li>人生の目標 / ジャンルへの知識 / 悩み / 価値観 / 休日の過ごし方</li>
+      </ul>
+    </div>
+
+    <!-- Checklist -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x2705;</span> チェックリスト</div>
+      <ul class="checklist" data-phase="1">
+        <li><input type="checkbox" data-key="1-1"><span>再生回数 &gt; 登録者の競合動画を10本リサーチした</span></li>
+        <li><input type="checkbox" data-key="1-2"><span>伸びてる/伸びてない動画の差を2軸で分析した</span></li>
+        <li><input type="checkbox" data-key="1-3"><span>コメント欄から視聴者ニーズを抽出した</span></li>
+        <li><input type="checkbox" data-key="1-4"><span>キーワード検索ボリュームを調査した</span></li>
+        <li><input type="checkbox" data-key="1-5"><span>競合TOP5〜10を一覧化した</span></li>
+        <li><input type="checkbox" data-key="1-6"><span>ペルソナを作成した</span></li>
+        <li><input type="checkbox" data-key="1-7"><span>サムネが想像できる企画に落とし込んだ</span></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  Phase 2: サムネ・タイトル制作                  -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="phase-card phase-2">
+  <div class="phase-header">
+    <div class="phase-number">2</div>
+    <div class="phase-title">サムネ・タイトル制作</div>
+    <div class="phase-progress" id="phase2-progress"></div>
+  </div>
+  <div class="phase-body">
+
+    <!-- 6ステップ -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F3AF;</span> サムネ制作6ステップ</div>
+      <ol class="numbered-list">
+        <li><span class="highlight">目的定義</span> &#8212; この動画で何を達成するか</li>
+        <li><span class="highlight">観察</span> &#8212; 競合サムネを大量に見る</li>
+        <li><span class="highlight">分析</span> &#8212; 伸びてる理由を要素分解</li>
+        <li><span class="highlight">設計</span> &#8212; 4軸チェックで構成</li>
+        <li><span class="highlight">具体化</span> &#8212; 実制作</li>
+        <li><span class="highlight">検証</span> &#8212; ABテストで数字確認</li>
+      </ol>
+    </div>
+
+    <!-- 4軸チェック -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4CF;</span> 4軸チェック</div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>軸</th><th>役割</th><th>例</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="highlight">インパクト</span></td><td>目が止まる</td><td>大きな数字、強い色、驚きの表情</td></tr>
+          <tr><td><span class="highlight-green">具体</span></td><td>何の話か理解</td><td>「在宅ワーク」「物販」等</td></tr>
+          <tr><td><span class="highlight-amber">ベネフィット</span></td><td>自分に得がありそう</td><td>「月収60万」「時給3万円」</td></tr>
+          <tr><td><span class="highlight-red">好奇心</span></td><td>もっと知りたい</td><td>モザイク、矛盾ワード、意外な組み合わせ</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">2024年までは3軸で勝てたが<span class="highlight-red">2026年は好奇心がないと差別化できない</span></div>
+    </div>
+
+    <!-- 好奇心コピーの型 -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x270D;&#xFE0F;</span> 好奇心コピーの型</div>
+      <ul class="content-list">
+        <li><span class="highlight">矛盾型</span> &#8212; 常識と逆のことを言う</li>
+        <li><span class="highlight">数字ギャップ型</span> &#8212; 意外な数字で驚かせる</li>
+        <li><span class="highlight">否定型</span> &#8212; 「〇〇するな」「〇〇は嘘」</li>
+        <li><span class="highlight">暴露型</span> &#8212; 裏側・真実を匂わせる</li>
+        <li><span class="highlight">ボタンの掛け違い型</span> &#8212; ズレた組み合わせ</li>
+      </ul>
+    </div>
+
+    <!-- 制作ルール -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F528;</span> 制作ルール</div>
+      <ul class="content-list">
+        <li><span class="highlight">Z構図</span>で左上に最強要素を配置</li>
+        <li>サムネ x タイトル x 冒頭 = <span class="highlight-amber">3点セット</span>で設計</li>
+        <li>2〜3パターン用意 → ABテスト</li>
+        <li>サムネとタイトルの文言は<span class="highlight">意図的にずらす</span></li>
+        <li>サムネは<span class="highlight">明るい方が良い</span>（シンプルに目立つ）</li>
+      </ul>
+    </div>
+
+    <!-- 影響度順 -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4C8;</span> 影響度順位</div>
+      <div class="callout"><span class="highlight">コピー</span> &gt; 表情 &gt; 配色 &gt; フォント &gt; レイアウト</div>
+      <div class="callout"><span class="highlight-green">サムネのROIが最も高い</span>（改善だけで再生数1.5倍の事例あり）</div>
+    </div>
+
+    <!-- サムネ差替え判断 -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x23F1;&#xFE0F;</span> サムネ差替え判断基準</div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>15分後CTR</th><th>判断</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="highlight-red">6%以下</span></td><td>秒で差替え</td></tr>
+          <tr><td><span class="highlight-amber">6〜9%</span></td><td>30分まで様子見</td></tr>
+          <tr><td><span class="highlight-green">9%以上</span></td><td>キープ</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Checklist -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x2705;</span> チェックリスト</div>
+      <ul class="checklist" data-phase="2">
+        <li><input type="checkbox" data-key="2-1"><span>競合サムネを20枚以上観察した</span></li>
+        <li><input type="checkbox" data-key="2-2"><span>4軸（インパクト/具体/ベネフィット/好奇心）を全て満たした</span></li>
+        <li><input type="checkbox" data-key="2-3"><span>好奇心コピーの型を適用した</span></li>
+        <li><input type="checkbox" data-key="2-4"><span>Z構図で左上に最強要素を配置した</span></li>
+        <li><input type="checkbox" data-key="2-5"><span>サムネとタイトルの文言をずらした</span></li>
+        <li><input type="checkbox" data-key="2-6"><span>サムネ x タイトル x 冒頭の3点セットが連動している</span></li>
+        <li><input type="checkbox" data-key="2-7"><span>2〜3パターンのサムネを用意した</span></li>
+        <li><input type="checkbox" data-key="2-8"><span>文字は大きく、要素は少なく、明るさを確保した</span></li>
+        <li><input type="checkbox" data-key="2-9"><span>スマホサイズでの視認性を確認した</span></li>
+        <li><input type="checkbox" data-key="2-10"><span>コピーが最も影響度が高い要素として練り込んだ</span></li>
+        <li><input type="checkbox" data-key="2-11"><span>表情に感情が乗っている（素材が使える場合）</span></li>
+        <li><input type="checkbox" data-key="2-12"><span>配色は3色以内に絞った</span></li>
+        <li><input type="checkbox" data-key="2-13"><span>YouTube上で並んだ時に埋もれないか確認した</span></li>
+        <li><input type="checkbox" data-key="2-14"><span>ペルソナが思わずクリックする内容になっている</span></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  Phase 3: 台本制作                             -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="phase-card phase-3">
+  <div class="phase-header">
+    <div class="phase-number">3</div>
+    <div class="phase-title">台本制作</div>
+    <div class="phase-progress" id="phase3-progress"></div>
+  </div>
+  <div class="phase-body">
+
+    <!-- ディレクター必読マインド -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F525;</span> ディレクター必読マインド</div>
+      <div class="callout" style="border-left-color: #FF7043;">
+        <strong>1.</strong> 添削依頼時の台本提出は<span class="highlight-red">200%で作りこめている状態で提出</span>。制作をKPIに置くマインドは捨てる。使命はアベレージPVの上昇・売上の増加のみ。
+      </div>
+      <div class="callout" style="border-left-color: #FF7043;">
+        <strong>2.</strong> <span class="highlight-red">全ての文章に意図を持って書く。</span>意図のない言葉は単語単位で入れない。意図を聞かれた時に即答できない状態は論外。
+      </div>
+    </div>
+
+    <!-- 台本制作フロー -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4DD;</span> 台本制作フロー</div>
+      <ol class="numbered-list">
+        <li>参考動画の洗い出し・リサーチ</li>
+        <li>抽出した要素を書き出す</li>
+        <li>構成の作成</li>
+        <li>執筆</li>
+      </ol>
+    </div>
+
+    <!-- 台本作成ポイント -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F3AF;</span> 台本作成ポイント</div>
+      <ol class="numbered-list">
+        <li>3つほどの異なる競合動画の<span class="highlight">構成と内容の共通項</span>を書く。バズる要因の内容はしっかり抑える。自社の優位的要素（<span class="highlight-amber">権威・社会的証明・実績・オリジナルノウハウ・演者の感情</span>）を盛り込む</li>
+        <li><span class="highlight">演者が8割。</span>演者の人柄・喋り方・考え方・夢を深く理解した上で「その演者が言いそうなこと」を書く</li>
+        <li><span class="highlight-green">機能的価値</span>か<span class="highlight-amber">感情的価値</span>の要素が入っているか確認</li>
+        <li>書き言葉ではなく<span class="highlight">話し言葉</span>で書く。完成台本を最低3回音読</li>
+        <li>接続詞を使いこなす（視聴者が「全く予測不可能」を防ぐ）</li>
+      </ol>
+    </div>
+
+    <!-- 構成ルール -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4D0;</span> 構成ルール</div>
+      <ul class="content-list">
+        <li><span class="highlight">最初と最後に衝撃的な情報</span>を配置</li>
+        <li>冒頭30秒で<span class="highlight-amber">複数ペルソナを列挙 + 2つの見どころ予告</span></li>
+        <li>前振りは<span class="highlight-red">最長1分30秒以内</span></li>
+        <li>宣伝セリフは冒頭NG（画像LINE誘導はOK）</li>
+      </ul>
+    </div>
+
+    <!-- 回遊施策 -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F517;</span> 回遊施策</div>
+      <ul class="content-list">
+        <li>概要欄にリンク</li>
+        <li>編集でサムネ挿入</li>
+        <li>白テキストでタイトル記載</li>
+      </ul>
+    </div>
+
+    <!-- Checklist -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x2705;</span> チェックリスト</div>
+      <ul class="checklist" data-phase="3">
+        <li><input type="checkbox" data-key="3-1"><span>3つ以上の競合動画の構成・内容の共通項を書き出した</span></li>
+        <li><input type="checkbox" data-key="3-2"><span>自社の優位的要素（権威/実績/ノウハウ/感情）を盛り込んだ</span></li>
+        <li><input type="checkbox" data-key="3-3"><span>演者の人柄・喋り方に合った言葉で書いた</span></li>
+        <li><input type="checkbox" data-key="3-4"><span>機能的価値 or 感情的価値が含まれている</span></li>
+        <li><input type="checkbox" data-key="3-5"><span>話し言葉で書き、最低3回音読した</span></li>
+        <li><input type="checkbox" data-key="3-6"><span>冒頭30秒で複数ペルソナ列挙 + 見どころ予告を入れた</span></li>
+        <li><input type="checkbox" data-key="3-7"><span>前振りは1分30秒以内に収まっている</span></li>
+        <li><input type="checkbox" data-key="3-8"><span>最初と最後に衝撃的な情報を配置した</span></li>
+        <li><input type="checkbox" data-key="3-9"><span>冒頭に宣伝セリフが入っていない</span></li>
+        <li><input type="checkbox" data-key="3-10"><span>全ての文章に意図がある（即答できる状態）</span></li>
+        <li><input type="checkbox" data-key="3-11"><span>回遊施策（概要欄リンク/サムネ挿入/白テキ）を仕込んだ</span></li>
+        <li><input type="checkbox" data-key="3-12"><span>200%の完成度で提出できる状態</span></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  Phase 4: 撮影                                 -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="phase-card phase-4">
+  <div class="phase-header">
+    <div class="phase-number">4</div>
+    <div class="phase-title">撮影</div>
+    <div class="phase-progress" id="phase4-progress"></div>
+  </div>
+  <div class="phase-body">
+
+    <!-- 演者の心構え -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F3AC;</span> 演者の心構え</div>
+      <ol class="numbered-list">
+        <li><span class="highlight">本来の自分の演者力を最大限引き出す。</span>人を真似た言葉遣い・ジェスチャー・抑揚はNG</li>
+        <li>「<span class="highlight-green">視聴者にこうなってほしい</span>」というピュアな感情を持って撮影。打算的はダメ</li>
+        <li>ロボットにならない。<span class="highlight">文字が想起させるイメージを思い浮かべながら喋る</span></li>
+        <li>綺麗な言葉で淡々と喋るより<span class="highlight-amber">多少汚い言葉でも熱量がこもっている方が3倍良い</span></li>
+        <li>緊張は論外。視聴者に伝えたいのは<span class="highlight">自分の熱意</span></li>
+        <li><span class="highlight-red">100人中1人だけに刺しにいくマインド</span>で話す</li>
+      </ol>
+    </div>
+
+    <!-- 気持ちよく撮影するコツ -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F60A;</span> 気持ちよく撮影してもらうコツ</div>
+      <ul class="content-list">
+        <li>恥ずかしさを捨てる</li>
+        <li>台本に面白いを散りばめる</li>
+        <li>普段使わない言葉を極限まで削る</li>
+      </ul>
+    </div>
+
+    <!-- 撮影環境 -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4F7;</span> 撮影環境・設定</div>
+      <ul class="content-list">
+        <li>WB / ISO / 明るさ全オート、<span class="highlight">露出 -0.7</span></li>
+        <li><span class="highlight-green">有線マイク推奨</span></li>
+        <li>1回で4〜6本撮影</li>
+        <li><span class="highlight">日中の自然光推奨</span>。背景は観葉植物やPCモニターなど</li>
+        <li>HD 30fps / HDRオフ / 16:9</li>
+      </ul>
+    </div>
+
+    <!-- Checklist -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x2705;</span> チェックリスト</div>
+      <ul class="checklist" data-phase="4">
+        <li><input type="checkbox" data-key="4-1"><span>台本を十分にリハーサルした</span></li>
+        <li><input type="checkbox" data-key="4-2"><span>カメラ設定（露出-0.7 / HD 30fps / HDRオフ / 16:9）を確認した</span></li>
+        <li><input type="checkbox" data-key="4-3"><span>有線マイクを接続した</span></li>
+        <li><input type="checkbox" data-key="4-4"><span>日中の自然光を確保した</span></li>
+        <li><input type="checkbox" data-key="4-5"><span>背景の見え方を確認した</span></li>
+        <li><input type="checkbox" data-key="4-6"><span>演者がリラックスした状態で撮影開始できた</span></li>
+        <li><input type="checkbox" data-key="4-7"><span>100人中1人に刺すマインドで収録した</span></li>
+        <li><input type="checkbox" data-key="4-8"><span>熱量が乗った状態で撮り切った</span></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  Phase 5: 編集                                 -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="phase-card phase-5">
+  <div class="phase-header">
+    <div class="phase-number">5</div>
+    <div class="phase-title">編集</div>
+    <div class="phase-progress" id="phase5-progress"></div>
+  </div>
+  <div class="phase-body">
+
+    <!-- 編集ルール -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F3AC;</span> 編集の基本</div>
+      <ul class="content-list">
+        <li><span class="highlight">冒頭不要パートカット</span>（本題に最速で入る）</li>
+        <li>LINE誘導: <span class="highlight-amber">冒頭（10秒以内）+ 途中 + 最後</span>で画像付き</li>
+      </ul>
+    </div>
+
+    <!-- BGM -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F3B5;</span> BGM</div>
+      <ul class="content-list">
+        <li><span class="highlight">音数が少ない曲を選ぶ</span>（音量を下げるのではない）</li>
+        <li>シーンの切り替えでBGMも切り替え</li>
+      </ul>
+    </div>
+
+    <!-- テロップ -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4AC;</span> テロップ</div>
+      <ul class="content-list">
+        <li><span class="highlight-red">先出し厳禁</span>（テロップが先に出ると視聴者が読んで離脱）</li>
+        <li>フォント・大きさ・エフェクトをシーンで使い分け</li>
+        <li>感情に合わせたデザイン</li>
+      </ul>
+    </div>
+
+    <!-- SE/素材 -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4A5;</span> SE・フリー素材</div>
+      <div class="callout">SE / フリー素材の挿入は<span class="highlight-red">最低5秒に1回</span></div>
+    </div>
+
+    <!-- ショート -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4F1;</span> ショート動画</div>
+      <ul class="content-list">
+        <li>ロングの<span class="highlight">切り抜き</span>が基本</li>
+        <li><span class="highlight-red">冒頭2秒勝負</span></li>
+      </ul>
+    </div>
+
+    <!-- Checklist -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x2705;</span> チェックリスト</div>
+      <ul class="checklist" data-phase="5">
+        <li><input type="checkbox" data-key="5-1"><span>冒頭の不要パートをカットした</span></li>
+        <li><input type="checkbox" data-key="5-2"><span>LINE誘導を冒頭10秒以内 + 途中 + 最後に配置した</span></li>
+        <li><input type="checkbox" data-key="5-3"><span>BGMは音数が少ない曲を選んだ</span></li>
+        <li><input type="checkbox" data-key="5-4"><span>シーン切り替えでBGMも切り替えた</span></li>
+        <li><input type="checkbox" data-key="5-5"><span>テロップの先出しがない</span></li>
+        <li><input type="checkbox" data-key="5-6"><span>テロップのフォント/大きさ/エフェクトをシーンで使い分けた</span></li>
+        <li><input type="checkbox" data-key="5-7"><span>SE/フリー素材を最低5秒に1回挿入した</span></li>
+        <li><input type="checkbox" data-key="5-8"><span>ショート用の切り抜きを選定した</span></li>
+        <li><input type="checkbox" data-key="5-9"><span>全体のテンポ感を確認した</span></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  Phase 6: 投稿・分析・改善                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="phase-card phase-6">
+  <div class="phase-header">
+    <div class="phase-number">6</div>
+    <div class="phase-title">投稿・分析・改善</div>
+    <div class="phase-progress" id="phase6-progress"></div>
+  </div>
+  <div class="phase-body">
+
+    <!-- 投稿ルール -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4E4;</span> 投稿ルール</div>
+      <ul class="content-list">
+        <li><span class="highlight">ロング週1〜2本 + ショート</span></li>
+        <li>ショートの活用: 投稿期間が空く時の繋ぎ + 通常尺動画への誘導（<span class="highlight-amber">視聴回数の0.6〜1.6%がロングへ</span>）</li>
+        <li>投稿直後に<span class="highlight">サムネABテスト</span>: 必ず複数枚用意してCTR確認</li>
+      </ul>
+    </div>
+
+    <!-- VSEO -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F50D;</span> VSEO（動画SEO）</div>
+      <ul class="content-list">
+        <li>市場が大きいジャンルや初期は<span class="highlight">検索流入を狙う</span></li>
+        <li>VidIQで<span class="highlight-green">Ave Views 10万以上</span>のワードを狙う</li>
+        <li>初期戦略: <span class="highlight">流入元と流入先の属性を合わせる</span></li>
+      </ul>
+    </div>
+
+    <!-- アルゴリズム -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F916;</span> アルゴリズム評価軸</div>
+      <div class="callout"><span class="highlight">CTR</span> &gt; <span class="highlight-green">視聴継続率</span> &gt; <span class="highlight-amber">平均視聴時間</span></div>
+    </div>
+
+    <!-- 分析 -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x1F4CA;</span> 分析方法</div>
+      <ul class="content-list">
+        <li><span class="highlight">トラフィックソース分解</span></li>
+        <li>グルーピング機能</li>
+        <li><span class="highlight">相対的視聴維持率</span>（PC版のみ）</li>
+        <li>月次振り返り: <span class="highlight-amber">月間再生数アベレージを前月比で上げ続ける</span></li>
+      </ul>
+    </div>
+
+    <!-- ファン化・長期戦略 -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x2764;&#xFE0F;</span> ファン化・長期戦略</div>
+      <ul class="content-list">
+        <li>演者の<span class="highlight">プライベートや人間性</span>を出す。ノウハウの話に絡めて1〜2文程度で散りばめる</li>
+        <li><span class="highlight-green">脳内SEO</span>: コミュニティ投稿・LINE・メルマガで「忘れられないための施策」</li>
+        <li><span class="highlight-amber">長期再生型</span>: 教科書となるような何度も見返す動画が最も売上を作る</li>
+      </ul>
+    </div>
+
+    <!-- Checklist -->
+    <div class="content-block">
+      <div class="block-title"><span class="icon">&#x2705;</span> チェックリスト</div>
+      <ul class="checklist" data-phase="6">
+        <li><input type="checkbox" data-key="6-1"><span>サムネを複数枚用意してABテストの準備をした</span></li>
+        <li><input type="checkbox" data-key="6-2"><span>投稿15分後にCTRを確認・差替え判断した</span></li>
+        <li><input type="checkbox" data-key="6-3"><span>VSEO（タイトル/説明/タグ）を最適化した</span></li>
+        <li><input type="checkbox" data-key="6-4"><span>トラフィックソースを分解して分析した</span></li>
+        <li><input type="checkbox" data-key="6-5"><span>相対的視聴維持率をPC版で確認した</span></li>
+        <li><input type="checkbox" data-key="6-6"><span>ショート動画で繋ぎ + ロングへの誘導を設計した</span></li>
+        <li><input type="checkbox" data-key="6-7"><span>コミュニティ投稿/LINE等で脳内SEO施策を実施した</span></li>
+        <li><input type="checkbox" data-key="6-8"><span>月間再生数アベレージを前月比で確認した</span></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  便利ツール                                    -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="tools-card">
+  <h2>便利ツール</h2>
+
+  <div class="tool-group">
+    <div class="tool-group-title">Chrome拡張</div>
+    <span class="tool-tag">YouTube Summary with ChatGPT &amp; Claude</span>
+    <span class="tool-tag">vidIQ</span>
+    <span class="tool-tag">YouTube Tags</span>
+    <span class="tool-tag">Video Speed Controller</span>
+  </div>
+
+  <div class="tool-group">
+    <div class="tool-group-title">チェックするべきTwitter</div>
+    <span class="tool-tag">MAX</span>
+    <span class="tool-tag">ぶひこ</span>
+    <span class="tool-tag">小山竜央</span>
+    <span class="tool-tag">GO</span>
+  </div>
+
+  <div class="tool-group">
+    <div class="tool-group-title">YouTube</div>
+    <span class="tool-tag">動画マーケティング攻略チャンネル</span>
+  </div>
+</div>
+
+<div style="height: 60px;"></div>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'yt_workflow_checklist';
+
+  // Load saved state
+  function loadState() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    } catch { return {}; }
+  }
+
+  // Save state
+  function saveState(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  const state = loadState();
+  const allCheckboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+
+  // Initialize checkboxes
+  allCheckboxes.forEach(cb => {
+    const key = cb.dataset.key;
+    if (state[key]) {
+      cb.checked = true;
+      cb.closest('li').classList.add('checked');
+    }
+    cb.addEventListener('change', function() {
+      state[this.dataset.key] = this.checked;
+      saveState(state);
+      this.closest('li').classList.toggle('checked', this.checked);
+      updateProgress();
+    });
+  });
+
+  // Update progress
+  function updateProgress() {
+    const total = allCheckboxes.length;
+    const checked = document.querySelectorAll('.checklist input[type="checkbox"]:checked').length;
+    const pct = total ? Math.round((checked / total) * 100) : 0;
+
+    document.getElementById('progressText').textContent = checked + ' / ' + total;
+    document.getElementById('progressFill').style.width = pct + '%';
+
+    // Phase-level progress
+    for (let i = 1; i <= 6; i++) {
+      const el = document.getElementById('phase' + i + '-progress');
+      if (!el) continue;
+      const phaseItems = document.querySelectorAll('.checklist[data-phase="' + i + '"] input[type="checkbox"]');
+      const phaseChecked = document.querySelectorAll('.checklist[data-phase="' + i + '"] input[type="checkbox"]:checked');
+      el.textContent = phaseChecked.length + '/' + phaseItems.length;
+    }
+  }
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

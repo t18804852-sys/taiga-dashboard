@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>帝王学</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0e1c14;
+    color: #d0e0d8;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "SF Pro Display", sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* --- 渓流シーン背景 --- */
+  .scene {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .scene svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+
+  .hud {
+    position: relative;
+    z-index: 1;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 32px 16px 48px;
+  }
+
+  /* --- LIFE VISION --- */
+  .life-vision {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 20px 16px;
+    border: 1px solid rgba(80, 160, 120, 0.15);
+    border-radius: 12px;
+    background: rgba(20, 50, 35, 0.35);
+    backdrop-filter: blur(6px);
+  }
+  .life-vision .label {
+    font-size: 9px;
+    letter-spacing: 5px;
+    color: rgba(100, 190, 140, 0.5);
+    margin-bottom: 8px;
+  }
+  .life-vision .main {
+    font-size: 18px;
+    font-weight: 800;
+    color: #e8f5ee;
+    line-height: 1.7;
+  }
+  .life-vision .sub-line {
+    font-size: 10px;
+    color: rgba(180, 210, 190, 0.5);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  /* --- 引用 --- */
+  .quote-block {
+    text-align: center;
+    padding: 14px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(80, 160, 120, 0.08);
+    border-radius: 10px;
+    background: rgba(20, 45, 35, 0.25);
+  }
+  .quote-block p {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(210, 235, 220, 0.7);
+    line-height: 1.8;
+  }
+  .quote-block .src {
+    font-size: 9px;
+    color: rgba(160, 190, 170, 0.3);
+    margin-top: 4px;
+  }
+
+  /* --- VM --- */
+  .vm {
+    text-align: center;
+    margin-bottom: 16px;
+    padding: 14px;
+    border: 1px solid rgba(80, 160, 120, 0.08);
+    border-radius: 10px;
+    background: rgba(20, 45, 35, 0.2);
+  }
+  .vm .vm-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: rgba(100, 190, 140, 0.4);
+    margin-bottom: 4px;
+  }
+  .vm p {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(220, 240, 230, 0.8);
+    line-height: 1.6;
+  }
+  .vm .accent {
+    font-size: 11px;
+    color: rgba(80, 180, 140, 0.5);
+    margin-top: 4px;
+  }
+
+  .vm-spacer { margin-bottom: 24px; }
+
+  /* --- セクション --- */
+  .hud-section {
+    margin-bottom: 20px;
+  }
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: rgba(100, 190, 140, 0.4);
+    margin-bottom: 10px;
+    padding-left: 4px;
+  }
+  .section-label.blue {
+    color: rgba(80, 160, 200, 0.4);
+  }
+  .section-label.warm {
+    color: rgba(200, 160, 100, 0.4);
+  }
+
+  /* --- アイテム --- */
+  .item {
+    background: rgba(20, 45, 35, 0.25);
+    border: 1px solid rgba(80, 160, 120, 0.06);
+    border-radius: 8px;
+    margin-bottom: 5px;
+    overflow: hidden;
+  }
+  .item summary {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(210, 235, 220, 0.75);
+    padding: 10px 14px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .item summary::-webkit-details-marker { display: none; }
+  .item summary::before {
+    content: "+";
+    color: rgba(80, 180, 140, 0.4);
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 12px;
+  }
+  .item[open] summary::before { content: "−"; }
+  .item[open] summary { color: #e0f2e8; }
+  .item-body {
+    font-size: 11px;
+    color: rgba(180, 210, 195, 0.6);
+    line-height: 1.7;
+    padding: 0 14px 12px 34px;
+  }
+  .num {
+    font-size: 9px;
+    color: rgba(80, 180, 140, 0.35);
+    min-width: 16px;
+  }
+
+  /* --- 哲学 --- */
+  .item.phil {
+    border-left: 2px solid rgba(80, 160, 200, 0.15);
+  }
+  .item.phil[open] {
+    border-left-color: rgba(80, 160, 200, 0.3);
+  }
+  .item.phil summary::before { color: rgba(80, 160, 200, 0.4); }
+
+  /* --- チェック --- */
+  .check {
+    background: rgba(40, 35, 20, 0.25);
+    border: 1px solid rgba(200, 160, 100, 0.08);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 5px;
+  }
+  .check .q {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(230, 210, 180, 0.7);
+  }
+  .check .a {
+    font-size: 10px;
+    color: rgba(200, 185, 160, 0.45);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  /* --- ボトム --- */
+  .bottom-goal {
+    text-align: center;
+    margin-top: 28px;
+    padding: 16px;
+    border: 1px solid rgba(80, 160, 120, 0.1);
+    border-radius: 10px;
+    background: rgba(20, 45, 35, 0.25);
+  }
+  .bottom-goal p {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(220, 240, 230, 0.7);
+    line-height: 1.8;
+  }
+  .hud-footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 9px;
+    color: rgba(100, 160, 130, 0.2);
+    letter-spacing: 2px;
+  }
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+
+<div class="scene">
+  <svg viewBox="0 0 430 2000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- 水のグラデーション -->
+      <linearGradient id="water1" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#1a5c4a" stop-opacity="0.4"/>
+        <stop offset="50%" stop-color="#2a8a7a" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#1a6858" stop-opacity="0.4"/>
+      </linearGradient>
+      <linearGradient id="water2" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#3aaa90" stop-opacity="0.15"/>
+        <stop offset="50%" stop-color="#50ccb0" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#3aaa90" stop-opacity="0.15"/>
+      </linearGradient>
+      <linearGradient id="foam" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+        <stop offset="30%" stop-color="#ffffff" stop-opacity="0.08"/>
+        <stop offset="70%" stop-color="#ffffff" stop-opacity="0.08"/>
+        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+      <!-- 岩テクスチャ -->
+      <radialGradient id="rock1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#3a4540" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#2a3530" stop-opacity="0.3"/>
+      </radialGradient>
+      <!-- 緑のグラデーション -->
+      <radialGradient id="foliage1" cx="30%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#3a8a40" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#1a4a20" stop-opacity="0.08"/>
+      </radialGradient>
+      <radialGradient id="foliage2" cx="70%" cy="20%" r="60%">
+        <stop offset="0%" stop-color="#4a9a50" stop-opacity="0.12"/>
+        <stop offset="100%" stop-color="#2a5a28" stop-opacity="0.05"/>
+      </radialGradient>
+      <!-- フィルター -->
+      <filter id="blur1"><feGaussianBlur stdDeviation="8"/></filter>
+      <filter id="blur2"><feGaussianBlur stdDeviation="4"/></filter>
+      <filter id="blur3"><feGaussianBlur stdDeviation="12"/></filter>
+    </defs>
+
+    <!-- 森（上部・両サイド） -->
+    <ellipse cx="-20" cy="100" rx="200" ry="300" fill="url(#foliage1)" filter="url(#blur3)"/>
+    <ellipse cx="450" cy="200" rx="180" ry="350" fill="url(#foliage2)" filter="url(#blur3)"/>
+    <ellipse cx="50" cy="600" rx="150" ry="250" fill="url(#foliage1)" filter="url(#blur3)"/>
+    <ellipse cx="400" cy="900" rx="170" ry="280" fill="url(#foliage2)" filter="url(#blur3)"/>
+    <ellipse cx="-10" cy="1200" rx="160" ry="300" fill="url(#foliage1)" filter="url(#blur3)"/>
+    <ellipse cx="440" cy="1500" rx="190" ry="320" fill="url(#foliage2)" filter="url(#blur3)"/>
+
+    <!-- 岩 -->
+    <ellipse cx="80" cy="300" rx="70" ry="40" fill="url(#rock1)" filter="url(#blur1)" transform="rotate(-15 80 300)"/>
+    <ellipse cx="350" cy="500" rx="60" ry="35" fill="url(#rock1)" filter="url(#blur1)" transform="rotate(10 350 500)"/>
+    <ellipse cx="60" cy="800" rx="80" ry="45" fill="url(#rock1)" filter="url(#blur1)" transform="rotate(-8 60 800)"/>
+    <ellipse cx="380" cy="1100" rx="55" ry="30" fill="url(#rock1)" filter="url(#blur1)" transform="rotate(12 380 1100)"/>
+    <ellipse cx="100" cy="1400" rx="65" ry="38" fill="url(#rock1)" filter="url(#blur1)" transform="rotate(-5 100 1400)"/>
+    <ellipse cx="340" cy="1700" rx="70" ry="42" fill="url(#rock1)" filter="url(#blur1)" transform="rotate(8 340 1700)"/>
+
+    <!-- 川の流れ（メイン） -->
+    <path d="M 180,0 Q 220,150 200,300 Q 180,450 230,600 Q 280,750 210,900 Q 160,1050 240,1200 Q 300,1350 200,1500 Q 140,1650 220,1800 L 220,2000 L 250,2000 L 250,1800 Q 170,1650 230,1500 Q 330,1350 270,1200 Q 190,1050 240,900 Q 310,750 260,600 Q 210,450 230,300 Q 250,150 210,0 Z"
+      fill="url(#water1)" filter="url(#blur2)">
+      <animate attributeName="d"
+        dur="8s" repeatCount="indefinite" values="
+        M 180,0 Q 220,150 200,300 Q 180,450 230,600 Q 280,750 210,900 Q 160,1050 240,1200 Q 300,1350 200,1500 Q 140,1650 220,1800 L 220,2000 L 250,2000 L 250,1800 Q 170,1650 230,1500 Q 330,1350 270,1200 Q 190,1050 240,900 Q 310,750 260,600 Q 210,450 230,300 Q 250,150 210,0 Z;
+        M 190,0 Q 210,150 195,300 Q 190,450 240,600 Q 270,750 200,900 Q 170,1050 250,1200 Q 290,1350 190,1500 Q 150,1650 230,1800 L 230,2000 L 260,2000 L 260,1800 Q 180,1650 220,1500 Q 320,1350 280,1200 Q 200,1050 230,900 Q 300,750 270,600 Q 220,450 225,300 Q 240,150 220,0 Z;
+        M 180,0 Q 220,150 200,300 Q 180,450 230,600 Q 280,750 210,900 Q 160,1050 240,1200 Q 300,1350 200,1500 Q 140,1650 220,1800 L 220,2000 L 250,2000 L 250,1800 Q 170,1650 230,1500 Q 330,1350 270,1200 Q 190,1050 240,900 Q 310,750 260,600 Q 210,450 230,300 Q 250,150 210,0 Z"/>
+    </path>
+
+    <!-- 水面のハイライト（流れる光） -->
+    <ellipse cx="215" cy="-50" rx="20" ry="80" fill="url(#foam)" filter="url(#blur2)">
+      <animate attributeName="cy" from="-100" to="2100" dur="12s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="225" cy="-200" rx="15" ry="60" fill="url(#foam)" filter="url(#blur2)">
+      <animate attributeName="cy" from="-200" to="2100" dur="10s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="205" cy="-400" rx="18" ry="70" fill="url(#foam)" filter="url(#blur2)">
+      <animate attributeName="cy" from="-400" to="2100" dur="14s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="235" cy="-600" rx="12" ry="50" fill="url(#foam)" filter="url(#blur2)">
+      <animate attributeName="cy" from="-600" to="2100" dur="9s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="210" cy="-800" rx="16" ry="65" fill="url(#foam)" filter="url(#blur2)">
+      <animate attributeName="cy" from="-800" to="2100" dur="11s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- 水面の揺らめき光 -->
+    <circle cx="200" cy="200" r="30" fill="rgba(150,220,200,0.04)" filter="url(#blur1)">
+      <animate attributeName="cx" values="200;230;200" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="240" cy="700" r="25" fill="rgba(130,200,180,0.03)" filter="url(#blur1)">
+      <animate attributeName="cx" values="240;210;240" dur="7s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="220" cy="1300" r="28" fill="rgba(140,210,190,0.04)" filter="url(#blur1)">
+      <animate attributeName="cx" values="220;250;220" dur="5.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="6s" repeatCount="indefinite"/>
+    </circle>
+  </svg>
+</div>
+
+<div class="hud">
+
+  <div class="life-vision">
+    <div class="label">LIFE VISION</div>
+    <div class="main">クリエイティブで<br>日本を守る</div>
+    <div class="sub-line">核兵器なしで、文化で世界を制圧する<br>日本のクリエイター全員を束ねて、GDP1位へ</div>
+  </div>
+
+  <div class="quote-block">
+    <p>今、俺達は<br>北へ向かう NIPPON</p>
+    <div class="src">長渕剛「SAMURAI」</div>
+  </div>
+
+  <div class="vm">
+    <div class="vm-label">VISION</div>
+    <p>日本最強の<br>YouTubeプロ集団を作る</p>
+    <div class="accent">NETFLIX を超える</div>
+  </div>
+
+  <div class="vm vm-spacer">
+    <div class="vm-label">MISSION</div>
+    <p>目の前の人のプラスのために<br>精一杯尽力し<br>日本に幸せの連鎖を作る</p>
+  </div>
+
+  <!-- PHILOSOPHY -->
+  <div class="hud-section">
+    <div class="section-label blue">PHILOSOPHY</div>
+
+    <details class="item phil">
+      <summary>脱力 ― 最上位の哲学</summary>
+      <div class="item-body">力まないのにエネルギーが出てる状態。有能感トリガーでも力まない。全領域で脱力できた時、攻略本モードが常駐する。</div>
+    </details>
+    <details class="item phil">
+      <summary>丸が大きくなる ― 尖らせるんじゃない</summary>
+      <div class="item-body">トゲがあると止まる。丸がデカくなると何が来ても転がれる。丸がデカい方が速く転がれるから、結果的に勝つ。</div>
+    </details>
+    <details class="item phil">
+      <summary>失敗 = 仮説の検証結果</summary>
+      <div class="item-body">攻略本モード：「仮説違ったな」→修正→次。有能感モード：「俺が間違えた」→痛い→力む。受け取るモードが違うだけ。</div>
+    </details>
+    <details class="item phil">
+      <summary>守る範囲が広がると成長速度が上がる</summary>
+      <div class="item-body">自分→チーム→日本→地球。宇宙レベルで考えて、目の前を狂気的に実行する。望遠鏡と顕微鏡を両方持て。</div>
+    </details>
+    <details class="item phil">
+      <summary>侍の覚悟 ― 死を前提に選択肢が広がる</summary>
+      <div class="item-body">恐怖が選択肢を狭め、覚悟がそれを外す。北に向かえるのが侍。</div>
+    </details>
+    <details class="item phil">
+      <summary>成果 × 愛 ― 二択じゃない</summary>
+      <div class="item-body">勝つことと愛を持つことは対立しない。愛が成果のエンジンになる構造がある。</div>
+    </details>
+  </div>
+
+  <!-- VALUE -->
+  <div class="hud-section">
+    <div class="section-label">VALUE</div>
+
+    <details class="item"><summary><span class="num">01</span>全体最適で動く</summary><div class="item-body">天才クリエイター同士が仲間のためにアドバイスをし議論しあうことが重要。全員がYouTube市場の最前線にいるからこそ1+1が2ではなく10になる。利他で行動することが自分のクリエイティブを引き上げる利となることを理解すべき。</div></details>
+    <details class="item"><summary><span class="num">02</span>関わる人全てに愛を持って接する</summary><div class="item-body">YouTubeチームの仲間、他部署、編集さん、視聴者さん全ての人に愛を持って接する。嘘や我慢や遠慮で固めた人間関係は長期で見て必ず崩壊する。自分の全ての発言が「相手のためになっているか？」を意識し、決して自分の期待やエゴを押し付けない。</div></details>
+    <details class="item"><summary><span class="num">03</span>全員がエースという認識を持つ</summary><div class="item-body">全員がエースという意識を持つ。YouTubeは1本の動画が1億の利益をもたらす可能性があるため、エースに仕事を集中させるほうが会社の利益は最大化される。一人の成果が会社の成長に直結する意識を持つ。</div></details>
+    <details class="item"><summary><span class="num">04</span>どんな時もプロとしての仕事をする</summary><div class="item-body">プロ意識＝今の状況で常にベストを尽くし一切の妥協を許さない。企画サムネタイトルのリサーチ、サムネ案の数、台本の細かい言い回し、撮影時の細かな言い回しの違和感、編集FBの「ここまで言っていいのかな？」という細かい修正。全てにおいてプロ意識を持って細かい違和感を1ミリも残さない。プロとしてその瞬間瞬間で最善を尽くす。</div></details>
+    <details class="item"><summary><span class="num">05</span>リスクヘッジとレバレッジを意識しろ</summary><div class="item-body">ただ台本やサムネイルを作るだけの作業者にならない。チャンネルがシュリンクする最悪の未来を常に想定して打てるリスクヘッジ施策をすべて打つ。1個の企画や台本を極限までこだわり市場の全インプレッションを取り切るための最大レバレッジをかける。</div></details>
+    <details class="item"><summary><span class="num">06</span>勝手に成長する人材になれ</summary><div class="item-body">上司や同僚など誰かが自分の成長のために何か与えてくれるのを待たない。成長のために必要な材料はすべて揃っているので、自分で聞き自分で情報を取り勝手に成長すべし。自ら機会を作る。「これ言っていいのかな？」と思った瞬間に聞く。その気遣いは誰も求めてない上、会社と自分の成長を止めている。自分が一番の投資人材になるスタンスで行動する。</div></details>
+    <details class="item"><summary><span class="num">07</span>どんな時も自責で捉えよ</summary><div class="item-body">起きた問題の原因は全て自責で捉える。感情的に原因を外部に置いたり問題解決のための思考を放棄した瞬間に成長が止まっていることを認知する。常に問題解決に向けたアクションを実行する。</div></details>
+    <details class="item"><summary><span class="num">08</span>他のどの組織よりも早く丁寧にやり切る</summary><div class="item-body">YouTubeはスピードと細部のこだわりで決まる。YouTubeは会社の売上の生命線を握っているため、選択の遅さや雑な仕事が全メンバーの生活を壊すという危機感を誰よりも持つべき。1日の遅れが複利で働いて1年後には1ヶ月の遅れになることを腑に落とす。狂気的にやる。</div></details>
+    <details class="item"><summary><span class="num">09</span>競合が塵になるまでやる</summary><div class="item-body">常に戦時中の意識を持ち、競合の再生/売上は本来自分たちのものになるはずだったと捉える。競合が萎えるまで量も質も全ての面で上回り最後まで絶対に手を抜かない。相手が絶望するまでやる。</div></details>
+    <details class="item"><summary><span class="num">10</span>ミスを悪と捉えない</summary><div class="item-body">ミスは悪ではない。成長のために必須な経験。起きてしまったミスを悪だと捉える無意識によって不要な正当化や言い訳が発生し適切な解決策を打てない。そのため、ミスを報告することは善という意識を持つ。</div></details>
+    <details class="item"><summary><span class="num">11</span>感謝の心を忘れない</summary><div class="item-body">当たり前にYouTubeを伸ばし、当たり前に売上が作られていると思わない。メンバーの過去の努力や他部署の頑張りにより、今イージーなゲームができていると意識しなければならない。結果が出ても先人たちが作ってきた道への感謝を忘れない。</div></details>
+  </div>
+
+  <!-- 帝王学 -->
+  <div class="hud-section">
+    <div class="section-label">帝王学</div>
+
+    <details class="item"><summary>絶対利益主義</summary><div class="item-body">利益は会社の源泉。利益がないとメンバーの維持も新規事業への投資も成長も補助もクソもない。だからどうしたら最短最速でこの1日を最大レバで使えば一番利益になるかを恐怖感を持って考える。「今自分は何をどのように実行すれば一番利益を生み出せるか？」「自分が会社へ生み出した付加価値は報酬をしっかり上回ってると言えるか？」みんながこの意識を持つ限りこの会社はどこまでも成長し続け年商／社会へのインパクトを拡大できる。変な力学を会社の中に作らずにシンプルにメンバー全員が利益を追求すべし。</div></details>
+    <details class="item"><summary>ビジネスは戦争、今は戦時中</summary><div class="item-body">ビジネスは会社（国）毎の利益（領土）の奪い合いである。自国の国力を上げるために出来ることは全部やる。虎視眈々と機会を狙い時には強かに手段を選ばずに行動する。「もし競合にこの施策を先手を打たれたら負けるかも」という常に緊張感を持ち圧倒的に勝つための戦略を考える。誇張抜きで生きるか死ぬかだと思うこと。毎日領土が増えているのか、減っているのかの感覚を持ち、減ってたら発狂する。増えてる時は慢心せずに常に貪欲に。完全に制圧するためにオーバーキルな選択肢も水面下で着実に敷いておく。</div></details>
+    <details class="item"><summary>無理難題 = 成長機会。絶対に成功させる</summary><div class="item-body">上司からの無理難題は自分の限界を超えて一気に大成長する絶大なチャンス。分解された優しいタスクをこなしても、自分で主体的に考えて成果を出す力は育たない。「あ、自分このタスクちょっと無理かも」というタスクを諦めずに死ぬ気でこなして爆速でレベルアップする。「どうしたらできるかな？」を口癖にしておくとほぼ解決できるので「できるかな..大丈夫かな...」とか言わずに解決策や方法論をひたすら考えて絶対に成果を出す。</div></details>
+    <details class="item"><summary>成功はみんなのおかげ、失敗は自分のせい</summary><div class="item-body">知識が増えたり経験が増えてできることが増えたりなどの自分の成長は全て周りのメンバーのおかげ。奢り高ぶり慢心しない。「俺はすごい！私のおかげで！」など上手く行ったことと自分を結びつけない。この謙虚な姿勢が器を育て人間的な魅力になる。ただ失敗したら全部自分の責任。「なんであいつはこれをしないんだ」のように他責にならずに「自分がその人を本気にさせられなかったせいだ」と常に自責で頑張る。過去の栄光に絶対にすがってはいけないし「俺は余裕だ」みたいに慢心したら終わり。圧倒的な当事者意識と主体性がその人の成長速度を決める。</div></details>
+    <details class="item"><summary>飛び級のチート策を考え抜け</summary><div class="item-body">上司が考えた日々のタスクを早巻きで終わらせるのは当たり前で常にゲームチェンジが起こり得る最強のチート策を考え抜け。「もしこれが全てAIで出来たら？」「もしまなとやりょうくん規模の人材を採用できたら？」「あのインフルエンサーと提携できたら？」などの常に利益が爆発するかもしれない施策を考えて上司に提案しOKもらった瞬間から異次元のスピードで実行する。「今この会社の利益を10倍にするには？」という疑問を常に頭の片隅で考える。</div></details>
+    <details class="item"><summary>損して得取れ</summary><div class="item-body">一見自分が損してるように思える事柄は基本相手の利益になっているのでなんらマイナスはない。相手の利益を不満に思ったりネガティブな感情を抱いてしまうのは自分の器の未熟さからくるもの。「あ、今俺得しちゃってる側」だと思ったら逆に危機感を持つ。利益をその場で取り切る姿勢こそが一番自分にとってマイナスに働くことが多いのでまずは他者の利益、喜ぶことを優先する。全てを長期視点で捉え「今損しても後から利になればよい」という考えを持って日々行動する。</div></details>
+    <details class="item"><summary>小さな違和感を放置するな</summary><div class="item-body">「これ言っていいのかな？」「これもしかしたら問題かもしれないけどまぁいいか」などこういう小さな遠慮から組織が死に個人に波及する。だから小さな違和感を感じたらすぐに上司に相談する。だいたいそういう直感は当たるし意外と大きな問題になりがち。常に最速のスピード感を持って行動する。妥協せず我慢しない。</div></details>
+    <details class="item"><summary>評論家になるな。実行しろ</summary><div class="item-body">「この組織はここが弱くて〜」「もっと将軍がこうしたらいいのに」「部下が動かないんすよ」みたいな無自覚の他責になるな。問題や改善点を感じているなら自分ごとに捉えどうやったら解決出来るかを常に考えて相談して実行する。そのネガティブ発言が周りにどういう影響を与えるかを考えられてない時点でメタ認知が弱い。問題を見つけたら他部署の問題でも自分ごとに捉えしっかりと改善施策を考えて提案し実行する。</div></details>
+    <details class="item"><summary>今スグやる</summary><div class="item-body">「この施策やったらかなり売り上げあがりそうだな」「うんやろう！」で会話が終わり「いつやるの？」まで決めきれてないことが多い。「今やる」ことを意識する。「今LINEで確認する」「今電話いける？」とスグに伝えたりして時間の機会損失を減らす。ベンチャーはスピード感と勢いが命なので即決即断し、「今！今！今！」を意識してスグに実行する。自分でボールを持たない。最高なアイデアを思いついたのに実行に移さなかったらそれはそいつの責任である。</div></details>
+    <details class="item"><summary>全てを奇跡と捉え無駄にしない</summary><div class="item-body">WEB2のデジタルネイティブ世代のど真ん中でコンテンツ販売黎明期からこの市場で戦えていることに対して本当に運が良いという前提で動く。2社も業界TOPを狙える企業であり最強のメンバーが揃っていることも奇跡。だからこそこの奇跡を奇跡で終わらせない。絶対に安心、慢心せずに初心の不足感、恐怖感を忘れずに。この楽園を永続的に繁栄するために自分が何を出来るかを常に考える。</div></details>
+    <details class="item"><summary>「そこまでやるか」が全ての基準</summary><div class="item-body">「まぁこれくらいでいいか」を捨て狂気的にやる。一般や普通を基準に置かず「そこまでやるの」をスタンダードにする。今日1日だけ本気で生きることが自分の未来を創ることになるので与えられた役目に対して普通の2倍の成果を出す。</div></details>
+    <details class="item"><summary>仕込みと種蒔きを怠るな</summary><div class="item-body">今の売り上げを決めるのは「今どれだけ頑張るか」だが未来の売り上げを生み出すのは今何を種蒔きして何をどれだけ仕込むか。なので将来の事業貯金を創るために日々の余白でタネを播け。</div></details>
+    <details class="item"><summary>競合にやられて嫌なことを先にやれ</summary><div class="item-body">今ライバルや大手に何をやられたら一番嫌かを想像する。そして先手を打ちそのリスクを排除しておく。競合にやられて嫌なことを先にやるのを繰り返せば時間が立てばたつほど誰も太刀打ちできなくなる。</div></details>
+    <details class="item"><summary>金をかけずに上手くいく方法を考えろ</summary><div class="item-body">金をかけて上手くいくのは当たり前。金をかけずにどうしたら上手くいくかを考えて行動しろ。</div></details>
+    <details class="item"><summary>リソースがないは言い訳</summary><div class="item-body">「今パンパンで忙しい、、」というのは自分の実力不足。そこが自分の限界になってしまう。生産性＆効率の最大化をして自分の時間を作ったり、採用して育成して自分のコピーを創ることで無限にリソースは増える。</div></details>
+  </div>
+
+  <!-- MINDSET CHECK -->
+  <div class="hud-section">
+    <div class="section-label warm">MINDSET CHECK</div>
+
+    <div class="check">
+      <div class="q">今、トゲ出てないか？</div>
+      <div class="a">有能感で力んでたら丸が小さくなってる。一拍置いて構造で捉え直す</div>
+    </div>
+    <div class="check">
+      <div class="q">攻略本モード起動してるか？</div>
+      <div class="a">失敗＝仮説の検証結果。「痛んでるな」→観察→次の仮説へ</div>
+    </div>
+    <div class="check">
+      <div class="q">これ二択じゃなくないか？</div>
+      <div class="a">対立に見えて繋がってることが多い。両立する構造を探す</div>
+    </div>
+    <div class="check">
+      <div class="q">望遠鏡と顕微鏡、両方持ってるか？</div>
+      <div class="a">宇宙レベルで考えて目の前を狂気的にやる</div>
+    </div>
+  </div>
+
+  <div class="bottom-goal">
+    <p>みんなでNetflix超えて<br>最高の景色見て<br>嬉し泣きする</p>
+  </div>
+
+  <div class="hud-footer">2026.04.03</div>
+
+</div>
+</body>
+</html>

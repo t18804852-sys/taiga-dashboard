@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>近藤寛 — Complete Profile</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap');
+  :root{--bg:#08090e;--panel:rgba(12,14,22,0.88);--panel-border:rgba(80,100,160,0.18);--accent:#5a7acc;--accent2:#8aa0dd;--accent3:#cc7a5a;--accent4:#ddc050;--accent5:#5acc8a;--text:#b0bcd0;--text-dim:#4a5a70;--text-bright:#d8e4ff;--glow:rgba(80,100,180,0.3)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-weight:300;line-height:1.8;overflow-x:hidden}
+  body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 30% 50%,rgba(80,100,180,0.04)0%,transparent 50%),radial-gradient(ellipse at 70% 30%,rgba(90,120,200,0.03)0%,transparent 50%);pointer-events:none;z-index:0}
+  body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(80,100,180,0.005)2px,rgba(80,100,180,0.005)4px);pointer-events:none;z-index:9999}
+  .container{max-width:1200px;margin:0 auto;padding:40px 20px;position:relative;z-index:1}
+  .hero{text-align:center;padding:80px 0 60px;position:relative}
+  .hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(80,100,180,0.08)0%,transparent 70%);border-radius:50%;animation:pulse 4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:translate(-50%,-50%)scale(1);opacity:.5}50%{transform:translate(-50%,-50%)scale(1.2);opacity:1}}
+  .hero-label{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:6px;color:var(--accent);text-transform:uppercase;opacity:.7;margin-bottom:16px}
+  .hero h1{font-size:48px;font-weight:900;color:var(--text-bright);letter-spacing:8px;margin-bottom:8px;position:relative}
+  .hero .sub{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:4px}
+  .hero .date{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--text-dim);margin-top:20px;letter-spacing:3px}
+  .section{margin-bottom:48px}
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:8px;border-bottom:1px solid var(--panel-border)}
+  .section-num{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--accent);opacity:.5;min-width:30px}
+  .section-title{font-size:18px;font-weight:700;color:var(--text-bright);letter-spacing:2px}
+  .section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--panel-border),transparent)}
+  .panel{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;padding:28px;margin-bottom:16px;backdrop-filter:blur(10px);position:relative;overflow:hidden}
+  .panel::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--accent),transparent);opacity:.5}
+  .panel.warm::before{background:linear-gradient(180deg,var(--accent3),transparent)}.panel.gold::before{background:linear-gradient(180deg,var(--accent4),transparent)}.panel.green::before{background:linear-gradient(180deg,var(--accent5),transparent)}
+  .panel-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;opacity:.7}
+  .panel.warm .panel-label{color:var(--accent3)}.panel.gold .panel-label{color:var(--accent4)}.panel.green .panel-label{color:var(--accent5)}
+  .panel h3{font-size:20px;font-weight:700;color:var(--text-bright);margin-bottom:12px}
+  .panel p{margin-bottom:10px;font-size:14px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}.hero h1{font-size:32px}}
+  .big-kanji{text-align:center;padding:30px}
+  .big-kanji .char{font-size:96px;font-weight:900;color:var(--text-bright);text-shadow:0 0 40px var(--glow);line-height:1}
+  .big-kanji .label{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:4px;color:var(--accent);margin-top:8px}
+  .big-kanji .desc{font-size:14px;color:var(--text-dim);margin-top:8px;max-width:500px;margin-left:auto;margin-right:auto}
+  .tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;margin:3px}
+  .tag.blue{background:rgba(90,122,204,0.15);color:#5a7acc;border:1px solid rgba(90,122,204,0.3)}
+  .tag.warm{background:rgba(204,122,90,0.15);color:#cc7a5a;border:1px solid rgba(204,122,90,0.3)}
+  .tag.gold{background:rgba(221,192,80,0.15);color:#ddc050;border:1px solid rgba(221,192,80,0.3)}
+  .tag.green{background:rgba(90,204,138,0.15);color:#5acc8a;border:1px solid rgba(90,204,138,0.3)}
+  .tag.red{background:rgba(255,68,68,0.15);color:#ff4444;border:1px solid rgba(255,68,68,0.3)}
+  .quote{border-left:2px solid var(--accent);padding:12px 20px;margin:16px 0;background:rgba(90,122,204,0.03);font-size:15px;color:var(--text-bright);font-weight:400}
+  .quote.warm{border-left-color:var(--accent3);background:rgba(204,122,90,0.03)}
+  .quote.gold{border-left-color:var(--accent4);background:rgba(221,192,80,0.03)}
+  .hl{color:var(--accent);font-weight:500}.hl2{color:var(--accent2);font-weight:500}.hl3{color:var(--accent3);font-weight:500}.hl4{color:var(--accent4);font-weight:500}.hl5{color:var(--accent5);font-weight:500}
+  .meisiki-grid{display:grid;grid-template-columns:auto 1fr 1fr 1fr 1fr 1fr 1fr;gap:2px;font-size:13px}
+  .meisiki-cell{padding:10px 12px;text-align:center;background:rgba(90,122,204,0.03);border:1px solid rgba(90,122,204,0.08)}
+  .meisiki-cell.header{background:rgba(90,122,204,0.08);color:var(--accent);font-weight:500;font-size:11px}
+  .meisiki-cell.pillar-label{background:rgba(90,122,204,0.06);font-weight:500;color:var(--accent)}
+  .meisiki-cell .kanji{font-size:22px;font-weight:700;color:var(--text-bright);display:block}
+  .meisiki-cell .element{font-size:10px;color:var(--text-dim)}
+  .meisiki-cell .star{font-size:11px;color:var(--accent2)}
+  .meisiki-cell .twelve{font-size:16px;font-weight:700;color:var(--accent4)}
+  .gogyou-visual{display:flex;justify-content:center;align-items:flex-end;gap:20px;padding:30px 0}
+  .gogyou-bar-wrap{text-align:center}
+  .gogyou-bar{width:50px;border-radius:4px 4px 0 0;margin:0 auto 8px;position:relative}
+  .gogyou-bar .val{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--text-bright)}
+  .gogyou-label{font-size:14px;font-weight:700;color:var(--text)}.gogyou-sub{font-size:10px;color:var(--text-dim);margin-top:2px}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--panel-border),transparent);margin:48px 0}
+  .sanmei-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;max-width:500px;margin:0 auto}
+  .sanmei-cell{padding:16px 12px;text-align:center;border-radius:6px;background:rgba(90,122,204,0.04);border:1px solid rgba(90,122,204,0.1)}
+  .sanmei-cell.center{background:rgba(90,122,204,0.1);border:1px solid rgba(90,122,204,0.3)}
+  .sanmei-cell .pos{font-size:9px;color:var(--text-dim);font-family:'Orbitron',sans-serif;letter-spacing:1px;margin-bottom:4px}
+  .sanmei-cell .star-name{font-size:16px;font-weight:700;color:var(--text-bright)}
+  .sanmei-cell.center .star-name{color:var(--accent)}
+  .sanmei-cell .star-desc{font-size:10px;color:var(--text-dim);margin-top:4px}
+  .life-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;padding:20px;text-align:center}
+  .life-card .period{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--accent);letter-spacing:2px;margin-bottom:6px}
+  .life-card .star-big{font-size:18px;font-weight:700;color:var(--text-bright);margin-bottom:6px}
+  .life-card .desc{font-size:11px;color:var(--text-dim);line-height:1.6}
+  .summary-box{background:linear-gradient(135deg,rgba(90,122,204,0.08),rgba(204,122,90,0.05));border:1px solid rgba(90,122,204,0.2);border-radius:12px;padding:36px;text-align:center;margin:40px 0}
+  .summary-box h2{font-size:22px;font-weight:700;color:var(--text-bright);margin-bottom:16px}
+  .summary-box p{font-size:15px;color:var(--text);max-width:700px;margin:0 auto 12px}
+  .cmp-table{width:100%;border-collapse:collapse;font-size:13px}
+  .cmp-table th{background:rgba(90,122,204,0.08);color:var(--accent);padding:10px 14px;text-align:center;font-weight:500;font-size:11px;border-bottom:1px solid var(--panel-border)}
+  .cmp-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:center}
+  .cmp-table tr:hover td{background:rgba(90,122,204,0.03)}
+  .cmp-badge{font-family:'Orbitron',sans-serif;font-size:9px;padding:2px 8px;border-radius:10px}
+  .cmp-badge.match{background:rgba(90,204,138,0.15);color:#5acc8a;border:1px solid rgba(90,204,138,0.3)}
+  .cmp-badge.link{background:rgba(204,122,90,0.15);color:#cc7a5a;border:1px solid rgba(204,122,90,0.3)}
+  .cmp-badge.warn{background:rgba(255,68,68,0.15);color:#ff4444;border:1px solid rgba(255,68,68,0.3)}
+  .cmp-badge.same{background:rgba(221,192,80,0.15);color:#ddc050;border:1px solid rgba(221,192,80,0.3)}
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-label">Complete Integrated Profile</div>
+    <h1>近藤寛</h1>
+    <div class="sub">KONDO HIROSHI &mdash; FATHER</div>
+    <div class="date">UPDATED 2026.04.05 &mdash; SHICHUSUIMEI + SANMEIGAKU</div>
+  </div>
+
+  <!-- 1. SOUL -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">01</span><span class="section-title">魂の設計図</span><span class="section-line"></span></div>
+    <div class="big-kanji">
+      <div class="char">癸</div>
+      <div class="label">DAY MASTER &mdash; MIZUNOTO &mdash; WATER</div>
+      <div class="desc">雨露。小川。深い愛情と繊細な知性で、乾いた大地を潤す恵みの水。</div>
+    </div>
+    <div class="panel">
+      <div class="panel-label">ESSENCE</div>
+      <h3>恵みの守護者</h3>
+      <p>天より降り注ぐ雨露や、岩間を流れる清らかな小川のような<span class="hl">深い愛情と繊細な知性</span>。乾いた大地を潤し、命を育む水のように、周囲に安らぎと潤いをもたらす。</p>
+      <p>相手の心の微かな揺れを察知し、自分のことのように慈しむ優しさ。偏見を持たず、ありのままの姿を受け入れる<span class="hl">深い寛容さ</span>。</p>
+      <div class="quote">使命：限りない思いやりと奉仕の精神で人々に寄り添い、傷ついた心を癒やして明日への活力を与える「恵みの守護者」。</div>
+      <div class="quote warm">注意：清らかで優しい性質ゆえに、自ら相手を厳しく選べず利用されることも。自分の心を清らかな泉のように守り慈しむことが、周囲を救い続けるための源泉。</div>
+      <div style="margin-top:16px;">
+        <span class="tag blue">従旺格</span>
+        <span class="tag red">極身強 +7</span>
+        <span class="tag blue">空亡: 辰巳</span>
+        <span class="tag gold">調候用神: 丙丁</span>
+        <span class="tag gold">扶抑用神: 食神・傷官</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. MEISIKI -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">02</span><span class="section-title">命式図</span><span class="section-line"></span></div>
+    <div class="panel">
+      <div class="meisiki-grid">
+        <div class="meisiki-cell header"></div>
+        <div class="meisiki-cell header">天干</div>
+        <div class="meisiki-cell header">通変星</div>
+        <div class="meisiki-cell header">地支</div>
+        <div class="meisiki-cell header">蔵干</div>
+        <div class="meisiki-cell header">通変星</div>
+        <div class="meisiki-cell header">十二運</div>
+        <div class="meisiki-cell pillar-label">年柱</div>
+        <div class="meisiki-cell"><span class="kanji">壬</span><span class="element">水</span></div>
+        <div class="meisiki-cell"><span class="star">劫財</span></div>
+        <div class="meisiki-cell"><span class="kanji">子</span><span class="element">水</span></div>
+        <div class="meisiki-cell"><span class="star">癸</span></div>
+        <div class="meisiki-cell"><span class="star">比肩</span></div>
+        <div class="meisiki-cell"><span class="twelve">建禄</span></div>
+        <div class="meisiki-cell pillar-label">月柱</div>
+        <div class="meisiki-cell"><span class="kanji">癸</span><span class="element">水</span></div>
+        <div class="meisiki-cell"><span class="star">比肩</span></div>
+        <div class="meisiki-cell"><span class="kanji">丑</span><span class="element">土</span></div>
+        <div class="meisiki-cell"><span class="star">癸</span></div>
+        <div class="meisiki-cell"><span class="star">比肩</span></div>
+        <div class="meisiki-cell"><span class="twelve">冠帯</span></div>
+        <div class="meisiki-cell pillar-label">日柱</div>
+        <div class="meisiki-cell"><span class="kanji">癸</span><span class="element">水</span></div>
+        <div class="meisiki-cell"><span class="star">—</span></div>
+        <div class="meisiki-cell"><span class="kanji">卯</span><span class="element">木</span></div>
+        <div class="meisiki-cell"><span class="star">乙</span></div>
+        <div class="meisiki-cell"><span class="star">食神</span></div>
+        <div class="meisiki-cell"><span class="twelve">長生</span></div>
+        <div class="meisiki-cell pillar-label">時柱</div>
+        <div class="meisiki-cell"><span class="kanji">壬</span><span class="element">水</span></div>
+        <div class="meisiki-cell"><span class="star">劫財</span></div>
+        <div class="meisiki-cell"><span class="kanji">子</span><span class="element">水</span></div>
+        <div class="meisiki-cell"><span class="star">壬</span></div>
+        <div class="meisiki-cell"><span class="star">劫財</span></div>
+        <div class="meisiki-cell"><span class="twelve">建禄</span></div>
+      </div>
+    </div>
+    <div class="panel warm">
+      <div class="panel-label">EXTREME PATTERN</div>
+      <h3>天干4つ中3つが水。命式が水に染まっている。</h3>
+      <p>壬・癸・癸・壬。天干のほぼ全てが水。地支も子・子と水が重なる。<span class="hl3">圧倒的な水のエネルギー</span>が命式を支配している。</p>
+      <p>従旺格＝自分のエネルギーに逆らわず、水の流れに乗ることで運が開ける命式。抗うほど運気が下がる。</p>
+    </div>
+  </div>
+
+  <!-- 3. GOGYOU -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">03</span><span class="section-title">五行バランス</span><span class="section-line"></span></div>
+    <div class="panel">
+      <div class="gogyou-visual">
+        <div class="gogyou-bar-wrap">
+          <div class="gogyou-bar" style="height:50px;background:linear-gradient(0deg,#2d7a3a,#4aad5a);"><span class="val">1</span></div>
+          <div class="gogyou-label">木</div><div class="gogyou-sub">Wood</div>
+        </div>
+        <div class="gogyou-bar-wrap">
+          <div class="gogyou-bar" style="height:6px;background:rgba(255,255,255,0.1);border:1px dashed rgba(255,68,68,0.5);"><span class="val" style="color:#ff4444;">0</span></div>
+          <div class="gogyou-label" style="color:#ff4444;">火</div><div class="gogyou-sub" style="color:#ff4444;">VOID</div>
+        </div>
+        <div class="gogyou-bar-wrap">
+          <div class="gogyou-bar" style="height:50px;background:linear-gradient(0deg,#8a7a4a,#bba85a);"><span class="val">1</span></div>
+          <div class="gogyou-label">土</div><div class="gogyou-sub">Earth</div>
+        </div>
+        <div class="gogyou-bar-wrap">
+          <div class="gogyou-bar" style="height:6px;background:rgba(255,255,255,0.1);border:1px dashed rgba(255,68,68,0.5);"><span class="val" style="color:#ff4444;">0</span></div>
+          <div class="gogyou-label" style="color:#ff4444;">金</div><div class="gogyou-sub" style="color:#ff4444;">VOID</div>
+        </div>
+        <div class="gogyou-bar-wrap">
+          <div class="gogyou-bar" style="height:200px;background:linear-gradient(0deg,#1a3a88,#3366cc,#44aaff);"><span class="val">4</span></div>
+          <div class="gogyou-label" style="color:#44aaff;">水</div><div class="gogyou-sub" style="color:#44aaff;">DOMINANT</div>
+        </div>
+      </div>
+      <div class="quote">水4 = 命式の半分以上が水。火0・金0 = 情熱の火も割り切りの金も完全欠如。圧倒的な水の知性×感受性に全振りした命式。</div>
+    </div>
+  </div>
+
+  <!-- 4. ROMANCE & WORK -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">04</span><span class="section-title">恋愛観 & 仕事運 & 魂の欲求</span><span class="section-line"></span></div>
+    <div class="grid-3">
+      <div class="panel warm">
+        <div class="panel-label">ROMANCE / 卯</div>
+        <h3>天性の癒やし手</h3>
+        <p>争いを極端に嫌い、空気を常に心地よく整える。穏やかで洗練された関係を求める。</p>
+        <p>非常に<span class="hl3">甘え上手で寂しがり屋</span>。細やかな愛情表現を絶やさない相手を求める。</p>
+        <p>相手の顔色を伺いすぎて本音を飲み込む傾向。</p>
+      </div>
+      <div class="panel">
+        <div class="panel-label">WORK / 丑</div>
+        <h3>圧倒的な継続力</h3>
+        <p>肥沃な大地のように時間をかけて確固たる成果を積み上げる。流行に流されない安定感。</p>
+        <p><span class="hl">大器晩成型</span>。基礎や伝統を大事にする環境、専門性が求められる技術職に適性。</p>
+      </div>
+      <div class="panel gold">
+        <div class="panel-label">SOUL DESIRE / 食神</div>
+        <h3>豊かさと平穏</h3>
+        <p><span class="hl4">心身ともに満たされた毎日</span>に魂の至福を感じる。美味しい食事、心地よい空間、好きな趣味を存分に味わう。</p>
+        <p>誰からも好かれる柔らかな雰囲気。自分の大事な領域を守るためなら汗を流し、<span class="hl4">大事な人を守り抜く愛</span>が根底にある。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. HIDDEN TALENT -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">05</span><span class="section-title">本質的な才能（比肩）& 注意パターン</span><span class="section-line"></span></div>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">HIDDEN TALENT = 比肩</div>
+        <h3>孤高のチャレンジャー</h3>
+        <p>誰にも頼らず自分の足で人生を切り拓く<span class="hl">自立心</span>と、決めたことを即座に実行に移す<span class="hl">行動力</span>。</p>
+        <p>逆境に立たされた時ほど燃え上がるバイタリティ。一度火がつくと全身全霊で愛し抜く一途な情熱家。</p>
+      </div>
+      <div class="panel warm">
+        <div class="panel-label">RISK PATTERN</div>
+        <h3>「全て自分一人でできる」過信</h3>
+        <p><span class="hl3">他人の話を軽視し、十分に耳を傾けない。</span>自分の考えが正しいと確信しているため、周囲のアドバイスを蔑ろにする。</p>
+        <p>「正当に評価されていない」と感じる原因の多くは、コミュニケーション上の食い違いから生まれる周囲の不安感。</p>
+        <div class="quote warm">これがTaigaが語る「親父は話を聞かない」の命式的根拠。貫索星×3 + 極身強+7 = 構造的に「聞く」が極端に弱い。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 6. SANMEIGAKU -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">06</span><span class="section-title">算命学 — 陽占命式</span><span class="section-line"></span></div>
+    <div class="panel">
+      <div class="sanmei-grid">
+        <div class="sanmei-cell"><div class="pos">EARLY LIFE</div><div class="star-name">天禄星</div><div class="star-desc">責任感・誠実</div></div>
+        <div class="sanmei-cell"><div class="pos">HEAD</div><div class="star-name">石門星</div><div class="star-desc">気配り・社交</div></div>
+        <div class="sanmei-cell"></div>
+        <div class="sanmei-cell"><div class="pos">LEFT / FRIENDS</div><div class="star-name" style="color:var(--accent3);">貫索星</div><div class="star-desc">独立・頑固</div></div>
+        <div class="sanmei-cell center"><div class="pos">CENTER</div><div class="star-name">貫索星</div><div class="star-desc">自立・不屈</div></div>
+        <div class="sanmei-cell"><div class="pos">RIGHT</div><div class="star-name">—</div></div>
+        <div class="sanmei-cell"><div class="pos">YOUTH</div><div class="star-name">天南星</div><div class="star-desc">恐れ知らず</div></div>
+        <div class="sanmei-cell"><div class="pos">BELLY / SOCIAL</div><div class="star-name" style="color:var(--accent3);">貫索星</div><div class="star-desc">一匹狼</div></div>
+        <div class="sanmei-cell"><div class="pos">LATER LIFE</div><div class="star-name">天貴星</div><div class="star-desc">情け深い</div></div>
+      </div>
+    </div>
+    <div class="panel warm">
+      <div class="panel-label">CRITICAL PATTERN</div>
+      <h3>貫索星 &times; 3 — 極端な自立心</h3>
+      <p>中心星・友人面・社会面の<span class="hl3">3つ全てが貫索星</span>。どこから見ても「自立・頑固・一匹狼」。</p>
+      <p>自らの信念を貫き通す不屈の精神。集団の足並みに窮屈さを感じる。一度決めた道を着実に進む。</p>
+      <p>「孤高」に見られるが、目的のために黙々と耐え抜く姿は人の心を打つ。</p>
+      <div class="quote warm">唯一の例外は石門星（年上面）。年上に対してだけ気配りと社交性が出る。しかしそれ以外の全方位が貫索星 = 「聞かない」が全方位で発動。</div>
+    </div>
+  </div>
+
+  <!-- 7. LIFE PERIODS -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">07</span><span class="section-title">人生の三期</span><span class="section-line"></span></div>
+    <div class="grid-3">
+      <div class="life-card">
+        <div class="period">EARLY LIFE / 天禄星</div>
+        <div class="star-big">誠実な優等生</div>
+        <div class="desc">責任感にあふれ、着実に積み上げる才能。しっかりとした両親のもと、少し厳格だが深い慈しみで育つ。早熟なバランス感覚。</div>
+      </div>
+      <div class="life-card" style="border-color:rgba(204,122,90,0.3);">
+        <div class="period" style="color:var(--accent3);">YOUTH / 天南星</div>
+        <div class="star-big" style="color:var(--accent3);">恐れ知らずの戦士</div>
+        <div class="desc">果敢に道を切り拓く。困難な課題ほど熱意を燃やす。人一倍強い正義感。鋭い批判精神を持つが、その刃を周囲に向けすぎないよう注意が必要。</div>
+      </div>
+      <div class="life-card">
+        <div class="period">LATER LIFE / 天貴星</div>
+        <div class="star-big">情け深い挑戦者</div>
+        <div class="desc">80歳を過ぎてから始めた趣味で脚光を浴びるような驚くべき若々しさ。年齢を重ねることの素晴らしさを体現。世代を超えた深い絆。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. TWELVE FORTUNE -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">08</span><span class="section-title">十二運の人生曲線</span><span class="section-line"></span></div>
+    <div class="grid-3">
+      <div class="panel">
+        <div class="panel-label">YOUTH / 建禄</div>
+        <h3>着実な発展</h3>
+        <p>幼い頃から大人びた安定感。目標に向かってコツコツ努力を積み重ねる。「継続こそが力なり」を身をもって体験。揺るぎない土台と誠実な信用を築く。</p>
+      </div>
+      <div class="panel warm">
+        <div class="panel-label">YOUNG ADULT / 冠帯</div>
+        <h3>最高潮の攻め</h3>
+        <p><span class="hl3">強気な攻めの姿勢がそのまま成功に直結</span>する最高潮のエネルギー。逆境をエンターテインメントとして楽しむ。圧倒的な行動力。守りに入るのはもったいない時期。</p>
+      </div>
+      <div class="panel green">
+        <div class="panel-label">MIDDLE AGE / 長生</div>
+        <h3>発展と信頼</h3>
+        <p>社会的信用を確固たるものに。知性と品格を兼ね備えた振る舞い。<span class="hl5">誠実なリーダーシップ</span>が憧れの的に。良き大黒柱として家族の信頼を築く。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 9. FAMILY CROSS -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">09</span><span class="section-title">家族の命式接続</span><span class="section-line"></span></div>
+
+    <div class="summary-box">
+      <div class="hero-label" style="margin-bottom:20px;">KEY STRUCTURE</div>
+      <h2>雨（癸）が山（戊）に降る — 父と息子の関係</h2>
+      <p>父=癸（雨）、Taiga=戊（山）。土剋水＝Taigaが父を「制する」側。<br>Taigaは極身強+8 > 父の極身強+7。実はTaigaの方が自我が強い。しかし父の貫索星×3が「聞かない壁」を作る。</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">FOUR-WAY FAMILY CROSS REFERENCE</div>
+      <table class="cmp-table">
+        <tr>
+          <th style="width:18%;">項目</th>
+          <th style="width:18%;">父（寛）</th>
+          <th style="width:18%;">母（悦子）</th>
+          <th style="width:18%;">Taiga</th>
+          <th style="width:18%;">いぶき</th>
+          <th style="width:10%;"></th>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--accent);">日干</td>
+          <td>癸（雨）</td>
+          <td>乙（花）</td>
+          <td style="font-weight:700;">戊（山）</td>
+          <td>乙（花）</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--accent);">旺衰</td>
+          <td style="color:#ff4444;font-weight:700;">極身強 +7</td>
+          <td>中和 +2</td>
+          <td>極身強 +8</td>
+          <td>身旺 +4</td>
+          <td><span class="cmp-badge warn">父が最強</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--accent);">火</td>
+          <td style="color:#ff4444;">0</td>
+          <td style="color:#ff4444;">0</td>
+          <td style="color:var(--accent5);font-weight:700;">2</td>
+          <td>2</td>
+          <td><span class="cmp-badge same">両親とも0</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--accent);">金</td>
+          <td style="color:#ff4444;">0</td>
+          <td style="color:var(--accent5);">1</td>
+          <td style="color:#ff4444;">0</td>
+          <td style="color:#ff4444;">0</td>
+          <td><span class="cmp-badge match">母だけ持つ</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--accent);">水</td>
+          <td style="color:var(--accent);font-weight:700;">4</td>
+          <td>2</td>
+          <td>2</td>
+          <td>3</td>
+          <td><span class="cmp-badge link">父が突出</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--accent);">貫索星</td>
+          <td style="font-weight:700;color:var(--accent3);">×3</td>
+          <td>—</td>
+          <td>—</td>
+          <td>社会面</td>
+          <td><span class="cmp-badge warn">父が極端</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--accent);">牽牛星</td>
+          <td>—</td>
+          <td style="font-weight:700;">中心星</td>
+          <td>持っている</td>
+          <td>—</td>
+          <td><span class="cmp-badge same">母→息子</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--accent);">龍高星</td>
+          <td>—</td>
+          <td>第三命星</td>
+          <td style="font-weight:700;">中心星</td>
+          <td>第四命星</td>
+          <td><span class="cmp-badge match">母系で共有</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--accent);">天中殺</td>
+          <td>辰巳</td>
+          <td>辰巳</td>
+          <td>午未</td>
+          <td>寅卯</td>
+          <td><span class="cmp-badge same">両親が同じ</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--accent);">注意パターン</td>
+          <td>話を聞かない</td>
+          <td>嫉妬心</td>
+          <td>有能感トリガー</td>
+          <td>—</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td style="text-align:left;color:var(--accent);">リセット必須</td>
+          <td>落ち着きを保つ</td>
+          <td>心の曇り除去</td>
+          <td>相剋によるリセット</td>
+          <td>—</td>
+          <td><span class="cmp-badge same">全員共通</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel warm">
+        <div class="panel-label">DISCOVERY 1</div>
+        <h3>「1人で成果出す」は父の遺伝</h3>
+        <p>父の貫索星×3＋極身強+7＝<span class="hl3">「全て自分一人でできる」が命式に刻まれている</span>。</p>
+        <p>Taigaがまなとから指摘された「1人で成果出すのが無意識にめっちゃ強い」パターンは、父から受け継いだ命式構造。Taigaは旺衰+8で父(+7)より強いが、貫索星がない分、柔軟に変えられる余地がある。</p>
+        <p>父は構造的にこれを変えられない。Taigaは変えられる。ここが違い。</p>
+      </div>
+      <div class="panel gold">
+        <div class="panel-label">DISCOVERY 2</div>
+        <h3>両親ともに火0 → Taigaが家族の火</h3>
+        <p>父＝火0、母＝火0。<span class="hl4">家庭に「情熱・推進力・行動力」が構造的に存在しなかった</span>。</p>
+        <p>Taiga（火2）が家族の中で唯一、火を持っている。幼少期から無意識に「俺が動かなきゃ」の感覚があったとすれば、これが命式的な根拠。</p>
+        <p>「結果で黙らせよう」思考＝火0の家庭で火2のTaigaが、言葉（水）では勝てないから行動（火）で証明するしかなかった構造。</p>
+      </div>
+    </div>
+
+    <div class="panel green">
+      <div class="panel-label">DISCOVERY 3</div>
+      <h3>父（癸/雨）× 母（乙/花）= 雨が花を育てる</h3>
+      <p>五行では水生木。<span class="hl5">水が木を育てる相生関係</span>。父の水4が母の木1を潤す。自然な共生構造。</p>
+      <p>両親の天中殺が同じ（辰巳）＝人生の休息サイクルが同期する。一緒に立ち止まり、一緒に再出発できる。</p>
+      <p>そしてこの夫婦から生まれたTaiga（戊/山）は、雨（父）に打たれ、花（母）に飾られる山。<span class="hl5">父の水が山を削り、母の花が山を柔らかくする</span>。家族全体が一つの自然の風景になっている。</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">DISCOVERY 4</div>
+      <h3>「話すと戻っちゃう」の命式的構造</h3>
+      <p>Taiga（戊/+8）vs 父（癸/+7）。五行でも旺衰でもTaigaが上。<span class="hl">しかし父の貫索星×3が「絶対に譲らない壁」を作る</span>。数値で勝っても、壁は壁。</p>
+      <p>制する力があるのに、相手の自我の方が強い＝<span class="hl">押しても押しきれない。そして父の水4が山の土台を削る</span>。</p>
+      <p>Taigaが感じる「話すと戻っちゃう」＝ 自分の制御レイヤー（キーガン第4段階のOS）が、父の極身強+7の圧で剥がされる感覚。命式レベルで裏付けられている。</p>
+      <div class="quote">制御レイヤーが安定する（＝キーガン第5段階に近づく）まで距離を取るTaigaの判断は、命式的にも正しい。</div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">&infin;</span><span class="section-title">近藤寛とは何者か</span><span class="section-line"></span></div>
+    <div class="summary-box" style="text-align:left;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+        <div>
+          <p><span class="hl4">魂の設計図</span><br>癸（雨）。深い愛情と繊細な知性で乾いた大地を潤す。恵みの守護者。</p>
+          <p style="margin-top:16px;"><span class="hl4">構造的特徴</span><br>極身強+7。貫索星×3。水4。命式レベルで「自分一人で完結する」が刻まれている。</p>
+          <p style="margin-top:16px;"><span class="hl4">五行の欠如</span><br>火0・金0。情熱も割り切りもない。深い水の知性と感受性に全振り。</p>
+        </div>
+        <div>
+          <p><span class="hl4">息子との関係</span><br>癸(雨)→戊(山)。旺衰はTaiga(+8)が上だが、父の貫索星×3の壁がある。制御レイヤーが剥がされる感覚の正体。</p>
+          <p style="margin-top:16px;"><span class="hl4">Taigaへの遺伝</span><br>「1人で成果出す」パターン。ただしTaigaには貫索星がなく、変えられる余地がある。</p>
+          <p style="margin-top:16px;"><span class="hl4">家族の風景</span><br>雨(父)が花(母)を育て、山(息子)を削る。花(母)が山(息子)を柔らかくする。一つの自然。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="big-kanji" style="padding:40px 0;">
+      <div class="char" style="font-size:32px;letter-spacing:3px;">雨の知性で世界を潤し、<br>不屈の信念で一人立つ男</div>
+      <div class="desc" style="margin-top:20px;font-size:15px;color:var(--text);">愛情は深い。ただ、それを言葉にする火が命式にない。<br>だから「結果」で示す。息子も同じことをしている。</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:40px 0;font-size:10px;color:var(--text-dim);font-family:'Orbitron',sans-serif;letter-spacing:3px;">
+    SHICHUSUIMEI + SANMEIGAKU INTEGRATED<br>
+    FOUR-WAY FAMILY CROSS-REFERENCE: FATHER / MOTHER / TAIGA / IBUKI<br>
+    GENERATED BY AI SHISHOU SYSTEM &mdash; 2026.04.05
+  </div>
+
+</div>
+</body>
+</html>

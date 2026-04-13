@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無我夢中 診断書 — 2026.04.13</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#0a1a1f;color:#b8d8d0;font-family:'Noto Sans JP',sans-serif;min-height:100vh;overflow-x:hidden;}
+  .bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.12;background:radial-gradient(ellipse at 20% 40%,rgba(30,90,120,0.4),transparent 60%),radial-gradient(ellipse at 80% 70%,rgba(20,80,60,0.3),transparent 50%);}
+  .hud{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:30px 20px 60px;}
+
+  /* Header */
+  .hdr{text-align:center;margin-bottom:50px;padding:40px 30px;background:linear-gradient(135deg,rgba(10,26,31,0.95),rgba(15,50,60,0.8));border:1px solid rgba(60,160,180,0.3);border-radius:14px;position:relative;overflow:hidden;}
+  .hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#3ca0b4,#2a9080,transparent);}
+  .hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(60,160,180,0.2),transparent);}
+  .hdr .tag{font-family:'Orbitron',sans-serif;font-size:10px;color:#3ca0b4;letter-spacing:4px;margin-bottom:10px;text-transform:uppercase;}
+  .hdr h1{font-family:'Orbitron',sans-serif;font-size:26px;background:linear-gradient(135deg,#3ca0b4,#2a9080,#50c8a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px;line-height:1.4;}
+  .hdr .sub{font-size:13px;color:rgba(184,216,208,0.5);line-height:1.8;}
+
+  /* Section label */
+  .sec{font-family:'Orbitron',sans-serif;font-size:10px;color:#3ca0b4;letter-spacing:5px;text-transform:uppercase;margin:50px 0 20px;padding-bottom:10px;border-bottom:1px solid rgba(60,160,180,0.12);}
+
+  /* Card */
+  .card{background:rgba(10,26,31,0.9);border:1px solid rgba(60,160,180,0.15);border-radius:10px;padding:24px;margin-bottom:16px;position:relative;transition:border-color 0.3s;}
+  .card:hover{border-color:rgba(60,160,180,0.35);}
+  .card-num{font-family:'Orbitron',sans-serif;font-size:9px;color:#3ca0b4;letter-spacing:2px;margin-bottom:8px;}
+  .card h2{font-size:16px;font-weight:700;color:#d0f0e8;margin-bottom:14px;line-height:1.5;}
+  .card p{font-size:13px;line-height:1.9;color:rgba(184,216,208,0.8);margin-bottom:10px;}
+  .card strong{color:#50c8a0;}
+
+  /* Quote block - まなとけいた */
+  .mk-quote{background:rgba(40,30,15,0.35);border-left:3px solid #c8a050;padding:14px 18px;margin:14px 0;border-radius:0 8px 8px 0;}
+  .mk-quote .ql{font-family:'Orbitron',sans-serif;font-size:8px;color:#c8a050;letter-spacing:2px;margin-bottom:6px;text-transform:uppercase;}
+  .mk-quote p{font-size:12px;color:rgba(220,200,160,0.85);line-height:1.8;}
+
+  /* Alert block - 指摘 */
+  .alert{background:rgba(60,20,20,0.25);border-left:3px solid #c06060;padding:14px 18px;margin:14px 0;border-radius:0 8px 8px 0;}
+  .alert .ql{font-family:'Orbitron',sans-serif;font-size:8px;color:#c06060;letter-spacing:2px;margin-bottom:6px;text-transform:uppercase;}
+  .alert p{font-size:12px;color:rgba(220,180,180,0.8);line-height:1.8;}
+
+  /* Insight block */
+  .insight{background:rgba(15,50,60,0.4);border-left:3px solid #3ca0b4;padding:14px 18px;margin:14px 0;border-radius:0 8px 8px 0;}
+  .insight .ql{font-family:'Orbitron',sans-serif;font-size:8px;color:#3ca0b4;letter-spacing:2px;margin-bottom:6px;text-transform:uppercase;}
+  .insight p{font-size:12px;color:rgba(184,216,208,0.9);line-height:1.8;}
+
+  /* Core formula */
+  .formula{background:rgba(15,50,60,0.6);border:1px solid rgba(60,160,180,0.25);border-radius:10px;padding:20px 24px;margin:20px 0;text-align:center;}
+  .formula p{font-family:'Orbitron',monospace;font-size:14px;color:#50c8a0;line-height:2;letter-spacing:1px;}
+
+  /* Diagnostic question */
+  .diag{background:linear-gradient(135deg,rgba(15,50,60,0.7),rgba(10,30,35,0.9));border:1px solid rgba(80,200,160,0.3);border-radius:12px;padding:30px;margin:30px 0;text-align:center;position:relative;overflow:hidden;}
+  .diag::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#50c8a0,transparent);}
+  .diag .tag{font-family:'Orbitron',sans-serif;font-size:9px;color:#50c8a0;letter-spacing:4px;margin-bottom:14px;}
+  .diag h2{font-size:18px;font-weight:700;color:#d0f0e8;line-height:1.6;margin-bottom:10px;}
+  .diag p{font-size:13px;color:rgba(184,216,208,0.6);line-height:1.8;}
+
+  /* Chain - 論理チェーン */
+  .chain{display:flex;flex-direction:column;gap:0;margin:20px 0;}
+  .chain-node{background:rgba(10,26,31,0.85);border:1px solid rgba(60,160,180,0.2);border-radius:8px;padding:16px 20px;position:relative;}
+  .chain-node p{font-size:13px;color:rgba(184,216,208,0.85);line-height:1.7;}
+  .chain-arrow{text-align:center;padding:6px 0;font-family:'Orbitron',sans-serif;font-size:11px;color:rgba(60,160,180,0.4);}
+
+  /* Footer */
+  .foot{text-align:center;margin-top:50px;padding-top:20px;border-top:1px solid rgba(60,160,180,0.08);}
+  .foot p{font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(184,216,208,0.2);letter-spacing:3px;}
+
+  @media(max-width:600px){
+    body{font-size:14px !important;-webkit-text-size-adjust:100%;}
+    .hud{padding:16px 12px 40px;}
+    .hdr{padding:28px 16px;}
+    .hdr h1{font-size:20px;}
+    .card{padding:18px 16px;}
+    .diag{padding:24px 18px;}
+    .diag h2{font-size:16px;}
+    p,li,span,div{font-size:max(12px,inherit) !important;}
+    h1{font-size:clamp(20px,5vw,28px) !important;}
+    h2{font-size:clamp(16px,4vw,22px) !important;}
+    html,body{overflow-x:hidden !important;}
+    *{max-width:100vw;}
+  }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="hud">
+
+<div class="hdr">
+  <div class="tag">2026.04.13 — DIAGNOSIS</div>
+  <h1>無我夢中に入れない理由</h1>
+  <div class="sub">性欲管理の話をしていたら根本に辿り着いた<br>フレームワークは全部持ってる。問題は「なぜ今それが起きてないか」</div>
+</div>
+
+<!-- ======================== -->
+<!-- 論理チェーン -->
+<!-- ======================== -->
+<div class="sec">LOGIC CHAIN — 今日の思考経路</div>
+
+<div class="chain">
+  <div class="chain-node">
+    <p>性欲・オナニーとどう向き合うか？短期思考の行動を取ったら負ける気がする</p>
+  </div>
+  <div class="chain-arrow">v</div>
+  <div class="chain-node">
+    <p>ドーパミン報酬系の問題。内側のゲーム設計を外側（世の中）と揃える</p>
+  </div>
+  <div class="chain-arrow">v</div>
+  <div class="chain-node">
+    <p>でも結局、<strong>仕事に没頭してたら手が伸びない</strong>のが自然な状態</p>
+  </div>
+  <div class="chain-arrow">v</div>
+  <div class="chain-node" style="border-color:rgba(80,200,160,0.4);">
+    <p><strong>つまり問題は性欲じゃない。無我夢中じゃないことが問題。</strong></p>
+  </div>
+</div>
+
+<!-- ======================== -->
+<!-- 核心 -->
+<!-- ======================== -->
+<div class="sec">CORE — この質問自体が症状</div>
+
+<div class="card">
+  <div class="card-num">DIAGNOSIS #001</div>
+  <h2>「何したら無我夢中に入れるんだ？」を考えてる時間は、無我夢中じゃない時間</h2>
+  <p>無我夢中の入り方を探してる行為自体が、無我夢中を遠ざけてる。龍高星の「もっと良い方法があるかも」がメタ分析を回し続けて、手が止まってる。</p>
+  <div class="mk-quote">
+    <div class="ql">MANATO-KEITA OS #014</div>
+    <p>「めちゃくちゃ簡単でシンプルなことを複雑化して無駄な時間を消化して何も生み出してない人は結構多い。え、だって〇〇するだけじゃん」</p>
+  </div>
+  <p>まなとけいたはこの問いを発生させない。目の前のタスクをやってる。</p>
+</div>
+
+<div class="formula">
+  <p>無我夢中 = 作るもの ではない</p>
+  <p>無我夢中 = 条件が揃った時に 起きるもの</p>
+</div>
+
+<!-- ======================== -->
+<!-- 3つのブロッカー -->
+<!-- ======================== -->
+<div class="sec">BLOCKERS — 条件が揃ってない3箇所</div>
+
+<div class="card">
+  <div class="card-num">BLOCKER #001</div>
+  <h2>ターゲットが多すぎる</h2>
+  <p>さき、たくむ、あき、阿波連、カナさん、みさをch、言語化、体づくり、モテ準備、完コピ3ヶ月。</p>
+  <div class="alert">
+    <div class="ql">PROBLEM</div>
+    <p>フローのChallenge-Skill Balanceは<strong>1つのタスクに対して</strong>成立する。10個を同時に浅くやってる状態ではどれにも没入できない。</p>
+  </div>
+  <div class="insight">
+    <div class="ql">ROOT CAUSE</div>
+    <p>コントロール欲(10)の「全部握りたい」と龍高星の「全部やりたい」が作ってる構造。金0＝手放せない。</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-num">BLOCKER #002</div>
+  <h2>「やるべき」でやってる</h2>
+  <p>無我夢中が起きるのは「やりたくてやってる」時だけ。「やるべき」で手をつけたものには没入は起きない。意志では覆せない。</p>
+  <div class="alert">
+    <div class="ql">PROBLEM</div>
+    <p>今やってる仕事のうち、手をつけた瞬間に時間が消えるやつはどれだ？ それが分からないなら、「やるべき」だけで動いてる。</p>
+  </div>
+  <div class="insight">
+    <div class="ql">DISTINCTION</div>
+    <p>ゆとりくん「努力は夢中に勝てない」。努力＝やるべきの力。夢中＝やりたいの力。努力で走ってる限り、無我夢中には構造的に入れない。</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-num">BLOCKER #003</div>
+  <h2>フィードバックが遅い・ない</h2>
+  <p>自分のフロー回路メモの「見落とし」に自分で書いた部分。フィードバックが返ってこない環境では、どれだけ目標が明確でも数分で腐る。</p>
+  <div class="alert">
+    <div class="ql">PROBLEM</div>
+    <p>まなとくんの10分振り返り（「この10分、結果に繋がってた？」）が回ってない可能性。フィードバックループが切断されたまま走ると、目標があっても腐る。</p>
+  </div>
+</div>
+
+<!-- ======================== -->
+<!-- ゲーム設計の話 -->
+<!-- ======================== -->
+<div class="sec">GAME DESIGN — 性欲管理で出た洞察</div>
+
+<div class="card">
+  <div class="card-num">INSIGHT #001</div>
+  <h2>内側のゲーム設計を外側と揃える</h2>
+  <p>世の中のゲームは全部「価値を出す→報酬を得る」。オナニーはこの順序を内側から壊す。「何も出してない→報酬だけ回収」を繰り返すと、脳が「出さなくても貰える」を学習する。すると世の中のゲーム（先に出す構造）が理不尽に感じ始める。</p>
+  <div class="insight">
+    <div class="ql">APPLICATION</div>
+    <p>内側の報酬ルールを外側と同じにする。成果が出てないのに報酬（オナニー、SNS、ゲーム等）を回収しない。</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-num">INSIGHT #002</div>
+  <h2>でもこの話全体が枝葉</h2>
+  <div class="alert">
+    <div class="ql">SELF-CHECK</div>
+    <p>性欲管理の精密な設計に時間を使うこと自体、本題（仕事）への没入度が足りてない証拠。世の中で結果出してる奴が全員性欲管理を精密にやってるか？やってない。仕事に没頭してたら勝手に手が伸びなくなる。<strong>管理システムを設計してる時点で、本題への没入が足りてない。</strong></p>
+  </div>
+</div>
+
+<!-- ======================== -->
+<!-- まなとけいたの視座 -->
+<!-- ======================== -->
+<div class="sec">HIGHEST VIEWPOINT — まなとけいたならどう返すか</div>
+
+<div class="card">
+  <div class="card-num">SIMULATION</div>
+  <h2>「無我夢中になれないんすよね」と相談した場合</h2>
+  <div class="mk-quote">
+    <div class="ql">MANATO-KEITA RESPONSE</div>
+    <p>「え、だって台本書くだけじゃん。今から3時間で1本書けよ。終わったら電話しろ」</p>
+  </div>
+  <p>以上。フレームワーク不要。メタ分析不要。やるだけ。</p>
+</div>
+
+<!-- ======================== -->
+<!-- 診断問 -->
+<!-- ======================== -->
+<div class="diag">
+  <div class="tag">DIAGNOSTIC QUESTION</div>
+  <h2>今日、手をつけた瞬間に時間が消えた作業は何かあったか？</h2>
+  <p>あるなら、そこに全ベット。<br>ないなら、今やってることの中に本当にやりたいことが入ってるのか疑え。</p>
+</div>
+
+<!-- ======================== -->
+<!-- 脱力との関係 -->
+<!-- ======================== -->
+<div class="sec">POSITION MAP — 夢中と脱力の関係</div>
+
+<div class="card">
+  <div class="card-num">FRAMEWORK</div>
+  <h2>夢中は入口。脱力は到達点。今は夢中が足りてない。</h2>
+  <div class="formula">
+    <p>夢中（燃料・熱狂）</p>
+    <p style="font-size:11px;color:rgba(80,200,160,0.4);">v  反復</p>
+    <p>回路配線（ミエリン化）</p>
+    <p style="font-size:11px;color:rgba(80,200,160,0.4);">v  自動化</p>
+    <p>脱力（ゼロで出る）</p>
+  </div>
+  <p>脱力に至るためにはまず夢中を通過する必要がある。夢中を飛ばして脱力を目指すのは、練習せずに身勝手の極意を出そうとしてるのと同じ。</p>
+</div>
+
+<div class="foot">
+  <p>GENERATED 2026.04.13 — MUCHU DIAGNOSIS FOR TAIGA</p>
+</div>
+
+</div>
+</body>
+</html>

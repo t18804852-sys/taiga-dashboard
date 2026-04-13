@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>みさを — Complete Profile</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap');
+  :root{--bg:#0e0a10;--panel:rgba(22,14,28,0.88);--panel-border:rgba(220,120,180,0.15);--accent:#dc78b4;--accent2:#f0a0cc;--accent3:#ff8844;--accent4:#f0d060;--accent5:#50c898;--accent6:#7090d0;--text:#d4c0d8;--text-dim:#6a5070;--text-bright:#f4e8ff;--glow:rgba(220,120,180,0.25)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-weight:300;line-height:1.8;overflow-x:hidden}
+  body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 30% 40%,rgba(220,120,180,0.04)0%,transparent 50%),radial-gradient(ellipse at 70% 60%,rgba(240,160,204,0.03)0%,transparent 50%);pointer-events:none;z-index:0}
+  .container{max-width:1200px;margin:0 auto;padding:40px 20px;position:relative;z-index:1}
+  .hero{text-align:center;padding:70px 0 50px;position:relative}
+  .hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:350px;height:350px;background:radial-gradient(circle,rgba(220,120,180,0.08)0%,transparent 70%);border-radius:50%;animation:pulse 4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:translate(-50%,-50%)scale(1);opacity:.5}50%{transform:translate(-50%,-50%)scale(1.2);opacity:1}}
+  .hero-label{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:6px;color:var(--accent);text-transform:uppercase;opacity:.7;margin-bottom:12px}
+  .hero h1{font-size:52px;font-weight:900;color:var(--text-bright);letter-spacing:10px;margin-bottom:8px}
+  .hero .sub{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:4px}
+  .hero .date{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--text-dim);margin-top:16px;letter-spacing:3px}
+  .section{margin-bottom:48px}.section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:8px;border-bottom:1px solid var(--panel-border)}
+  .section-num{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--accent);opacity:.5;min-width:30px}.section-title{font-size:18px;font-weight:700;color:var(--text-bright);letter-spacing:2px}.section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--panel-border),transparent)}
+  .panel{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden}
+  .panel::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--accent),transparent);opacity:.5}
+  .panel.orange::before{background:linear-gradient(180deg,var(--accent3),transparent)}.panel.gold::before{background:linear-gradient(180deg,var(--accent4),transparent)}.panel.green::before{background:linear-gradient(180deg,var(--accent5),transparent)}.panel.blue::before{background:linear-gradient(180deg,var(--accent6),transparent)}
+  .panel-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;opacity:.7}
+  .panel.orange .panel-label{color:var(--accent3)}.panel.gold .panel-label{color:var(--accent4)}.panel.green .panel-label{color:var(--accent5)}.panel.blue .panel-label{color:var(--accent6)}
+  .panel h3{font-size:20px;font-weight:700;color:var(--text-bright);margin-bottom:12px}.panel p{margin-bottom:10px;font-size:14px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}.hero h1{font-size:36px}}
+  .big-kanji{text-align:center;padding:30px}.big-kanji .char{font-size:96px;font-weight:900;color:var(--text-bright);text-shadow:0 0 40px var(--glow);line-height:1}.big-kanji .label{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:4px;color:var(--accent);margin-top:8px}.big-kanji .desc{font-size:14px;color:var(--text-dim);margin-top:8px;max-width:500px;margin-left:auto;margin-right:auto}
+  .tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;margin:3px}
+  .tag.pink{background:rgba(220,120,180,0.15);color:#dc78b4;border:1px solid rgba(220,120,180,0.3)}.tag.orange{background:rgba(255,136,68,0.15);color:#ff8844;border:1px solid rgba(255,136,68,0.3)}.tag.gold{background:rgba(240,208,96,0.15);color:#f0d060;border:1px solid rgba(240,208,96,0.3)}.tag.green{background:rgba(80,200,152,0.15);color:#50c898;border:1px solid rgba(80,200,152,0.3)}.tag.blue{background:rgba(112,144,208,0.15);color:#7090d0;border:1px solid rgba(112,144,208,0.3)}.tag.red{background:rgba(255,68,68,0.15);color:#ff4444;border:1px solid rgba(255,68,68,0.3)}
+  .quote{border-left:2px solid var(--accent);padding:12px 20px;margin:16px 0;background:rgba(220,120,180,0.03);font-size:15px;color:var(--text-bright)}.quote.gold{border-left-color:var(--accent4);background:rgba(240,208,96,0.03)}.quote.green{border-left-color:var(--accent5);background:rgba(80,200,152,0.03)}.quote.orange{border-left-color:var(--accent3);background:rgba(255,136,68,0.03)}
+  .hl{color:var(--accent);font-weight:500}.hl3{color:var(--accent3);font-weight:500}.hl4{color:var(--accent4);font-weight:500}.hl5{color:var(--accent5);font-weight:500}.hl6{color:var(--accent6);font-weight:500}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--panel-border),transparent);margin:48px 0}
+  .summary-box{background:linear-gradient(135deg,rgba(220,120,180,0.08),rgba(240,160,204,0.05));border:1px solid rgba(220,120,180,0.2);border-radius:12px;padding:36px;text-align:center;margin:40px 0}.summary-box h2{font-size:22px;font-weight:700;color:var(--text-bright);margin-bottom:16px}.summary-box p{font-size:15px;color:var(--text);max-width:700px;margin:0 auto 12px}
+  .sanmei-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;max-width:500px;margin:0 auto}
+  .sanmei-cell{padding:16px 12px;text-align:center;border-radius:6px;background:rgba(220,120,180,0.04);border:1px solid rgba(220,120,180,0.1)}.sanmei-cell.center{background:rgba(220,120,180,0.1);border:1px solid rgba(220,120,180,0.3)}.sanmei-cell .pos{font-size:9px;color:var(--text-dim);font-family:'Orbitron',sans-serif;letter-spacing:1px;margin-bottom:4px}.sanmei-cell .star-name{font-size:16px;font-weight:700;color:var(--text-bright)}.sanmei-cell.center .star-name{color:var(--accent)}.sanmei-cell .star-desc{font-size:10px;color:var(--text-dim);margin-top:4px}
+  .persona-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;padding:16px}.persona-card .name{font-size:15px;font-weight:700;color:var(--text-bright);margin-bottom:2px}.persona-card .attr{font-size:11px;color:var(--accent);margin-bottom:6px}.persona-card .pain{font-size:12px;color:var(--text-dim)}
+  details{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+  details summary{padding:14px 20px;cursor:pointer;font-size:14px;font-weight:700;color:var(--text-bright);display:flex;align-items:center;gap:10px;list-style:none}details summary::-webkit-details-marker{display:none}details summary::before{content:'▸';font-size:12px;color:var(--accent);transition:transform .2s}details[open] summary::before{transform:rotate(90deg)}details summary:hover{background:rgba(220,120,180,0.04)}details .toggle-content{padding:0 20px 20px;font-size:13px;line-height:1.8}details .toggle-content p{margin-bottom:8px}
+  .cmp-table{width:100%;border-collapse:collapse;font-size:12px}.cmp-table th{background:rgba(220,120,180,0.08);color:var(--accent);padding:8px 10px;text-align:center;font-weight:500;font-size:10px;border-bottom:1px solid var(--panel-border)}.cmp-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:center}.cmp-table tr:hover td{background:rgba(220,120,180,0.03)}
+  .cmp-badge{font-family:'Orbitron',sans-serif;font-size:8px;padding:2px 6px;border-radius:10px}.cmp-badge.same{background:rgba(240,208,96,0.15);color:#f0d060;border:1px solid rgba(240,208,96,0.3)}.cmp-badge.match{background:rgba(80,200,152,0.15);color:#50c898;border:1px solid rgba(80,200,152,0.3)}.cmp-badge.gap{background:rgba(255,68,68,0.15);color:#ff4444;border:1px solid rgba(255,68,68,0.3)}.cmp-badge.link{background:rgba(220,120,180,0.15);color:#dc78b4;border:1px solid rgba(220,120,180,0.3)}
+  .life-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;padding:16px;text-align:center}.life-card .period{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--accent);letter-spacing:2px;margin-bottom:6px}.life-card .star-big{font-size:16px;font-weight:700;color:var(--text-bright);margin-bottom:6px}.life-card .desc{font-size:11px;color:var(--text-dim);line-height:1.6}
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-label">Performer Complete Profile</div>
+    <h1>みさを</h1>
+    <div class="sub">MISAWO &mdash; YOUTUBE PERFORMER</div>
+    <div class="date">UPDATED 2026.04.05 &mdash; FULL BIOGRAPHY + SHICHUSUIMEI + SANMEIGAKU + STRATEGY</div>
+  </div>
+
+  <!-- 1. CAREER TIMELINE -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">01</span><span class="section-title">経歴 — 引っ込み思案の絵描きから、フリーランス3年目へ</span><span class="section-line"></span></div>
+
+    <div class="grid-3">
+      <div class="panel"><div class="panel-label">PROFILE</div><h3>基本情報</h3><p>シングルマザー（娘: きこ姫）</p><p>フリーランス3年目</p><p>チャンネル登録者: 8,230人</p><p>関西出身（ソフトな関西弁）</p><p>ADHD / HSS型HSP</p><p>京都宇治に実家</p></div>
+      <div class="panel gold"><div class="panel-label">CURRENT WORK</div><h3>現在の仕事</h3><p>企業のインスタ運用代行</p><p>企業のYouTube運用代行</p><p>動画編集ディレクター</p><p>1000名以上のコミュニティ講師</p><p>撮影で外にも出る</p></div>
+      <div class="panel green"><div class="panel-label">EXPERIENCE 30+</div><h3>経験した副業</h3><p style="font-size:12px;">動画編集 / SNS運用 / デザイン / オンラインレッスン / 事務代行 / ライティング / ポイ活 / データ入力 / ガソリンスタンド / アパレル（スピンズ古着）/ 寿司屋パート / 他多数</p></div>
+    </div>
+
+    <details>
+      <summary>人生の全時系列</summary>
+      <div class="toggle-content">
+        <p style="font-weight:700;color:var(--accent3);">小学校 — 引っ込み思案の絵描き</p>
+        <p>発表が苦手。「1日一回は手をあげろ」が嫌だった。保護者参観はまじで嫌。もともと人前出たくない引っ込み思案。教室で絵描いてるような子。母親はイェーイってタイプで心配してた。先生に「明るい、活発な子になって欲しい」と相談。</p>
+        <p style="color:var(--accent5);">転機（小4〜6）：渡辺直美みたいなおもろい先生に出会う。クイズヘキサゴンの羞恥心が好きになる → 芸能界に入りたいと思った。<span style="font-weight:700;">開花してから楽しかった。</span>「楽しいよこちら側の世界」「殻を破ってみたら楽しいかもよ」。</p>
+
+        <p style="font-weight:700;color:var(--accent3);margin-top:16px;">中学校 — きゃりーにハマり、外の世界へ</p>
+        <p>きゃりーぱみゅぱみゅにハマる。学校外の友達ができた。アメ村に服を買いに行く。テレビに出たくて芸能事務所の養成所に行った（演技系）。YouTubeが有名になり始めたタイミングで自分でチャンネル作って美容系を始めた（実家で撮影）。イベントを自分主導でやったり、前に出るの大好きになった。</p>
+
+        <p style="font-weight:700;color:var(--accent3);margin-top:16px;">高校 — 精神的にしんどかった時期</p>
+        <p>あんまり記憶ない。正直しんどかった。親には学校行くって言って遊びに行ったりしてた。<span style="color:var(--accent3);">親が実は離婚していたことをこの時に伝えられた。</span>父が不動産をしていて母に被害がいかないよう籍を分けてた。お母さんとの2人暮らしに。精神的に病んでた。メンタルはもとは弱い、ブレてた。</p>
+
+        <p style="font-weight:700;color:var(--accent5);margin-top:16px;">高校卒業後 — コミュ力爆弾</p>
+        <p>難波のお寿司屋さんで時給1100円。接客の時、浴衣を着て路地に出て客引き。<span style="color:var(--accent5);font-weight:700;">「コミュ力爆弾」って言われてた。</span>そこで常連になった人と結婚。</p>
+        <p>他のバイト：ガソリンスタンド / タイヤの空気入れ / アパレル（スピンズ古着）</p>
+
+        <p style="font-weight:700;color:var(--accent3);margin-top:16px;">結婚〜離婚 — 地獄</p>
+        <p>結婚 → パートの主婦 → 3年前、<span style="color:var(--accent3);font-weight:700;">昼逃げ</span>、シンママになる。クリスマスに娘にプレゼント買ってあげられなかった。「ほんま今思い出しても地獄みたいな思い」。</p>
+
+        <p style="font-weight:700;color:var(--accent5);margin-top:16px;">在宅ワーク開始 — 30種類以上の挑戦</p>
+        <p>クラウドワークス・ランサーズで在宅の仕事開始。デザインから。画像一枚1000円、YouTubeサムネ、フィード投稿。単発で終わることが多くて「永遠にやるのきつい」と思った。いろんな案件を見て<span style="color:var(--accent5);font-weight:700;">「運用代行」を見つけて天職やと思った</span>。</p>
+
+        <p style="font-weight:700;color:var(--accent5);margin-top:16px;">現在 — 楽しくてやってる</p>
+        <p>運用代行は楽しくてやってる。スクール始めてお金があってもやりたい。毎回違う刺激がもらえるから好き。普通の人は生活のために運用代行するけど、みさをさんは本当に好きでやっている。</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- 2. PERSONALITY -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">02</span><span class="section-title">パーソナリティ — 「応援したくなるリーダー」</span><span class="section-line"></span></div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">SPEAKING STYLE</div>
+        <h3>ソフトな関西弁 &times; 誠実さ</h3>
+        <p>親近感と誠実さが共存。視聴者に語りかけるフレンドリーな口調。</p>
+        <p style="font-size:12px;">語尾：「〜なわけよ」「〜なタイプなんですよね」「〜なんやなって」「ほんまに」</p>
+        <p style="font-size:12px;">フィラー：「なんかその」「ま、」「っていうか」「正直」</p>
+      </div>
+      <div class="panel">
+        <div class="panel-label">MINDSET</div>
+        <h3>思ってないことを言えない</h3>
+        <p><span class="hl">嘘は言いたくない。</span>感謝の心がアイデンティティの根幹。チームファースト。先回りした配慮。</p>
+        <p><span class="hl">親であっても女性らしさを大切にしたい。</span>「母親として」に縛られたくない。私の人生を幸せに、子供の人生は子供の人生。</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel orange">
+        <div class="panel-label">ADHD / HSS-HSP</div>
+        <h3>ポンコツな一面</h3>
+        <p>ADHDで細かいことが苦手。運用代行できるのに意外と言われる。</p>
+        <p><span class="hl3">ものをよくなくす：</span>メガネ、iPad、新幹線でPC忘れてそのまま、キャリーケースでなくす、ループでiPad忘れる。</p>
+        <p>無線イヤホンは使わない（なくすから有線ばっか）。Zoomで寝ちゃう。起きれない。</p>
+        <p>マイペースで、人に結構合わせてると言われる。HSS型HSPで後から反省会をよくする。ネガティブ連想すると強いこと言えなくなる。</p>
+      </div>
+      <div class="panel green">
+        <div class="panel-label">DAILY ROUTINE</div>
+        <h3>日常</h3>
+        <p>朝：きこ姫を保育園に送る → 直行でジム</p>
+        <p>そこから仕事。家では作業できないからカフェで仕事。夕方5時まで。</p>
+        <p>17:00に迎え → 家事育児（座る時間なし）→ 買い物はきこ姫連れて → 22時まで寝かしつけ</p>
+        <p>→ 仕事 or 寝てしまうこともあり</p>
+        <p>月2-3回、京都宇治の実家に娘を預けてる。</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">LIKES</div>
+        <h3>好きなこと・もの</h3>
+        <p>クリエイティブ全般。「こういう動画作りたい」と作るのが好き。</p>
+        <p>書くこと。ノートに書く。産後に精神的にやばくなった時に書くことで救われた。ずっと書いてる。</p>
+        <p>旅行。年末に台湾（産後初の海外）。仕事でいろんなとこに行く。</p>
+        <p>同じことの繰り返しは嫌。日々変わっているものが好き。</p>
+      </div>
+      <div class="panel">
+        <div class="panel-label">RELATIONSHIPS</div>
+        <h3>人間関係</h3>
+        <p>昔から仲良い子（中高）ニコイチ。4人くらい、小中一緒の友達。</p>
+        <p>クライアント、ホスト、たくむくん。<span class="hl">男性が多い。</span></p>
+        <p>昔スクールやってた時の元受講生さん（グラムハックに統合された）。</p>
+        <p>親は離婚してるが両方とも仲良い。娘預かってくれてる。</p>
+      </div>
+    </div>
+
+    <div class="panel gold">
+      <div class="panel-label">VULNERABILITY</div>
+      <h3>恋愛下手 &times; 悩み</h3>
+      <p><span class="hl4">恋愛の仕方がまじでわからない。</span>一般の人たちが楽しんでた20代前半に、結婚出産子育てをしてたから、やり方がまじでわかんない。今更恋愛市場に放り投げられてもどうしたらいいかわからない。</p>
+      <p>仕事の悩み：1人で撮影やるってなった時に他の仕事がズルズル伸びて間に合わないことが起きるかもしれない。</p>
+    </div>
+
+    <details>
+      <summary>みさを特有のセリフ集（台本作成用）</summary>
+      <div class="toggle-content">
+        <p>「仕事はね、もう私がさ、言ってみたら全くやったことがないお仕事なわけよ。」</p>
+        <p>「クライアントさんがどうしたいかとか、チームの皆んながどう動いたらやりやすいかとか、そういうのをすごい考えるようにしてます。」</p>
+        <p>「マジで時間ないんやけどさ！（笑）ちょっと喋らせて。」</p>
+        <p>「やっぱ結局、人間関係が全てやなって思うんですよね。」</p>
+        <p>「やっぱり感謝の気持ちが一番かなって思います。」</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- 3. SOUL -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">03</span><span class="section-title">魂の設計図</span><span class="section-line"></span></div>
+    <div class="big-kanji"><div class="char">乙</div><div class="label">DAY MASTER &mdash; KINOTO &mdash; WOOD</div><div class="desc">花。蔦。しなやかに適応し、人々に調和をもたらす。いぶき・母と同じ魂。</div></div>
+    <div class="panel">
+      <div class="panel-label">SHICHUSUIMEI ESSENCE</div>
+      <h3>癒やしと調和の花</h3>
+      <p>春の野に咲く草花のような<span class="hl">柔軟性と根性</span>。和を重んじるあまり自分の思いを二の次にしがち。人間関係で心をすり減らさないよう注意。</p>
+      <p><span class="hl">日支＝亥：</span>恋愛は猪突猛進。好きになったら周りの声は耳に入らない。本物の愛を求める。独占欲と情念が深い。</p>
+      <p><span class="hl">月支＝酉：</span>卓越した美的センスと完璧主義。クリエイティブ・デザイン・品質管理に適性。「本物」を追求するストイックさ。</p>
+      <p><span class="hl">日柱通変星＝印綬：</span>知性を磨き、真理を探究する精神的豊かさを求める。学んだ知識を体系化して人々へ受け継ぐ。</p>
+      <p><span class="hl">月柱蔵干通変星＝偏官：</span>義理堅い親分肌。立ちふさがる壁を打ち砕く突破力。トラブル対応・新プロジェクト立ち上げで本領発揮。</p>
+      <div style="margin-top:12px;">
+        <span class="tag pink">日干: 乙(木)</span>
+        <span class="tag pink">日支: 亥（猪突猛進恋愛）</span>
+        <span class="tag pink">月支: 酉（美的センス）</span>
+        <span class="tag gold">五行注目: 土（感受性×包容力）</span>
+        <span class="tag blue">天中殺: 申酉</span>
+      </div>
+    </div>
+
+    <div class="panel orange">
+      <div class="panel-label">RISK PATTERN</div>
+      <h3>嫉妬心に判断を狂わされる</h3>
+      <p>信頼している人が他の誰かと楽しそうにしているのを見て、自分への関心が薄れたと勘違いしへそを曲げてしまう。感情に支配された判断が大切な関係に不信感を生む。</p>
+      <p><span class="hl3">解決策：</span>感情が揺れた時こそ一歩引いて客観視。相手が誰と仲良くしていても自分への信頼は変わらないと冷静に受け止める。</p>
+    </div>
+  </div>
+
+  <!-- 4. SANMEIGAKU -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">04</span><span class="section-title">算命学 — 陽占命式</span><span class="section-line"></span></div>
+    <div class="panel">
+      <div class="sanmei-grid">
+        <div class="sanmei-cell"><div class="pos">EARLY LIFE</div><div class="star-name">天堂星</div><div class="star-desc">思慮深い</div></div>
+        <div class="sanmei-cell"><div class="pos">HEAD / 年上</div><div class="star-name">鳳閣星</div><div class="star-desc">楽観・バランス</div></div>
+        <div class="sanmei-cell"></div>
+        <div class="sanmei-cell"><div class="pos">LEFT / 友人</div><div class="star-name">禄存星</div><div class="star-desc">愛情・奉仕</div></div>
+        <div class="sanmei-cell center"><div class="pos">CENTER</div><div class="star-name">車騎星</div><div class="star-desc">情熱・行動力</div></div>
+        <div class="sanmei-cell"><div class="pos">RIGHT</div><div class="star-name">—</div></div>
+        <div class="sanmei-cell"><div class="pos">YOUTH</div><div class="star-name">天馳星</div><div class="star-desc">自由・苦労成長</div></div>
+        <div class="sanmei-cell"><div class="pos">BELLY / 社会</div><div class="star-name">禄存星</div><div class="star-desc">愛情・奉仕</div></div>
+        <div class="sanmei-cell"><div class="pos">LATER LIFE</div><div class="star-name">天極星</div><div class="star-desc">純粋・平和</div></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">CENTER STAR</div>
+        <h3>車騎星 — 情熱と行動力の星</h3>
+        <p>困難に立ち向かい道を切り拓く<span class="hl">純粋な情熱と圧倒的な行動力</span>。思い立ったら即実行。自分の力で勝利を掴み取ろうとする気力。</p>
+        <p>純粋すぎて人を疑わない危うさもあるが、真っ直ぐな勢いで困難を突破する姿が多くの人を惹きつける。</p>
+        <p><span class="hl">自然とリーダーの座に押し上げられる。</span>立ち止まらず常に新しい目標に挑み続けることで運勢が活性化する。</p>
+      </div>
+      <div class="panel gold">
+        <div class="panel-label">禄存星 &times; 2</div>
+        <h3>愛情のダブルエンジン</h3>
+        <p>友人面も社会面も<span class="hl4">「愛情と奉仕」で勝負</span>。相手が一番欲しい言葉を最高のタイミングでかけられる。相手の悩みの本質を見抜く鋭い洞察力。</p>
+        <p>「誰かの役に立ちたい」という純粋な願いが巡り巡って成功と豊かさを引き寄せる。</p>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="life-card"><div class="period">EARLY / 天堂星</div><div class="star-big">大人びた子供</div><div class="desc">思慮深く精神的に自立。引っ込み思案に見えるが、常に周囲を観察し自分をコントロール。=小学校時代の経歴と完全一致。</div></div>
+      <div class="life-card" style="border-color:rgba(255,136,68,0.3);"><div class="period" style="color:var(--accent3);">YOUTH / 天馳星</div><div class="star-big" style="color:var(--accent3);">苦労を通じた成長</div><div class="desc">あえて困難な道を選び、多くの苦労を経験して魂を磨く修行期間。=離婚・昼逃げ・30種類副業の経歴と完全一致。</div></div>
+      <div class="life-card"><div class="period">LATER / 天極星</div><div class="star-big">平和の守り手</div><div class="desc">自然体で穏やかに生き、周囲に平和をもたらす。柔らかい微笑みと包容力で幸福な空間を作り上げる。</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 5. CHARACTER GAP -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">05</span><span class="section-title">キャラ設計 vs 本当のキャラ — ギャップ分析</span><span class="section-line"></span></div>
+
+    <div class="panel orange">
+      <div class="panel-label">CRITICAL GAP</div>
+      <h3>設計上のキャラと命式のキャラがズレている</h3>
+      <table class="cmp-table">
+        <tr><th style="width:25%;">項目</th><th style="width:35%;">キャラ設計（現在）</th><th style="width:35%;">本当のキャラ（命式＋経歴）</th><th style="width:5%;"></th></tr>
+        <tr><td style="text-align:left;color:var(--accent);">コンセプト</td><td>真の理解者</td><td>真の理解者 <span style="font-size:10px;">（これは合ってる）</span></td><td><span class="cmp-badge match">OK</span></td></tr>
+        <tr><td style="text-align:left;color:var(--accent);">中心星</td><td style="color:var(--text-dim);">（司禄星と誤認してた）</td><td style="color:var(--accent);font-weight:700;">車騎星（情熱×行動力）</td><td><span class="cmp-badge gap">修正</span></td></tr>
+        <tr><td style="text-align:left;color:var(--accent);">トーン</td><td>穏やか・堅実・安定</td><td>情熱的×純粋×猪突猛進</td><td><span class="cmp-badge gap">GAP</span></td></tr>
+        <tr><td style="text-align:left;color:var(--accent);">視聴者との距離</td><td>「隣の賢いお姉ちゃん」</td><td>「一緒に走ってくれる姉貴」</td><td><span class="cmp-badge gap">GAP</span></td></tr>
+        <tr><td style="text-align:left;color:var(--accent);">弱み見せ方</td><td>完璧な相談相手</td><td>ADHDでポンコツ×恋愛下手×ブレる</td><td><span class="cmp-badge gap">GAP</span></td></tr>
+        <tr><td style="text-align:left;color:var(--accent);">行動パターン</td><td>計画的・堅実</td><td>思い立ったら即実行。30種類副業。</td><td><span class="cmp-badge gap">GAP</span></td></tr>
+        <tr><td style="text-align:left;color:var(--accent);">恋愛（日支=亥）</td><td>（触れてない）</td><td>猪突猛進。本物の愛を求める。独占欲。</td><td><span class="cmp-badge link">未活用</span></td></tr>
+        <tr><td style="text-align:left;color:var(--accent);">愛情（禄存星×2）</td><td>「この人は助けたい人」</td><td>「この人は助けたい人」</td><td><span class="cmp-badge match">OK</span></td></tr>
+      </table>
+    </div>
+
+    <div class="panel green">
+      <div class="panel-label">REALIGNMENT</div>
+      <h3>キャラの再設計 — 命式と経歴を一致させる</h3>
+      <p><span class="hl5">コンセプト「真の理解者」は合ってる。</span>ただし表現の仕方を変える。</p>
+      <p>今のキャラ：穏やかで堅実な相談相手 → 視聴者は安心するが「この人と一緒に走りたい」にはならない</p>
+      <p>本当のキャラ：<span class="hl5">「ポンコツだけど情熱で突っ走る姉貴が、同じ目線で一緒に走ってくれる」</span></p>
+
+      <div class="quote green">車騎星（情熱×即実行）+ 禄存星×2（愛情×奉仕）+ ADHD（ポンコツ）+ 離婚からの逆転（経験の深さ）= 「完璧じゃないからこそ信頼できる。一緒に走ってくれるから心強い。」</div>
+
+      <div class="grid-2" style="margin-top:16px;">
+        <div>
+          <p style="font-weight:700;color:var(--accent5);">活かすべき本当の武器：</p>
+          <p>ポンコツエピソード（iPad忘れる、Zoom寝る）→ 親近感MAX</p>
+          <p>恋愛下手の本音 → ターゲット（ママさん層）の共感</p>
+          <p>思い立ったら即実行（30種類副業） → 「この人は本当にやった人」の信頼</p>
+          <p>「思ってないことを言えない」 → 嘘のない発信の根拠</p>
+        </div>
+        <div>
+          <p style="font-weight:700;color:var(--accent3);">やめるべきこと：</p>
+          <p>「完璧な先輩」を演じること → 車騎星の良さが死ぬ</p>
+          <p>弱みを隠すこと → 禄存星×2の愛情が伝わらなくなる</p>
+          <p>堅実・計画的に見せること → 本当は即実行型なので嘘になる</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. STRENGTHS & WEAKNESSES -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">06</span><span class="section-title">長所と短所の構造</span><span class="section-line"></span></div>
+    <div class="grid-2">
+      <div class="panel green">
+        <div class="panel-label">STRENGTHS</div>
+        <h3>長所</h3>
+        <p><span class="hl5">1. 圧倒的な実体験：</span>30種類以上の副業を実際にやった。誰よりも「やったことある」が多い。</p>
+        <p><span class="hl5">2. 情熱と即実行：</span>車騎星の本質。思い立ったらすぐ動く。昼逃げから在宅ワークまで全部即行動。</p>
+        <p><span class="hl5">3. 愛情の深さ：</span>禄存星×2。人の痛みがわかる。先回りした配慮。感情の解像度が高い。</p>
+        <p><span class="hl5">4. 美的センス：</span>月支＝酉。クリエイティブ適性。デザインから入った経歴。動画作りが好き。</p>
+        <p><span class="hl5">5. コミュ力爆弾：</span>寿司屋の客引きで証明済み。人の懐に入る力。</p>
+        <p><span class="hl5">6. 嘘がつけない誠実さ：</span>「思ってないことを言えない」= 視聴者からの信頼の源泉。</p>
+      </div>
+      <div class="panel orange">
+        <div class="panel-label">WEAKNESSES</div>
+        <h3>短所</h3>
+        <p><span class="hl3">1. ADHD：</span>ものをなくす、スケジュール管理が苦手、Zoom寝る。</p>
+        <p><span class="hl3">2. 嫉妬心：</span>信頼してる人が他の人と楽しそう→へそを曲げる。</p>
+        <p><span class="hl3">3. メンタルの波：</span>HSS型HSPで後から反省会。ネガティブ連想で強いこと言えなくなる。</p>
+        <p><span class="hl3">4. 人に合わせすぎ：</span>乙（花）の本質で自分を二の次にしがち。心をすり減らす。</p>
+        <p><span class="hl3">5. 恋愛下手：</span>20代前半を結婚出産で過ごしたためやり方がわからない。</p>
+        <p><span class="hl3">6. 猪突猛進：</span>日支＝亥。好きになると周りが見えなくなる。思い込みが激しい。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. TAIGA RELATIONSHIP -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">07</span><span class="section-title">Taigaとの関係で気をつけること</span><span class="section-line"></span></div>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">ELEMENTAL</div>
+        <h3>乙(花) → 戊(山) = 木剋土</h3>
+        <p>いぶき・母と同じ構造。花が山を柔らかく制する。Taigaが土台を作り、みさをがその上で咲く。</p>
+        <p><span class="hl">気をつけること：</span>みさをの嫉妬心パターンとTaigaの有能感トリガーが衝突する可能性がある。みさをが「Taigaが他の演者を優先してる」と感じた時にへそを曲げるリスク。</p>
+      </div>
+      <div class="panel gold">
+        <div class="panel-label">DIRECTION STYLE</div>
+        <h3>ディレクションの注意点</h3>
+        <p><span class="hl4">車騎星に対しては：</span>「こうしろ」ではなく「こういう方向で走ってみて」。自分の力で勝利を掴み取りたい星だから、指示じゃなくて方向性を示す。</p>
+        <p><span class="hl4">禄存星×2に対しては：</span>具体的に「ここが良かった」を伝える。愛情で動く人は承認で燃える。</p>
+        <p><span class="hl4">ADHDに対しては：</span>スケジュール管理を仕組みで補う。本人の意志力に頼らない。リマインダー・チェックリストを用意する。</p>
+        <p><span class="hl4">嫉妬心に対しては：</span>定期的に「みさをのここが良い」を明確に伝える。他の演者との差をつけず公平に。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. HOW SHE'S SEEN -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">08</span><span class="section-title">世界からの見え方 &times; 好かれやすい人</span><span class="section-line"></span></div>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-label">HOW VIEWERS SEE HER</div>
+        <h3>視聴者からの見え方</h3>
+        <p><span class="hl">表面：</span>「しっかりしてて、でも親しみやすい、信頼できるお姉ちゃん」</p>
+        <p><span class="hl">深層：</span>「本当に苦労してきた人だから、この人の言うことは本物」</p>
+        <p>視聴後の理想状態：「ポカポカした温かさ」「私にもできそう！」「やってみたい！」</p>
+        <p>ポンコツエピソードを出すと：「完璧じゃないのに頑張ってる→私でも大丈夫かも」の共感が爆増する。</p>
+      </div>
+      <div class="panel">
+        <div class="panel-label">WHO LIKES HER</div>
+        <h3>好かれやすい人</h3>
+        <p><span class="hl">1. 自信がないママさん層：</span>みさをの経歴（シンママ→逆転）に自分を重ねる。</p>
+        <p><span class="hl">2. 嘘のない発信を求める人：</span>「思ってないことを言えない」が最大の信頼。</p>
+        <p><span class="hl">3. 一緒に走ってくれる人を求める人：</span>上から教えられるのは嫌だけど、一緒にやろうって言ってくれる人は好き。</p>
+        <p><span class="hl">4. 年上の家族的存在を求める人：</span>旺衰の重要人物＝年上の家族。みさをが視聴者にとってその存在になれる。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. FUTURE CHALLENGES -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">09</span><span class="section-title">今後の人生で出てきそうな課題</span><span class="section-line"></span></div>
+
+    <div class="grid-2">
+      <div class="panel orange">
+        <div class="panel-label">CHALLENGE 1</div>
+        <h3>車騎星の暴走 — 走りすぎて燃え尽きる</h3>
+        <p>車騎星は止まると運が停滞する。でも<span class="hl3">走り続けると燃え尽きる</span>。シンママで仕事もYouTubeも全部やってる今の状態は、すでにオーバーヒートのリスクが高い。</p>
+        <p><span class="hl3">対策：</span>大運が「休息と充電」の時期であることを意識する。走りながら休む技術（Taigaの「脱力」に近い）を身につける必要がある。</p>
+      </div>
+      <div class="panel orange">
+        <div class="panel-label">CHALLENGE 2</div>
+        <h3>嫉妬心 &times; 人間関係の地雷</h3>
+        <p>命式と四柱推命の両方が「嫉妬心」を最大のリスクとして指摘。信頼してる人が他の人と楽しそう → へそを曲げる → 関係が壊れる。</p>
+        <p><span class="hl3">対策：</span>「自分への関心が薄れた」は事実ではなく解釈だと認識するトレーニング。Taigaの「入口と定着」の概念に近い。</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel orange">
+        <div class="panel-label">CHALLENGE 3</div>
+        <h3>ADHDのスケール問題</h3>
+        <p>今は1人で回せてる範囲だが、チャンネルが伸びて仕事が増えると<span class="hl3">ADHDの弱点（スケジュール管理、物忘れ）が致命的になる</span>。</p>
+        <p><span class="hl3">対策：</span>仕組みで補う。Taiga側がチェックリスト・リマインダー・進捗管理の仕組みを構築する。みさをの意志力に頼る設計は失敗する。</p>
+      </div>
+      <div class="panel orange">
+        <div class="panel-label">CHALLENGE 4</div>
+        <h3>恋愛と仕事の両立</h3>
+        <p>恋愛下手 + 日支＝亥（猪突猛進）= 恋愛が始まると仕事に影響するリスク。好きになると周りが見えなくなる命式。しかも20代前半の経験が欠如してるから判断基準がない。</p>
+        <p><span class="hl3">対策：</span>恋愛が始まったら「仕事のパフォーマンスが落ちてないか」を定期的にチェックする仕組みを入れておく。本人に自覚を促す。</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">CHALLENGE 5</div>
+      <h3>「人に合わせすぎ」の限界点</h3>
+      <p>乙（花）の本質 + HSS型HSP + 「思ってないことを言えない」= <span class="hl">人に合わせすぎて、でも嘘はつけないから、限界が来た時に一気に爆発する</span>。不満を溜め込む → 爆発 → 関係崩壊。これは日支＝亥（一度疑い出すと止まらない）と合流すると最悪のパターンになる。</p>
+      <p><span class="hl">対策：</span>定期的に本音を吐き出す場を作る（演者面談）。ノートに書く習慣は既にあるから、それを継続させる。書くことがみさをにとってのリセット装置。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 10. CHANNEL STRATEGY -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">10</span><span class="section-title">みさをch — チャンネル戦略</span><span class="section-line"></span></div>
+
+    <div class="grid-3">
+      <div class="panel"><div class="panel-label">DOMAIN</div><h3>在宅ワーク</h3><p>主婦・育児中・社会復帰したい女性に向けた在宅ワーク情報チャンネル。</p></div>
+      <div class="panel gold"><div class="panel-label">CONCEPT</div><h3>真の理解者</h3><p>「在宅ワークも子育ても犠牲にしない」。ポンコツだけど情熱で走る姉貴が一緒に走ってくれる。</p></div>
+      <div class="panel"><div class="panel-label">TARGET</div><h3>25〜45歳女性</h3><p>主婦・育児中・社会復帰したい層。ゴシップ本能が強く、群れ内の地位変化に敏感。</p></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">KPI TARGET</div>
+      <h3>目標（2026年12月）</h3>
+      <p>登録者10万 / 在宅ワーク領域1位 / CTR 5〜6% / 再生数 1万超え/本 / CTAコンバージョン 0.8% / 月4本</p>
+    </div>
+
+    <details>
+      <summary>ペルソナ設計（5パターン）</summary>
+      <div class="toggle-content">
+        <p><span class="hl">1. 田中美咲（32歳）</span>2児の主婦。月3万の副収入が欲しい。子供がいて外で働けない。スキルに自信がない。</p>
+        <p><span class="hl">2. 鈴木あかり（27歳）</span>会社員。給与依存から脱却したい。副業したいが何から始めていいかわからない。</p>
+        <p><span class="hl">3. 山本友美（38歳）</span>元看護師・8年ブランク。社会復帰が怖い。ブランクが長くて普通の就職が不安。</p>
+        <p><span class="hl">4. 佐藤里奈（30歳）</span>キャリア燃え尽き。激務で心身消耗。でも収入は必要。持続可能な働き方が欲しい。</p>
+        <p><span class="hl">5. 中村裕子（45歳）</span>パート勤務。子供の大学費用のための追加収入。年齢的にスキルアップが不安。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>進化心理学ベースの企画設計</summary>
+      <div class="toggle-content">
+        <p><span class="hl">ゴシップ本能（最強）：</span>密着系、LINEグループ見せる、旦那に内緒で月収超えた妻</p>
+        <p><span class="hl">Prestige戦略：</span>ママ友の態度が変わった話、群れ内地位UP</p>
+        <p><span class="hl">推し組み合わせ：</span>密着系 &times; 地位変化。ゴシップで引き込み、Prestigeで「私もやりたい」に。</p>
+        <p>ノウハウで攻めがち。ターゲットの本能はノウハウより「他人の社会的情報」と「群れ内の地位変化」に反応する。</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>CTA台本設計（ヒーローズジャーニー型）</summary>
+      <div class="toggle-content">
+        <p>1. メッセージ：副業選びが最重要</p>
+        <p>2. ヒーローズジャーニー：時給1100円の寿司屋パート → 昼逃げ → フリーランス月60万</p>
+        <p>3. 感情フック：「15分ルール」— 毎日最低15分やればゼロの日を作らない</p>
+        <p>4. ワーストケース：行動しなければ現状維持（停滞）</p>
+        <p>5. CTA：LINE無料個別相談 + 7日間ロードマップ</p>
+        <p>6. チャンネルピッチ：「在宅ワークも子育ても犠牲にしない」</p>
+        <p>7. クロージング：「99%の人は行動しない。1%になれ」</p>
+      </div>
+    </details>
+
+    <div class="panel">
+      <div class="panel-label">SCRIPT RULE</div>
+      <h3>台本設計ルール</h3>
+      <p>「現実を話す → でも、その後に寄り添い、救い。在宅ワークの現実、視聴者が知らない情報を話す時は、納得感（論理と理解）が必要」</p>
+      <p>YouTubeルール：子供のものはなるべく出さない。</p>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="section">
+    <div class="section-header"><span class="section-num">&infin;</span><span class="section-title">みさをとは何者か</span><span class="section-line"></span></div>
+    <div class="summary-box" style="text-align:left;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+        <div>
+          <p><span class="hl4">魂の設計図</span><br>乙（花）。しなやかだが、中身は車騎星の情熱エンジン。走り続けることで運が開く。</p>
+          <p style="margin-top:16px;"><span class="hl4">本当のキャラ</span><br>ポンコツだけど情熱で突っ走る姉貴。完璧じゃないからこそ信頼できる。禄存星×2の深い愛情。</p>
+          <p style="margin-top:16px;"><span class="hl4">最大の武器</span><br>30種類以上の実体験 × 嘘がつけない誠実さ × コミュ力爆弾 × 美的センス。</p>
+        </div>
+        <div>
+          <p><span class="hl4">最大のリスク</span><br>嫉妬心 × 燃え尽き × ADHDのスケール問題 × 恋愛の猪突猛進。</p>
+          <p style="margin-top:16px;"><span class="hl4">Taigaの役割</span><br>山として土台を提供。スケジュール管理の仕組み化。嫉妬心ケアの定期面談。方向性を示して走らせる。</p>
+          <p style="margin-top:16px;"><span class="hl4">将来の理想</span><br>「楽しく生きていたい。好きな人たちと好きな仕事したい。楽しいかどうかを大切にしたい。」</p>
+        </div>
+      </div>
+    </div>
+    <div class="big-kanji" style="padding:40px 0;">
+      <div class="char" style="font-size:28px;letter-spacing:2px;">ポンコツで情熱的で、嘘がつけなくて、<br>走ることでしか前に進めない花</div>
+      <div class="desc" style="margin-top:16px;font-size:14px;color:var(--text);">引っ込み思案の絵描きが、昼逃げを経て、コミュ力爆弾のフリーランスになった。<br>その全部が本物だから、視聴者は信じる。</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:40px 0;font-size:10px;color:var(--text-dim);font-family:'Orbitron',sans-serif;letter-spacing:3px;">
+    FULL BIOGRAPHY + SHICHUSUIMEI + SANMEIGAKU + CHANNEL STRATEGY<br>
+    CHARACTER GAP ANALYSIS + STRENGTHS/WEAKNESSES + FUTURE CHALLENGES<br>
+    GENERATED BY AI SHISHOU SYSTEM &mdash; 2026.04.05
+  </div>
+
+</div>
+</body>
+</html>

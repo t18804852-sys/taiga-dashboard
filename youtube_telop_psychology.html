@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTubeテロップ心理効果マップ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Zen+Maru+Gothic:wght@400;700&family=Zen+Kurenaido&family=Dela+Gothic+One&family=Hachi+Maru+Pop&family=Yuji+Syuku&family=Kiwi+Maru:wght@400;500&family=Reggae+One&family=RocknRoll+One&family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0a;--card-bg:#111;--border:#1a1a1a;
+  --text:#ccc;--text-dim:#666;--text-bright:#eee;
+  --accent:#2d7d9a;--accent2:#2a9d6a;
+}
+html,body{min-height:100vh;font-family:'Noto Sans JP',-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.6}
+
+/* Header */
+.header{padding:32px 28px 20px;border-bottom:1px solid var(--border)}
+.header h1{font-size:20px;font-weight:900;color:var(--text-bright);letter-spacing:1px}
+.header .sub{font-size:11px;color:var(--text-dim);margin-top:4px}
+.header .principle{margin-top:12px;padding:10px 14px;background:#0d1f1a;border-left:3px solid var(--accent2);border-radius:0 4px 4px 0;font-size:12px;color:var(--accent2);line-height:1.7}
+
+/* Section */
+.section{padding:24px 28px;border-bottom:1px solid var(--border)}
+.section-title{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:16px;padding-bottom:6px;border-bottom:1px solid #1a2a30}
+
+/* Telop Card */
+.telop-card{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;margin-bottom:20px;overflow:hidden}
+.telop-card:hover{border-color:#252525}
+.card-top{display:flex;align-items:stretch;min-height:120px}
+.card-demo{flex:0 0 400px;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden}
+.card-info{flex:1;padding:16px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;justify-content:center}
+.card-info h3{font-size:14px;font-weight:700;color:var(--text-bright);margin-bottom:4px}
+.card-info .tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.card-info .tag{font-size:10px;padding:2px 8px;border-radius:10px;background:#0d1f1a;color:var(--accent2);border:1px solid #1a3a2a}
+.card-info .tag.emotion{background:#1f0d1a;color:#9a2d7d;border-color:#3a1a2a}
+.card-info .tag.scene{background:#0d1a1f;color:var(--accent);border-color:#1a2a3a}
+.card-info .desc{font-size:12px;color:var(--text);line-height:1.7}
+.card-info .why{font-size:11px;color:var(--text-dim);margin-top:6px;font-style:italic}
+.card-bottom{padding:10px 20px;background:#0d0d0d;border-top:1px solid var(--border);display:flex;gap:20px;flex-wrap:wrap}
+.card-bottom .use-case{font-size:11px;color:var(--text-dim)}
+.card-bottom .use-case span{color:var(--accent);font-weight:600}
+
+/* ===== Telop Demo Styles ===== */
+
+/* 1: 太角ゴシック 強調系 */
+.demo-impact{background:linear-gradient(135deg,#1a0505,#0a0a0a)}
+.demo-impact .telop{
+  font-family:'Noto Sans JP',sans-serif;font-weight:900;font-size:32px;
+  color:#fff;
+  text-shadow:
+    3px 3px 0 #c00, -1px -1px 0 #c00, 1px -1px 0 #c00, -1px 1px 0 #c00,
+    0 4px 8px rgba(200,0,0,0.4);
+  letter-spacing:2px;
+  transform:skewX(-3deg);
+}
+
+/* 2: ツッコミ黄色 */
+.demo-tsukkomi{background:linear-gradient(135deg,#1a1505,#0a0a0a)}
+.demo-tsukkomi .telop{
+  font-family:'Noto Sans JP',sans-serif;font-weight:900;font-size:28px;
+  color:#ffe500;
+  text-shadow:
+    2px 2px 0 #333, -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333,
+    0 0 12px rgba(255,229,0,0.3);
+  letter-spacing:1px;
+}
+
+/* 3: 丸ゴシック やわらか系 */
+.demo-soft{background:linear-gradient(135deg,#0f1a15,#0a0a0a)}
+.demo-soft .telop{
+  font-family:'Zen Maru Gothic','Kiwi Maru',sans-serif;font-weight:700;font-size:26px;
+  color:#a8e6cf;
+  text-shadow:0 2px 8px rgba(168,230,207,0.2);
+  letter-spacing:1px;
+}
+
+/* 4: 明朝体 シリアス系 */
+.demo-serious{background:linear-gradient(135deg,#0a0a12,#0a0a0a)}
+.demo-serious .telop{
+  font-family:'Noto Serif JP','Yuji Syuku',serif;font-weight:700;font-size:26px;
+  color:#fff;
+  text-shadow:0 0 20px rgba(255,255,255,0.15);
+  letter-spacing:4px;
+}
+
+/* 5: 手書き風 本音系 */
+.demo-honesty{background:linear-gradient(135deg,#12100a,#0a0a0a)}
+.demo-honesty .telop{
+  font-family:'Hachi Maru Pop','Zen Kurenaido',cursive;font-size:22px;
+  color:#e8d5a0;
+  text-shadow:0 1px 4px rgba(232,213,160,0.2);
+  transform:rotate(-1deg);
+}
+
+/* 6: 極太インパクト */
+.demo-extreme{background:linear-gradient(135deg,#1a0a1a,#0a0a0a)}
+.demo-extreme .telop{
+  font-family:'Dela Gothic One','Reggae One',sans-serif;font-size:36px;
+  color:#ff3366;
+  text-shadow:
+    4px 4px 0 #220011, -2px -2px 0 #220011, 2px -2px 0 #220011, -2px 2px 0 #220011,
+    0 0 30px rgba(255,51,102,0.4);
+  letter-spacing:3px;
+}
+
+/* 7: ナレーション・解説系 */
+.demo-narration{background:linear-gradient(135deg,#0a1015,#0a0a0a)}
+.demo-narration .telop{
+  font-family:'Noto Sans JP',sans-serif;font-weight:700;font-size:20px;
+  color:#fff;
+  background:rgba(0,0,0,0.7);
+  padding:6px 16px;
+  border-radius:4px;
+  border-left:3px solid var(--accent);
+}
+
+/* 8: ポップ・エンタメ系 */
+.demo-pop{background:linear-gradient(135deg,#0a0a1a,#0a0a0a)}
+.demo-pop .telop{
+  font-family:'RocknRoll One','Noto Sans JP',sans-serif;font-size:28px;
+  color:#fff;
+  text-shadow:
+    3px 3px 0 #0066ff, -1px -1px 0 #0066ff, 1px -1px 0 #0066ff, -1px 1px 0 #0066ff,
+    0 0 20px rgba(0,102,255,0.3);
+  letter-spacing:2px;
+  transform:rotate(2deg);
+}
+
+/* 9: ささやき・小声系 */
+.demo-whisper{background:linear-gradient(135deg,#0f0f0f,#0a0a0a)}
+.demo-whisper .telop{
+  font-family:'Kiwi Maru','Zen Maru Gothic',sans-serif;font-weight:400;font-size:16px;
+  color:#888;
+  letter-spacing:2px;
+}
+.demo-whisper .bracket{color:#555;font-size:14px}
+
+/* 10: モノスペース テック系 */
+.demo-tech{background:linear-gradient(135deg,#050a0f,#0a0a0a)}
+.demo-tech .telop{
+  font-family:'Source Code Pro',monospace;font-weight:700;font-size:18px;
+  color:#00ff88;
+  text-shadow:0 0 10px rgba(0,255,136,0.3);
+  letter-spacing:1px;
+}
+
+/* Matrix */
+.matrix{margin-top:8px}
+.matrix table{width:100%;border-collapse:collapse;font-size:11.5px}
+.matrix th{background:#141414;color:var(--accent);font-weight:600;padding:8px 10px;text-align:left;border:1px solid var(--border)}
+.matrix td{padding:8px 10px;border:1px solid var(--border);color:var(--text);line-height:1.5;vertical-align:top}
+.matrix tr:hover td{background:#0f0f0f}
+.matrix .demo-cell{text-align:center;padding:12px}
+
+/* Spectrum Bar */
+.spectrum{margin:20px 0}
+.spectrum-bar{display:flex;height:48px;border-radius:6px;overflow:hidden;border:1px solid var(--border)}
+.spectrum-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.5);padding:0 8px;text-align:center;line-height:1.3}
+.spectrum-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--text-dim)}
+
+/* Combo Examples */
+.combo-row{display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.combo-card{flex:1;min-width:280px;background:#0d0d0d;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.combo-preview{padding:24px 16px;display:flex;flex-direction:column;gap:8px;align-items:center;min-height:100px;justify-content:center}
+.combo-label{padding:10px 14px;background:var(--card-bg);border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);line-height:1.6}
+.combo-label strong{color:var(--text-bright);font-weight:700}
+
+/* Summary */
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:12px}
+.summary-item{background:#0d0d0d;border:1px solid var(--border);border-radius:6px;padding:14px}
+.summary-item h4{font-size:12px;color:var(--accent);margin-bottom:6px}
+.summary-item p{font-size:11px;color:var(--text);line-height:1.7}
+
+@media(max-width:800px){
+  .card-top{flex-direction:column}
+  .card-demo{flex:none;min-height:80px}
+  .card-info{border-left:none;border-top:1px solid var(--border)}
+  .combo-row{flex-direction:column}
+}
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>YouTubeテロップ 心理効果マップ</h1>
+  <div class="sub">書体 × 色 × 演出が視聴者の感情をどう動かすか</div>
+  <div class="principle">
+    <strong>核心原則:</strong> テロップの心理効果は「形」ではなく「文化的記憶」で決まる。
+    テレビ・映画・広告で繰り返し見てきた「この場面にはこの書体」という経験が、
+    視聴者の無意識に期待値を作り、その期待に沿うか外すかで印象が決定される。
+  </div>
+</div>
+
+<!-- ===== SECTION 1: テロップ10分類 ===== -->
+<div class="section">
+  <div class="section-title">テロップ10分類 — 書体 × 心理効果</div>
+
+  <!-- 1. 強調・衝撃系 -->
+  <div class="telop-card">
+    <div class="card-top">
+      <div class="card-demo demo-impact">
+        <div class="telop">マジでヤバい</div>
+      </div>
+      <div class="card-info">
+        <div class="tags">
+          <span class="tag">太角ゴシック</span>
+          <span class="tag emotion">興奮・驚き</span>
+          <span class="tag scene">ハイライト</span>
+        </div>
+        <h3>① 強調・衝撃テロップ</h3>
+        <div class="desc">
+          極太ゴシック＋赤フチ。視聴者の注意を一点に集中させ、心拍数を上げる。
+          テレビバラエティの「驚きリアクション」文法をそのまま継承した最も普及率の高いスタイル。
+        </div>
+        <div class="why">→ 赤は生理的に覚醒を促す色。太さは「声の大きさ」の視覚的翻訳。</div>
+      </div>
+    </div>
+    <div class="card-bottom">
+      <div class="use-case"><span>使用場面:</span> 結果発表、驚きの展開、最高の瞬間</div>
+      <div class="use-case"><span>代表例:</span> ヒカキン、東海オンエア系</div>
+    </div>
+  </div>
+
+  <!-- 2. ツッコミ・ユーモア系 -->
+  <div class="telop-card">
+    <div class="card-top">
+      <div class="card-demo demo-tsukkomi">
+        <div class="telop">いや、おかしいだろ</div>
+      </div>
+      <div class="card-info">
+        <div class="tags">
+          <span class="tag">太ゴシック</span>
+          <span class="tag emotion">笑い・共感</span>
+          <span class="tag scene">ツッコミ</span>
+        </div>
+        <h3>② ツッコミ・ユーモアテロップ</h3>
+        <div class="desc">
+          太ゴシック＋黄色。「視聴者が心の中で思ったこと」を代弁する機能。
+          笑いの構造上、ボケを受けた瞬間に表示されることで「共犯関係」を作る。
+        </div>
+        <div class="why">→ 黄色＝注意喚起色。交通標識と同じ原理で「ここ見て」と伝える。</div>
+      </div>
+    </div>
+    <div class="card-bottom">
+      <div class="use-case"><span>使用場面:</span> ボケへの返し、失敗シーン、意外な発言</div>
+      <div class="use-case"><span>代表例:</span> 水溜りボンド、コムドット系</div>
+    </div>
+  </div>
+
+  <!-- 3. やわらか・日常系 -->
+  <div class="telop-card">
+    <div class="card-top">
+      <div class="card-demo demo-soft">
+        <div class="telop">今日はのんびり過ごします</div>
+      </div>
+      <div class="card-info">
+        <div class="tags">
+          <span class="tag">丸ゴシック</span>
+          <span class="tag emotion">安心・親しみ</span>
+          <span class="tag scene">日常・Vlog</span>
+        </div>
+        <h3>③ やわらか・日常テロップ</h3>
+        <div class="desc">
+          丸ゴシック＋パステルカラー。角のない文字が「攻撃性のなさ」を伝え、
+          視聴者をリラックスさせる。友達の話を聞いている感覚を演出する。
+        </div>
+        <div class="why">→ 丸み＝乳幼児の体型比率を想起させ、保護・安心の感情を引き出す（ベビースキーマ効果）。</div>
+      </div>
+    </div>
+    <div class="card-bottom">
+      <div class="use-case"><span>使用場面:</span> モーニングルーティン、料理、暮らし系</div>
+      <div class="use-case"><span>代表例:</span> なぐもふうか、暮らし系Vlogger</div>
+    </div>
+  </div>
+
+  <!-- 4. シリアス・感動系 -->
+  <div class="telop-card">
+    <div class="card-top">
+      <div class="card-demo demo-serious">
+        <div class="telop">覚悟を決めた日</div>
+      </div>
+      <div class="card-info">
+        <div class="tags">
+          <span class="tag">明朝体</span>
+          <span class="tag emotion">重み・感動</span>
+          <span class="tag scene">転換点</span>
+        </div>
+        <h3>④ シリアス・感動テロップ</h3>
+        <div class="desc">
+          明朝体＋白文字。線の強弱が「筆圧」を感じさせ、人間の手の痕跡を残す。
+          ゴシック体の均一さ（＝機械的）と対照的に、「魂を込めた言葉」という印象を作る。
+        </div>
+        <div class="why">→ 書籍・文学の書体＝「読むに値する言葉」という文化的連想が作動する。</div>
+      </div>
+    </div>
+    <div class="card-bottom">
+      <div class="use-case"><span>使用場面:</span> 密着ドキュメント、名言引用、人生の転機</div>
+      <div class="use-case"><span>代表例:</span> 令和の虎、ドキュメンタリー系</div>
+    </div>
+  </div>
+
+  <!-- 5. 手書き・本音系 -->
+  <div class="telop-card">
+    <div class="card-top">
+      <div class="card-demo demo-honesty">
+        <div class="telop">ほんとはちょっと怖かった…</div>
+      </div>
+      <div class="card-info">
+        <div class="tags">
+          <span class="tag">手書きフォント</span>
+          <span class="tag emotion">本音・内省</span>
+          <span class="tag scene">モノローグ</span>
+        </div>
+        <h3>⑤ 手書き・本音テロップ</h3>
+        <div class="desc">
+          手書き風フォント＋アースカラー。「編集している自分」が語りかける第二の声として機能する。
+          口では言えなかったことを文字で補完し、視聴者との親密度を上げる装置。
+        </div>
+        <div class="why">→ 手書き＝加工されていない＝「本音」という認知バイアスを利用。</div>
+      </div>
+    </div>
+    <div class="card-bottom">
+      <div class="use-case"><span>使用場面:</span> 心の声、後日談、編集者の注釈</div>
+      <div class="use-case"><span>代表例:</span> Vlogの内省パート、ストーリー系</div>
+    </div>
+  </div>
+
+  <!-- 6. 極太・煽り系 -->
+  <div class="telop-card">
+    <div class="card-top">
+      <div class="card-demo demo-extreme">
+        <div class="telop">衝撃の結末</div>
+      </div>
+      <div class="card-info">
+        <div class="tags">
+          <span class="tag">装飾ゴシック</span>
+          <span class="tag emotion">煽り・期待</span>
+          <span class="tag scene">サムネ・見出し</span>
+        </div>
+        <h3>⑥ 極太・煽りテロップ</h3>
+        <div class="desc">
+          装飾的極太フォント＋ビビッドカラー。サムネイルやオープニングで使われ、
+          「この先に何かある」と期待を生成する。CTR（クリック率）に直結する要素。
+        </div>
+        <div class="why">→ 大きさ＝重要度の視覚的等式。人間は大きい刺激を「重要」と判断する原始的反応を持つ。</div>
+      </div>
+    </div>
+    <div class="card-bottom">
+      <div class="use-case"><span>使用場面:</span> サムネイル、動画タイトル、クライマックス前の煽り</div>
+      <div class="use-case"><span>代表例:</span> 都市伝説系、検証系、ランキング系</div>
+    </div>
+  </div>
+
+  <!-- 7. ナレーション・解説系 -->
+  <div class="telop-card">
+    <div class="card-top">
+      <div class="card-demo demo-narration">
+        <div class="telop">ここがポイントです</div>
+      </div>
+      <div class="card-info">
+        <div class="tags">
+          <span class="tag">中太ゴシック</span>
+          <span class="tag emotion">理解・信頼</span>
+          <span class="tag scene">解説・教育</span>
+        </div>
+        <h3>⑦ ナレーション・解説テロップ</h3>
+        <div class="desc">
+          中太ゴシック＋白＋半透明背景。情報を「読ませる」ための実用テロップ。
+          感情を動かすのではなく、認知負荷を下げて理解を助ける設計。
+        </div>
+        <div class="why">→ 背景付き＝ニュースのテロップ文法。「信頼できる情報源」の記号として機能。</div>
+      </div>
+    </div>
+    <div class="card-bottom">
+      <div class="use-case"><span>使用場面:</span> 手順説明、データ提示、教育コンテンツ</div>
+      <div class="use-case"><span>代表例:</span> 中田敦彦、両学長、ビジネス系</div>
+    </div>
+  </div>
+
+  <!-- 8. ポップ・エンタメ系 -->
+  <div class="telop-card">
+    <div class="card-top">
+      <div class="card-demo demo-pop">
+        <div class="telop">最高すぎる！！</div>
+      </div>
+      <div class="card-info">
+        <div class="tags">
+          <span class="tag">デザイン書体</span>
+          <span class="tag emotion">楽しさ・高揚</span>
+          <span class="tag scene">エンタメ</span>
+        </div>
+        <h3>⑧ ポップ・エンタメテロップ</h3>
+        <div class="desc">
+          デザイン書体＋青・虹色系のフチ取り。テンションの「天井」を表現する。
+          微妙に傾けることでの動き感＝「この瞬間は特別」というマーカー。
+        </div>
+        <div class="why">→ 遊び＋カラフル＝子ども時代の記憶と結びつき、純粋な楽しさを喚起する。</div>
+      </div>
+    </div>
+    <div class="card-bottom">
+      <div class="use-case"><span>使用場面:</span> 食レポ、旅行、開封動画のピーク</div>
+      <div class="use-case"><span>代表例:</span> はじめしゃちょー、フィッシャーズ系</div>
+    </div>
+  </div>
+
+  <!-- 9. ささやき・小声系 -->
+  <div class="telop-card">
+    <div class="card-top">
+      <div class="card-demo demo-whisper">
+        <div class="telop"><span class="bracket">（</span>なんか気まずい…<span class="bracket">）</span></div>
+      </div>
+      <div class="card-info">
+        <div class="tags">
+          <span class="tag">細丸ゴシック</span>
+          <span class="tag emotion">共感・余韻</span>
+          <span class="tag scene">空気感の描写</span>
+        </div>
+        <h3>⑨ ささやき・小声テロップ</h3>
+        <div class="desc">
+          細い丸ゴシック＋グレー＋括弧付き。声量を視覚化したスタイル。
+          「大きな声では言えないけど…」という共犯意識を作り、視聴者を引き込む。
+        </div>
+        <div class="why">→ 小さい文字＝近い距離。物理的な親密さの代替として機能する。</div>
+      </div>
+    </div>
+    <div class="card-bottom">
+      <div class="use-case"><span>使用場面:</span> 裏話、オフショット、気まずい瞬間</div>
+      <div class="use-case"><span>代表例:</span> あさぎーにょ、日常系Vlogger</div>
+    </div>
+  </div>
+
+  <!-- 10. テック・データ系 -->
+  <div class="telop-card">
+    <div class="card-top">
+      <div class="card-demo demo-tech">
+        <div class="telop">&gt; score: 98.7%_</div>
+      </div>
+      <div class="card-info">
+        <div class="tags">
+          <span class="tag">モノスペース</span>
+          <span class="tag emotion">知性・正確性</span>
+          <span class="tag scene">データ・テック</span>
+        </div>
+        <h3>⑩ テック・データテロップ</h3>
+        <div class="desc">
+          等幅フォント＋ネオングリーン。コードエディタやターミナルの視覚記号を借用し、
+          「分析している・計測している」という知的権威を演出する。
+        </div>
+        <div class="why">→ エンジニアリングの文脈を借りることで「客観的データ」という信頼感を獲得。</div>
+      </div>
+    </div>
+    <div class="card-bottom">
+      <div class="use-case"><span>使用場面:</span> スコア表示、比較データ、検証結果</div>
+      <div class="use-case"><span>代表例:</span> テック系、ガジェットレビュー</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 2: 感情スペクトラム ===== -->
+<div class="section">
+  <div class="section-title">感情スペクトラム — テロップのポジショニング</div>
+
+  <div class="spectrum">
+    <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;text-align:center">← クール / 理性 ——————————— ホット / 感情 →</div>
+    <div class="spectrum-bar">
+      <div class="spectrum-seg" style="flex:1;background:#1a3a2a">⑩テック</div>
+      <div class="spectrum-seg" style="flex:1;background:#1a3a3a">⑦解説</div>
+      <div class="spectrum-seg" style="flex:1;background:#2a3a3a">④シリアス</div>
+      <div class="spectrum-seg" style="flex:1;background:#3a3a2a">⑨ささやき</div>
+      <div class="spectrum-seg" style="flex:1;background:#3a3a1a">⑤本音</div>
+      <div class="spectrum-seg" style="flex:1;background:#4a3a1a">③やわらか</div>
+      <div class="spectrum-seg" style="flex:1;background:#5a3a1a">②ツッコミ</div>
+      <div class="spectrum-seg" style="flex:1;background:#5a2a1a">⑧ポップ</div>
+      <div class="spectrum-seg" style="flex:1;background:#5a1a1a">①衝撃</div>
+      <div class="spectrum-seg" style="flex:1;background:#5a0a1a">⑥煽り</div>
+    </div>
+  </div>
+
+  <div class="spectrum" style="margin-top:24px">
+    <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;text-align:center">← カジュアル / 親しみ ——————————— フォーマル / 権威 →</div>
+    <div class="spectrum-bar">
+      <div class="spectrum-seg" style="flex:1;background:#2a1a3a">⑤本音</div>
+      <div class="spectrum-seg" style="flex:1;background:#2a2a3a">⑨ささやき</div>
+      <div class="spectrum-seg" style="flex:1;background:#2a3a3a">③やわらか</div>
+      <div class="spectrum-seg" style="flex:1;background:#2a3a2a">⑧ポップ</div>
+      <div class="spectrum-seg" style="flex:1;background:#3a3a2a">②ツッコミ</div>
+      <div class="spectrum-seg" style="flex:1;background:#3a3a1a">①衝撃</div>
+      <div class="spectrum-seg" style="flex:1;background:#3a2a1a">⑥煽り</div>
+      <div class="spectrum-seg" style="flex:1;background:#3a1a1a">⑦解説</div>
+      <div class="spectrum-seg" style="flex:1;background:#2a1a1a">⑩テック</div>
+      <div class="spectrum-seg" style="flex:1;background:#1a1a2a">④シリアス</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 3: 組み合わせパターン ===== -->
+<div class="section">
+  <div class="section-title">実戦パターン — テロップの組み合わせが「編集の人格」を作る</div>
+
+  <div class="combo-row">
+    <div class="combo-card">
+      <div class="combo-preview" style="background:#0a0505">
+        <div style="font-family:'Noto Sans JP';font-weight:900;font-size:22px;color:#ffe500;text-shadow:2px 2px 0 #333,-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333">え、ちょっと待って</div>
+        <div style="font-family:'Noto Sans JP';font-weight:900;font-size:30px;color:#fff;text-shadow:3px 3px 0 #c00,-1px -1px 0 #c00,1px -1px 0 #c00,-1px 1px 0 #c00;margin-top:4px">1000万円！？</div>
+      </div>
+      <div class="combo-label">
+        <strong>バラエティ型（②→①）</strong><br>
+        ツッコミで期待を作り、衝撃で回収する。テレビのリアクション芸と同構造。<br>
+        視聴維持率の「山」を意図的に設計するテクニック。
+      </div>
+    </div>
+    <div class="combo-card">
+      <div class="combo-preview" style="background:#050508">
+        <div style="font-family:'Hachi Maru Pop',cursive;font-size:16px;color:#a08860;transform:rotate(-1deg)">あの時、全部投げ出そうとした</div>
+        <div style="font-family:'Noto Serif JP',serif;font-weight:700;font-size:22px;color:#fff;letter-spacing:4px;margin-top:12px;text-shadow:0 0 15px rgba(255,255,255,0.1)">でも、やめなかった</div>
+      </div>
+      <div class="combo-label">
+        <strong>ドキュメンタリー型（⑤→④）</strong><br>
+        手書きの本音で感情移入させ、明朝体で「決意」を刻む。<br>
+        視聴者の涙腺を狙う最も強力な感情設計パターン。
+      </div>
+    </div>
+  </div>
+
+  <div class="combo-row">
+    <div class="combo-card">
+      <div class="combo-preview" style="background:#050a0f">
+        <div style="font-family:'Noto Sans JP';font-weight:700;font-size:16px;color:#fff;background:rgba(0,0,0,0.7);padding:4px 12px;border-radius:4px;border-left:3px solid #2d7d9a">実はこの数値が重要で</div>
+        <div style="font-family:'Source Code Pro',monospace;font-weight:700;font-size:20px;color:#00ff88;margin-top:8px;text-shadow:0 0 8px rgba(0,255,136,0.3)">&gt; conversion: +340%</div>
+      </div>
+      <div class="combo-label">
+        <strong>教育型（⑦→⑩）</strong><br>
+        解説で「なぜ」を理解させ、データで「どのくらい」を証明する。<br>
+        知的信頼を構築し、チャンネル登録＝長期関係に繋げる設計。
+      </div>
+    </div>
+    <div class="combo-card">
+      <div class="combo-preview" style="background:#0a050a">
+        <div style="font-family:'Kiwi Maru',sans-serif;font-size:14px;color:#777">（これ絶対おいしいやつ…）</div>
+        <div style="font-family:'RocknRoll One',sans-serif;font-size:26px;color:#fff;text-shadow:3px 3px 0 #ff6600,-1px -1px 0 #ff6600,1px -1px 0 #ff6600,-1px 1px 0 #ff6600;margin-top:8px;transform:rotate(2deg)">うっっっま！！！</div>
+      </div>
+      <div class="combo-label">
+        <strong>食レポ型（⑨→⑧）</strong><br>
+        ささやきで期待を溜め、ポップで爆発させる。テンションの落差が快感を生む。<br>
+        「緊張→弛緩」の笑いの原理と同構造。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 4: マトリクス一覧 ===== -->
+<div class="section">
+  <div class="section-title">テロップ選定マトリクス</div>
+  <div class="matrix">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:60px">No.</th>
+          <th style="width:120px">タイプ</th>
+          <th style="width:130px">書体</th>
+          <th style="width:80px">色</th>
+          <th>心理効果</th>
+          <th>使うタイミング</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>①</td>
+          <td>強調・衝撃</td>
+          <td>極太角ゴシック</td>
+          <td style="color:#ff3333">赤フチ白</td>
+          <td>興奮、覚醒、「これは大事」</td>
+          <td>最大の見せ場、結果発表、数字の衝撃</td>
+        </tr>
+        <tr>
+          <td>②</td>
+          <td>ツッコミ</td>
+          <td>太ゴシック</td>
+          <td style="color:#ffe500">黄色</td>
+          <td>笑い、共感、「わかる」</td>
+          <td>ボケ後の間、失敗シーン、あるある</td>
+        </tr>
+        <tr>
+          <td>③</td>
+          <td>やわらか</td>
+          <td>丸ゴシック</td>
+          <td style="color:#a8e6cf">パステル</td>
+          <td>安心、親しみ、リラックス</td>
+          <td>日常パート、料理、ルーティン</td>
+        </tr>
+        <tr>
+          <td>④</td>
+          <td>シリアス</td>
+          <td>明朝体</td>
+          <td style="color:#fff">白</td>
+          <td>重み、感動、「魂の言葉」</td>
+          <td>人生の転機、名言、クライマックス</td>
+        </tr>
+        <tr>
+          <td>⑤</td>
+          <td>本音</td>
+          <td>手書きフォント</td>
+          <td style="color:#e8d5a0">アースカラー</td>
+          <td>本音、脆さ、親密</td>
+          <td>心の声、後悔、編集者の補足</td>
+        </tr>
+        <tr>
+          <td>⑥</td>
+          <td>煽り</td>
+          <td>装飾極太</td>
+          <td style="color:#ff3366">ビビッド</td>
+          <td>期待、FOMO、「見なきゃ損」</td>
+          <td>サムネ、冒頭、「この後衝撃の展開」</td>
+        </tr>
+        <tr>
+          <td>⑦</td>
+          <td>解説</td>
+          <td>中太ゴシック＋背景</td>
+          <td style="color:#fff">白＋半透明黒</td>
+          <td>信頼、理解、「学びになる」</td>
+          <td>手順説明、ポイント整理、データ提示</td>
+        </tr>
+        <tr>
+          <td>⑧</td>
+          <td>ポップ</td>
+          <td>デザイン書体</td>
+          <td style="color:#3399ff">青・カラフルフチ</td>
+          <td>楽しさ、高揚、テンションMAX</td>
+          <td>食レポのピーク、開封、旅行のベスト</td>
+        </tr>
+        <tr>
+          <td>⑨</td>
+          <td>ささやき</td>
+          <td>細丸ゴシック</td>
+          <td style="color:#888">グレー</td>
+          <td>共犯、秘密感、引き込み</td>
+          <td>裏話、気まずい瞬間、オフショット</td>
+        </tr>
+        <tr>
+          <td>⑩</td>
+          <td>テック</td>
+          <td>モノスペース</td>
+          <td style="color:#00ff88">ネオングリーン</td>
+          <td>知性、客観性、データの重み</td>
+          <td>スコア表示、比較結果、検証データ</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== SECTION 5: 設計原則 ===== -->
+<div class="section">
+  <div class="section-title">テロップ設計の核心原則</div>
+  <div class="summary-grid">
+    <div class="summary-item">
+      <h4>1. テロップ＝映像の「もう一つの声」</h4>
+      <p>テロップは字幕ではない。演者の声が「表の声」なら、テロップは「編集者の声」。
+      書体・色・タイミングの選択が、映像全体の「語り口」を事後的に決定する。
+      同じ映像でもテロップ次第でバラエティにもドキュメンタリーにもなる。</p>
+    </div>
+    <div class="summary-item">
+      <h4>2. 「読めるか」→「どう感じるか」の二段階</h4>
+      <p>YouTubeはテレビと違い、スマホの小さな画面で見られる。
+      心理効果を発揮する前提として「0.3秒で読める」物理的な視認性がフィルターになる。
+      どんなに美しい明朝体でも、読めなければ存在しないのと同じ。</p>
+    </div>
+    <div class="summary-item">
+      <h4>3. 落差が感情を動かす</h4>
+      <p>同じテロップをずっと使うと「慣れ」が発生し効果が消える。
+      ささやき→衝撃、解説→データ、本音→シリアスのように
+      テンションの落差を設計することで、感情の振れ幅を最大化する。</p>
+    </div>
+    <div class="summary-item">
+      <h4>4. テロップ量がジャンルを規定する</h4>
+      <p>テロップが多くカラフル＝バラエティ・エンタメ。
+      テロップが少なく統一＝映像作品・ドキュメンタリー。
+      視聴者はテレビのジャンル文法を無意識に参照して「格」を判定している。
+      狙いたいポジションに合わせて量と種類を制御する。</p>
+    </div>
+    <div class="summary-item">
+      <h4>5. 文化的記憶の借用と更新</h4>
+      <p>書体の印象は「形」ではなく「どこで見てきたか」で決まる。
+      テレビの文法を忠実に守れば「ちゃんとしている」印象。
+      意図的に外せば「新しい」印象。どちらも戦略として有効だが、
+      無自覚に外すと「素人っぽい」になる。差は意図の有無。</p>
+    </div>
+    <div class="summary-item">
+      <h4>6. チャンネルの「人格」は書体で作れる</h4>
+      <p>使うテロップの種類と比率がチャンネルのキャラクターを形成する。
+      ①②⑧が多い＝明るいエンタメ系。④⑤⑦が多い＝知的・感情的。
+      全タイプを均等に使うと「何者かわからない」になるリスクがある。
+      3〜4タイプに絞り、軸を持つのが最適解。</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

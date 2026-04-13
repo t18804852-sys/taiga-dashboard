@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taiga Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0f0d;--sf:#111a15;--sf2:#162019;--grn:#50c88c;--grn2:#40b8a0;--grn3:#60d8b0;--dim:rgba(200,230,210,0.4);--txt:#c8e6d0;--faint:rgba(200,230,210,0.15)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font-family:'Noto Sans JP',sans-serif;min-height:100vh;-webkit-tap-highlight-color:transparent}
+
+  .header{text-align:center;padding:60px 20px 30px;position:relative}
+  .header::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:1px;background:var(--grn)}
+  .header .label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:4px;color:var(--grn2);margin-bottom:10px}
+  .header h1{font-family:'Orbitron',sans-serif;font-size:clamp(18px,4vw,26px);background:linear-gradient(135deg,var(--grn),var(--grn2),var(--grn3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
+  .header .sub{font-size:11px;color:var(--dim);margin-top:8px}
+
+  .container{max-width:600px;margin:0 auto;padding:20px 16px 80px}
+
+  .cat{margin:36px 0 0}
+  .cat-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--faint)}
+  .cat-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+  .cat-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--dim)}
+  .cat-title{font-size:14px;font-weight:700;color:var(--txt)}
+
+  .link{display:block;padding:14px 16px;margin-bottom:6px;border-radius:8px;background:var(--sf);border:1px solid var(--faint);text-decoration:none;color:var(--txt);transition:all 0.2s;position:relative;overflow:hidden}
+  .link:active{transform:scale(0.98);background:var(--sf2)}
+  .link .title{font-size:13px;font-weight:600;line-height:1.5}
+  .link .desc{font-size:10px;color:var(--dim);margin-top:3px;line-height:1.5}
+  .link::after{content:'';position:absolute;right:14px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-right:1.5px solid var(--dim);border-bottom:1.5px solid var(--dim);transform:translateY(-50%) rotate(-45deg)}
+
+  .link.accent{border-left:3px solid var(--grn)}
+  .link.warm{border-left:3px solid #d0a050}
+  .link.blue{border-left:3px solid #5090c8}
+  .link.red{border-left:3px solid #c85050}
+  .link.purple{border-left:3px solid #9070c8}
+
+  .footer{text-align:center;padding:40px 20px;font-size:10px;color:var(--dim);letter-spacing:1px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="label">TAIGA OPERATING SYSTEM</div>
+  <h1>DASHBOARD</h1>
+  <div class="sub">全学び統合 — スマホからアクセス</div>
+</div>
+
+<div class="container">
+
+<!-- ═══ 思考OS ═══ -->
+<div class="cat">
+  <div class="cat-head">
+    <div class="cat-icon" style="background:rgba(80,200,140,0.12);color:var(--grn)">OS</div>
+    <div><div class="cat-label">OPERATING SYSTEM</div><div class="cat-title">思考OS・マインドセット</div></div>
+  </div>
+  <a class="link accent" href="thinking_os_01.html"><div class="title">0.1% THINKING OS v2</div><div class="desc">上位0.1%の思考回路</div></a>
+  <a class="link accent" href="kyouki_os.html"><div class="title">狂気のOS — 定常で狂え</div></a>
+  <a class="link accent" href="muchu_diagnosis_20260413.html"><div class="title">無我夢中 診断書</div><div class="desc">2026.04.13</div></a>
+  <a class="link accent" href="kaku_utsuwa_mitsudo.html"><div class="title">格・器・密度の構造論</div></a>
+  <a class="link accent" href="teio_gaku_card.html"><div class="title">帝王学</div><div class="desc">VISION / MISSION / VALUE — 16項目の行動指針</div></a>
+  <a class="link accent" href="sonshi_hyouhou.html"><div class="title">孫子の兵法 — 完全解説</div></a>
+  <a class="link accent" href="gamusyara.html"><div class="title">我武者羅 — プライドを脱いだ者が最速で吸収する</div></a>
+  <a class="link accent" href="life_countdown.html"><div class="title">LIFE COUNTDOWN — 残り何日？</div></a>
+</div>
+
+<!-- ═══ まなと・成長戦略 ═══ -->
+<div class="cat">
+  <div class="cat-head">
+    <div class="cat-icon" style="background:rgba(208,160,80,0.12);color:#d0a050">戦</div>
+    <div><div class="cat-label">GROWTH STRATEGY</div><div class="cat-title">まなと・成長戦略</div></div>
+  </div>
+  <a class="link warm" href="manato_keita_os_complete.html"><div class="title">まなとけいたOS完全版 × Taiga無意識リワイヤリング</div><div class="desc">12カテゴリ / 105項目</div></a>
+  <a class="link warm" href="manato_os_x_taiga_rewire.html"><div class="title">まなとOS完全解析 × Taiga無意識リワイヤリング</div></a>
+  <a class="link warm" href="manato_koeru_senryaku.html"><div class="title">まなとを超える戦略書</div></a>
+  <a class="link warm" href="makesuji_manato_design.html"><div class="title">負け筋分析 × まなとに並ぶ設計</div><div class="desc">2026.04.09</div></a>
+</div>
+
+<!-- ═══ YouTube戦略 ═══ -->
+<div class="cat">
+  <div class="cat-head">
+    <div class="cat-icon" style="background:rgba(200,60,60,0.12);color:#c85050">YT</div>
+    <div><div class="cat-label">YOUTUBE STRATEGY</div><div class="cat-title">YouTube戦略・制作</div></div>
+  </div>
+  <a class="link red" href="youtube_knowledge.html"><div class="title">YouTube教科書 Knowledge Base</div></a>
+  <a class="link red" href="youtube_workflow.html"><div class="title">YouTube運営 完全ワークフロー</div></a>
+  <a class="link red" href="douga_kensho.html"><div class="title">動画制作 検証シート</div></a>
+  <a class="link red" href="daily_skill_building.html"><div class="title">日々の技術向上</div><div class="desc">ペルソナ理解 × コンテンツ観察 × アウトプット</div></a>
+  <a class="link red" href="creator_aptitude_card.html"><div class="title">クリエイター適性論</div></a>
+  <a class="link red" href="misawo_sound_design.html"><div class="title">みさをch 音設計ガイド</div></a>
+  <a class="link red" href="youtube_telop_psychology.html"><div class="title">YouTubeテロップ心理効果マップ</div></a>
+  <a class="link red" href="schedule_0420.html"><div class="title">みさをch スケジュール</div></a>
+</div>
+
+<!-- ═══ 書籍ナレッジ ═══ -->
+<div class="cat">
+  <div class="cat-head">
+    <div class="cat-icon" style="background:rgba(144,112,200,0.12);color:#9070c8">本</div>
+    <div><div class="cat-label">BOOK KNOWLEDGE</div><div class="cat-title">書籍ナレッジ・言語化</div></div>
+  </div>
+  <a class="link purple" href="youtube_elements_influence.html"><div class="title">YouTube動画の全要素 × 心理的影響</div><div class="desc">最先端エビデンスマップ</div></a>
+  <a class="link purple" href="influence_knowledge.html"><div class="title">影響力の科学 × YouTube成長戦略</div><div class="desc">最先端ナレッジベース</div></a>
+  <a class="link purple" href="structure_patterns_all.html"><div class="title">構造パターン完全図鑑</div><div class="desc">21カテゴリ / 122パターン</div></a>
+  <a class="link purple" href="mindmap_verbalization.html"><div class="title">言語化 完全ガイド</div><div class="desc">15冊の知見を統合</div></a>
+  <a class="link purple" href="language_training.html"><div class="title">言語力×YouTube発信力 統合トレーニング</div></a>
+</div>
+
+<!-- ═══ 自己分析 ═══ -->
+<div class="cat">
+  <div class="cat-head">
+    <div class="cat-icon" style="background:rgba(80,144,200,0.12);color:#5090c8">人</div>
+    <div><div class="cat-label">PROFILE & ANALYSIS</div><div class="cat-title">自己分析・プロフィール</div></div>
+  </div>
+  <a class="link blue" href="taiga_profile.html"><div class="title">近藤大凱 — Complete Profile</div></a>
+  <a class="link blue" href="taiga_blueprint_yt.html"><div class="title">Taigaの設計図 — 生まれ持った特性の全統合</div></a>
+  <a class="link blue" href="manato_profile.html"><div class="title">まなと — Complete Profile</div></a>
+  <a class="link blue" href="yutorikun_philosophy.html"><div class="title">ゆとりくん（片石貴展）思考・哲学マップ</div></a>
+  <a class="link blue" href="misawo_profile.html"><div class="title">みさを — Complete Profile</div></a>
+  <a class="link blue" href="ibuki_profile.html"><div class="title">いぶき — Complete Profile</div></a>
+  <a class="link blue" href="father_profile.html"><div class="title">近藤寛 — Complete Profile</div></a>
+  <a class="link blue" href="mother_profile.html"><div class="title">母 — Complete Profile</div></a>
+  <a class="link blue" href="brother_profile.html"><div class="title">近藤大鷹 — Complete Profile</div></a>
+</div>
+
+<!-- ═══ ツール ═══ -->
+<div class="cat">
+  <div class="cat-head">
+    <div class="cat-icon" style="background:rgba(200,230,210,0.08);color:var(--dim)">T</div>
+    <div><div class="cat-label">TOOLS</div><div class="cat-title">ツール</div></div>
+  </div>
+  <a class="link" href="money_tracker.html"><div class="title">Money Tracker</div></a>
+</div>
+
+</div>
+
+<div class="footer">
+  TAIGA OPERATING SYSTEM — 全学び統合AI師匠<br>
+  powered by Claude Code
+</div>
+
+</body>
+</html>

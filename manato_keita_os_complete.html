@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>まなとけいたOS完全版 × Taiga無意識リワイヤリング</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#0e1c14;color:#c8e6d0;font-family:'Noto Sans JP',sans-serif;min-height:100vh;overflow-x:hidden;}
+  .bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.15;background:radial-gradient(ellipse at 30% 50%,rgba(40,80,60,0.3),transparent 70%);}
+  .hud{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:30px 20px;}
+  .hdr{text-align:center;margin-bottom:40px;padding:30px;background:linear-gradient(135deg,rgba(14,28,20,0.95),rgba(20,60,40,0.8));border:1px solid rgba(80,200,140,0.3);border-radius:12px;position:relative;overflow:hidden;}
+  .hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#50c88c,#40b8a0,transparent);}
+  .hdr .d{font-family:'Orbitron',sans-serif;font-size:12px;color:#40b8a0;letter-spacing:3px;margin-bottom:8px;}
+  .hdr h1{font-family:'Orbitron',sans-serif;font-size:22px;background:linear-gradient(135deg,#50c88c,#40b8a0,#60d8b0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;line-height:1.4;}
+  .hdr .s{font-size:13px;color:rgba(200,230,210,0.6);line-height:1.6;}
+  .sec{font-family:'Orbitron',sans-serif;font-size:11px;color:#40b8a0;letter-spacing:4px;text-transform:uppercase;margin:40px 0 20px;padding-bottom:8px;border-bottom:1px solid rgba(80,200,140,0.15);}
+  .cat-header{background:rgba(20,40,30,0.8);border:1px solid rgba(80,200,140,0.25);border-radius:10px;padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+  .cat-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .cat-icon.spd{background:rgba(200,60,60,0.2);border:1px solid rgba(200,60,60,0.3);}
+  .cat-icon.def{background:rgba(60,100,200,0.2);border:1px solid rgba(60,100,200,0.3);}
+  .cat-icon.team{background:rgba(200,180,60,0.2);border:1px solid rgba(200,180,60,0.3);}
+  .cat-icon.grow{background:rgba(100,200,100,0.2);border:1px solid rgba(100,200,100,0.3);}
+  .cat-icon.port{background:rgba(150,100,200,0.2);border:1px solid rgba(150,100,200,0.3);}
+  .cat-icon.money{background:rgba(60,180,100,0.2);border:1px solid rgba(60,180,100,0.3);}
+  .cat-icon.mind{background:rgba(200,120,60,0.2);border:1px solid rgba(200,120,60,0.3);}
+  .cat-icon.body{background:rgba(200,60,120,0.2);border:1px solid rgba(200,60,120,0.3);}
+  .cat-icon.yt{background:rgba(200,60,60,0.2);border:1px solid rgba(200,60,60,0.3);}
+  .cat-icon.rel{background:rgba(60,150,200,0.2);border:1px solid rgba(60,150,200,0.3);}
+  .cat-icon.rest{background:rgba(100,150,100,0.2);border:1px solid rgba(100,150,100,0.3);}
+  .cat-icon.war{background:rgba(180,60,60,0.2);border:1px solid rgba(180,60,60,0.3);}
+  .cat-title{font-size:16px;font-weight:700;color:#e0f5e8;}
+  .cat-count{font-family:'Orbitron',sans-serif;font-size:10px;color:#40b8a0;letter-spacing:1px;}
+  .p{background:rgba(14,28,20,0.85);border:1px solid rgba(80,200,140,0.15);border-radius:8px;padding:18px;margin-bottom:12px;transition:border-color 0.3s;}
+  .p:hover{border-color:rgba(80,200,140,0.4);}
+  .pn{font-family:'Orbitron',sans-serif;font-size:9px;color:#40b8a0;letter-spacing:2px;margin-bottom:6px;}
+  .pt{font-size:14px;font-weight:700;color:#e0f5e8;margin-bottom:10px;line-height:1.4;}
+  .mq{background:rgba(40,30,15,0.4);border-left:3px solid #d0a050;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;}
+  .mq p{font-size:12px;color:rgba(220,200,160,0.8);line-height:1.7;}
+  .tn{background:rgba(60,30,20,0.3);border-left:3px solid #d08060;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;}
+  .tn p{font-size:12px;color:rgba(220,180,160,0.75);line-height:1.7;}
+  .rw{background:rgba(20,40,30,0.4);border-left:3px solid #50c88c;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;}
+  .rw p{font-size:12px;color:rgba(200,230,210,0.85);line-height:1.7;}
+  .rw strong{color:#50c88c;}
+  .ql{font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+  .ql.m{color:#d0a050;}.ql.t{color:#d08060;}.ql.r{color:#50c88c;}
+  .fm{background:rgba(20,40,30,0.9);border:1px solid rgba(80,200,140,0.15);border-radius:8px;padding:16px 20px;font-family:'Orbitron',monospace;font-size:12px;color:#70d8a0;margin:12px 0;line-height:1.8;overflow-x:auto;}
+  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:12px;}
+  @media(max-width:900px){.grid-2{grid-template-columns:1fr;}}
+  .panel{background:rgba(14,28,20,0.85);border:1px solid rgba(80,200,140,0.2);border-radius:10px;padding:24px;margin-bottom:20px;}
+  .panel h2{font-size:18px;font-weight:700;color:#e0f5e8;margin-bottom:14px;}
+  .panel h3{font-size:14px;font-weight:600;color:#70d8a0;margin:18px 0 8px;}
+  .stat-row{display:flex;align-items:center;gap:10px;margin:6px 0;}
+  .stat-l{font-size:11px;color:#80c8a0;min-width:140px;text-align:right;}
+  .stat-bg{flex:1;height:6px;background:rgba(80,200,140,0.1);border-radius:3px;overflow:hidden;}
+  .stat-f{height:100%;border-radius:3px;}
+  .stat-f.m{background:linear-gradient(90deg,#d0a050,#e0b060);}
+  .stat-f.t{background:linear-gradient(90deg,#5090c8,#70a8d8);}
+  .stat-v{font-family:'Orbitron',sans-serif;font-size:10px;min-width:25px;}
+  .stat-v.mv{color:#d0a050;}.stat-v.tv{color:#5090c8;}
+
+/* === MOBILE RESPONSIVE (auto-injected) === */
+@media (max-width: 600px) {
+  body { font-size: 14px !important; -webkit-text-size-adjust: 100%; }
+
+  /* コンテナ */
+  .container, .c, [class*="container"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* フォントサイズ下限 */
+  * { min-font-size: 12px; }
+  p, li, td, th, span, div, a, label, input, textarea, select, button {
+    font-size: max(12px, inherit) !important;
+  }
+  h1 { font-size: clamp(20px, 5vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 4vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 3.5vw, 18px) !important; }
+
+  /* テーブルをスクロール可能に */
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; max-width: 100%; }
+  th, td { padding: 6px 8px !important; font-size: 12px !important; white-space: normal; }
+
+  /* グリッドを1列に */
+  .g2, .g3, [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 2カラムflex→縦積み */
+  .flex-row, [style*="display:flex"][style*="gap"],
+  [style*="display: flex"] {
+    flex-direction: column !important;
+  }
+
+  /* カードのパディング調整 */
+  .cd, .ch, .wp, .es, .lc, .tc, .rc,
+  [class*="card"], [class*="section"], [class*="block"] {
+    padding: 14px !important;
+  }
+
+  /* ヘッダー調整 */
+  .header, [class*="header"] {
+    padding: 32px 16px 28px !important;
+  }
+
+  /* 画像レスポンシブ */
+  img, svg, canvas, video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* overflow防止 */
+  pre, code {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 12px !important;
+  }
+
+  /* 横はみ出し防止 */
+  html, body { overflow-x: hidden !important; }
+  * { max-width: 100vw; }
+}
+/* === END MOBILE RESPONSIVE === */
+
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="hud">
+
+<div class="hdr">
+  <div class="d">2026.04.09 — COMPLETE OS EXTRACTION</div>
+  <h1>まなとけいた OS 完全版<br>× TAIGA 無意識リワイヤリング</h1>
+  <div class="s">原文から全原則を余すことなく抽出 → Taigaの現在地との差分 → 脳の書き換え設計<br>12カテゴリ / 105項目</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CATEGORY 1: SPEED -->
+<!-- ============================================ -->
+<div class="sec">CATEGORY 01 — SPEED / 即行動</div>
+<div class="cat-header"><div class="cat-icon spd">⚡</div><div><div class="cat-title">「今やる」の無意識</div><div class="cat-count">14 PRINCIPLES</div></div></div>
+
+<div class="grid-2">
+<div class="p">
+  <div class="pn">#001</div>
+  <div class="pt">思いついた瞬間に終わらせる</div>
+  <div class="mq"><div class="ql m">原文</div><p>なんなら今やる。「明後日くらいに連絡するか」とかじゃなくて今すぐ連絡するかその場で自分が終わらせるか。その時に終わらせないと大体忘れて損失になってる。</p></div>
+  <div class="tn"><div class="ql t">Taiga現在</div><p>龍高星の「もっと良い方法があるかも」で止まる。P的思考。探求＞完了。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>探求しながらでも手元のボールは今投げる。</strong>攻略本のページをめくったら即実行。読んでから動くんじゃない。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#002</div>
+  <div class="pt">遅れは複利で効いてくる</div>
+  <div class="mq"><div class="ql m">原文</div><p>1日の遅れは1ヶ月後には3日の遅れ。1年後には10日。3年後には1ヶ月。この感覚をどれだけ持てるかでベンチャーのスピード感は桁違いに変わる。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>今日の台本を明日に回す＝誕生日までに月20万再生に届かない理由そのもの。</strong>複利の逆も真。今日終わらせたら、その分の複利が全部味方につく。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#003</div>
+  <div class="pt">ベンチャーはスピードしか差別化要素ない</div>
+  <div class="mq"><div class="ql m">原文</div><p>ガチでベンチャーはスピードだから認識の共有とか新しいアイデアの共有はなりふりかまわず電話してる。とにかく命掛けて目の前のタスクを終わらせるんや！</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>みさをchも今はベンチャー＝月7,000再生の弱者。</strong>企画力でも予算でも勝てない。勝てるのはスピードだけ。壁打ち→修正→投稿のサイクルを誰よりも速く回す。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#004</div>
+  <div class="pt">ボールを持たない</div>
+  <div class="mq"><div class="ql m">原文</div><p>自分のボールなんか持ったらあかん。すぐ投げるか、下育ててそいつに投げてもらえる仕組みを秒で作る。タスクを自分の手からすぐ離したい症候群の人が上手くいく。</p></div>
+  <div class="tn"><div class="ql t">Taiga現在</div><p>コントロール欲(10)でボールを握り続ける。金0＝手放せない。「俺がやった方が早い」。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>握ってる間チーム全体が止まる。離す方が山が大きくなる。</strong>金0を論理で補完する実践場。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#005</div>
+  <div class="pt">今LINE送る。今電話する</div>
+  <div class="mq"><div class="ql m">原文</div><p>迷ってる時間に人生を消耗してるって感覚を持つべき。1に電話、2に電話。認識の共有は電話。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>壁打ちも「来週Zoomするか」じゃなく「今LINEで送る」。</strong>スピードの差が成長速度の差。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#006</div>
+  <div class="pt">3時間で終わることを1週間かけるな</div>
+  <div class="mq"><div class="ql m">原文</div><p>成長する企業は全員スピードが違う。普通の会社が「来週までに」と言うタスクを3時間で終わらせる。今すぐ期限を半分に縮めてみよう。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>台本制作の期限を半分にしてみる。</strong>「完璧」を捨てて「今の最善」で出す。壁打ちでフィードバックもらえば質は上がる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#007</div>
+  <div class="pt">「やります」→3時間放置 ＝ 世界で一番腹が立つ</div>
+  <div class="mq"><div class="ql m">原文</div><p>3日とか4日やってなかった時が世界で1番腹が立つ時かもしれない。その姿勢とクソのろいスピード感に激怒してまう。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前自身が「やる」と言ったことを3日放置してないか？</strong>不義理5回のパターンはここに根がある。「やります」の瞬間に手をつける。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#008</div>
+  <div class="pt">納期より先に完了 ＝ 人生きてる感</div>
+  <div class="mq"><div class="ql m">原文</div><p>納期より先に仕事が完了したら人生生きてる感じがあって気持ちいい。気合いで努力して結果の前借りする感じ好き過ぎる。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「納期に間に合う」じゃなく「納期の前に終わる」を快感にする。</strong>これがJ的なドーパミン回路。P→Jの切り替えの具体実装。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#009</div>
+  <div class="pt">自動化してから鬼働く</div>
+  <div class="mq"><div class="ql m">原文</div><p>自分の仕事を自動化して「やることない、暇だわ」ってなってからの意思決定が本番。自動化した上で鬼働くのが一番売上伸びる。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>ルーティンタスクを仕組み化→空いた時間で企画力を磨く。</strong>「やることが多くて手が回らない」は仕組み化不足のサイン。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#010</div>
+  <div class="pt">みんなが動いてない時にフルスロットル</div>
+  <div class="mq"><div class="ql m">原文</div><p>みんなが動いてない時にフルスロットルで先手を打つことが死ぬほど大事。「そんなこと水面下で進めてたん？」という未来への種蒔きはあればあるほどよい。楽して大勝ちするためには今何ができるかを常に考える。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>他のディレクターが寝てる間に企画を仕込む。</strong>「12月、着金1億出すために、全力で水面下で行動する」——この感覚をお前のchに適用する。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#011</div>
+  <div class="pt">「あーやらないとなぁ」で寝たらその日は負け</div>
+  <div class="mq"><div class="ql m">原文</div><p>「あーこれやらないとなあ」って思いながら寝たらその日は負けです。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>寝る前に「今日のボスを倒したか？」。</strong>1日1完了の習慣＝司禄星の蓄積。倒してなかったら5分だけでも手をつけてから寝る。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#012</div>
+  <div class="pt">頭の中のことが3倍速で実行されれば覇権取れる</div>
+  <div class="mq"><div class="ql m">原文</div><p>頭の中のことが3倍の速度で全て実行されれば絶対に覇権取れる。まだ組織の機動力が足りない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前の頭の中にはアイデアがある。問題は実行速度。</strong>龍高星はアイデアを出す天才だが、出したアイデアの3割しか実行してない。3倍速＝出したら即やる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#013</div>
+  <div class="pt">一生リールを巻いてる感覚</div>
+  <div class="mq"><div class="ql m">原文</div><p>1日で自分を限界まで使い倒したか？他にやれることはなかったか？寝る前に呪文のように唱えてから寝てる。一生釣竿のリール巻いてるみたいな感じ。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>毎晩3行振り返り＋「限界まで使ったか？」の問い。</strong>これがまなとけいたの司禄星的蓄積構造。831回のカキカキと同じ。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#014</div>
+  <div class="pt">え、だってやるだけじゃん</div>
+  <div class="mq"><div class="ql m">原文</div><p>めちゃくちゃ簡単でシンプルなことを複雑化して無駄な時間を消化して何も生み出してない人は結構多い。「え、だって〇〇するだけじゃん」——これあると速い。凄く難しいことを簡単に捉える力ってマジで強い。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前のセンターピン＝「再生される動画を作る。それだけ。」</strong>これ以上シンプルにならない。複雑化するな。毎週1本、壁打ちで磨く。それだけ。</p></div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CATEGORY 2: DEFENSE -->
+<!-- ============================================ -->
+<div class="sec">CATEGORY 02 — DEFENSE / 負けない経営</div>
+<div class="cat-header"><div class="cat-icon def">🛡</div><div><div class="cat-title">「死なない」の無意識</div><div class="cat-count">13 PRINCIPLES</div></div></div>
+
+<div class="grid-2">
+<div class="p">
+  <div class="pn">#015</div>
+  <div class="pt">KPIは倒産させないこと</div>
+  <div class="mq"><div class="ql m">原文</div><p>俺のKPIは売上とかじゃない。あくまで絶対的なKPIは会社を倒産させないこと。倒産させない為に売上を作るし、利益率を上げるし、決済は複数持つ。</p></div>
+  <div class="tn"><div class="ql t">Taiga現在</div><p>「勝ちたい」「有能感を証明したい」が先行。守りの概念がほぼない。ブースト→落ちの繰り返し＝攻撃だけで防御ゼロ。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「勝つ」→「死なない」を最上位に。</strong>従旺格の山は崩れないことが最大の価値。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#016</div>
+  <div class="pt">勝とうとするから負ける</div>
+  <div class="mq"><div class="ql m">原文</div><p>勝とうとするから負ける。負けないようにするから勝てる。守りに徹してリスクヘッジし続ければ会社ってマジで自然に伸びないか？</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>みさをchも「バズらせたい」じゃなく「外さない動画を作る」。</strong>毎回60点以上を安定で出す方が、100点狙って30点連発するより強い。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#017</div>
+  <div class="pt">問題は予測して先に潰すもの</div>
+  <div class="mq"><div class="ql m">原文</div><p>問題は予測して先に潰しておくもので起こってから対処するものでは無い。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>計画＝攻略マップ＝問題の予測ツール。</strong>マップなしで進む＝問題が起きてから対処＝遅い＝負ける。P→Jのもう一つの動機。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#018</div>
+  <div class="pt">「念のため」「万が一に備えて」「最悪の場合は」</div>
+  <div class="mq"><div class="ql m">原文</div><p>この3つの言葉を毎日意識して行動すると9割最悪な未来は起きないし、急な対応に追われることはない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>企画を出す前に「万が一この企画が外れたら？」を考える。</strong>外れた時のリカバリプランがあるだけで安心して攻められる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#019</div>
+  <div class="pt">「もし...なら？」思考法</div>
+  <div class="mq"><div class="ql m">原文</div><p>2〜3ヶ月、半年〜1年、2〜3年の時間軸で政治、経済、市場、競合、自社の要素でどんな未来が起こり得るか？を常に想像して対策し備える。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「もしみさをchが半年で登録者1万行かなかったら？」「もし競合chが同じジャンルに参入してきたら？」</strong>この問いを月1回やるだけでポートフォリオ思考が動き出す。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#020</div>
+  <div class="pt">心配事の9割は起こる</div>
+  <div class="mq"><div class="ql m">原文</div><p>心配事の9割は起こらないっていうけど心配事の9割は起こるの間違いだと思う。起こっても問題ない状態を構築するのが経営者の役目。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「大丈夫だろう」の楽観が一番危険。</strong>お前の2月の計画が4月に動いてない＝心配事が起きた状態。計画を立てる＝起きても大丈夫な状態を作ること。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#021</div>
+  <div class="pt">攻めに力を割きすぎると防御が崩壊する</div>
+  <div class="mq"><div class="ql m">原文</div><p>一気に月1億いくってことは攻撃に力を割きすぎてて防御が弱すぎる。後からその歪みがクレームや返金にしわ寄せがくる。1番やばいのは守りが脆弱な状態で売上いっちゃうこと。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>月20万再生を「バズ1本で一気に」狙うのは攻撃偏重。</strong>毎週の質を積み重ねて安定で伸ばす方が崩れない。エーちゃんの「全てのボールに追いつく」と同じ。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#022</div>
+  <div class="pt">着金 is 正義</div>
+  <div class="mq"><div class="ql m">原文</div><p>着金is正義。売掛金、着金の意識がないから払い出しもクソもない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>再生数じゃなく「着金」で見る。</strong>月20万再生でもLINE登録→成約→着金のどこかが詰まってたら意味がない。売上の出口まで見る視座。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#023</div>
+  <div class="pt">売上出てる時にサボるやつは愚者</div>
+  <div class="mq"><div class="ql m">原文</div><p>調子がいい時こそ次の種を仕込んだり既存事業の補填をしたり。いかに次の種を作れるか、慢心せずに一生次の仕込みをする。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>ブーストモードで調子いい時こそ次の種を撒く。</strong>「うまくいってるから大丈夫」がブースト切れの原因。好調時にこそ仕込む。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#024</div>
+  <div class="pt">拡大期こそ利益率にこだわる</div>
+  <div class="mq"><div class="ql m">原文</div><p>拡大期こそ入金額、売上、微細な経費、請求書の整合性など細かな確認を怠らない。1万、3万を誤差に捉えるようになるのが危険。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>ch数が増えた時こそ1本1本の動画の質に拘る。</strong>量産して質が落ちたら全部崩れる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#025</div>
+  <div class="pt">見積もりの甘さ、体調管理、最悪のイメージ</div>
+  <div class="mq"><div class="ql m">原文</div><p>見積もりの甘さ、体調の管理、最悪な状態になったイメージを保った上でやることの覚悟、勝ち続ける、自分との約束守る。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「誕生日までに月20万再生」の見積もりは甘いかもしれない。でも最悪の場合でも月5万再生なら報酬テーブル上は成長してる。</strong>最悪をイメージした上で覚悟する。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#026</div>
+  <div class="pt">「こうなったら最高」×「こうなったら最悪」を同時に打つ</div>
+  <div class="mq"><div class="ql m">原文</div><p>優先度が高い施策と最悪の未来のリスクヘッジ施策を同時に打った結果、攻めと守りを両立した負けない経営に繋がる。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>毎週の企画出しで「これがバズったらどうなる」と「これが外れたらどうする」を両方考える。</strong>攻守同時＝まなとけいたOSの核心。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#027</div>
+  <div class="pt">競合にされて嫌なことをやる</div>
+  <div class="mq"><div class="ql m">原文</div><p>常にこれを考えて施策を実行するとポジションは不動になる。SNSを固め、広告を回し、値上げし、サブスクを展開。全部「競合がやったら嫌なこと」を先にやった結果。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「同じジャンルの他のchに、されたら嫌なことは何か？」</strong>→それを先にやる。企画の切り口、投稿頻度、視聴者との関係構築。先にポジションを取る。</p></div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CATEGORY 3: TEAM -->
+<!-- ============================================ -->
+<div class="sec">CATEGORY 03 — TEAM / 仲間・組織</div>
+<div class="cat-header"><div class="cat-icon team">👥</div><div><div class="cat-title">「みんなで勝つ」の無意識</div><div class="cat-count">14 PRINCIPLES</div></div></div>
+
+<div class="grid-2">
+<div class="p">
+  <div class="pn">#028</div>
+  <div class="pt">メンバーの報酬が上がるのが嬉しすぎる</div>
+  <div class="mq"><div class="ql m">原文</div><p>関わる人の報酬が上がるの嬉しすぎる。報酬の上がり方が第二フェーズ入ってきた感ある！もっと大きくするぞー！</p></div>
+  <div class="tn"><div class="ql t">Taiga現在</div><p>「みんなでNetflix超えて嬉し泣き」のVISIONはある。でも日常で「仲間の成長＝自分の喜び」が無意識化してない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前の喜びの源泉を「自分の結果」から「チームの結果」に広げる。</strong>みさをchの再生が伸びた＝編集者も撮影者も含めたチームの成果。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#029</div>
+  <div class="pt">事業成長 ＝ 優秀なメンバーの数に比例</div>
+  <div class="mq"><div class="ql m">原文</div><p>事業成長のスピードって優秀なメンバーの数にマジ比例する。採用と育成...採用と育成...。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>将軍レイヤーに上がるための条件＝「ディレクターを1人育てた実績」。</strong>自分が伸びるだけじゃ将軍にはなれない。人を育てる力＝まなとけいたOSの中核。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#030</div>
+  <div class="pt">仲間集めの手段として事業がある</div>
+  <div class="mq"><div class="ql m">原文</div><p>もはや仲間集めの手段として事業があるのではないか？悪いものは外に置いて自然と光だけが残る世界線がいいなー！完全なるお花畑を形成したい。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前のVISION「Netflix超えて嬉し泣き」の本質がここ。</strong>売上＝手段。目的＝一緒に最高の景色を見る仲間を集めること。B社長の完成形。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#031</div>
+  <div class="pt">コアメンバーから潤す</div>
+  <div class="mq"><div class="ql m">原文</div><p>組織拡大する時に大事なのはまずコアメンバーから潤すこと。優秀なメンバーが定着しないことには一生拡大しない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>報酬テーブルの設計思想がまさにこれ。</strong>売上が上がれば報酬も上がる構造＝お前を含む全ディレクターが「頑張れば報われる」と信じられる仕組み。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#032</div>
+  <div class="pt">遠慮、申し訳なさ、恥ずかしさは要らない</div>
+  <div class="mq"><div class="ql m">原文</div><p>組織において遠慮、申し訳なさ、恥ずかしさは要らない。この感情が出た時こそ思っていることを言ったほうがいい。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>壁打ちで「これどう思います？」を遠慮なく聞く。</strong>お前の有能感トリガーが「バカだと思われたくない」で壁打ちの質を下げてないか。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#033</div>
+  <div class="pt">「誰かがやってくれるやろ」は誰もやらない</div>
+  <div class="mq"><div class="ql m">原文</div><p>基本誰もやらない。組織が大きくなると本質的に他責の人が目立つ。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前の担当chの結果は100%お前の責任。</strong>「編集が遅い」「撮影環境が」は他責。自分でコントロールできる範囲（企画・構成・壁打ち）に集中。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#034</div>
+  <div class="pt">小さな「あれ？」を無くす</div>
+  <div class="mq"><div class="ql m">原文</div><p>小さな違和感から価値観の不一致に繋がり人が離れたり対立が起きる。本音を言い合い細部まで認識を擦り合わせることが大切。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「あれ？」と思った瞬間にLINEで聞く。</strong>溜めると爆発する。まなとけいたのスピード思考は人間関係にも適用されてる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#035</div>
+  <div class="pt">80点5人より200点1人</div>
+  <div class="mq"><div class="ql m">原文</div><p>SNSは原価に対して指数関数的に売上が出るから。天才が1点突破でぶち抜いた方が5億％いい。個の力を強く強くしていく。YouTube界のアベンジャーズ。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前自身が200点の人材になる＝センターピン一点突破。</strong>色々やるんじゃなくYouTube力だけSSSを目指す。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#036</div>
+  <div class="pt">ワンピースと同じ</div>
+  <div class="mq"><div class="ql m">原文</div><p>でかい目標とそれに向かって全力で走ってるやつに人が集まってくる。才能じゃなく覚悟と姿勢の問題。特別なものなんて何もいらない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前がNetflix超えに向かって全力で走ってたら勝手に人が集まる。</strong>人を集める「方法」を探すな。走り続ける「覚悟」を持て。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#037</div>
+  <div class="pt">0.0001%の共同経営関係</div>
+  <div class="mq"><div class="ql m">原文</div><p>友達起業して7年増収増益で株式比率半々で役員報酬も一緒で経費もお互い自由で契約書も巻かない。「能力が均等」「絶対的な信頼関係」「同じゴールや基準値」。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>まなとくんとの関係はこの方向に向かってる。</strong>「並びたい」はまさにこの能力均等×信頼×同じゴールの状態。到達するには能力値を上げるしかない。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#038</div>
+  <div class="pt">コミュニケーションは「言う」ではなく「伝わる」</div>
+  <div class="mq"><div class="ql m">原文</div><p>「その認識じゃなかったです！」と言われるのは自分が正しく伝えられてないから。コミュニケーションが上手い人は相手視点。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「機能に話す」の具体実装。</strong>相手の認知レベルに合わせて粒度を変える＝まなとくんの「人格じゃなくて機能に話す」と同じ構造。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#039</div>
+  <div class="pt">組織のぬるさは社長の責任</div>
+  <div class="mq"><div class="ql m">原文</div><p>会社の中を平和にするためにトップは誰よりも戦争をしなければならない。ボスよりリーダーの方がかっこいい。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>将軍レイヤーの覚悟がここ。</strong>Dominance（ボス）ではなくPrestige（リーダー）。お前の移行そのもの。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#040</div>
+  <div class="pt">経営者が現場を把握する</div>
+  <div class="mq"><div class="ql m">原文</div><p>誰がどんな業務を何の目的でやっているかはいつでも即答できるレベルで把握する。マイクロマネジメントではなく、利益目的に基づいて行動できているかの確認。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>今は自分が現場（ディレクター）。</strong>だからこそ自分の全タスクの目的を「月20万再生→報酬テーブル上昇→将軍へ」に紐づける。利益に直結しないタスクをやってないか毎日確認。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#041</div>
+  <div class="pt">ルールは無ければ無いほどレベルが高い</div>
+  <div class="mq"><div class="ql m">原文</div><p>ルールは無ければ無いほど組織としてレベルが高い気がする。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前自身にルールを課しすぎるな。</strong>原理原則（勝利の理論）が1つあれば、細かいルールは要らない。「再生される動画を作る。それだけ。」</p></div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CATEGORY 4: GROWTH / 育成 -->
+<!-- ============================================ -->
+<div class="sec">CATEGORY 04 — GROWTH / 育成</div>
+<div class="cat-header"><div class="cat-icon grow">🌱</div><div><div class="cat-title">「人を育てる」の無意識</div><div class="cat-count">10 PRINCIPLES</div></div></div>
+
+<div class="grid-2">
+<div class="p">
+  <div class="pn">#042</div>
+  <div class="pt">無理難題＝最強の育成法</div>
+  <div class="mq"><div class="ql m">原文</div><p>抽象的な指示であればあるほど能動的に仕事をこなさざるを得なくなる。納期は絶対。自分を超えたタスクを納期を巻いて納品する練習。「ちょっとむずそうですけどやります」みたいな超主体性を持った最強の戦士が生まれる。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>今お前は無理難題を受けてる側。</strong>「みさをch伸ばして」＝抽象的な指示。これを自分で分解して実行する力が今試されてる。将来は出す側になる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#043</div>
+  <div class="pt">行動トレース vs 思考トレース</div>
+  <div class="mq"><div class="ql m">原文</div><p>行動をトレースする人材は1言われて1しか成長しない。思考をトレースする人材は1言われて10成長する。「なんでそれ思いついたんですか？」の質問が多い。課されたことをこなすこと自体に安心感を持つ無意識を認知して変えること。</p></div>
+  <div class="tn"><div class="ql t">Taiga現在</div><p>まなとくんの判断構造を取る＝思考トレース。これは既に自覚してる。でも日常で「なんで？」を聞く頻度がまだ足りない可能性。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>まなとくんと一緒にいる時、5分おきに「なぜそう判断した？」を聞く。</strong>「なぜ今あの人にあの言い方した？」「なぜ今あえて黙ってた？」——攻略本に書き込む作業。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#044</div>
+  <div class="pt">部下の育成は心技体</div>
+  <div class="mq"><div class="ql m">原文</div><p>みんな技だけ教えて終わってる。心技体で教えることが大事。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前が将来ディレクターを育てる時に使う。</strong>技（台本の書き方）だけじゃなく、心（なぜこの仕事をやるか）と体（テストステロン、生活リズム）も伝える。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#045</div>
+  <div class="pt">仕事の報酬は仕事</div>
+  <div class="mq"><div class="ql m">原文</div><p>頼まれた仕事を期待値以上の成果を出すことでさらに新しい仕事が舞い込んでくる。月3万から月30万になった実例。常に全力で相手の立場に立って仕事する。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>みさをchで期待値以上の結果を出す→次のchを任される→報酬テーブルが上がる。</strong>これが将軍への階段。目の前の1本に全力。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#046</div>
+  <div class="pt">期待値を常に超えようとする人が伸びる</div>
+  <div class="mq"><div class="ql m">原文</div><p>月500万売って欲しいって言われたら「俺は1000万出します」って本気で達成しにいける人はありえんくらい成長する。「できそう/できなさそう」の軸で判断してると期待以上の成果は出ない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>月10万再生を目標にされたら「20万出します」。</strong>この感覚が有能感の正しい使い方。証明のためじゃなく成長のために高い目標を置く。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#047</div>
+  <div class="pt">「この子いけるかな？よし任せよう」の判断</div>
+  <div class="mq"><div class="ql m">原文</div><p>メンバーが成長して上のレイヤー陣の時間が空いてさらに攻めに回れるの好き。組織化のポイントは信頼。しっかりいけると思ったタイミングで全信頼で大きな権限を任せる。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>将軍に必要な判断＝「任せる」の決断。</strong>コントロール欲(10)が邪魔する場面。金0を論理で補完する＝「任せた方がチーム全体が速い」と計算する。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#048</div>
+  <div class="pt">トップの思考をカバーする</div>
+  <div class="mq"><div class="ql m">原文</div><p>トップの思考をトレースした上でその思考から外れた領域をカバーする。「トップは今CSの優先度が高いから俺は集客を見よう」「拡大期で人に負荷かかるからメンタルの観察に比重を置こう」</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>まなとくんが今何に集中してるかを観察→自分はその外側をカバー。</strong>これが「並ぶ」の実践。同じことをやるんじゃなく、補完する。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#049</div>
+  <div class="pt">採用で地頭を見極める方法</div>
+  <div class="mq"><div class="ql m">原文</div><p>最初は抽象的で簡単な話をしつつどんどん細かい粒度の話を出していき、理解の限界値を見極める。分からない所が出た瞬間に全てを理解しようとする姿勢（質問しまくる）があるか。「うんうん、はいはい」の情報もっとちょうだい状態の人は地頭良い。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前自身の地頭チェック。</strong>壁打ちで分からないことが出た時に「なるほど」で終わらせてないか。「それってこういう構造？」と再構築する癖＝龍高星の探求を止めない。「分かった気」が一番危険。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#050</div>
+  <div class="pt">成果までのロードマップの粒度を砂にする</div>
+  <div class="mq"><div class="ql m">原文</div><p>小学生でも結果が出るレベルまでコンテンツを作り込む。どうやってもある程度やれば結果出るって状態になるまでコンテンツを拡充。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>自分の台本制作プロセスを「砂の粒度」でマニュアル化する。</strong>企画出し→リサーチ→構成→壁打ち→修正→撮影の各ステップを手順書にすれば、P的な「何から手をつけていいか分からない」が消える。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#051</div>
+  <div class="pt">最初の数ヶ月を丁寧にサポート</div>
+  <div class="mq"><div class="ql m">原文</div><p>最初成果さえ出て成功体験を積めればそんなにサポートしなくても勝手にやってくれる。最初の数ヶ月を丁寧にサポートする意識が大事。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>今のお前＝「最初の数ヶ月」の段階。</strong>みさをchで最初の成功体験（バズ1本、成約1件）が出れば、そこから勝手に回り始める。その1本のために今は全力で壁打ちしてもらう。</p></div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CATEGORY 5: MINDSET -->
+<!-- ============================================ -->
+<div class="sec">CATEGORY 05 — MINDSET / マインドセット</div>
+<div class="cat-header"><div class="cat-icon mind">🧠</div><div><div class="cat-title">「脳の設定」の無意識</div><div class="cat-count">18 PRINCIPLES</div></div></div>
+
+<div class="grid-2">
+<div class="p">
+  <div class="pn">#052</div>
+  <div class="pt">圧倒的勝利こそ至高。これは他者が言うこと</div>
+  <div class="mq"><div class="ql m">原文</div><p>圧倒的勝利こそ至高。そのために誰にも負けない。負けないことがみんなの利になる。最強である。これは他者が言うこと。俺が決めることじゃない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「俺は最強だ」じゃなく「結果を出し続けたら周りが最強だと言ってくれる」。</strong>有能感を自分で証明しようとするA社長 vs 結果で自然に認められるB社長。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#053</div>
+  <div class="pt">問題解決 ＝ ドーパミン中毒</div>
+  <div class="mq"><div class="ql m">原文</div><p>問題解決が楽しすぎる。「これやったらこうなるんじゃないか！？」が好きすぎてドーパミン中毒。やっぱ仕事してる時がエネルギー高い。</p></div>
+  <div class="tn"><div class="ql t">Taiga現在</div><p>ドーパミン供給源＝女、ポルノ、スマホ。仕事から出る回路が弱い。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前の「攻略本×ポケモン」の感覚＝まなとけいたの「施策思いついた時の興奮」。</strong>同じもの。入口＝仮説を立てる瞬間。「この企画でバズるんじゃないか？」のワクワクを意図的に作る。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#054</div>
+  <div class="pt">仕事 ＝ 最高のプライベート</div>
+  <div class="mq"><div class="ql m">原文</div><p>仕事=最高のプライベートみたいな考えじゃないと無理だろ。てか現に一生仕事のこと考えてる。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>全書き換えの根本設定がここ。</strong>「仕事 = 有能感の証明」→「仕事 = 最高に楽しいゲーム」。これが変わると12カテゴリ全部変わる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#055</div>
+  <div class="pt">逆境楽しい</div>
+  <div class="mq"><div class="ql m">原文</div><p>逆境楽しいいい！「うわ、この企業に負けてる」って感覚を味わえるの幸せやなあ、また高みを目指せるぞー！</p></div>
+  <div class="tn"><div class="ql t">Taiga現在</div><p>「負けたら何もない」が裏エンジン。逆境＝有能感の脅威＝恐怖。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「負け＝恐怖」→「負け＝情報＋燃料」。</strong>冷笑が出たら＝「本気に行きたい」のサイン。負けてる感覚＝まだ伸びしろがあるという証拠。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#056</div>
+  <div class="pt">忙しさに充実感を持たない</div>
+  <div class="mq"><div class="ql m">原文</div><p>1日をタスクで埋め尽くせばそれっぽく進んだ気になって充実感があるがこれは1億％間違い。「頑張ってる感はあるけど全く成果が出ない」という最悪の状況。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「今日何時間働いたか」じゃなく「今日何を完了させたか」で測る。</strong>8時間ダラダラ<3時間集中で1本完了。完了数＝成長。労働時間≠成長。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#057</div>
+  <div class="pt">「やりたい！」の8割は逃避</div>
+  <div class="mq"><div class="ql m">原文</div><p>「やりたい！面白そう！」の8割は「やりたくない、苦手」なことから目を背けるための都合のいい理由づけ。やりたい事に逃げるな。やりたいことをやるためにやらなければならないことに全力でこだわる。</p></div>
+  <div class="tn"><div class="ql t">Taiga現在</div><p>龍高星の「新しいこと探求したい」が「目の前の台本を磨く」から逃げる口実になってないか。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「新しい企画考えたい」は楽しい。「今の台本を壁打ちで磨き直す」は苦しい。後者をやれ。</strong>やりたいことの8割は逃避。やらなきゃいけないことに全力。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#058</div>
+  <div class="pt">自分が言い訳の天才だと気づいた瞬間</div>
+  <div class="mq"><div class="ql m">原文</div><p>優秀な人間は「自分が言い訳の天才」だということに気づいた瞬間ビビるくらい成長する。無意識下でやってるそれっぽい理由づけを止めるだけ。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「計画的でないことにメリットを感じている」＝言い訳。「自分は時間を守らない人間」＝言い訳。</strong>無意識の言い訳を言語化して外す。これが無意識リワイヤリングの本質。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#059</div>
+  <div class="pt">「〇〇しないと」が多いほど他者軸</div>
+  <div class="mq"><div class="ql m">原文</div><p>「〇〇しないといけない」が多いほど他者軸で受動的な人生になる。マリオネット。「〇〇した方がいい」のマインドで生きた方が余白ができてキャパも増える。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「台本書かないと」→「台本書いた方がバズの確率上がるな」。</strong>義務→選択に変えるだけで脳の負荷が減る。脱力の実装がここ。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#060</div>
+  <div class="pt">自分との約束は死ぬ気で守る</div>
+  <div class="mq"><div class="ql m">原文</div><p>一回決めた目標は自分との約束なんだから死んでも達成するという勢いで。生半可にぬくぬく温玉でやってたら自分や周りの命守れない。</p></div>
+  <div class="tn"><div class="ql t">Taiga現在</div><p>不義理5回。「自分は約束を破る人間」のセルフイメージ。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>侍の覚悟と同じ構造。</strong>「死を前提にすると選択肢が広がる」＝「約束を絶対守ると決めると迷いが消える」。約束＝攻略マップの目的地。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#061</div>
+  <div class="pt">「頑張れる人」＝「簡単に捨てられる人」</div>
+  <div class="mq"><div class="ql m">原文</div><p>興味が向いたら不要なものは一瞬で全部捨てられちゃう。でも何回も人間関係を全捨てして痛い目にあった。今は大事なものだけは捨てないように意識してる。</p></div>
+  <div class="tn"><div class="ql t">Taiga現在</div><p>金0（手放す力の欠如）。でも逆に手放しすぎて関係を壊した過去（不義理5回）もある。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>まなとけいたも同じ失敗をしてる。</strong>「目標に不要なものは捨てる」けど「大事な人だけは捨てない」。お前が学ぶべきは「何を捨てて何を残すか」の判断基準。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#062</div>
+  <div class="pt">複利。今日一日だけ本気で頑張る</div>
+  <div class="mq"><div class="ql m">原文</div><p>これ続けてれば未来は明るい。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>Baby Steps to Giant Strides。</strong>誕生日まで9ヶ月を考えるな。今日1日だけ本気で台本を磨く。それを270回繰り返すだけ。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#063</div>
+  <div class="pt">優秀な人ほど自分の価値を低く見積もる</div>
+  <div class="mq"><div class="ql m">原文</div><p>能力の高い人ほど自分の価値を低く見積もり、能力の低い人ほど自分の価値を高く見積もる。前提自分は秒で代替可能だと思った方がいい。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前の有能感(9)＝自分の価値を常に確認したい＝能力が低い人の特徴に近い。</strong>まなとけいたは「自分は代替可能」と思ってる。だから努力する。この謙虚さが中和(0)の強さ。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#064</div>
+  <div class="pt">課題を特定できた瞬間に9割解決してる</div>
+  <div class="mq"><div class="ql m">原文</div><p>課題を特定できた瞬間に問題は9割解決してる。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>今日のセッションで3つの負け筋を特定した。もう9割解決してる。</strong>あとは実行するだけ。特定→行動のスピード＝まなとけいたOS01に戻る。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#065</div>
+  <div class="pt">レバレッジの概念</div>
+  <div class="mq"><div class="ql m">原文</div><p>1つのアクションが何倍のインパクトを持つのか？が物凄い大事。単純作業はなるべく避ける。何をやるにしてもアクションの目的と影響を考えてからやる。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>台本の壁打ちはレバレッジが最大。</strong>1回の壁打ちで企画力が上がる→その能力は全chに横展開される→1アクションが全売上に効く。ポルノを見る→レバレッジゼロ。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#066</div>
+  <div class="pt">理想の未来なんて存在しない</div>
+  <div class="mq"><div class="ql m">原文</div><p>理想の未来が実現したところでそれは現状より1ミリ不満が減る程度。でもメンバーと現状最適をフルパワーマシマシでこなしていけば、そこそこ満足できる未来がわんちゃんくる。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「月20万再生になったら幸せ」じゃない。</strong>今日の1本を全力で作る過程そのものが最高の状態。ゴールに執着するA社長 vs プロセスを楽しむB社長。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#067</div>
+  <div class="pt">サイコパスの見分け方は葛藤があるかないか</div>
+  <div class="mq"><div class="ql m">原文</div><p>サイコパスの見分け方はその人の中に葛藤があるかないか。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前の戦闘力数式「愛×サイコパシー×論理」。</strong>サイコパシー＝葛藤なく決断できる力。でも葛藤がゼロ＝本当のサイコパス＝愛がない。葛藤がある上で決断できる＝健全なサイコパシー。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#068</div>
+  <div class="pt">「勝ち負けが全てじゃない」って言えるまでこだわる</div>
+  <div class="mq"><div class="ql m">原文</div><p>「金なんてどうでもいい」って言えるまで金にこだわる。「もうやることはない」って言えるまでやりたいことにこだわる。こだわり尽くした先の世界を見てみたい。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>今は「有能感にこだわる」段階でいい。</strong>こだわり尽くした先にキーガン第5がある。「有能感なんてどうでもいい」と言えるまで、有能感を追いかけ切る。途中で逃げない。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#069</div>
+  <div class="pt">欲求の解消と手段を間違えるからお金が貯まらない</div>
+  <div class="mq"><div class="ql m">原文</div><p>ストレスのかかる手段を取りそのストレスの解消にお金を溶かす。大事なのは今やっている手段が楽しいかどうか。ストレスなく稼げばお金も幸せも残る。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前の負け筋1（ドーパミン浪費）の構造そのもの。</strong>仕事がストレス→ポルノで解消→時間を失う→仕事が遅れる→ストレス増→悪循環。仕事＝楽しいに変えれば全部解決。</p></div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CATEGORY 6: MONEY -->
+<!-- ============================================ -->
+<div class="sec">CATEGORY 06 — MONEY / 金の考え方</div>
+<div class="cat-header"><div class="cat-icon money">💰</div><div><div class="cat-title">「お金」の無意識</div><div class="cat-count">8 PRINCIPLES</div></div></div>
+
+<div class="grid-2">
+<div class="p">
+  <div class="pn">#070</div>
+  <div class="pt">無限にお金欲しい。みんなで楽しいことしたい</div>
+  <div class="mq"><div class="ql m">原文</div><p>100億持ったらどうなる？周りと好きなことしまくれるよ。「人生お金じゃないよ」って言う人いるけど俺は違う。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前のVISION「Netflix超えて嬉し泣き」の燃料がお金。</strong>A社長的に欲しいんじゃなく、実現するために必要。お金への欲求は消さなくていい。方向を変える。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#071</div>
+  <div class="pt">売上が上がると報酬の%は下がるが絶対値は上がる</div>
+  <div class="mq"><div class="ql m">原文</div><p>売上1000万の10%より売上1億の3%の方がメンバー個人の利益は大きい。会社に内部留保ができるので投資により会社が拡大し更にメンバーにも還元される仕組み。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>報酬テーブルの設計思想を理解する。</strong>売上が上がれば報酬の比率は下がるが手取りは増える。「搾取されてる」ではなく「一緒に成長してる」の構造。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#072</div>
+  <div class="pt">最初に経費をかけない</div>
+  <div class="mq"><div class="ql m">原文</div><p>徹底的にコストを減らしてまず利益を出す。その後に採用し組織拡大。この順番が負けない経営の基本。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前も今は「コストゼロで結果を出す」段階。</strong>金を使って解決するフェーズじゃない。自分の能力で結果を出す＝個の力SSS。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#073</div>
+  <div class="pt">キーエンスみたいな会社を目指す</div>
+  <div class="mq"><div class="ql m">原文</div><p>利益率が高いのにメンバーの報酬が高い。やり甲斐、楽しさ、スキル、給料の全てが揃った潰れない強靭な会社基盤。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>オプトインがこの方向に向かってる。</strong>お前が売上を伸ばす＝全員の報酬が上がる＝キーエンスに近づく。個人の成長＝チームの成長。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#074</div>
+  <div class="pt">自分のROIを意識する</div>
+  <div class="mq"><div class="ql m">原文</div><p>貰ってる額以上のバリューを出すことを意識する。「会社のお荷物になりたくない」「貰ってる額以上のバリュー出せないならそれは養ってもらってるだけ」。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>今の報酬に対して自分が出してるバリューを計算する。</strong>報酬35万で売上800万＝ROI約23倍。これを意識するだけで仕事への取り組み方が変わる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#075</div>
+  <div class="pt">ポートフォリオ経営</div>
+  <div class="mq"><div class="ql m">原文</div><p>複数会社で様々な施策を同じ時間軸で実施し効率の良い方法を全社共有。ストック型で利益が出るサブスクを全事業に導入。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>みさを＋リョータ＋他ch＝ポートフォリオ。</strong>1chの学びを他chに横展開する思考。みさをで見つけた「バズの型」をリョータchにも適用。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#076</div>
+  <div class="pt">DMMみたいな戦法</div>
+  <div class="mq"><div class="ql m">原文</div><p>先駆者を分析して早めにアジャストして市場に参入するパターン。儲かってる人を感知する嗅覚×分析能力×資本力×組織力。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>企画リサーチの本質がここ。</strong>伸びてるchの企画を分析→自分のchに最適化して出す。0→1で発明するんじゃなく、勝ちパターンを取ってアジャストする。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#077</div>
+  <div class="pt">縦を伸ばしつつ横に拡げる。これだけ</div>
+  <div class="mq"><div class="ql m">原文</div><p>どこまでいっても「縦を伸ばしつつ横に拡げる」これだけだと思うんだよな。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>みさをchの再生数を伸ばす（縦）＋新しいchを任される（横）。</strong>シンプル。これだけ。</p></div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CATEGORY 7: BODY -->
+<!-- ============================================ -->
+<div class="sec">CATEGORY 07 — BODY / 身体</div>
+<div class="cat-header"><div class="cat-icon body">💪</div><div><div class="cat-title">「テストステロン経営」の無意識</div><div class="cat-count">4 PRINCIPLES</div></div></div>
+
+<div class="grid-2">
+<div class="p">
+  <div class="pn">#078</div>
+  <div class="pt">テストステロン値と業績は比例する</div>
+  <div class="mq"><div class="ql m">原文</div><p>社長のテストステロン値と会社の業績はガチで比例する。テストステロン＝闘争本能、決断力、自信、エネルギー。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>筋トレ×キック＝経営パフォーマンスのインフラ。</strong>「見た目のため」じゃなく「仕事の出力を上げるため」に鍛える。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#079</div>
+  <div class="pt">全員筋トレして格闘技やれ</div>
+  <div class="mq"><div class="ql m">原文</div><p>筋トレとキックボクシング始めてからメンタルヘルスが安定してるし競争心増えた。「やってやる！」みたいなエネルギーが増えた。過度な不安もなくなった。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前は既にやってる。</strong>ここはまなとけいたOSと一致してる。継続。目標マップの「体は全ての土台。絶対に崩さない」が正解。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#080</div>
+  <div class="pt">鬱にならないための予防</div>
+  <div class="mq"><div class="ql m">原文</div><p>マジ鬱になったら終わり。事業主はオンとオフないから常に自分のメンタルの状態を理解するのが大事。周りに察知してくれる人がいるのも大事。人生はマラソン。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>ブースト→落ちの繰り返し＝鬱のリスク。</strong>安定して走り続ける＝マラソン。スプリントじゃない。脱力の哲学と完全一致。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#081</div>
+  <div class="pt">「休む」を取れるようになった成長</div>
+  <div class="mq"><div class="ql m">原文</div><p>休みを入れずにハードワークしすぎると自分が気づかない範囲でIQが下がっていく。時間を投下すればするだけ良いという無意識をどれだけ減らして、今ある時間で最高点を叩き出せるか。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「たくさん働く＝偉い」は幻想。</strong>3時間の集中で1本の台本を仕上げる方が、8時間ダラダラ作業するより100倍価値がある。脱力＝最小の力で最大の出力。</p></div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CATEGORY 8: YOUTUBE -->
+<!-- ============================================ -->
+<div class="sec">CATEGORY 08 — YOUTUBE / コンテンツ戦略</div>
+<div class="cat-header"><div class="cat-icon yt">🎬</div><div><div class="cat-title">「YouTube力SSS」の無意識</div><div class="cat-count">8 PRINCIPLES</div></div></div>
+
+<div class="grid-2">
+<div class="p">
+  <div class="pn">#082</div>
+  <div class="pt">ビジ系YouTubeが伸びないのは説明の粒度がズレてるから</div>
+  <div class="mq"><div class="ql m">原文</div><p>市場のリテラシーレベルを把握してないのが原因。視聴者のリテラシーレベルは市場の動画によって作られている。＝市場の動画を全然見ていないという伸びなくて当たり前という結論。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>みさをch月7,000再生＝粒度がズレてる可能性。</strong>市場の動画を見てるか？ 競合chを毎日30分見る習慣＝リテラシーレベルの把握。これがリサーチの本質。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#083</div>
+  <div class="pt">サムネ分析で3秒以上見るのは無意味</div>
+  <div class="mq"><div class="ql m">原文</div><p>瞬間的に感じられない後付けの要素は基本的に全部ゴミ。自分が瞬間的に感じた印象をあとから言語化していく。じっくり見て仮説を立てるのは視聴者の状況とかけ離れてる。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>サムネの壁打ちの仕方を変える。</strong>3秒で「何を感じたか」を言語化する訓練。論理的に分析するのは後。直感→言語化の順。龍高星の探求は「後から」使う。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#084</div>
+  <div class="pt">マーケでかっこいい施策は無意味</div>
+  <div class="mq"><div class="ql m">原文</div><p>単純に集客チャネル増やして適切にインプ取って宗教レベルでファン化させてどちゃくそに質のいいプロダクトを販売するだけ。これ以上でも以下でもない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>企画も同じ。かっこいい企画じゃなく「視聴者の痛みに刺さる企画」。</strong>シンプル。見栄えじゃなく中身。これ以上でも以下でもない。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#085</div>
+  <div class="pt">影響力 ＝ 火の特性</div>
+  <div class="mq"><div class="ql m">原文</div><p>①影響力は分け与えても大元の火は減少しない ②分け与えられた側は大元より強い火にはならない。大きいメディアから影響力を展開先に移す。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>みさをchが火元になれば、そこからリョータchや他chに火を分けられる。</strong>だから最初の1chを「大きい火」にすることが最優先。1万人の20chより20万人の1ch。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#086</div>
+  <div class="pt">ギャップ ＝ 共感と尊敬の2種類</div>
+  <div class="mq"><div class="ql m">原文</div><p>共感と尊敬は視聴者の関心度が近いものか遠いものかによって生まれる。性別や地域、あらゆる軸で関心度の大小をペルソナに合わせて立体的に把握する。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>みさをchの視聴者にとって「共感できるギャップ」と「尊敬できるギャップ」は何か？</strong>これを立体的に考える＝3D認知(56.3)の出番。お前の最強の認知特性をここに使え。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#087</div>
+  <div class="pt">YouTube運用者は職人として突き抜ける一択</div>
+  <div class="mq"><div class="ql m">原文</div><p>コンサルするより自分でぶち伸ばした方が100倍利益出る。月1億も全然目指せるのがYouTube。ひたすらYouTube力を高め続けるだけ。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前のセンターピン＝YouTube力SSS。</strong>コンサルやマネジメントは後。まず職人として突き抜ける。みさをchの再生数を自分の手で伸ばす。それが全ての基盤。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#088</div>
+  <div class="pt">過去の経験だけでやろうとすると当たらない</div>
+  <div class="mq"><div class="ql m">原文</div><p>未だに過去の経験だけでやろうとしてしまう時があるが基本そういう時は当たらない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>毎回リサーチから入る。</strong>「前回うまくいった企画と同じ感じで」は罠。市場は常に動いてる。エーちゃんのノートは毎試合新しいデータで更新されてる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#089</div>
+  <div class="pt">顧客の成果をKPIにする</div>
+  <div class="mq"><div class="ql m">原文</div><p>感情的な満足度を追わずにまず顧客の成果だけをKPIに置く。「うちの顧客はまじで幸せだな！」って状態を作る。これができなければ数年後詰む。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>動画の「成果」＝視聴者の行動変容。</strong>再生数やCTRは指標。本質は「この動画を見た人の人生が変わったか」。ここを追うとコンテンツの質が根本から変わる。</p></div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CATEGORY 9: RELATIONSHIP -->
+<!-- ============================================ -->
+<div class="sec">CATEGORY 09 — RELATIONSHIP / 人間関係</div>
+<div class="cat-header"><div class="cat-icon rel">🤝</div><div><div class="cat-title">「繋がり」の無意識</div><div class="cat-count">6 PRINCIPLES</div></div></div>
+
+<div class="grid-2">
+<div class="p">
+  <div class="pn">#090</div>
+  <div class="pt">仕事の関係抜きでも仲良くしたい人を増やす</div>
+  <div class="mq"><div class="ql m">原文</div><p>どんなゲームチェンジが起こっても人間関係が幸福度の頂点にあることだけは一生変わらない。これ以上に頑張る意味とかない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前の「みんなでNetflix超えて嬉し泣き」の本質がここ。</strong>Netflix超え＝結果。嬉し泣き＝人間関係。両方ないと意味がない。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#091</div>
+  <div class="pt">「お前とやらないなら就職する」で人生が変わった</div>
+  <div class="mq"><div class="ql m">原文</div><p>昔は「1人でやった方が利益全部取れるくない？」とか言うタイプだった。けいたに言われて人生が変わった。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>まなとくんもかつてはお前と同じ「1人で勝ちたい」タイプだった。</strong>変わったきっかけは人。お前にとってのまなとくんが、まなとくんにとってのけいた。同じ構造。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#092</div>
+  <div class="pt">不義理した側が最後に失敗する</div>
+  <div class="mq"><div class="ql m">原文</div><p>ふと200万飛ばれたの思い出したけど、不義理した側が失敗して裏切られた方が大成功してるよな大体。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前の不義理5回。</strong>過去は変えられない。でも「これから不義理しない」は今日から変えられる。自分との約束を守る＝人との約束を守る。同じ構造。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#093</div>
+  <div class="pt">同年代の起業家友達いるの最高すぎる</div>
+  <div class="mq"><div class="ql m">原文</div><p>色んな経営者と話して自分の基準値上げたい欲求＆圧倒されたいis半端ない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>まなとくん、だいとくん、チームのメンバー。</strong>基準値を上げてくれる存在が既にいる。会う頻度を意識的に上げる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#094</div>
+  <div class="pt">持つべきものは友</div>
+  <div class="mq"><div class="ql m">原文</div><p>新規参入を決めた時に色んな人に相談したら本当に全員優しくてマジで丁寧に教えてくれるのやばいな。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>壁打ちを頼めるネットワーク＝最強の資産。</strong>「聞くのは恥ずかしい」は有能感トリガー。遠慮、申し訳なさは要らない（#032）。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#095</div>
+  <div class="pt">コアメンバーと鯛しゃぶ</div>
+  <div class="mq"><div class="ql m">原文</div><p>会う度に成長してるしマジでみんなかわいい。これだからチームで勝つの好きなんだよなあ。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前にもこの感覚がある。</strong>「みんなで最高の景色を見たい」。でもその「みんな」の成長を自分の喜びにできてるか？ 有能感＝自分の結果→有能感＝チームの結果に広げる。</p></div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CATEGORY 10: COMPETITION -->
+<!-- ============================================ -->
+<div class="sec">CATEGORY 10 — COMPETITION / 競争・市場</div>
+<div class="cat-header"><div class="cat-icon war">⚔</div><div><div class="cat-title">「戦争」の無意識</div><div class="cat-count">6 PRINCIPLES</div></div></div>
+
+<div class="grid-2">
+<div class="p">
+  <div class="pn">#096</div>
+  <div class="pt">戦争から学べるものが多すぎる</div>
+  <div class="mq"><div class="ql m">原文</div><p>ガチで戦争から学べるものが多すぎる。王者としての闘い方を学ばないといけない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前の「攻略本モード」を戦争に拡張する。</strong>孫子の兵法、ランチェスター戦略。弱者の戦い方＝局地戦で勝つ＝みさを1chに集中して1ジャンルで圧倒する。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#097</div>
+  <div class="pt">ゴールドラッシュは先手を打った方が楽に儲かる</div>
+  <div class="mq"><div class="ql m">原文</div><p>みんなが死に物狂いでやりだす時に施策を打つのはしんどいし効果も出にくい。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>みさをchのジャンルで今先手を打てているか？</strong>競合が少ない今のうちにポジションを確立する。後から参入してくる競合に「もうあそこがいるから無理」と思わせる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#098</div>
+  <div class="pt">数字が出せないやつは人権ない</div>
+  <div class="mq"><div class="ql m">原文</div><p>過去の実績があっても今この瞬間に数字を出せないやつに存在価値はない。全て今の数字。数字に命かけてるやつは強い。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>月7,000再生＝今の数字。</strong>過去に何を学んだかじゃなく、今月何再生取れたか。この厳しさが有能感を「証明」じゃなく「実行」に変える。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#099</div>
+  <div class="pt">IQ×無償の愛×サイコパシー×テストステロン</div>
+  <div class="mq"><div class="ql m">原文</div><p>IQ×無償の愛×サイコパシー×テストステロン。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前の戦闘力数式と同じ構造。</strong>IQ＝論理的思考力。無償の愛＝みんなのため。サイコパシー＝葛藤あるけど決断できる。テストステロン＝筋トレ×キック。4つ全部を上げる。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#100</div>
+  <div class="pt">2〜3年で覇者が決まる</div>
+  <div class="mq"><div class="ql m">原文</div><p>あと3年もしたらオンラインスクールのそれぞれの業界の覇者がその玉座を固めるんだろうなぁ。早く上に行きたい。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>誕生日まで9ヶ月。</strong>でも本当のタイムリミットは2〜3年。この窓が閉じる前にポジションを取る。時間は味方じゃない。今日の1本が勝敗を分ける。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#101</div>
+  <div class="pt">「ベンチャーだから」と言い訳をしない</div>
+  <div class="mq"><div class="ql m">原文</div><p>「ベンチャーだから」「大企業だから」「俺はこれ苦手だから」と言い訳をしない。勝手に自分や会社の可能性を潰さない。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「まだ月7,000再生だから」は言い訳。</strong>エーちゃんも最初は小学生に混じって練習してた。今の数字は言い訳の理由にならない。</p></div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CATEGORY 11: SELF-PROMISE -->
+<!-- ============================================ -->
+<div class="sec">CATEGORY 11 — PROMISE / 自分との約束</div>
+<div class="cat-header"><div class="cat-icon mind">🔥</div><div><div class="cat-title">「覚悟」の無意識</div><div class="cat-count">4 PRINCIPLES</div></div></div>
+
+<div class="grid-2">
+<div class="p">
+  <div class="pn">#102</div>
+  <div class="pt">絶対粘り勝つ</div>
+  <div class="mq"><div class="ql m">原文</div><p>何があってもやり続けることだけは決まってるからいける。後はそれをどれだけ早く達成できるかだけ。結果出てない時に自分の存在価値が消え去って「俺のバリューとは？」って原点に立ち返ると毎回「やり続ける力」だけが残る。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>まなとけいたですら「やり続ける力」しか残らないと言ってる。</strong>天才的な能力じゃない。止めない力。Baby Steps to Giant Strides。お前にもこの力はある。暗黒期を超えてビジネスを始めた時点で証明済み。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#103</div>
+  <div class="pt">「できる」と「やり続けられる」の溝</div>
+  <div class="mq"><div class="ql m">原文</div><p>やっぱり「できる」と「やり続けられる」にはどデカい溝がある。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>お前は企画を「できる」。問題は「やり続けられる」かどうか。</strong>ブースト→落ちの繰り返し＝「できるけど続かない」。続ける仕組み＝毎朝のボス設定＋毎晩の3行振り返り。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#104</div>
+  <div class="pt">本当にやりきった、疲れたと思うまでが仕事</div>
+  <div class="mq"><div class="ql m">原文</div><p>本当に自分がやりきった、疲れたって思うまでがんばるのが仕事。これくらいでいいかみたいな中途半端にだらだらやるのはただのお遊び。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>「今日はこのくらいでいいか」で止めた日＝負け。</strong>まなとけいたの基準値。お前がこの基準値を持てるかどうかが「並ぶ」の本質。</p></div>
+</div>
+
+<div class="p">
+  <div class="pn">#105</div>
+  <div class="pt">感謝を常に持ち原点に立ち返る</div>
+  <div class="mq"><div class="ql m">原文</div><p>売上ばかりを追いすぎると自分だけの世界に没頭して倫理観もなくなりポジティブネガティブどちらの感情も薄れていく。常に今の当たり前が幸せな状態ということを認識すべき。</p></div>
+  <div class="rw"><div class="ql r">リワイヤリング</div><p><strong>まなとくんがお前に「人格じゃなく機能に話してくれる」こと自体が当たり前じゃない。</strong>この環境にいること＝幸せ。感謝が消えたら有能感トリガーが暴走する。</p></div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- 最終統合 -->
+<!-- ============================================ -->
+<div class="sec">FINAL INTEGRATION — 全105項目の統合</div>
+
+<div class="panel">
+  <div class="fm" style="font-size:13px;">
+まなとけいたOS 105項目の根底にある共通構造 = 3つの柱<br>
+<br>
+柱1: SPEED（今やる × ボール離す × 遅れは複利）<br>
+柱2: DEFENSE（死なない × 問題予測 × ポートフォリオ）<br>
+柱3: LOVE（仲間の成長 × 報酬還元 × みんなで勝つ）<br>
+<br>
+────────────────────<br>
+<br>
+Taigaの現在の無意識 = 3つのブロック<br>
+<br>
+ブロック1: 完璧主義（探求→止まる。金0で手放せない）<br>
+ブロック2: 攻撃偏重（有能感の証明＝攻め。守りの概念なし）<br>
+ブロック3: 個人主義（コントロール欲10。委譲が怖い）<br>
+<br>
+────────────────────<br>
+<br>
+リワイヤリングの核心 = 1つの書き換え<br>
+<br>
+旧: 仕事 = 有能感の証明手段<br>
+新: 仕事 = 最高に楽しいゲーム（攻略本×ポケモン）<br>
+<br>
+これが変わると:<br>
+→ 楽しいから速くやりたい → SPEED<br>
+→ 楽しいゲームを終わらせたくない → DEFENSE<br>
+→ 楽しいゲームを一緒にやりたい → LOVE<br>
+<br>
+3つのブロックが3つの柱に変換される<br>
+<br>
+────────────────────<br>
+<br>
+毎日の実装:<br>
+朝: ロック画面 → 今日のボスを1つ決める<br>
+日中: ボスを倒す（台本 or 企画 or 壁打ち）<br>
+夜: 3行振り返り + 「限界まで使い倒したか？」<br>
+<br>
+これを270日（= 誕生日まで）続ける<br>
+= まなとけいたOSが無意識に入る<br>
+= 831回のカキカキ<br>
+= Baby Steps to Giant Strides
+  </div>
+</div>
+
+<div style="height:60px;"></div>
+
+</div>
+</body>
+</html>
