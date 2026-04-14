@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TODAY 2026-04-14 — みさをch 1本完成日</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  :root{--bg:#0a0c10;--sf:#13161e;--sf2:#1a1f29;--gold:#d4b370;--gold2:#e0c488;--grn:#50c88c;--red:#e07060;--blue:#5090c8;--dim:rgba(220,220,230,0.4);--txt:#e0e2e8;--faint:rgba(220,220,230,0.1)}
+  body{background:var(--bg);color:var(--txt);font-family:'Noto Sans JP',sans-serif;min-height:100vh;padding-bottom:60px}
+
+  .header{padding:24px 16px 16px;background:linear-gradient(180deg,var(--sf),transparent);text-align:center}
+  .header .label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:4px;color:var(--gold);margin-bottom:6px}
+  .header h1{font-size:18px;font-weight:900;margin-bottom:4px}
+  .header .sub{font-size:11px;color:var(--dim)}
+
+  .clock{text-align:center;padding:14px;margin:0 16px 16px;background:var(--sf);border-radius:12px;border:1px solid var(--faint)}
+  .clock .now-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--dim);margin-bottom:4px}
+  .clock .time{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;color:var(--gold);letter-spacing:2px}
+  .clock .remaining{font-size:11px;color:var(--dim);margin-top:4px}
+
+  .center-pin{margin:0 16px 20px;padding:16px;background:linear-gradient(135deg,rgba(212,179,112,0.12),rgba(212,179,112,0.04));border:1px solid rgba(212,179,112,0.3);border-radius:12px;text-align:center}
+  .center-pin .label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:6px}
+  .center-pin .text{font-size:14px;font-weight:700;color:var(--gold2)}
+  .center-pin .desc{font-size:11px;color:var(--dim);margin-top:4px}
+
+  .container{max-width:520px;margin:0 auto;padding:0 16px}
+
+  .timeline{position:relative;padding-left:16px}
+  .timeline::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:1px;background:var(--faint)}
+
+  .block{position:relative;margin-bottom:10px;padding:14px 14px 14px 18px;background:var(--sf);border-radius:10px;border:1px solid var(--faint);transition:all 0.3s}
+  .block::before{content:'';position:absolute;left:-16px;top:18px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--faint)}
+
+  .block .time-label{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .block .time{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--dim);letter-spacing:1px}
+  .block .duration{font-size:10px;color:var(--dim);padding:1px 6px;background:var(--faint);border-radius:3px}
+  .block .title{font-size:14px;font-weight:700;margin-bottom:4px}
+  .block .desc{font-size:11px;color:var(--dim);line-height:1.7}
+
+  /* Active block */
+  .block.active{background:linear-gradient(135deg,var(--sf2),var(--sf));border-color:var(--gold);box-shadow:0 0 20px rgba(212,179,112,0.15);transform:scale(1.02)}
+  .block.active::before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 12px var(--gold)}
+  .block.active .time{color:var(--gold)}
+  .block.active .title{color:var(--gold2)}
+  .block.active .desc{color:var(--txt)}
+  .block.active .now-tag{display:inline-block;margin-left:6px;padding:2px 8px;background:var(--gold);color:var(--bg);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;letter-spacing:1px;border-radius:3px;animation:pulse 1.5s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+  /* Past block */
+  .block.past{opacity:0.4}
+  .block.past::before{background:var(--faint);border-color:var(--faint)}
+  .block.past .title{text-decoration:line-through}
+
+  /* Block colors by type */
+  .block.work{border-left:3px solid var(--gold)}
+  .block.work::before{border-color:var(--gold)}
+  .block.rest{border-left:3px solid var(--blue)}
+  .block.rest::before{border-color:var(--blue)}
+  .block.eat{border-left:3px solid var(--grn)}
+  .block.eat::before{border-color:var(--grn)}
+  .block.sleep{border-left:3px solid var(--red)}
+  .block.sleep::before{border-color:var(--red)}
+
+  .rules{margin:24px 16px 0;padding:16px;background:var(--sf);border-radius:12px;border:1px solid var(--faint)}
+  .rules .label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--red);margin-bottom:10px}
+  .rules h3{font-size:14px;font-weight:700;margin-bottom:10px;color:var(--txt)}
+  .rules ol{padding-left:20px}
+  .rules li{font-size:12px;color:var(--dim);line-height:1.9;margin-bottom:4px}
+  .rules li strong{color:var(--txt)}
+
+  .urge{margin:16px 16px 0;padding:14px;background:rgba(224,112,96,0.06);border:1px solid rgba(224,112,96,0.2);border-radius:10px}
+  .urge .label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--red);margin-bottom:6px}
+  .urge h4{font-size:13px;font-weight:700;margin-bottom:6px;color:var(--red)}
+  .urge p{font-size:11px;color:var(--dim);line-height:1.8}
+
+  .footer{text-align:center;padding:30px 20px 0;font-size:10px;color:var(--dim);letter-spacing:1px}
+  .png-btn{display:block;margin:24px auto 0;padding:12px 24px;background:var(--gold);color:var(--bg);border:none;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .png-btn:active{transform:scale(0.97)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="label">2026.04.14 — TUESDAY</div>
+  <h1>TODAY: みさをch 1本完成日</h1>
+  <div class="sub">企画 ✓ → リサーチ → 台本 → 編集指示</div>
+</div>
+
+<div class="clock">
+  <div class="now-label">CURRENT TIME</div>
+  <div class="time" id="clock">--:--</div>
+  <div class="remaining" id="remaining">就寝まで残り --:--</div>
+</div>
+
+<div class="center-pin">
+  <div class="label">CENTER PIN</div>
+  <div class="text">台本完成</div>
+  <div class="desc">これが倒れなければ今日は負け</div>
+</div>
+
+<div class="container">
+<div class="timeline">
+
+  <div class="block work" data-start="13:12" data-end="15:00">
+    <div class="time-label">
+      <span class="time">13:12 — 15:00</span>
+      <span class="duration">1h48m</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">リサーチ</div>
+    <div class="desc">競合5本観察 → 感情トリガー特定 → みさをchの差分整理</div>
+  </div>
+
+  <div class="block rest" data-start="15:00" data-end="15:30">
+    <div class="time-label">
+      <span class="time">15:00 — 15:30</span>
+      <span class="duration">30m</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">リセット① 散歩 + 昼食</div>
+    <div class="desc">PFCリセット。スマホは持たない。空気と光だけ</div>
+  </div>
+
+  <div class="block work" data-start="15:30" data-end="17:00">
+    <div class="time-label">
+      <span class="time">15:30 — 17:00</span>
+      <span class="duration">1.5h</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">台本① 構成決定</div>
+    <div class="desc">フック・本編・CTAの骨組み。構成だけ完成させる</div>
+  </div>
+
+  <div class="block rest" data-start="17:00" data-end="17:15">
+    <div class="time-label">
+      <span class="time">17:00 — 17:15</span>
+      <span class="duration">15m</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">休憩</div>
+    <div class="desc">立つ・水・遠くを見る。スマホは見ない</div>
+  </div>
+
+  <div class="block work" data-start="17:15" data-end="18:45">
+    <div class="time-label">
+      <span class="time">17:15 — 18:45</span>
+      <span class="duration">1.5h</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">台本② 冒頭 + 本編前半</div>
+    <div class="desc">フックを最重視。視聴維持率は最初の15秒で決まる</div>
+  </div>
+
+  <div class="block eat" data-start="18:45" data-end="19:30">
+    <div class="time-label">
+      <span class="time">18:45 — 19:30</span>
+      <span class="duration">45m</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">夕食</div>
+    <div class="desc">しっかり食う。空腹はドーパミン枯渇 → 集中切れる</div>
+  </div>
+
+  <div class="block work" data-start="19:30" data-end="21:00">
+    <div class="time-label">
+      <span class="time">19:30 — 21:00</span>
+      <span class="duration">1.5h</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">台本③ 本編後半 + CTA + 調整</div>
+    <div class="desc">この時間で台本を完成させる。21:00時点で完成してなきゃNG</div>
+  </div>
+
+  <div class="block rest" data-start="21:00" data-end="21:20">
+    <div class="time-label">
+      <span class="time">21:00 — 21:20</span>
+      <span class="duration">20m</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">リセット② 散歩</div>
+    <div class="desc">PFCリセット。台本モード → 編集指示モードへ切り替え</div>
+  </div>
+
+  <div class="block work" data-start="21:20" data-end="22:50">
+    <div class="time-label">
+      <span class="time">21:20 — 22:50</span>
+      <span class="duration">1.5h</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">編集指示作成</div>
+    <div class="desc">1本分の編集指示書を完成させる。撮影に入れる状態にする</div>
+  </div>
+
+  <div class="block rest" data-start="22:50" data-end="23:20">
+    <div class="time-label">
+      <span class="time">22:50 — 23:20</span>
+      <span class="duration">30m</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">風呂</div>
+    <div class="desc">副交感神経に切り替え。深部体温を上げる → 入眠準備</div>
+  </div>
+
+  <div class="block work" data-start="23:20" data-end="23:50">
+    <div class="time-label">
+      <span class="time">23:20 — 23:50</span>
+      <span class="duration">30m</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">3行振り返り + 明日のボス設定</div>
+    <div class="desc">①ボス倒したか ②限界まで使ったか ③明日のボスは何か</div>
+  </div>
+
+  <div class="block sleep" data-start="23:50" data-end="24:00">
+    <div class="time-label">
+      <span class="time">23:50 — 24:00</span>
+      <span class="duration">10m</span>
+      <span class="now-tag">NOW</span>
+    </div>
+    <div class="title">就寝準備 → 24:00 消灯</div>
+    <div class="desc">スマホは別室。完全暗転で寝る</div>
+  </div>
+
+</div>
+</div>
+
+<div class="urge">
+  <div class="label">URGE PROTOCOL</div>
+  <h4>性欲・スマホ衝動が出たら</h4>
+  <p>① 今のブロックの残り時間をこのページで確認<br>
+  ② 「あと○分でこのブロック終わる」と頭の中で言う<br>
+  ③ 「終わったら散歩できる」と頭の中で言う<br>
+  ④ そのままタスクに戻る。10秒で衝動は弱まる</p>
+</div>
+
+<div class="rules">
+  <div class="label">TODAY ONLY — ABSOLUTE RULES</div>
+  <h3>今日だけは絶対</h3>
+  <ol>
+    <li><strong>スマホは別室。</strong>13:12〜21:00の仕事ブロック中ずっと</li>
+    <li><strong>各ブロック開始時に宣言。</strong>「今から○時まで○○しかしない」と声に出す</li>
+    <li><strong>「ちょっと休憩」は無し。</strong>休憩は時間割で決まってる時だけ</li>
+    <li><strong>23:50に電気消す。</strong>24:00で完全消灯</li>
+    <li><strong>台本が21:00に完成してなきゃ負け。</strong>センターピン死守</li>
+  </ol>
+</div>
+
+<div class="footer">
+  Today's Boss: 動画1本分の撮影可能状態<br>
+  Centerpin: 台本完成
+</div>
+
+<button class="png-btn" id="downloadBtn">PNG で保存</button>
+
+<script>
+function update() {
+  const now = new Date();
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const s = now.getSeconds();
+  const pad = n => String(n).padStart(2, '0');
+  document.getElementById('clock').textContent = `${pad(h)}:${pad(m)}`;
+
+  // remaining to 24:00
+  const totalMin = (24 * 60) - (h * 60 + m);
+  const rh = Math.floor(totalMin / 60);
+  const rm = totalMin % 60;
+  document.getElementById('remaining').textContent =
+    rh > 0 ? `就寝まで残り ${rh}時間${rm}分` : `就寝まで残り ${rm}分`;
+
+  // active block detection
+  const nowMin = h * 60 + m;
+  document.querySelectorAll('.block').forEach(block => {
+    const [sh, sm] = block.dataset.start.split(':').map(Number);
+    const [eh, em] = block.dataset.end.split(':').map(Number);
+    const startMin = sh * 60 + sm;
+    const endMin = eh * 60 + em;
+    block.classList.remove('active', 'past');
+    const tag = block.querySelector('.now-tag');
+    if (nowMin >= startMin && nowMin < endMin) {
+      block.classList.add('active');
+      if (tag) tag.style.display = 'inline-block';
+    } else {
+      if (tag) tag.style.display = 'none';
+      if (nowMin >= endMin) block.classList.add('past');
+    }
+  });
+}
+update();
+setInterval(update, 30000);
+
+document.getElementById('downloadBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('downloadBtn');
+  btn.textContent = '生成中...';
+  btn.style.display = 'none';
+  try {
+    const canvas = await html2canvas(document.body, {
+      backgroundColor: '#0a0c10',
+      scale: 2,
+      windowWidth: 480
+    });
+    const link = document.createElement('a');
+    link.download = 'today_2026-04-14.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  } catch(e) {
+    alert('生成失敗: ' + e.message);
+  }
+  btn.textContent = 'PNG で保存';
+  btn.style.display = 'block';
+});
+</script>
+
+</body>
+</html>
