@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日記 2026-04-14 — 親父との対話 × 今日のボス</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--bg:#0a0c10;--sf:#13161e;--sf2:#1a1f29;--gold:#d4b370;--gold2:#e0c488;--grn:#50c88c;--red:#e07060;--blue:#5090c8;--purple:#9070c8;--dim:rgba(220,220,230,0.4);--txt:#e0e2e8;--faint:rgba(220,220,230,0.1)}
+  body{background:var(--bg);color:var(--txt);font-family:'Noto Sans JP',sans-serif;min-height:100vh;padding-bottom:60px;line-height:1.8}
+
+  .header{text-align:center;padding:40px 20px 30px;background:linear-gradient(180deg,var(--sf),transparent)}
+  .header .date{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:4px;color:var(--gold);margin-bottom:10px}
+  .header h1{font-size:22px;font-weight:900;margin-bottom:6px;letter-spacing:0.05em}
+  .header .sub{font-size:12px;color:var(--dim)}
+
+  .container{max-width:620px;margin:0 auto;padding:0 16px}
+
+  .sec{margin:32px 0}
+  .sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--faint)}
+  .sec-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0}
+  .sec-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--dim)}
+  .sec-title{font-size:15px;font-weight:700}
+
+  .boss-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+  @media(max-width:500px){.boss-grid{grid-template-columns:1fr}}
+  .boss{padding:12px 14px;background:var(--sf);border-radius:8px;border:1px solid var(--faint);border-left:3px solid var(--grn)}
+  .boss .check{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--grn);margin-bottom:4px}
+  .boss .task{font-size:13px;font-weight:600}
+
+  .summary{padding:16px;background:linear-gradient(135deg,rgba(80,200,140,0.08),rgba(80,200,140,0.02));border:1px solid rgba(80,200,140,0.25);border-radius:10px;margin-bottom:14px}
+  .summary .label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--grn);margin-bottom:6px}
+  .summary .text{font-size:14px;font-weight:700;color:var(--grn)}
+
+  .card{padding:16px;background:var(--sf);border-radius:10px;border:1px solid var(--faint);margin-bottom:10px}
+  .card h4{font-size:13px;font-weight:700;margin-bottom:6px;color:var(--gold)}
+  .card p{font-size:12px;color:var(--dim)}
+  .card .insight{font-size:12px;color:var(--txt);line-height:1.9;margin-top:6px}
+
+  .layer{padding:14px;background:var(--sf);border-left:3px solid var(--purple);border-radius:0 8px 8px 0;margin-bottom:8px}
+  .layer .num{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--purple);margin-bottom:4px}
+  .layer .title{font-size:13px;font-weight:700;margin-bottom:4px}
+  .layer .desc{font-size:11px;color:var(--dim);line-height:1.8}
+
+  .zure{padding:14px;background:var(--sf);border-radius:10px;border:1px solid var(--faint);border-left:3px solid var(--red);margin-bottom:8px}
+  .zure .num{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--red);margin-bottom:4px}
+  .zure .quote{font-size:13px;font-weight:700;margin-bottom:6px}
+  .zure .desc{font-size:11px;color:var(--dim);line-height:1.8}
+
+  .core-message{padding:20px;background:linear-gradient(135deg,rgba(212,179,112,0.12),rgba(212,179,112,0.04));border:2px solid rgba(212,179,112,0.3);border-radius:12px;margin:20px 0;text-align:center}
+  .core-message .label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:8px}
+  .core-message .main{font-size:16px;font-weight:900;color:var(--gold2);line-height:1.7;margin-bottom:6px}
+  .core-message .sub{font-size:12px;color:var(--dim);line-height:1.8}
+
+  .kaizen{padding:14px;background:var(--sf);border:1px solid rgba(224,112,96,0.25);border-radius:10px;margin-bottom:8px}
+  .kaizen .tag{display:inline-block;padding:2px 8px;background:rgba(224,112,96,0.15);color:var(--red);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;border-radius:3px;margin-bottom:6px}
+  .kaizen .title{font-size:13px;font-weight:700;margin-bottom:4px}
+  .kaizen .desc{font-size:11px;color:var(--dim);line-height:1.8}
+
+  .next-boss{padding:20px;background:var(--sf);border:1px solid var(--gold);border-radius:12px;text-align:center;margin:24px 0}
+  .next-boss .label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:8px}
+  .next-boss .title{font-size:18px;font-weight:900;color:var(--gold2);margin-bottom:4px}
+  .next-boss .desc{font-size:12px;color:var(--dim)}
+
+  .footer{text-align:center;padding:30px 20px 0;font-size:11px;color:var(--dim);letter-spacing:1px;line-height:2}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="date">2026.04.14 — TUESDAY</div>
+  <h1>日記：親父との対話 × 今日のボス</h1>
+  <div class="sub">Daily Reflection — 今日1日の棚卸し</div>
+</div>
+
+<div class="container">
+
+<!-- ═══ 今日のボス ═══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(80,200,140,0.15);color:var(--grn)">✓</div>
+    <div><div class="sec-label">TODAY'S BOSS</div><div class="sec-title">今日のボス：動画1本分の撮影可能状態</div></div>
+  </div>
+  <div class="summary">
+    <div class="label">RESULT</div>
+    <div class="text">✓ BOSS DEFEATED — 全タスク完了</div>
+  </div>
+  <div class="boss-grid">
+    <div class="boss"><div class="check">✓ DONE</div><div class="task">企画確定</div></div>
+    <div class="boss"><div class="check">✓ DONE</div><div class="task">リサーチ完了</div></div>
+    <div class="boss"><div class="check">✓ DONE</div><div class="task">台本完成</div></div>
+    <div class="boss"><div class="check">✓ DONE</div><div class="task">編集指示作成</div></div>
+    <div class="boss"><div class="check">✓ DONE</div><div class="task">みさをさんLINE</div></div>
+    <div class="boss"><div class="check">✓ DONE</div><div class="task">編集者LINE</div></div>
+  </div>
+</div>
+
+<!-- ═══ 今日の気づき：親父との対話 ═══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(144,112,200,0.15);color:var(--purple)">父</div>
+    <div><div class="sec-label">DEEP INSIGHT</div><div class="sec-title">親父との対話から得たもの</div></div>
+  </div>
+
+  <div class="card">
+    <h4>親父から指摘されたこと</h4>
+    <div class="insight">・客観的な思考が全然できてなかった<br>・誠実さは認められた（一番嬉しかった点）</div>
+  </div>
+
+  <div class="card">
+    <h4>自分の気づき</h4>
+    <div class="insight">
+      ・親父の「できないだろうな」フィルターで見られてた<br>
+      ・過去の結果しか見てもらえない、内容は見てもらえない<br>
+      ・中学校時代の違和感の正体はこれ<br>
+      ・ブレがないことが勝ち続ける再現性<br>
+      ・キャラ設計・ブランディング・見た目の重要性
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 親父のマインドセット分解 ═══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(144,112,200,0.15);color:var(--purple)">5</div>
+    <div><div class="sec-label">MINDSET DECOMPOSITION</div><div class="sec-title">親父のマインドセット — 5層分解</div></div>
+  </div>
+
+  <div class="layer">
+    <div class="num">LAYER 01 — 表層</div>
+    <div class="title">言ってること</div>
+    <div class="desc">「お前は客観的な思考ができてない」「結果を出せ」</div>
+  </div>
+  <div class="layer">
+    <div class="num">LAYER 02 — 思考回路</div>
+    <div class="title">現状起点の思考</div>
+    <div class="desc">過去→現在→未来の順で検証。未来から逆算しない。結果KPI主義、プロセスは見ない。リスク回避型</div>
+  </div>
+  <div class="layer">
+    <div class="num">LAYER 03 — 感情駆動</div>
+    <div class="title">歪んだ愛情</div>
+    <div class="desc">父として「息子を失敗させたくない」が根底。でも表現が「できないだろうな」という先回りの不信として出る</div>
+  </div>
+  <div class="layer">
+    <div class="num">LAYER 04 — 原体験</div>
+    <div class="title">「現実的に動いてきた」世代</div>
+    <div class="desc">未来思考で失敗した経験があるか、「結果で黙らせる」価値観の世代</div>
+  </div>
+  <div class="layer">
+    <div class="num">LAYER 05 — 構造的制約</div>
+    <div class="title">人生ステージのズレ</div>
+    <div class="desc">親父は現状維持フェーズ。未来起点で動くことが物理的に難しい年齢/立場。Taigaのフェーズとは根本的にズレてる</div>
+  </div>
+</div>
+
+<!-- ═══ 自分の発言のズレ ═══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(224,112,96,0.15);color:var(--red)">!</div>
+    <div><div class="sec-label">SELF-CHECK</div><div class="sec-title">自分の発言の中でズレてるところ</div></div>
+  </div>
+
+  <div class="zure">
+    <div class="num">ZURE 01</div>
+    <div class="quote">「俺は天才じゃない、プロでいい」</div>
+    <div class="desc">能力の天井を自分で決めてる。謙虚に見えて「挑戦しない言い訳」になりうる。プロは通過点で、その先も目指せ</div>
+  </div>
+  <div class="zure">
+    <div class="num">ZURE 02</div>
+    <div class="quote">「最悪40代フリーターの未来が存在するから動く」</div>
+    <div class="desc">恐怖駆動。有能感トリガーの別形態。まなとけいたは「仕事=最高のプライベート」（#054）で動いてる。恐怖じゃなく楽しさで動く</div>
+  </div>
+  <div class="zure">
+    <div class="num">ZURE 03</div>
+    <div class="quote">「誠実さを認められたのが一番嬉しかった」</div>
+    <div class="desc">親父からの承認を求めてる状態。キーガン第3段階（社会化）的。嬉しさで行動が駆動されてるなら、まだ親父のフィルターの中</div>
+  </div>
+  <div class="zure">
+    <div class="num">ZURE 04</div>
+    <div class="quote">「1.5倍になる」「地球で一番」</div>
+    <div class="desc">抽象。具体の行動に落ちてない。「明日何が1.5倍になる？」を答えられるか？</div>
+  </div>
+  <div class="zure">
+    <div class="num">ZURE 05</div>
+    <div class="quote">「基準値を上げる必要」</div>
+    <div class="desc">基準値は結果じゃなく日々の行動で決まる。「ぬるい」を感じる瞬間に何をやってるか、そこを具体化できてない</div>
+  </div>
+</div>
+
+<!-- ═══ 核心メッセージ ═══ -->
+<div class="core-message">
+  <div class="label">CORE MESSAGE</div>
+  <div class="main">親父のフィルターから出るための最短ルートは<br>「結果を出すこと」じゃない</div>
+  <div class="sub">
+    結果を出そうとしてる時点で、まだ親父のフレーム（結果主義）の中にいる。<br>
+    親父が見ないもの（プロセス・内容・未来起点の思考）で勝つのが本当の脱出。<br>
+    <strong style="color:var(--gold)">親父が評価しない軸で勝て。結果は後からついてくる。</strong>
+  </div>
+</div>
+
+<!-- ═══ 今日の反省点 ═══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(224,112,96,0.15);color:var(--red)">×</div>
+    <div><div class="sec-label">IMPROVEMENTS</div><div class="sec-title">明日への改善点</div></div>
+  </div>
+
+  <div class="kaizen">
+    <span class="tag">BLOCK: 個人主義</span>
+    <div class="title">編集者への連絡が遅い</div>
+    <div class="desc">3つのブロックのうち「個人主義」が発動。ボールを自分で抱え込んでた。#004「ボールを持つな」違反。明日は連絡のスピード優先</div>
+  </div>
+  <div class="kaizen">
+    <span class="tag">URGE</span>
+    <div class="title">性欲発散で時間割10分崩れ</div>
+    <div class="desc">URGE PROTOCOLが機能せず。10分損失。明日の時間割に「発散タイム」を組み込む or PROTOCOLを強化</div>
+  </div>
+</div>
+
+<!-- ═══ 明日のボス ═══ -->
+<div class="next-boss">
+  <div class="label">TOMORROW'S BOSS</div>
+  <div class="title">C案：1本目の磨き込み</div>
+  <div class="desc">壁打ちで質上げる。撮影日程は後ろ倒し（みさをさんに連絡済）</div>
+</div>
+
+<div class="footer">
+  ✓ ボス倒した。限界まで使った（止めなかった）。<br>
+  個人主義が出た。性欲で10分崩れた。<br>
+  それでも、今日は前に進んだ。<br>
+  <br>
+  <strong style="color:var(--gold)">明日：親父の土俵から降りて、自分の軸で勝負する。</strong>
+</div>
+
+</div>
+
+</body>
+</html>
