@@ -75,6 +75,69 @@
 </div>
 
 <div class="container">
+  <a href="diary_index.html" style="display:inline-block;margin:10px 0 20px;padding:6px 14px;background:var(--sf);border:1px solid var(--faint);border-radius:6px;color:var(--dim);font-size:11px;text-decoration:none">← 日記インデックスに戻る</a>
+
+<!-- ═══ スコアカード ═══ -->
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(212,179,112,0.15);color:var(--gold)">⭑</div>
+    <div><div class="sec-label">SCORE CARD</div><div class="sec-title">師匠モード評価 vs 自己評価</div></div>
+  </div>
+
+  <div style="padding:20px;background:linear-gradient(135deg,rgba(212,179,112,0.08),rgba(212,179,112,0.02));border:1px solid rgba(212,179,112,0.3);border-radius:10px;margin-bottom:14px;text-align:center">
+    <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:6px">TOTAL SCORE</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:36px;font-weight:900;color:var(--gold2)">19<span style="font-size:18px;color:var(--dim)">/25</span></div>
+    <div style="font-size:11px;color:var(--dim);margin-top:4px">師匠モード評価</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px">
+
+    <div style="padding:12px;background:var(--sf);border:1px solid var(--faint);border-radius:8px;border-left:3px solid var(--grn)">
+      <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--grn);margin-bottom:3px">BOSS</div>
+      <div style="font-size:12px;font-weight:700;margin-bottom:4px">ボス達成</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--grn)">5<span style="font-size:12px;color:var(--dim)">/5</span></div>
+      <div style="font-size:10px;color:var(--dim);margin-top:3px">全6タスク完了</div>
+    </div>
+
+    <div style="padding:12px;background:var(--sf);border:1px solid var(--faint);border-radius:8px;border-left:3px solid var(--gold)">
+      <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:3px">SPEED</div>
+      <div style="font-size:12px;font-weight:700;margin-bottom:4px">即実行</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--gold)">4<span style="font-size:12px;color:var(--dim)">/5</span></div>
+      <div style="font-size:10px;color:var(--dim);margin-top:3px">編集者連絡が遅れた</div>
+    </div>
+
+    <div style="padding:12px;background:var(--sf);border:1px solid var(--faint);border-radius:8px;border-left:3px solid var(--red)">
+      <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--red);margin-bottom:3px">DEFENSE</div>
+      <div style="font-size:12px;font-weight:700;margin-bottom:4px">問題予測</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--red)">3<span style="font-size:12px;color:var(--dim)">/5</span></div>
+      <div style="font-size:10px;color:var(--dim);margin-top:3px">10分崩れ、撮影後ろ倒し</div>
+    </div>
+
+    <div style="padding:12px;background:var(--sf);border:1px solid var(--faint);border-radius:8px;border-left:3px solid var(--blue)">
+      <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--blue);margin-bottom:3px">LOVE</div>
+      <div style="font-size:12px;font-weight:700;margin-bottom:4px">仲間への貢献</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--blue)">4<span style="font-size:12px;color:var(--dim)">/5</span></div>
+      <div style="font-size:10px;color:var(--dim);margin-top:3px">3人に連絡実行</div>
+    </div>
+
+    <div style="padding:12px;background:var(--sf);border:1px solid var(--faint);border-radius:8px;border-left:3px solid var(--purple);grid-column:1/-1">
+      <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--purple);margin-bottom:3px">BLOCK</div>
+      <div style="font-size:12px;font-weight:700;margin-bottom:4px">ブロック対処（低いほど動いた）</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--purple)">3<span style="font-size:12px;color:var(--dim)">/5</span></div>
+      <div style="font-size:10px;color:var(--dim);margin-top:3px">個人主義発動（編集者連絡遅延）、自覚はあった</div>
+    </div>
+
+  </div>
+
+  <div style="padding:14px;background:var(--sf);border:1px dashed var(--faint);border-radius:8px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--dim);margin-bottom:6px">SELF EVAL（自分で記入）</div>
+    <div style="font-size:11px;color:var(--dim);line-height:1.8">
+      自己評価: __/25<br>
+      師匠モードとの差分: __<br>
+      差分が大きい＝自己認識の精度が低い。差分が縮まる＝成長
+    </div>
+  </div>
+</div>
 
 <!-- ═══ 今日のボス ═══ -->
 <div class="sec">
@@ -173,8 +236,8 @@
   </div>
   <div class="zure">
     <div class="num">ZURE 03</div>
-    <div class="quote">「誠実さを認められたのが一番嬉しかった」</div>
-    <div class="desc">親父からの承認を求めてる状態。キーガン第3段階（社会化）的。嬉しさで行動が駆動されてるなら、まだ親父のフィルターの中</div>
+    <div class="quote">「大人から学ぶことないな」という子供時代の認知</div>
+    <div class="desc">有能感の防衛反応として発動。認められない経験を「俺の方が分かってる」と処理することで自分を守った。結果、Prestige学習（上位者から学ぶ進化的本能）が止まり、成長が止まった。これが根深いパターン</div>
   </div>
   <div class="zure">
     <div class="num">ZURE 04</div>
