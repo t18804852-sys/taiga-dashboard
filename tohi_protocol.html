@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>逃避検知プロトコル — TOHI DETECTION</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  :root{--bg:#0c0a0a;--sf:#1a1414;--sf2:#221818;--red:#e07060;--red2:#f08070;--gold:#d4b370;--grn:#50c88c;--blue:#5090c8;--purple:#9070c8;--dim:rgba(220,200,200,0.4);--txt:#e8d8d0;--faint:rgba(220,200,200,0.1)}
+  body{background:var(--bg);color:var(--txt);font-family:'Noto Sans JP',sans-serif;min-height:100vh;padding-bottom:60px;line-height:1.8}
+
+  .header{text-align:center;padding:50px 20px 30px;background:linear-gradient(180deg,rgba(224,112,96,0.08),transparent)}
+  .header .label{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:5px;color:var(--red);margin-bottom:10px}
+  .header h1{font-size:24px;font-weight:900;margin-bottom:6px;letter-spacing:0.05em;background:linear-gradient(135deg,var(--red),var(--red2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .header .sub{font-size:12px;color:var(--dim)}
+
+  .container{max-width:620px;margin:0 auto;padding:0 16px}
+
+  .back{display:inline-block;margin:10px 0 20px;padding:6px 14px;background:var(--sf);border:1px solid var(--faint);border-radius:6px;color:var(--dim);font-size:11px;text-decoration:none}
+
+  .alert{padding:18px;background:linear-gradient(135deg,rgba(224,112,96,0.12),rgba(224,112,96,0.04));border:1px solid rgba(224,112,96,0.3);border-radius:10px;margin:20px 0}
+  .alert .label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--red);margin-bottom:6px}
+  .alert h3{font-size:14px;font-weight:700;color:var(--red2);margin-bottom:6px}
+  .alert p{font-size:12px;color:var(--dim);line-height:1.9}
+
+  .sec{margin:32px 0}
+  .sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--faint)}
+  .sec-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;background:rgba(224,112,96,0.15);color:var(--red)}
+  .sec-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--dim)}
+  .sec-title{font-size:15px;font-weight:700}
+
+  .sign-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+  @media(max-width:500px){.sign-grid{grid-template-columns:1fr}}
+  .sign{padding:11px 13px;background:var(--sf);border:1px solid var(--faint);border-radius:8px;border-left:3px solid var(--red);font-size:12px;color:var(--txt);line-height:1.6}
+
+  .q-card{padding:14px 16px;background:var(--sf);border:1px solid var(--faint);border-radius:10px;margin-bottom:8px;border-left:3px solid var(--gold)}
+  .q-card .num{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:4px}
+  .q-card .q{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--txt)}
+  .q-card .answers{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  @media(max-width:480px){.q-card .answers{grid-template-columns:1fr}}
+  .ans{padding:7px 9px;border-radius:5px;font-size:11px;line-height:1.6}
+  .ans.ok{background:rgba(80,200,140,0.08);border:1px solid rgba(80,200,140,0.25);color:var(--grn)}
+  .ans.ng{background:rgba(224,112,96,0.08);border:1px solid rgba(224,112,96,0.25);color:var(--red)}
+  .ans .l{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;display:block;margin-bottom:2px;opacity:0.7}
+
+  .verdict{padding:14px;background:linear-gradient(135deg,rgba(224,112,96,0.1),rgba(224,112,96,0.02));border:1px solid rgba(224,112,96,0.3);border-radius:8px;margin-top:10px;text-align:center;font-size:13px;font-weight:700;color:var(--red2)}
+
+  .block-card{padding:14px;background:var(--sf);border:1px solid var(--faint);border-radius:8px;margin-bottom:8px;border-left:3px solid var(--purple)}
+  .block-card .name{font-size:13px;font-weight:700;color:var(--purple);margin-bottom:4px}
+  .block-card .flow{font-size:11px;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:1px}
+
+  .layer-card{padding:14px;background:var(--sf);border:1px solid var(--faint);border-radius:8px;margin-bottom:8px;border-left:3px solid var(--blue)}
+  .layer-card .num{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:4px}
+  .layer-card .title{font-size:13px;font-weight:700;margin-bottom:6px}
+  .layer-card .body{font-size:11px;color:var(--dim);line-height:1.9}
+
+  .ifthen{padding:12px 14px;background:var(--sf);border-radius:8px;margin-bottom:6px;border-left:3px solid var(--gold);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .ifthen .if{flex:1;min-width:120px;font-size:11px;color:var(--dim)}
+  .ifthen .if strong{color:var(--red)}
+  .ifthen .arrow{color:var(--gold);font-family:'Orbitron',sans-serif;font-weight:700}
+  .ifthen .then{flex:1;min-width:120px;font-size:11px;color:var(--txt)}
+  .ifthen .then strong{color:var(--grn)}
+
+  .recovery{padding:14px;background:linear-gradient(135deg,rgba(80,200,140,0.06),rgba(80,200,140,0.02));border:1px solid rgba(80,200,140,0.2);border-radius:8px;margin-bottom:8px}
+  .recovery .step{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--grn);margin-bottom:4px}
+  .recovery .text{font-size:12px;color:var(--txt);line-height:1.8}
+  .recovery .text strong{color:var(--grn)}
+
+  .core{padding:20px;background:linear-gradient(135deg,rgba(212,179,112,0.12),rgba(212,179,112,0.04));border:2px solid rgba(212,179,112,0.3);border-radius:12px;margin:24px 0;text-align:center}
+  .core .label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:8px}
+  .core .main{font-size:15px;font-weight:900;color:var(--gold);line-height:1.7;margin-bottom:6px}
+  .core .sub{font-size:11px;color:var(--dim);line-height:1.8}
+
+  .footer{text-align:center;padding:30px 20px 0;font-size:10px;color:var(--dim);letter-spacing:1px;line-height:2}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="label">EMERGENCY PROTOCOL</div>
+  <h1>逃避検知プロトコル</h1>
+  <div class="sub">TOHI DETECTION — 逃げる前に止める。逃げた後に戻る。</div>
+</div>
+
+<div class="container">
+  <a href="./" class="back">← ダッシュボードに戻る</a>
+
+  <div class="alert">
+    <div class="label">ROOT PROBLEM</div>
+    <h3>「逃避か合理か分からない」が根本問題</h3>
+    <p>判断より先に自動反応（3つのブロック発動）が起きる。意志じゃ勝てない。<strong style="color:var(--red2)">仕組みで勝つしかない。</strong></p>
+  </div>
+
+  <!-- ═══ 検知サイン ═══ -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-icon">⚠</div>
+      <div><div class="sec-label">DETECTION SIGNS</div><div class="sec-title">逃避の兆候（このサインで気づく）</div></div>
+    </div>
+    <div class="sign-grid">
+      <div class="sign">「疲れた」「しんどい」「やる気出ない」</div>
+      <div class="sign">「明日やる」「後でやる」</div>
+      <div class="sign">寝る時間が異常に増える</div>
+      <div class="sign">予定外のタスクに流れる</div>
+      <div class="sign">スマホ・SNS・ポルノ衝動</div>
+      <div class="sign">システム作りで「これ今やる必要？」</div>
+      <div class="sign">「分かりました、やります」で具体ゼロ</div>
+      <div class="sign">考えてばかりで動かない</div>
+    </div>
+  </div>
+
+  <!-- ═══ 4つの判別問い ═══ -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:rgba(212,179,112,0.15);color:var(--gold)">?</div>
+      <div><div class="sec-label">4 QUESTIONS</div><div class="sec-title">3秒で出す判別問い</div></div>
+    </div>
+
+    <div class="q-card">
+      <div class="num">Q1</div>
+      <div class="q">この行動の結果、何が生まれる？</div>
+      <div class="answers">
+        <div class="ans ok"><span class="l">合理</span>具体的な成果・回復・学び</div>
+        <div class="ans ng"><span class="l">逃避</span>何も生まれない、時間だけ過ぎる</div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="num">Q2</div>
+      <div class="q">意思決定した結果か？</div>
+      <div class="answers">
+        <div class="ans ok"><span class="l">合理</span>「今は休む」と事前に決めた</div>
+        <div class="ans ng"><span class="l">逃避</span>気づいたらやってた</div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="num">Q3</div>
+      <div class="q">向き合うべきタスクから意識が逸れてる？</div>
+      <div class="answers">
+        <div class="ans ok"><span class="l">合理</span>計画的な別タスク・休息</div>
+        <div class="ans ng"><span class="l">逃避</span>しんどいから回避</div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="num">Q4</div>
+      <div class="q">終わった後、後悔する？</div>
+      <div class="answers">
+        <div class="ans ok"><span class="l">合理</span>スッキリ、また向き合える</div>
+        <div class="ans ng"><span class="l">逃避</span>「時間溶かした...」と思う</div>
+      </div>
+    </div>
+
+    <div class="verdict">2つ以上「逃避側」なら逃避と判定する</div>
+  </div>
+
+  <!-- ═══ 3つのブロック診断 ═══ -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:rgba(144,112,200,0.15);color:var(--purple)">3</div>
+      <div><div class="sec-label">BLOCK DIAGNOSIS</div><div class="sec-title">どのブロックが動いてる？</div></div>
+    </div>
+    <div class="block-card">
+      <div class="name">完璧主義</div>
+      <div class="flow">完璧にやらなきゃ → できない → 逃げる</div>
+    </div>
+    <div class="block-card">
+      <div class="name">攻撃偏重</div>
+      <div class="flow">向き合う（守り）が苦手 → 攻めやすい別タスクに流れる</div>
+    </div>
+    <div class="block-card">
+      <div class="name">個人主義</div>
+      <div class="flow">一人で抱え込む → しんどい → 逃げる</div>
+    </div>
+    <div class="block-card" style="border-left-color:var(--red);background:rgba(224,112,96,0.04)">
+      <div class="name" style="color:var(--red)">共通の根：有能感の防衛</div>
+      <div class="flow" style="color:var(--dim);font-family:'Noto Sans JP',sans-serif;font-size:11px">向き合う → 失敗するかも → 有能感傷つく → 予防のために回避（無意識・瞬時）</div>
+    </div>
+  </div>
+
+  <!-- ═══ 対策4層 ═══ -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:rgba(80,144,200,0.15);color:var(--blue)">4</div>
+      <div><div class="sec-label">COUNTERMEASURES</div><div class="sec-title">対策4層</div></div>
+    </div>
+
+    <div class="layer-card">
+      <div class="num">LAYER 01 — 事前設計</div>
+      <div class="title">プリコミットメント（逃避する前に決める）</div>
+      <div class="body">時間割固定／スマホ別室／サイトブロッカー／物理的に逃げ場を消す</div>
+    </div>
+
+    <div class="layer-card">
+      <div class="num">LAYER 02 — 自動化</div>
+      <div class="title">If-Then プラン（意志力を使わない）</div>
+      <div class="body">「もし○○と感じたら → △△をする」を事前に決めておく。下のIf-Then集を参照</div>
+    </div>
+
+    <div class="layer-card">
+      <div class="num">LAYER 03 — リアルタイム検知</div>
+      <div class="title">手書きトリガー × 10分タイマー</div>
+      <div class="body">手に「逃避×」を書く／10分おきに「この10分、結果に繋がってた？」を自問</div>
+    </div>
+
+    <div class="layer-card">
+      <div class="num">LAYER 04 — リカバリ</div>
+      <div class="title">逃避してしまった時の戻り方</div>
+      <div class="body">自己否定NG（攻撃偏重発動 → 次の逃避を生む）／事実だけ記録／構造分析／次の1分だけ決める</div>
+    </div>
+  </div>
+
+  <!-- ═══ If-Thenプラン集 ═══ -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:rgba(212,179,112,0.15);color:var(--gold)">→</div>
+      <div><div class="sec-label">IF-THEN PLANS</div><div class="sec-title">事前に決めておく自動反応</div></div>
+    </div>
+    <div class="ifthen">
+      <div class="if">もし<strong>「向き合うの辛い」</strong>と感じたら</div>
+      <div class="arrow">→</div>
+      <div class="then"><strong>5分だけ始める</strong>（5分ルール）</div>
+    </div>
+    <div class="ifthen">
+      <div class="if">もし<strong>「疲れた」</strong>と感じたら</div>
+      <div class="arrow">→</div>
+      <div class="then"><strong>20分タイマーで散歩</strong>（PFCリセット）</div>
+    </div>
+    <div class="ifthen">
+      <div class="if">もし<strong>「スマホ見たい」</strong>と感じたら</div>
+      <div class="arrow">→</div>
+      <div class="then">スマホを<strong>別室に置く、10秒待つ</strong></div>
+    </div>
+    <div class="ifthen">
+      <div class="if">もし<strong>「眠い」</strong>と感じたら</div>
+      <div class="arrow">→</div>
+      <div class="then"><strong>立つ・水を飲む・光を浴びる</strong></div>
+    </div>
+    <div class="ifthen">
+      <div class="if">もし<strong>「完璧にやらなきゃ」</strong>と感じたら</div>
+      <div class="arrow">→</div>
+      <div class="then"><strong>60点で出す</strong>と決めて始める</div>
+    </div>
+    <div class="ifthen">
+      <div class="if">もし<strong>「明日やる」</strong>と思ったら</div>
+      <div class="arrow">→</div>
+      <div class="then"><strong>今5分だけ手をつける</strong>（ゼイガルニック効果）</div>
+    </div>
+  </div>
+
+  <!-- ═══ リカバリ3ステップ ═══ -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:rgba(80,200,140,0.15);color:var(--grn)">↺</div>
+      <div><div class="sec-label">RECOVERY</div><div class="sec-title">逃避してしまった時の3ステップ</div></div>
+    </div>
+
+    <div class="recovery">
+      <div class="step">STEP 01</div>
+      <div class="text"><strong>事実だけを記録</strong>（感情抜き）<br>「○分間、○○をしてた」だけ書く。「俺はダメだ」は禁止</div>
+    </div>
+    <div class="recovery">
+      <div class="step">STEP 02</div>
+      <div class="text"><strong>構造を見る</strong><br>3つのブロックのどれが動いてた？ どの判別問いに該当した？</div>
+    </div>
+    <div class="recovery">
+      <div class="step">STEP 03</div>
+      <div class="text"><strong>次の1分だけ決める</strong><br>1時間じゃなく1分。ハードルを徹底的に下げる</div>
+    </div>
+  </div>
+
+  <!-- ═══ 核心メッセージ ═══ -->
+  <div class="core">
+    <div class="label">CORE MESSAGE</div>
+    <div class="main">逃避は「悪」じゃなく、<br>「今向き合う準備ができてない」サイン</div>
+    <div class="sub">
+      「逃避=悪」と設定すると、自己否定→攻撃偏重→次の逃避を生む悪循環。<br>
+      逃避を<strong style="color:var(--gold)">敵じゃなく情報として扱う</strong>。<br>
+      責めず、構造を見る。これがキーガン第5段階的な自己観察。
+    </div>
+  </div>
+
+  <!-- ═══ 壁打ちトリガー ═══ -->
+  <div class="alert" style="border-color:rgba(80,144,200,0.3);background:linear-gradient(135deg,rgba(80,144,200,0.1),rgba(80,144,200,0.02))">
+    <div class="label" style="color:var(--blue)">USE THIS</div>
+    <h3 style="color:var(--blue)">逃避が出たら師匠AIに壁打ち</h3>
+    <p>師匠AIにメモリ登録済み（feedback_tohi_detection.md）。会話で「逃避かも」と言うだけで、このプロトコルで突き返してくる。</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  逃げる前に止める。逃げた後に戻る。<br>
+  <strong style="color:var(--gold)">逃避を敵じゃなく情報として扱え。</strong>
+</div>
+
+</body>
+</html>
